@@ -89,10 +89,6 @@ export const note = defineType({
       hidden: ({ document }) => !document?.isPremium,
     }),
     defineField({
-      name: "views",
-      type: "number",
-    }),
-    defineField({
       name: "content",
       type: "markdown",
     }),

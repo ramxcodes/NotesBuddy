@@ -1,25 +1,54 @@
+import Search from "@/components/search";
 import { client } from "@/sanity/lib/client";
 import { NOTES_QUERY } from "@/sanity/lib/queries";
-import { Note } from "@/types/note";
+import { Note } from "@/sanity/types";
 
-export default async function NotesPage() {
-  const notes = await client.fetch(NOTES_QUERY);
-  console.log(JSON.stringify(notes, null, 2));
+export default async function NotesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string | undefined }>;
+}) {
+  const query = (await searchParams).query;
+  const params = { search: query || null };
+
+  const notes = await client.fetch(NOTES_QUERY, params);
   return (
-    <div>
-      <h1>Notes</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="flex flex-col gap-4 max-w-6xl mx-auto mt-10">
+      <h1 className="text-3xl font-bold">Notes</h1>
+      <Search query={query || ""} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {notes.map((note: Note) => (
-          <div key={note._id}>
-            <h2>{note.title}</h2>
-            <p>{note.syllabus}</p>
-            <p>{note.views}</p>
-            <p>{note.slug.current}</p>
-            <p>{note.university}</p>
-            <p>{note.degree}</p>
-            <p>{note.year}</p>
-            <p>{note.semester}</p>
-            <p>{note.subject}</p>
+          <div
+            key={note._id}
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+          >
+            <h2 className="text-xl font-semibold mb-4">{note.title}</h2>
+            <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+              <p className="flex items-center gap-2">
+                <span className="font-medium">Syllabus:</span>
+                {note.syllabus}
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="font-medium">University:</span>
+                {note.university}
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="font-medium">Degree:</span>
+                {note.degree}
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="font-medium">Year:</span>
+                {note.year}
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="font-medium">Semester:</span>
+                {note.semester}
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="font-medium">Subject:</span>
+                {note.subject}
+              </p>
+            </div>
           </div>
         ))}
       </div>

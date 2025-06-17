@@ -15,7 +15,7 @@ export default async function SignIn() {
   });
 
   if (session) {
-    redirect("/dashboard");
+    redirect("/onboarding");
   }
 
   return (

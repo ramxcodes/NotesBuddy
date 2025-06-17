@@ -1,0 +1,26 @@
+import { SignInButton } from "@/components/auth/sign-in-button";
+import { auth } from "@/lib/auth";
+import { Metadata } from "next";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Sign In",
+  description: "Sign in page",
+};
+
+export default async function SignIn() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (session) {
+    redirect("/dashboard");
+  }
+
+  return (
+    <div>
+      <SignInButton />
+    </div>
+  );
+}

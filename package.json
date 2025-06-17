@@ -58,6 +58,7 @@
     "react-resizable-panels": "^3.0.3",
     "recharts": "^2.15.3",
     "sanity": "^3.93.0",
+    "sanity-plugin-markdown": "^5.1.1",
     "sonner": "^2.0.5",
     "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",

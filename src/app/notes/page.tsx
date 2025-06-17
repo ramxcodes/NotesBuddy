@@ -1,7 +1,7 @@
 import Search from "@/components/search";
 import { client } from "@/sanity/lib/client";
 import { NOTES_QUERY } from "@/sanity/lib/queries";
-import { Note } from "@/sanity/types";
+import Link from "next/link";
 
 export default async function NotesPage({
   searchParams,
@@ -17,7 +17,7 @@ export default async function NotesPage({
       <h1 className="text-3xl font-bold">Notes</h1>
       <Search query={query || ""} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {notes.map((note: Note) => (
+        {notes.map((note) => (
           <div
             key={note._id}
             className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
@@ -48,6 +48,12 @@ export default async function NotesPage({
                 <span className="font-medium">Subject:</span>
                 {note.subject}
               </p>
+              {note.slug?.current && (
+                <p className="flex items-center gap-2">
+                  <span className="font-medium">Slug: {note.slug.current}</span>
+                  <Link href={`/notes/${note.slug.current}`}>Visit Notes</Link>
+                </p>
+              )}
             </div>
           </div>
         ))}

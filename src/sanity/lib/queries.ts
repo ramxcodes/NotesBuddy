@@ -12,3 +12,19 @@ export const NOTES_QUERY =
   semester,
   subject
 }`);
+
+export const NOTE_BY_SLUG_QUERY = defineQuery(`
+*[_type == "note" && slug.current == $slug][0]{
+ _id,
+  title,
+  syllabus,
+  university,
+  degree,
+  year,
+  semester,
+  subject,
+  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],
+  content,
+  slug
+}  
+`);

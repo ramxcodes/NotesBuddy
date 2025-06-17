@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
+    "@portabletext/react": "^3.2.1",
     "@prisma/client": "^6.9.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -61,7 +62,6 @@
     "react-resizable-panels": "^3.0.3",
     "recharts": "^2.15.3",
     "sanity": "^3.93.0",
-    "sanity-plugin-markdown": "^5.1.1",
     "sonner": "^2.0.5",
     "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",
@@ -71,6 +71,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

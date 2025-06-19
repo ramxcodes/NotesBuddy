@@ -7,6 +7,7 @@ alwaysApply: true
 - **Code Writing**:
   - Do not write complete code for me unless I explicitly request it.
   - Instead, provide detailed explanations, hints, and partial solutions (e.g., pseudocode or code skeletons) to guide me in writing the code myself.
+  - DO NOT GENERATE .MD FILES UNTIL EXPLICITLY SAID OR TOLD.
 - **Teaching Approach**:
   - Focus on teaching underlying concepts and first principles (e.g., for loops, explain iteration, its purpose, and how it controls flow).
   - Break down complex topics into simpler, fundamental components.

@@ -7,20 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            String    @id
-  name          String
-  email         String    @unique
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  role          Role      @default(USER)
-  accounts      Account[]
-  sessions      Session[]
-
-  @@map("user")
-}
+//  AUTH RELATED MODELS
 
 model Session {
   id        String   @id
@@ -66,7 +53,76 @@ model Verification {
   @@map("verification")
 }
 
+
+// USER RELATED MODELS
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  role          Role      @default(USER)
+
+  isOnboarded   Boolean   @default(false)
+  profile       UserProfile?
+  accounts      Account[]
+  sessions      Session[]
+
+  @@map("user")
+}
+
 enum Role {
   USER
   ADMIN
+}
+
+enum University {
+  MEDICAPS
+  IPS
+}
+
+enum Degree {
+  BTECH_CSE
+  BTECH_IT
+}
+
+enum Year {
+  FIRST_YEAR
+  SECOND_YEAR
+  THIRD_YEAR
+  FOURTH_YEAR
+}
+
+enum Semester {
+  FIRST_SEMESTER
+  SECOND_SEMESTER
+  THIRD_SEMESTER
+  FOURTH_SEMESTER
+  FIFTH_SEMESTER
+  SIXTH_SEMESTER
+  SEVENTH_SEMESTER
+  EIGHTH_SEMESTER
+}
+
+model UserProfile {
+  id        String   @id
+  userId    String @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  firstName     String
+  lastName      String
+  phoneNumber   String
+
+  university    University
+  degree        Degree
+  year          Year
+  semester      Semester
+
+  createdAt DateTime
+  updatedAt DateTime
+
+  @@map("user_profile")
 }

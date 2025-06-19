@@ -67,9 +67,11 @@ model User {
   role          Role      @default(USER)
 
   isOnboarded   Boolean   @default(false)
+  isBlocked     Boolean   @default(false)
   profile       UserProfile?
   accounts      Account[]
   sessions      Session[]
+  deviceFingerprints DeviceFingerprint[]
 
   @@map("user")
 }
@@ -125,4 +127,19 @@ model UserProfile {
   updatedAt DateTime @updatedAt
 
   @@map("user_profile")
+}
+
+model DeviceFingerprint {
+  id           String   @id @default(cuid())
+  userId       String 
+  fingerprint  Json
+  hash         String   @unique
+  isActive     Boolean  @default(true)
+  deviceLabel  String?
+  createdAt    DateTime @default(now())
+  lastUsedAt   DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("device_fingerprint")
 }

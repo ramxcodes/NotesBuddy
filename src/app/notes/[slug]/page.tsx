@@ -1,15 +1,26 @@
 import { client } from "@/sanity/lib/client";
 import { NOTE_BY_SLUG_QUERY } from "@/sanity/lib/queries";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import TableOfContent from "@/components/note/table-of-content";
 import { myPortableTextComponents } from "@/components/note/custom-components/portableText-components";
+import { checkUserBlockedStatus, getSession } from "@/lib/db/user";
 
 export default async function NotePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const session = await getSession();
+  if (!session) {
+    redirect("/sign-in");
+  }
+
+  const isBlocked = await checkUserBlockedStatus(session.user.id);
+  if (isBlocked) {
+    redirect("/blocked");
+  }
+
   const slug = (await params).slug;
   const note = await client.fetch(NOTE_BY_SLUG_QUERY, { slug });
   if (!note) {

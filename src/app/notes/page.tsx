@@ -2,6 +2,12 @@ import Search from "@/components/search";
 import { client } from "@/sanity/lib/client";
 import { NOTES_QUERY } from "@/sanity/lib/queries";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Notes",
+  description: "Notes page",
+};
 
 export default async function NotesPage({
   searchParams,

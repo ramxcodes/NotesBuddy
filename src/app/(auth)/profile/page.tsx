@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 import SignOutButton from "@/components/auth/sign-out-button";
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,11 @@ import {
   getUserFullProfile,
   getUserOnboardingStatus,
 } from "@/dal/user/onboarding/query";
-import { getSession } from "@/lib/db/user";
+import {
+  getUserDevices,
+  checkAndBlockUserForDeviceLimit,
+} from "@/dal/user/device/query";
+import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
 import { getDisplayName } from "@/lib/user/helper";
 import {
   DEGREE_OPTIONS,
@@ -24,8 +29,23 @@ export const metadata: Metadata = {
 
 export default async function Profile() {
   const session = await getSession();
+
+  if (!session) {
+    redirect("/");
+  }
+
+  // Check current device limit and block if necessary
+  const wasBlocked = await checkAndBlockUserForDeviceLimit(session.user.id);
+
+  // Check if user is blocked
+  const isBlocked = await checkUserBlockedStatus(session.user.id);
+  if (isBlocked || wasBlocked) {
+    redirect("/blocked");
+  }
+
   const isOnboarded = await getUserOnboardingStatus(session?.user?.id || "");
   const profile = await getUserFullProfile(session?.user?.id || "");
+  const devices = await getUserDevices(session?.user?.id || "");
   const university = getDisplayName(
     profile?.university || "",
     UNIVERSITY_OPTIONS
@@ -33,10 +53,6 @@ export default async function Profile() {
   const degree = getDisplayName(profile?.degree || "", DEGREE_OPTIONS);
   const year = getDisplayName(profile?.year || "", YEAR_OPTIONS);
   const semester = getDisplayName(profile?.semester || "", SEMESTER_OPTIONS);
-
-  if (!session) {
-    redirect("/");
-  }
 
   return (
     <>
@@ -79,6 +95,31 @@ export default async function Profile() {
             <p className="text-gray-600">{semester}</p>
           </div>
         )}
+
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold mb-4">Active Devices</h3>
+          <div className="space-y-2">
+            {devices.length > 0 ? (
+              devices.map((device) => (
+                <div
+                  key={device.id}
+                  className="bg-gray-100 dark:bg-gray-700 p-3 rounded"
+                >
+                  <p className="font-medium">{device.deviceLabel}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    Last used:{" "}
+                    {new Date(device.lastUsedAt).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {(device.fingerprint as any)?.userAgent || "Unknown device"}
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No devices found</p>
+            )}
+          </div>
+        </div>
 
         <SignOutButton />
       </div>

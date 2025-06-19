@@ -1,9 +1,18 @@
 import { headers } from "next/headers";
-import { auth } from "@/lib/auth/auth";
+import { auth } from "../auth/auth";
+import prisma from "./prisma";
 
 export const getSession = async () => {
-  const session = await auth.api.getSession({
+  return await auth.api.getSession({
     headers: await headers(),
   });
-  return session;
+};
+
+export const checkUserBlockedStatus = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { isBlocked: true },
+  });
+
+  return user?.isBlocked || false;
 };

@@ -1,10 +1,30 @@
+import { OnboardingForm } from "@/components/auth/onboarding/onboarding-form";
+import { getUserOnboardingStatus } from "@/dal/user/onboarding/query";
+import { getSession } from "@/lib/db/user";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Onboarding",
   description: "Onboarding page",
 };
 
-export default function Onboarding() {
-  return <div>Onboarding</div>;
+export default async function Onboarding() {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/");
+  }
+
+  const isOnboarded = await getUserOnboardingStatus(session.user.id);
+
+  if (isOnboarded.isOnboarded) {
+    redirect("/profile");
+  }
+
+  return (
+    <>
+      <OnboardingForm />
+    </>
+  );
 }

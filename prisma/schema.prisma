@@ -108,21 +108,21 @@ enum Semester {
 }
 
 model UserProfile {
-  id        String   @id
+  id        String   @id @default(cuid())
   userId    String @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   firstName     String
   lastName      String
-  phoneNumber   String
+  phoneNumber   String   @unique
 
   university    University
   degree        Degree
   year          Year
   semester      Semester
 
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("user_profile")
 }

@@ -43,6 +43,7 @@
     "@radix-ui/react-tooltip": "^1.2.7",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.93.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/react-katex": "^3.0.4",
     "better-auth": "^1.2.9",
     "class-variance-authority": "^0.7.1",
@@ -81,6 +82,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.13",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"

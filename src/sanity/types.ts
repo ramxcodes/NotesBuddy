@@ -25,30 +25,49 @@ export type Note = {
   university?: "medicaps" | "ips";
   degree?: "btech-cse" | "btech-it";
   year?: "1st-year" | "2nd-year" | "3rd-year" | "4th-year";
-  semester?: "1st-semester" | "2nd-semester" | "3rd-semester" | "4th-semester" | "5th-semester" | "6th-semester" | "7th-semester" | "8th-semester";
+  semester?:
+    | "1st-semester"
+    | "2nd-semester"
+    | "3rd-semester"
+    | "4th-semester"
+    | "5th-semester"
+    | "6th-semester"
+    | "7th-semester"
+    | "8th-semester";
   subject?: string;
   isPremium?: boolean;
   tier?: "tier1" | "tier2" | "tier3";
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    _key: string;
-  } & Latex>;
+  content?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?:
+          | "normal"
+          | "h1"
+          | "h2"
+          | "h3"
+          | "h4"
+          | "h5"
+          | "h6"
+          | "blockquote";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | ({
+        _key: string;
+      } & Latex)
+  >;
 };
 
 export type Latex = {
@@ -174,32 +193,57 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Note | Latex | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes =
+  | Note
+  | Latex
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageHotspot
+  | SanityImageCrop
+  | SanityFileAsset
+  | SanityImageAsset
+  | SanityImageMetadata
+  | Geopoint
+  | Slug
+  | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: NOTES_QUERY
 // Query: *[_type == "note" && defined(slug.current) && !defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search ] | order(_createdAt desc) {  _id,  title,  syllabus,  slug,  university,  degree,  year,  semester,  subject}
-export type NOTES_QUERYResult = Array<{
-  _id: string;
-  title: string | null;
-  syllabus: null;
-  slug: null;
-  university: null;
-  degree: null;
-  year: null;
-  semester: null;
-  subject: null;
-} | {
-  _id: string;
-  title: string | null;
-  syllabus: string | null;
-  slug: Slug | null;
-  university: "ips" | "medicaps" | null;
-  degree: "btech-cse" | "btech-it" | null;
-  year: "1st-year" | "2nd-year" | "3rd-year" | "4th-year" | null;
-  semester: "1st-semester" | "2nd-semester" | "3rd-semester" | "4th-semester" | "5th-semester" | "6th-semester" | "7th-semester" | "8th-semester" | null;
-  subject: string | null;
-}>;
+export type NOTES_QUERYResult = Array<
+  | {
+      _id: string;
+      title: string | null;
+      syllabus: null;
+      slug: null;
+      university: null;
+      degree: null;
+      year: null;
+      semester: null;
+      subject: null;
+    }
+  | {
+      _id: string;
+      title: string | null;
+      syllabus: string | null;
+      slug: Slug | null;
+      university: "ips" | "medicaps" | null;
+      degree: "btech-cse" | "btech-it" | null;
+      year: "1st-year" | "2nd-year" | "3rd-year" | "4th-year" | null;
+      semester:
+        | "1st-semester"
+        | "2nd-semester"
+        | "3rd-semester"
+        | "4th-semester"
+        | "5th-semester"
+        | "6th-semester"
+        | "7th-semester"
+        | "8th-semester"
+        | null;
+      subject: string | null;
+    }
+>;
 // Variable: NOTE_BY_SLUG_QUERY
 // Query: *[_type == "note" && slug.current == $slug][0]{ _id,  title,  syllabus,  university,  degree,  year,  semester,  subject,  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],  content,  slug}
 export type NOTE_BY_SLUG_QUERYResult = {
@@ -209,7 +253,16 @@ export type NOTE_BY_SLUG_QUERYResult = {
   university: "ips" | "medicaps" | null;
   degree: "btech-cse" | "btech-it" | null;
   year: "1st-year" | "2nd-year" | "3rd-year" | "4th-year" | null;
-  semester: "1st-semester" | "2nd-semester" | "3rd-semester" | "4th-semester" | "5th-semester" | "6th-semester" | "7th-semester" | "8th-semester" | null;
+  semester:
+    | "1st-semester"
+    | "2nd-semester"
+    | "3rd-semester"
+    | "4th-semester"
+    | "5th-semester"
+    | "6th-semester"
+    | "7th-semester"
+    | "8th-semester"
+    | null;
   subject: string | null;
   headings: Array<{
     children?: Array<{
@@ -229,26 +282,37 @@ export type NOTE_BY_SLUG_QUERYResult = {
     _type: "block";
     _key: string;
   }> | null;
-  content: Array<{
-    _key: string;
-  } & Latex | {
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }> | null;
+  content: Array<
+    | ({
+        _key: string;
+      } & Latex)
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?:
+          | "blockquote"
+          | "h1"
+          | "h2"
+          | "h3"
+          | "h4"
+          | "h5"
+          | "h6"
+          | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+  > | null;
   slug: Slug | null;
 } | null;
 
@@ -256,7 +320,7 @@ export type NOTE_BY_SLUG_QUERYResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"note\" && defined(slug.current) && !defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search ] | order(_createdAt desc) {\n  _id,\n  title,\n  syllabus,\n  slug,\n  university,\n  degree,\n  year,\n  semester,\n  subject\n}": NOTES_QUERYResult;
-    "\n*[_type == \"note\" && slug.current == $slug][0]{\n _id,\n  title,\n  syllabus,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  \"headings\": content[style in [\"h2\", \"h3\", \"h4\", \"h5\", \"h6\"]],\n  content,\n  slug\n}  \n": NOTE_BY_SLUG_QUERYResult;
+    '*[_type == "note" && defined(slug.current) && !defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search ] | order(_createdAt desc) {\n  _id,\n  title,\n  syllabus,\n  slug,\n  university,\n  degree,\n  year,\n  semester,\n  subject\n}': NOTES_QUERYResult;
+    '\n*[_type == "note" && slug.current == $slug][0]{\n _id,\n  title,\n  syllabus,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],\n  content,\n  slug\n}  \n': NOTE_BY_SLUG_QUERYResult;
   }
 }

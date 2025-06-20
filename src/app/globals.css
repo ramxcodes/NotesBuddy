@@ -2,6 +2,22 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
+@font-face {
+  font-family: "Excon";
+  src: url("/fonts/excon.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ranade";
+  src: url("/fonts/ranade.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -80,7 +96,7 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(19.69% 0.002 17.29);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -117,7 +133,18 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* FONTS */
+
+.font-excon {
+  font-family: "Excon-Variable", sans-serif;
+}
+
+.font-ranade {
+  font-family: "Ranade", sans-serif;
 }

@@ -1,10 +1,10 @@
 "use client";
 
 import { signOut } from "@/lib/auth/auth-client";
-import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function SignOutButton() {
+export default function LogOutButton() {
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -17,13 +17,13 @@ export default function SignOutButton() {
   };
 
   return (
-    <Button
-      data-umami-event="SignOut button"
-      variant={"destructive"}
+    <Link
+      data-umami-event="Logout button clicked"
+      href="/"
       onClick={handleSignOut}
       className="font-excon"
     >
-      Sign Out
-    </Button>
+      Log Out
+    </Link>
   );
 }

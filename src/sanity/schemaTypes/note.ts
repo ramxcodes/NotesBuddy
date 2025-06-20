@@ -91,7 +91,7 @@ export const note = defineType({
     defineField({
       name: "content",
       type: "array",
-      of: [{ type: "block" }],
+      of: [{ type: "block" }, { type: "latex" }],
     }),
   ],
 });

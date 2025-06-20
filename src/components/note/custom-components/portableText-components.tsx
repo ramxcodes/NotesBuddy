@@ -3,6 +3,8 @@ import {
   PortableTextComponentProps,
   PortableTextBlock,
 } from "@portabletext/react";
+import "katex/dist/katex.min.css";
+import { BlockMath } from "react-katex";
 
 type HeadingProps = PortableTextComponentProps<PortableTextBlock>;
 
@@ -11,12 +13,27 @@ interface TextChild {
   _type?: string;
 }
 
+interface LatexBlockProps {
+  _type: "latex";
+  body: string;
+}
+
 const getHeadingText = (value: PortableTextBlock): string => {
   return (
     value.children
       ?.map((child: TextChild) => child.text || "")
       .join("")
       .trim() || "Untitled"
+  );
+};
+
+const LaTeXComponent = ({ value }: { value: LatexBlockProps }) => {
+  const { body } = value;
+
+  return (
+    <div className="latex-container">
+      <BlockMath math={body} />
+    </div>
   );
 };
 
@@ -62,5 +79,8 @@ export const myPortableTextComponents = {
         </h6>
       );
     },
+  },
+  types: {
+    latex: LaTeXComponent,
   },
 };

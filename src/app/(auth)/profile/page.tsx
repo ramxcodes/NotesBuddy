@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 import SignOutButton from "@/components/auth/sign-out-button";
+import { DeviceFingerprint } from "@/components/auth/device-fingerprint";
 import { Button } from "@/components/ui/button";
 import {
   getUserFullProfile,
   getUserOnboardingStatus,
 } from "@/dal/user/onboarding/query";
-import {
-  getUserDevices,
-  checkAndBlockUserForDeviceLimit,
-} from "@/dal/user/device/query";
+import { getUserDevices } from "@/dal/user/device/query";
 import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
 import { getDisplayName } from "@/lib/user/helper";
 import {
@@ -34,12 +32,9 @@ export default async function Profile() {
     redirect("/");
   }
 
-  // Check current device limit and block if necessary
-  const wasBlocked = await checkAndBlockUserForDeviceLimit(session.user.id);
-
   // Check if user is blocked
   const isBlocked = await checkUserBlockedStatus(session.user.id);
-  if (isBlocked || wasBlocked) {
+  if (isBlocked) {
     redirect("/blocked");
   }
 
@@ -56,6 +51,7 @@ export default async function Profile() {
 
   return (
     <>
+      <DeviceFingerprint />
       <div className="flex flex-col items-center gap-4 p-8">
         <img
           src={session?.user?.image || ""}

@@ -1,38 +1,127 @@
 import prisma from "@/lib/db/prisma";
 import { DeviceFingerprintData } from "./types";
 import { APP_CONFIG } from "@/utils/config";
+import crypto from "crypto";
+
+function generateDeviceHash(
+  fingerprint: DeviceFingerprintData["fingerprint"]
+): string {
+  type SortableValue =
+    | string
+    | number
+    | boolean
+    | null
+    | SortableValue[]
+    | { [key: string]: SortableValue };
+
+  const sortObject = (obj: SortableValue): SortableValue => {
+    if (obj === null || typeof obj !== "object") return obj;
+    if (Array.isArray(obj)) return obj.map(sortObject);
+
+    const sorted: { [key: string]: SortableValue } = {};
+    Object.keys(obj)
+      .sort()
+      .forEach((key) => {
+        sorted[key] = sortObject(obj[key]);
+      });
+    return sorted;
+  };
+
+  const sortedFingerprint = JSON.stringify(sortObject(fingerprint));
+  return crypto.createHash("sha256").update(sortedFingerprint).digest("hex");
+}
 
 export async function createDeviceFingerprint(
   userId: string,
   deviceData: DeviceFingerprintData
 ) {
-  const fingerprintHash = Buffer.from(
-    JSON.stringify(deviceData.fingerprint)
-  ).toString("base64");
+  const fingerprintHash = generateDeviceHash(deviceData.fingerprint);
 
-  // Check if this device already exists
-  const existingDevice = await prisma.deviceFingerprint.findUnique({
-    where: { hash: fingerprintHash },
-  });
 
-  if (existingDevice) {
-    // Update last used timestamp
-    return await prisma.deviceFingerprint.update({
-      where: { id: existingDevice.id },
-      data: { lastUsedAt: new Date() },
+  return await prisma.$transaction(async (tx) => {
+    const existingDevice = await tx.deviceFingerprint.findUnique({
+      where: { hash: fingerprintHash },
     });
-  }
 
-  // Create new device fingerprint
-  return await prisma.deviceFingerprint.create({
-    data: {
-      userId,
-      fingerprint: deviceData.fingerprint,
-      hash: fingerprintHash,
-      deviceLabel: deviceData.deviceLabel,
-      isActive: true,
-      lastUsedAt: new Date(),
-    },
+
+
+    if (existingDevice) {
+      if (existingDevice.userId !== userId) {
+
+        const currentDeviceCount = await tx.deviceFingerprint.count({
+          where: { userId, isActive: true },
+        });
+
+
+        const modifiedFingerprint = {
+          ...deviceData.fingerprint,
+          userId: userId,
+          collisionTimestamp: new Date().toISOString(),
+        };
+
+        const newFingerprintHash = generateDeviceHash(modifiedFingerprint);
+
+        if (currentDeviceCount >= APP_CONFIG.MAX_DEVICES_PER_USER) {
+
+          await tx.user.update({
+            where: { id: userId },
+            data: { isBlocked: true },
+          });
+
+          throw new Error(
+            `Device limit exceeded. Maximum ${APP_CONFIG.MAX_DEVICES_PER_USER} devices allowed. Current count: ${currentDeviceCount}`
+          );
+        }
+
+
+        return await tx.deviceFingerprint.create({
+          data: {
+            userId,
+            fingerprint: modifiedFingerprint,
+            hash: newFingerprintHash,
+            deviceLabel: deviceData.deviceLabel,
+            isActive: true,
+            lastUsedAt: new Date(),
+          },
+        });
+      }
+
+      return await tx.deviceFingerprint.update({
+        where: { id: existingDevice.id },
+        data: { lastUsedAt: new Date() },
+      });
+    }
+
+    const currentDeviceCount = await tx.deviceFingerprint.count({
+      where: {
+        userId,
+        isActive: true,
+      },
+    });
+
+
+    if (currentDeviceCount >= APP_CONFIG.MAX_DEVICES_PER_USER) {
+
+      await tx.user.update({
+        where: { id: userId },
+        data: { isBlocked: true },
+      });
+
+      throw new Error(
+        `Device limit exceeded. Maximum ${APP_CONFIG.MAX_DEVICES_PER_USER} devices allowed. Current count: ${currentDeviceCount}`
+      );
+    }
+
+    return await tx.deviceFingerprint.create({
+      data: {
+        userId,
+        fingerprint: deviceData.fingerprint,
+        hash: fingerprintHash,
+        deviceLabel: deviceData.deviceLabel,
+        isActive: true,
+        lastUsedAt: new Date(),
+      },
+    });
   });
 }
 
@@ -69,11 +158,37 @@ export async function checkAndBlockUserForDeviceLimit(userId: string) {
 
   if (deviceCount > APP_CONFIG.MAX_DEVICES_PER_USER) {
     await blockUserForTooManyDevices(userId);
-    console.log(
-      `User ${userId} blocked for too many devices (${deviceCount}), limit: ${APP_CONFIG.MAX_DEVICES_PER_USER}`
-    );
     return true;
   }
 
   return false;
+}
+
+export async function clearAllUserDevices(userId: string) {
+  return await prisma.deviceFingerprint.deleteMany({
+    where: { userId },
+  });
+}
+
+export async function getAllUserDevicesWithDetails(userId: string) {
+  return await prisma.deviceFingerprint.findMany({
+    where: { userId },
+    select: {
+      id: true,
+      hash: true,
+      deviceLabel: true,
+      isActive: true,
+      createdAt: true,
+      lastUsedAt: true,
+      fingerprint: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function unblockUser(userId: string) {
+  return await prisma.user.update({
+    where: { id: userId },
+    data: { isBlocked: false },
+  });
 }

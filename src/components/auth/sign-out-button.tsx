@@ -11,8 +11,8 @@ export default function SignOutButton() {
     try {
       await signOut();
       router.push("/");
-    } catch (error) {
-      console.error("Sign out failed:", error);
+    } catch {
+      router.push("/");
     }
   };
 

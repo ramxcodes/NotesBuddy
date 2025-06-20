@@ -137,7 +137,7 @@ model DeviceFingerprint {
   isActive     Boolean  @default(true)
   deviceLabel  String?
   createdAt    DateTime @default(now())
-  lastUsedAt   DateTime @updatedAt
+  lastUsedAt   DateTime
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   

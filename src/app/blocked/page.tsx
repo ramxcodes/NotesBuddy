@@ -1,14 +1,21 @@
-import { Metadata } from "next";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { APP_CONFIG } from "@/utils/config";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Account Blocked",
-  description: "Your account has been blocked",
-};
+import { Button } from "@/components/ui/button";
+import { APP_CONFIG } from "@/utils/config";
+import { signOut } from "@/lib/auth/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function BlockedPage() {
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push("/");
+    } catch {
+      router.push("/");
+    }
+  };
   return (
     <div className="flex flex-col items-center justify-center h-screen p-8">
       <div className="text-center max-w-md">
@@ -24,9 +31,9 @@ export default function BlockedPage() {
           Please contact support if you believe this is an error or if you need
           to manage your active devices.
         </p>
-        <Link href="/sign-in">
-          <Button>Try Again</Button>
-        </Link>
+        <Button data-umami-event="SignOut button" onClick={handleSignOut}>
+          Try Again
+        </Button>
       </div>
     </div>
   );

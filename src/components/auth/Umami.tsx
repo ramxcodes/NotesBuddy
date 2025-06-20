@@ -7,7 +7,6 @@ import { useEffect } from "react";
 
 export default function Umami() {
   const session = useSession();
-  console.log("session from umami component :", session.data?.user.name);
 
   useEffect(() => {
     if (
@@ -16,11 +15,6 @@ export default function Umami() {
       session.data?.user
     ) {
       (window as any).umami.identify({
-        name: session.data.user.name,
-        email: session.data.user.email,
-        userId: session.data.user.id,
-      });
-      console.log("✅ Successfully sent user data to Umami:", {
         name: session.data.user.name,
         email: session.data.user.email,
         userId: session.data.user.id,

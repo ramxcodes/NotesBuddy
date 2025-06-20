@@ -62,8 +62,8 @@ export function OnboardingForm() {
       });
 
       await handleOnboarding(formData);
-    } catch (error) {
-      console.error("Submission failed:", error);
+    } catch {
+
     } finally {
       setIsSubmitting(false);
     }

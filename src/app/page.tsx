@@ -13,7 +13,9 @@ export default function Home() {
       <h1 className="text-4xl font-bold">Notes Buddy</h1>
       <p className="text-lg text-gray-500">Your notes, your way.</p>
       <Link className="mt-4" href="/sign-in">
-        <Button>Sign In with Google</Button>
+        <Button data-umami-event="SignIn button on home page">
+          Sign In with Google
+        </Button>
       </Link>
     </div>
   );

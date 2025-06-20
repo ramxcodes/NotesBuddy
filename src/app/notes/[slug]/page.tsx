@@ -1,10 +1,25 @@
-import { client } from "@/sanity/lib/client";
-import { NOTE_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 import { notFound, redirect } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import TableOfContent from "@/components/note/table-of-content";
 import { myPortableTextComponents } from "@/components/note/custom-components/portableText-components";
 import { checkUserBlockedStatus, getSession } from "@/lib/db/user";
+import type { Metadata } from "next";
+import { getNoteBySlug } from "@/dal/note/helper";
+
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const slug = (await params).slug;
+  const note = await getNoteBySlug(slug);
+
+  return {
+    title: note?.title || "Note",
+    description: note?.syllabus || "Note",
+  };
+}
 
 export default async function NotePage({
   params,
@@ -22,7 +37,7 @@ export default async function NotePage({
   }
 
   const slug = (await params).slug;
-  const note = await client.fetch(NOTE_BY_SLUG_QUERY, { slug });
+  const note = await getNoteBySlug(slug);
   if (!note) {
     notFound();
   }

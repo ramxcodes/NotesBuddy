@@ -5,7 +5,7 @@ import { signIn } from "@/lib/auth/auth-client";
 
 export function SignInButton() {
   return (
-    <Button variant="default" onClick={signIn}>
+    <Button data-umami-event="SignIn button" variant="default" onClick={signIn}>
       Sign In
     </Button>
   );

@@ -59,6 +59,12 @@ export const auth = betterAuth({
   advanced: {
     cookiePrefix: "notes-buddy",
   },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60 * 24 * 30,
+    },
+  },
   hooks: {
     after: createAuthMiddleware(async (ctx) => {
       if (ctx.path?.startsWith("/sign-in") && ctx.context.newSession) {

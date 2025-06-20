@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "easymde/dist/easymde.min.css";
 import { DeviceFingerprint } from "@/components/auth/device-fingerprint";
+import Umami from "@/components/auth/Umami";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {process.env.NEXT_PUBLIC_ENABLE_UMAMI === "true" && <Umami />}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

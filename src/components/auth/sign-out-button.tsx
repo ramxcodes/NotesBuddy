@@ -17,7 +17,11 @@ export default function SignOutButton() {
   };
 
   return (
-    <Button variant={"destructive"} onClick={handleSignOut}>
+    <Button
+      data-umami-event="SignOut button"
+      variant={"destructive"}
+      onClick={handleSignOut}
+    >
       Sign Out
     </Button>
   );

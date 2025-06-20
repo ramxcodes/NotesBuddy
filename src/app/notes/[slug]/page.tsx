@@ -30,14 +30,16 @@ export default async function NotePage({
   if (!session) {
     redirect("/sign-in");
   }
+  const slug = (await params).slug;
+  const [isBlocked, note] = await Promise.all([
+    checkUserBlockedStatus(session.user.id),
+    getNoteBySlug(slug),
+  ]);
 
-  const isBlocked = await checkUserBlockedStatus(session.user.id);
   if (isBlocked) {
     redirect("/blocked");
   }
 
-  const slug = (await params).slug;
-  const note = await getNoteBySlug(slug);
   if (!note) {
     notFound();
   }

@@ -46,7 +46,14 @@ export type Note = {
     level?: number;
     _type: "block";
     _key: string;
-  }>;
+  } | {
+    _key: string;
+  } & Latex>;
+};
+
+export type Latex = {
+  _type: "latex";
+  body?: string;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -167,7 +174,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Note | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Note | Latex | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: NOTES_QUERY
@@ -223,6 +230,8 @@ export type NOTE_BY_SLUG_QUERYResult = {
     _key: string;
   }> | null;
   content: Array<{
+    _key: string;
+  } & Latex | {
     children?: Array<{
       marks?: Array<string>;
       text?: string;

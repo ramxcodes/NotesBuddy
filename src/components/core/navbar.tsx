@@ -24,7 +24,7 @@ const navItems = [
 
 export default function NavBar() {
   return (
-    <nav className="dark:from-background dark:via-background dark:to-background/20 fixed top-0 right-0 left-0 z-10 flex items-center justify-between bg-gradient-to-b from-white via-white to-white/20 px-10 py-8">
+    <nav className="dark:from-background dark:via-background dark:to-background/20 sticky top-0 z-10 flex items-center justify-between bg-gradient-to-b from-white via-white to-white/20 px-10 py-8">
       <div className="flex items-center gap-30">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.png" alt="Notes Buddy" width={40} height={40} />

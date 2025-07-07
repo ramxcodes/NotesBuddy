@@ -73,6 +73,20 @@ model User {
   sessions      Session[]
   deviceFingerprints DeviceFingerprint[]
 
+  // Premium related
+  premiumPurchases     PremiumPurchase[]
+  referredPurchases    PremiumPurchase[] @relation("UserReferrals")
+  referrerRewards      ReferralReward[]  @relation("ReferrerRewards")
+  refereeRewards       ReferralReward[]  @relation("RefereeRewards")
+  
+  // Referral code for this user
+  referralCode         String?           @unique
+  
+  // Current premium status (denormalized for quick access)
+  currentPremiumTier   PremiumTier?
+  premiumExpiryDate    DateTime?
+  isPremiumActive      Boolean           @default(false)
+
   @@map("user")
 }
 
@@ -147,4 +161,190 @@ model DeviceFingerprint {
   @@index([hash], name: "device_hash_idx")
   @@index([lastUsedAt], name: "device_lastused_idx")
   @@map("device_fingerprint")
+}
+
+// ENUMS
+enum PremiumTier {
+  TIER_1
+  TIER_2  
+  TIER_3
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CARD
+  UPI
+  NETBANKING
+  WALLET
+  EMI
+  PAYLATER
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  REFERRAL_BONUS
+}
+
+// PREMIUM PURCHASE MODELS
+
+model PremiumPurchase {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Razorpay specific fields
+  razorpayOrderId     String?   @unique // order_xxx from Razorpay
+  razorpayPaymentId   String?   @unique // pay_xxx from Razorpay
+  razorpaySignature   String?   // For payment verification
+
+  // Purchase details
+  tier              PremiumTier
+  duration          Int           // Duration in days (30, 90, 365)
+  originalAmount    Decimal       // Original amount before discounts
+  discountAmount    Decimal       @default(0) // Total discount applied
+  finalAmount       Decimal       // Amount actually paid
+  currency          String        @default("INR")
+  
+  // Payment details
+  paymentStatus     PaymentStatus @default(PENDING)
+  paymentMethod     PaymentMethod?
+  razorpayFee       Decimal?      // Transaction fee charged by Razorpay
+  razorpayTax       Decimal?      // Tax on transaction fee
+  
+  // Discount & Referral tracking
+  discountCode      String?       // Coupon/discount code used
+  referralCode      String?       // Referral code used
+  referredByUserId  String?       // User who referred this purchase
+  referredBy        User?         @relation("UserReferrals", fields: [referredByUserId], references: [id])
+  
+  // Academic details (from UserProfile)
+  university       University       
+  degree           Degree       
+  year             Year          
+  semester         Semester          
+  
+  // Timestamps
+  purchaseDate      DateTime      @default(now())
+  expiryDate        DateTime
+  isActive          Boolean       @default(false)  // Only true after successful payment
+  
+  // Webhook & Processing
+  webhookProcessed  Boolean       @default(false)  // Track if webhook was processed
+  failureReason     String?       // Store failure reason if payment fails
+  
+  // Relations
+  discounts         PurchaseDiscount[]
+  referralRewards   ReferralReward[]
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([razorpayOrderId])
+  @@index([razorpayPaymentId])
+  @@index([paymentStatus])
+  @@index([tier, isActive])
+  @@index([referredByUserId])
+}
+
+// Track multiple discounts applied to a single purchase
+model PurchaseDiscount {
+  id                String         @id @default(cuid())
+  purchaseId        String
+  purchase          PremiumPurchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  
+  discountType      DiscountType
+  discountCode      String?        // Coupon code
+  discountValue     Decimal        // Amount or percentage
+  discountAmount    Decimal        // Actual discount amount applied
+  description       String?        // Discount description
+  
+  createdAt         DateTime       @default(now())
+
+  @@index([purchaseId])
+  @@index([discountCode])
+}
+
+// Discount/Coupon management
+model DiscountCoupon {
+  id              String      @id @default(cuid())
+  code            String      @unique
+  description     String?
+  
+  discountType    DiscountType
+  value           Decimal     // Percentage (0-100) or fixed amount
+  maxDiscount     Decimal?    // Max discount for percentage type
+  minOrderAmount  Decimal?    // Minimum order amount to apply
+  
+  // Validity
+  isActive        Boolean     @default(true)
+  validFrom       DateTime    @default(now())
+  validUntil      DateTime?
+  
+  // Usage limits
+  maxUses         Int?        // Total usage limit
+  maxUsesPerUser  Int?        @default(1)
+  currentUses     Int         @default(0)
+  
+  // Applicable tiers
+  applicableTiers PremiumTier[]
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([code])
+  @@index([isActive])
+}
+
+// Referral program tracking
+model ReferralProgram {
+  id                    String      @id @default(cuid())
+  name                  String
+  description           String?
+  
+  // Referrer rewards
+  referrerDiscountType  DiscountType @default(FIXED_AMOUNT)
+  referrerDiscountValue Decimal     // Amount referrer gets
+  
+  // Referee rewards
+  refereeDiscountType   DiscountType @default(FIXED_AMOUNT)
+  refereeDiscountValue  Decimal     // Amount new user gets
+  
+  // Validity
+  isActive              Boolean     @default(true)
+  validFrom             DateTime    @default(now())
+  validUntil            DateTime?
+  
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+}
+
+// Track referral rewards given
+model ReferralReward {
+  id              String         @id @default(cuid())
+  referrerUserId  String
+  referrer        User           @relation("ReferrerRewards", fields: [referrerUserId], references: [id])
+  refereeUserId   String
+  referee         User           @relation("RefereeRewards", fields: [refereeUserId], references: [id])
+  purchaseId      String
+  purchase        PremiumPurchase @relation(fields: [purchaseId], references: [id])
+  
+  rewardAmount    Decimal
+  rewardType      DiscountType
+  isProcessed     Boolean        @default(false)
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([referrerUserId])
+  @@index([refereeUserId])
+  @@index([purchaseId])
 }

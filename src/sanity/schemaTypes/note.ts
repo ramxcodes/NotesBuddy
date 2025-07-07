@@ -81,9 +81,9 @@ export const note = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Tier 1", value: "tier1" },
-          { title: "Tier 2", value: "tier2" },
-          { title: "Tier 3", value: "tier3" },
+          { title: "Tier 1", value: "TIER_1" },
+          { title: "Tier 2", value: "TIER_2" },
+          { title: "Tier 3", value: "TIER_3" },
         ],
       },
       hidden: ({ document }) => !document?.isPremium,

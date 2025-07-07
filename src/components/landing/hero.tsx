@@ -1,67 +1,85 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-const testimonials = [
-  {
-    name: "John Doe",
-    image: "https://github.com/shadcn.png",
-    text: "This is a testimonial",
-  },
-  {
-    name: "Jane Doe",
-    image: "https://github.com/shadcn.png",
-    text: "This is a testimonial",
-  },
-  {
-    name: "John Doe",
-    image: "https://github.com/shadcn.png",
-    text: "This is a testimonial",
-  },
-];
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "motion/react";
+import { ArrowRightIcon, BookOpenIcon, StarIcon } from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Hero() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12">
-      <div>
-        <Badge className="font-ranade border-0 px-4 py-2 text-sm border-b-4 border-gray-500">
-          Learn like a Pro!
-        </Badge>
-      </div>
+  const [titleNumber, setTitleNumber] = useState(0);
+  const titles = useMemo(
+    () => ["smart", "fast", "efficient", "comprehensive", "effective"],
+    [],
+  );
 
-      <div className="space-y-4 text-center">
-        <h1 className="font-satoshi text-center text-4xl leading-tight font-bold text-gray-900 md:text-6xl">
-          All Your Study <br /> with{" "}
-          <span className="font-ranade font-medium tracking-tighter">Notes Buddy</span>
-        </h1>
-        <p className="font-ranade mx-auto max-w-2xl text-center text-lg text-secondary md:text-xl">
-          Get your notes, one-shots, PYQs, Quizzes and more.
-        </p>
-      </div>
-      {/* Testimonials Section */}
-      <div className="flex items-center space-x-4">
-        <div className="flex">
-          {testimonials.map((testimonial, idx) => (
-            <Avatar
-              key={testimonial.name + idx}
-              className={`h-10 w-10 border-3 border-white transition-all duration-200 ${
-                idx !== 0 ? "-ml-3" : ""
-              } shadow-lg`}
-              style={{ zIndex: testimonials.length - idx }}
-            >
-              <AvatarImage src={testimonial.image || "/placeholder.svg"} />
-              <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-          ))}
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (titleNumber === titles.length - 1) {
+        setTitleNumber(0);
+      } else {
+        setTitleNumber(titleNumber + 1);
+      }
+    }, 2000);
+    return () => clearTimeout(timeoutId);
+  }, [titleNumber, titles]);
+
+  return (
+    <div className="w-full">
+      <div className="container mx-auto">
+        <div className="flex flex-col items-center justify-center gap-8 py-20 lg:py-40">
+          <div>
+            <Button variant="secondary" size="sm" className="gap-4">
+              Now it is time to study <ArrowRightIcon className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="flex flex-col gap-4">
+            <h1 className="font-regular max-w-2xl text-center text-5xl tracking-tighter md:text-7xl">
+              <span className="font-excon font-black">
+                Your all-in-one learning platform
+              </span>
+              <span className="font-ranade relative flex w-full justify-center overflow-hidden text-center md:pt-1 md:pb-4">
+                &nbsp;
+                {titles.map((title, index) => (
+                  <motion.span
+                    key={index}
+                    className="absolute font-light"
+                    initial={{ opacity: 0, y: "-100" }}
+                    transition={{ type: "spring", stiffness: 50 }}
+                    animate={
+                      titleNumber === index
+                        ? {
+                            y: 0,
+                            opacity: 1,
+                          }
+                        : {
+                            y: titleNumber > index ? -150 : 150,
+                            opacity: 0,
+                          }
+                    }
+                  >
+                    {title}
+                  </motion.span>
+                ))}
+              </span>
+            </h1>
+
+            <p className="text-secondary font-satoshi max-w-2xl text-center text-lg leading-relaxed tracking-tight md:text-xl">
+              Preparing for exams is already challenging enough. <br />
+              Avoid further complications by ditching outdated study methods.
+            </p>
+          </div>
+          <div className="flex flex-row gap-3">
+            <Button size="lg" className="gap-4" variant="outline">
+              Visit Notes <BookOpenIcon className="h-4 w-4" />
+            </Button>
+            <Link href="/premium">
+              <Button size="lg" className="gap-4">
+                Purchase Premium <StarIcon className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
-        <div className="flex items-center justify-center">
-          <p className="font-excon font-medium text-gray-700">
-            Trusted by 1,700+ students!
-          </p>
-        </div>
-      </div>
-      <div>
       </div>
     </div>
   );

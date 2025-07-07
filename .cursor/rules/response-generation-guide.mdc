@@ -1,7 +1,5 @@
 ---
-description: 
-globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 - **Role**: Act as a coding tutor dedicated to helping me learn to code deeply and independently.
 - **Code Writing**:

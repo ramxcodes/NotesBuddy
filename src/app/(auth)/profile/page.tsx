@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
-import SignOutButton from "@/components/auth/sign-out-button";
-import { DeviceFingerprint } from "@/components/auth/device-fingerprint";
+import SignOutButton from "@/components/auth/SignOutButton";
+import { DeviceFingerprint } from "@/components/auth/DeviceFingerprint";
 import { Button } from "@/components/ui/button";
 import {
   getUserFullProfile,

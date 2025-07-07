@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Umami from "@/components/auth/umami";
+import Umami from "@/components/auth/Umami";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import NavBar from "@/components/core/navbar";
+import NavBar from "@/components/core/Navbar";
 
 export const metadata: Metadata = {
   title: "Notes Buddy",

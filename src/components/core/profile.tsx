@@ -10,8 +10,8 @@ import {
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { ThemeToggle } from "../ui/theme-toggle";
-import LogOutButton from "../auth/log-out-button";
-import { SignInButton } from "../auth/sign-in-button";
+import LogOutButton from "../auth/LogOutButton";
+import { SignInButton } from "../auth/SignInButton";
 
 export default async function Profile() {
   const session = await getSession();

@@ -1,4 +1,4 @@
-import { OnboardingForm } from "@/components/auth/onboarding/onboarding-form";
+import { OnboardingForm } from "@/components/auth/onboarding/OnboardingForm";
 import { getUserOnboardingStatus } from "@/dal/user/onboarding/query";
 import { getSession } from "@/lib/db/user";
 import { Metadata } from "next";

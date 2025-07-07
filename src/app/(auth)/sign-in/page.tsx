@@ -1,4 +1,4 @@
-import { SignInButton } from "@/components/auth/sign-in-button";
+import { SignInButton } from "@/components/auth/SignInButton";
 import { auth } from "@/lib/auth/auth";
 import { Metadata } from "next";
 import { headers } from "next/headers";

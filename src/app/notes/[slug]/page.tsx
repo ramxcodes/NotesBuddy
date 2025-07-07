@@ -1,10 +1,11 @@
 import { notFound, redirect } from "next/navigation";
 import { PortableText } from "@portabletext/react";
-import TableOfContent from "@/components/note/table-of-content";
-import { myPortableTextComponents } from "@/components/note/custom-components/portableText-components";
+import TableOfContent from "@/components/note/TableOfContent";
+import { myPortableTextComponents } from "@/components/note/custom-components/PortableTextComponent";
 import { checkUserBlockedStatus, getSession } from "@/lib/db/user";
 import type { Metadata } from "next";
 import { getNoteBySlug } from "@/dal/note/helper";
+import Container from "@/components/core/Container";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -47,21 +48,23 @@ export default async function NotePage({
   const markdown = note.content || "";
 
   return (
-    <div className="max-w-6xl mx-auto mt-10">
-      <h1 className="text-3xl font-bold">{note.title}</h1>
-      <p className="text-sm text-gray-500">{note.syllabus}</p>
-      <p className="text-sm text-gray-500">{note.university}</p>
-      <TableOfContent headings={note.headings} />
-      {markdown ? (
-        <article className="prose prose-gray max-w-none my-8">
-          <PortableText
-            value={note.content || []}
-            components={myPortableTextComponents}
-          />
-        </article>
-      ) : (
-        <p className="text-sm text-gray-500 mt-8">No content available</p>
-      )}
-    </div>
+    <Container>
+      <div className="mx-auto mt-10 max-w-6xl">
+        <h1 className="text-3xl font-bold">{note.title}</h1>
+        <p className="text-sm text-gray-500">{note.syllabus}</p>
+        <p className="text-sm text-gray-500">{note.university}</p>
+        <TableOfContent headings={note.headings} />
+        {markdown ? (
+          <article className="prose prose-gray my-8 max-w-none">
+            <PortableText
+              value={note.content || []}
+              components={myPortableTextComponents}
+            />
+          </article>
+        ) : (
+          <p className="mt-8 text-sm text-gray-500">No content available</p>
+        )}
+      </div>
+    </Container>
   );
 }

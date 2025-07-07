@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import Profile from "./profile";
+import Profile from "./Profile";
 import {
   Tooltip,
   TooltipContent,

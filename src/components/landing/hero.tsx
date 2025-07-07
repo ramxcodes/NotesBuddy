@@ -35,7 +35,7 @@ export default function Hero() {
           All Your Study <br /> with{" "}
           <span className="font-ranade font-medium tracking-tighter">Notes Buddy</span>
         </h1>
-        <p className="font-ranade mx-auto max-w-2xl text-center text-lg text-gray-600 md:text-xl">
+        <p className="font-ranade mx-auto max-w-2xl text-center text-lg text-secondary md:text-xl">
           Get your notes, one-shots, PYQs, Quizzes and more.
         </p>
       </div>

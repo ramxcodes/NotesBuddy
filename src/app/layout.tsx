@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "easymde/dist/easymde.min.css";
 import Umami from "@/components/auth/umami";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import NavBar from "@/components/core/navbar";

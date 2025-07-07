@@ -140,6 +140,11 @@ model DeviceFingerprint {
   lastUsedAt   DateTime
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
+
+  @@index([userId, isActive], name: "device_user_active_idx")
+  @@index([userId, lastUsedAt], name: "device_user_lastused_idx") 
+  @@index([hash], name: "device_hash_idx")
+  @@index([lastUsedAt], name: "device_lastused_idx")
   @@map("device_fingerprint")
 }

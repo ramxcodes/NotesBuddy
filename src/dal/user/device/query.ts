@@ -10,6 +10,7 @@ import {
   SimilarityMetrics,
 } from "@/types/device";
 import { UAParser } from "ua-parser-js";
+import { unstable_cache } from "next/cache";
 
 // FIXED: Issue #5 - Optimized hash generation using binary serialization
 function createOptimizedHash(data: Record<string, unknown>): string {
@@ -456,9 +457,16 @@ export async function createDeviceFingerprint(
 }
 
 // Standardized to use optimized function
-export async function getUserDevices(userId: string) {
-  return await getActiveUserDevicesOptimized(userId);
-}
+export const getUserDevices = unstable_cache(
+  async (userId: string) => {
+    return await getActiveUserDevicesOptimized(userId);
+  },
+  ["user-devices"],
+  {
+    revalidate: 1800,
+    tags: ["user-devices"],
+  },
+);
 
 // FIXED: Issue #3 - Optimized with single query
 export async function getUserActiveDeviceCount(

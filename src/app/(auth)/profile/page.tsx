@@ -1,24 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
-import SignOutButton from "@/components/auth/SignOutButton";
 import { DeviceFingerprint } from "@/components/auth/DeviceFingerprint";
-import { Button } from "@/components/ui/button";
+import Container from "@/components/core/Container";
 import {
   getUserFullProfile,
   getUserOnboardingStatus,
 } from "@/dal/user/onboarding/query";
 import { getUserDevices } from "@/dal/user/device/query";
-import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
-import { getDisplayName } from "@/lib/user/helper";
 import {
-  DEGREE_OPTIONS,
-  SEMESTER_OPTIONS,
-  UNIVERSITY_OPTIONS,
-  YEAR_OPTIONS,
-} from "@/utils/constant";
+  getUserPremiumStatus,
+  getUserPurchaseHistory,
+} from "@/dal/premium/query";
+import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
 import { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import ProfileClient from "@/components/profile/ProfileClient";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -38,86 +32,103 @@ export default async function Profile() {
     redirect("/blocked");
   }
 
-  const isOnboarded = await getUserOnboardingStatus(session?.user?.id || "");
-  const profile = await getUserFullProfile(session?.user?.id || "");
-  const devices = await getUserDevices(session?.user?.id || "");
-  const university = getDisplayName(
-    profile?.university || "",
-    UNIVERSITY_OPTIONS
-  );
-  const degree = getDisplayName(profile?.degree || "", DEGREE_OPTIONS);
-  const year = getDisplayName(profile?.year || "", YEAR_OPTIONS);
-  const semester = getDisplayName(profile?.semester || "", SEMESTER_OPTIONS);
+  // Fetch all necessary data
+  const [isOnboarded, profile, devices, premiumStatus, purchases] =
+    await Promise.all([
+      getUserOnboardingStatus(session.user.id),
+      getUserFullProfile(session.user.id),
+      getUserDevices(session.user.id),
+      getUserPremiumStatus(session.user.id),
+      getUserPurchaseHistory(session.user.id),
+    ]);
 
   return (
     <>
       <DeviceFingerprint />
-      <div className="flex flex-col items-center gap-4 p-8">
-        <img
-          src={session?.user?.image || ""}
-          alt={session.user.name || "User avatar"}
-          className="w-24 h-24 rounded-full"
-        />
+      <div className="bg-background min-h-screen">
+        <Container>
+          <div className="space-y-8 py-8">
+            {/* Header */}
+            <div className="space-y-4 text-center">
+              <h1 className="font-excon text-4xl font-black md:text-5xl">
+                Your Profile
+              </h1>
+              <p className="text-muted-foreground font-satoshi mx-auto max-w-2xl text-lg">
+                Manage your account settings, premium status, and devices all in
+                one place.
+              </p>
+            </div>
 
-        <div className="text-center">
-          <h2 className="text-2xl font-bold">{session.user.name}</h2>
-          <p className="text-gray-600">{session.user.email}</p>
-          {session.user.emailVerified && (
-            <span className="text-sm text-green-600">✓ Email verified</span>
-          )}
-        </div>
-
-        {!isOnboarded.isOnboarded ? (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold">Profile</h2>
-            <p className="text-gray-600">
-              Please complete your profile to continue
-            </p>
-            <Link href="/onboarding">
-              <Button>Complete Profile</Button>
-            </Link>
+            {/* Main Content */}
+            <div className="mx-auto max-w-6xl">
+              <ProfileClient
+                session={{
+                  user: {
+                    id: session.user.id,
+                    name: session.user.name,
+                    email: session.user.email,
+                    image: session.user.image,
+                    emailVerified: session.user.emailVerified
+                      ? new Date(
+                          session.user.emailVerified as unknown as
+                            | string
+                            | number
+                            | Date,
+                        )
+                      : null,
+                  },
+                }}
+                isOnboarded={{ isOnboarded: isOnboarded?.isOnboarded ?? false }}
+                profile={profile}
+                premiumStatus={{
+                  ...premiumStatus,
+                  expiryDate: premiumStatus.expiryDate
+                    ? new Date(premiumStatus.expiryDate)
+                    : null,
+                }}
+                purchases={purchases.map((purchase) => ({
+                  id: purchase.id,
+                  tier: purchase.tier,
+                  originalAmount: Number(purchase.originalAmount),
+                  finalAmount: Number(purchase.finalAmount),
+                  discountAmount: Number(purchase.discountAmount),
+                  currency: purchase.currency,
+                  paymentStatus: purchase.paymentStatus,
+                  isActive: purchase.isActive,
+                  createdAt: new Date(purchase.createdAt),
+                  expiryDate: new Date(purchase.expiryDate),
+                  razorpayOrderId: purchase.razorpayOrderId || "",
+                  razorpayPaymentId: purchase.razorpayPaymentId,
+                  paymentMethod: purchase.paymentMethod,
+                  failureReason: purchase.failureReason,
+                  discountCode: purchase.discountCode,
+                  referralCode: purchase.referralCode,
+                }))}
+                devices={devices.map((device) => {
+                  const fingerprint = device.fingerprint as Record<
+                    string,
+                    unknown
+                  >;
+                  return {
+                    id: device.id,
+                    deviceLabel: device.deviceLabel || "Unknown Device",
+                    lastUsedAt: new Date(device.lastUsedAt),
+                    fingerprint: {
+                      userAgent: fingerprint?.userAgent as string | undefined,
+                      platform: fingerprint?.platform as string | undefined,
+                      vendor: fingerprint?.vendor as string | undefined,
+                      language: fingerprint?.language as string | undefined,
+                      timezone: fingerprint?.timezone as string | undefined,
+                      screenResolution: fingerprint?.screenResolution as
+                        | string
+                        | undefined,
+                    },
+                  };
+                })}
+              />
+            </div>
           </div>
-        ) : (
-          <div className="text-center">
-            <h2 className="text-2xl font-bold">Profile</h2>
-            <p className="text-gray-600">Your profile is complete</p>
-            <p className="text-gray-600">
-              {profile?.firstName} {profile?.lastName}
-            </p>
-            <p className="text-gray-600">{profile?.phoneNumber}</p>
-            <p className="text-gray-600">{university}</p>
-            <p className="text-gray-600">{degree}</p>
-            <p className="text-gray-600">{year}</p>
-            <p className="text-gray-600">{semester}</p>
-          </div>
-        )}
-
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">Active Devices</h3>
-          <div className="space-y-2">
-            {devices.length > 0 ? (
-              devices.map((device) => (
-                <div
-                  key={device.id}
-                  className="bg-gray-100 dark:bg-gray-700 p-3 rounded"
-                >
-                  <p className="font-medium">{device.deviceLabel}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    Last used:{" "}
-                    {new Date(device.lastUsedAt).toLocaleDateString()}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {(device.fingerprint as any)?.userAgent || "Unknown device"}
-                  </p>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500">No devices found</p>
-            )}
-          </div>
-        </div>
-
-        <SignOutButton />
+        </Container>
       </div>
     </>
   );

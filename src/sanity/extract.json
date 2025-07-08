@@ -177,15 +177,15 @@
           "of": [
             {
               "type": "string",
-              "value": "tier1"
+              "value": "TIER_1"
             },
             {
               "type": "string",
-              "value": "tier2"
+              "value": "TIER_2"
             },
             {
               "type": "string",
-              "value": "tier3"
+              "value": "TIER_3"
             }
           ]
         },

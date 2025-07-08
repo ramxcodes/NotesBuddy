@@ -1,0 +1,198 @@
+"use client";
+
+import { useState } from "react";
+import SignOutButton from "@/components/auth/SignOutButton";
+import { ProfileInfo } from "@/components/profile/ProfileInfo";
+import { ProfileEdit } from "@/components/profile/ProfileEdit";
+import { PremiumStatus } from "@/components/profile/PremiumStatus";
+import { PremiumHistory } from "@/components/profile/PremiumHistory";
+import { DeviceManagement } from "@/components/profile/DeviceManagement";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  UserIcon,
+  CrownIcon,
+  ReceiptIcon,
+  DeviceTabletIcon,
+  SignOutIcon,
+} from "@phosphor-icons/react";
+import { OnboardingFormData } from "@/dal/user/onboarding/types";
+import { handleProfileUpdate } from "@/app/(auth)/profile/actions";
+
+interface ProfileClientProps {
+  session: {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      emailVerified?: Date | null;
+    };
+  };
+  isOnboarded: { isOnboarded: boolean };
+  profile: {
+    firstName?: string | null;
+    lastName?: string | null;
+    phoneNumber?: string | null;
+    university?: string | null;
+    degree?: string | null;
+    year?: string | null;
+    semester?: string | null;
+    createdAt?: Date | null;
+  } | null;
+  premiumStatus: {
+    isActive: boolean;
+    tier: "TIER_1" | "TIER_2" | "TIER_3" | null;
+    expiryDate: Date | string | null;
+    daysRemaining: number | null;
+  };
+  purchases: Array<{
+    id: string;
+    tier: "TIER_1" | "TIER_2" | "TIER_3";
+    originalAmount: number;
+    finalAmount: number;
+    discountAmount: number;
+    currency: string;
+    paymentStatus: string;
+    isActive: boolean;
+    createdAt: Date | string;
+    expiryDate: Date | string;
+    razorpayOrderId: string;
+    razorpayPaymentId?: string | null;
+    paymentMethod?: string | null;
+    failureReason?: string | null;
+    discountCode?: string | null;
+    referralCode?: string | null;
+  }>;
+  devices: Array<{
+    id: string;
+    deviceLabel: string;
+    lastUsedAt: Date | string;
+    fingerprint: {
+      userAgent?: string;
+      platform?: string;
+      vendor?: string;
+      language?: string;
+      timezone?: string;
+      screenResolution?: string;
+    };
+  }>;
+}
+
+export default function ProfileClient({
+  session,
+  isOnboarded,
+  profile,
+  premiumStatus,
+  purchases,
+  devices,
+}: ProfileClientProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState("profile");
+
+  const handleEditProfile = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
+  const handleSaveProfile = async (data: OnboardingFormData) => {
+    try {
+      await handleProfileUpdate(data);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+      throw error;
+    }
+  };
+
+  return (
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <TabsList className="grid h-auto w-full grid-cols-2 p-1 md:grid-cols-4 lg:grid-cols-5">
+        <TabsTrigger
+          value="profile"
+          className="data-[state=active]:bg-background gap-2"
+        >
+          <UserIcon className="h-4 w-4" />
+          <span className="hidden sm:inline">Profile</span>
+        </TabsTrigger>
+        <TabsTrigger
+          value="premium"
+          className="data-[state=active]:bg-background gap-2"
+        >
+          <CrownIcon className="h-4 w-4" />
+          <span className="hidden sm:inline">Premium</span>
+        </TabsTrigger>
+        <TabsTrigger
+          value="history"
+          className="data-[state=active]:bg-background gap-2"
+        >
+          <ReceiptIcon className="h-4 w-4" />
+          <span className="hidden sm:inline">History</span>
+        </TabsTrigger>
+        <TabsTrigger
+          value="devices"
+          className="data-[state=active]:bg-background gap-2"
+        >
+          <DeviceTabletIcon className="h-4 w-4" />
+          <span className="hidden sm:inline">Devices</span>
+        </TabsTrigger>
+        <TabsTrigger
+          value="settings"
+          className="data-[state=active]:bg-background gap-2"
+        >
+          <SignOutIcon className="h-4 w-4" />
+          <span className="hidden sm:inline">Settings</span>
+        </TabsTrigger>
+      </TabsList>
+
+      <div className="mt-8">
+        <TabsContent value="profile" className="space-y-6">
+          {isEditing ? (
+            <ProfileEdit
+              profile={profile || {}}
+              onSave={handleSaveProfile}
+              onCancel={handleCancelEdit}
+            />
+          ) : (
+            <ProfileInfo
+              profile={profile || {}}
+              session={session.user}
+              isOnboarded={isOnboarded.isOnboarded}
+              onEditClick={handleEditProfile}
+            />
+          )}
+        </TabsContent>
+
+        <TabsContent value="premium">
+          <PremiumStatus premiumStatus={premiumStatus} />
+        </TabsContent>
+
+        <TabsContent value="history">
+          <PremiumHistory purchases={purchases} />
+        </TabsContent>
+
+        <TabsContent value="devices">
+          <DeviceManagement devices={devices} />
+        </TabsContent>
+
+        <TabsContent value="settings" className="space-y-6">
+          <div className="max-w-2xl">
+            <div className="bg-card space-y-4 rounded-lg border p-6">
+              <h3 className="font-excon text-xl font-semibold">
+                Account Settings
+              </h3>
+              <p className="text-muted-foreground font-satoshi">
+                Manage your account preferences and security settings.
+              </p>
+              <div className="pt-4">
+                <SignOutButton />
+              </div>
+            </div>
+          </div>
+        </TabsContent>
+      </div>
+    </Tabs>
+  );
+}

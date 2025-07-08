@@ -23,6 +23,7 @@ export const NOTE_BY_SLUG_QUERY = defineQuery(`
   year,
   semester,
   subject,
+  tier,
   "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],
   content,
   slug

@@ -6,6 +6,9 @@ import { checkUserBlockedStatus, getSession } from "@/lib/db/user";
 import type { Metadata } from "next";
 import { getNoteBySlug } from "@/dal/note/helper";
 import Container from "@/components/core/Container";
+import { checkUserAccessToContent } from "@/dal/premium/query";
+import { PremiumTier } from "@prisma/client";
+import AccessDenied from "@/components/note/AccessDenied";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -43,6 +46,25 @@ export default async function NotePage({
 
   if (!note) {
     notFound();
+  }
+
+  // Check user access to content with detailed status
+  const accessStatus = await checkUserAccessToContent(
+    session.user.id,
+    note.tier as PremiumTier,
+    note.university,
+    note.degree,
+    note.year,
+    note.semester,
+  );
+
+  // If user cannot access content, show access denied page
+  if (!accessStatus.canAccess) {
+    return (
+      <Container>
+        <AccessDenied accessStatus={accessStatus} />
+      </Container>
+    );
   }
 
   const markdown = note.content || "";

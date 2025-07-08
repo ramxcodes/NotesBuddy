@@ -1,26 +1,34 @@
 import prisma from "@/lib/db/prisma";
 import { OnboardingFormData } from "./types";
+import { unstable_cache } from "next/cache";
 
 // Check if user completed onboarding
-export async function getUserOnboardingStatus(userId: string) {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      isOnboarded: true,
-    },
-  });
+export const getUserOnboardingStatus = unstable_cache(
+  async (userId: string) => {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        isOnboarded: true,
+      },
+    });
 
-  return {
-    isOnboarded: user?.isOnboarded,
-  };
-}
+    return {
+      isOnboarded: user?.isOnboarded,
+    };
+  },
+  ["user-onboarding-status"],
+  {
+    revalidate: 1800,
+    tags: ["user-onboarding"],
+  },
+);
 
 // Create the detailed user profile
 export async function createUserProfile(
   userId: string,
-  data: OnboardingFormData
+  data: OnboardingFormData,
 ) {
   const profile = await prisma.userProfile.create({
     data: {
@@ -41,7 +49,7 @@ export async function createUserProfile(
 // Mark user as completed onboarding
 export async function updateUserOnboardingStatus(
   userId: string,
-  isOnboarded: boolean
+  isOnboarded: boolean,
 ) {
   await prisma.user.update({
     where: { id: userId },
@@ -52,7 +60,8 @@ export async function updateUserOnboardingStatus(
 }
 
 // Get user profile
-export async function getUserFullProfile(userId: string) {
+export const getUserFullProfile = unstable_cache(
+  async (userId: string) => {
   const profile = await prisma.userProfile.findUnique({
     where: { userId },
     select: {
@@ -64,6 +73,33 @@ export async function getUserFullProfile(userId: string) {
       year: true,
       semester: true,
       createdAt: true,
+    },
+  });
+
+  return profile;
+},
+  ["user-full-profile"],
+  {
+    revalidate: 1800,
+    tags: ["user-full-profile"],
+  },
+);
+
+// Update user profile
+export async function updateUserProfile(
+  userId: string,
+  data: OnboardingFormData,
+) {
+  const profile = await prisma.userProfile.update({
+    where: { userId },
+    data: {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phoneNumber: data.phoneNumber,
+      university: data.university,
+      degree: data.degree,
+      year: data.year,
+      semester: data.semester,
     },
   });
 

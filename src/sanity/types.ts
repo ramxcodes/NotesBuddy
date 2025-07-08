@@ -36,7 +36,7 @@ export type Note = {
     | "8th-semester";
   subject?: string;
   isPremium?: boolean;
-  tier?: "tier1" | "tier2" | "tier3";
+  tier?: "TIER_1" | "TIER_2" | "TIER_3";
   content?: Array<
     | {
         children?: Array<{
@@ -245,7 +245,7 @@ export type NOTES_QUERYResult = Array<
     }
 >;
 // Variable: NOTE_BY_SLUG_QUERY
-// Query: *[_type == "note" && slug.current == $slug][0]{ _id,  title,  syllabus,  university,  degree,  year,  semester,  subject,  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],  content,  slug}
+// Query: *[_type == "note" && slug.current == $slug][0]{ _id,  title,  syllabus,  university,  degree,  year,  semester,  subject,  tier,  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],  content,  slug}
 export type NOTE_BY_SLUG_QUERYResult = {
   _id: string;
   title: string | null;
@@ -264,6 +264,7 @@ export type NOTE_BY_SLUG_QUERYResult = {
     | "8th-semester"
     | null;
   subject: string | null;
+  tier: "TIER_1" | "TIER_2" | "TIER_3" | null;
   headings: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -321,6 +322,6 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "note" && defined(slug.current) && !defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search ] | order(_createdAt desc) {\n  _id,\n  title,\n  syllabus,\n  slug,\n  university,\n  degree,\n  year,\n  semester,\n  subject\n}': NOTES_QUERYResult;
-    '\n*[_type == "note" && slug.current == $slug][0]{\n _id,\n  title,\n  syllabus,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],\n  content,\n  slug\n}  \n': NOTE_BY_SLUG_QUERYResult;
+    '\n*[_type == "note" && slug.current == $slug][0]{\n _id,\n  title,\n  syllabus,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  tier,\n  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],\n  content,\n  slug\n}  \n': NOTE_BY_SLUG_QUERYResult;
   }
 }

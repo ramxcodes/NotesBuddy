@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 import { getSession } from "@/lib/db/user";
 import {
   createUserProfile,
@@ -9,13 +10,10 @@ import {
 import { onboardingFormSchema } from "@/dal/user/onboarding/types";
 
 export async function handleOnboarding(formData: FormData) {
-
-
   const session = await getSession();
   if (!session?.user?.id) {
     throw new Error("Unauthorized");
   }
-
 
   const rawData = {
     firstName: formData.get("firstName") as string,
@@ -26,7 +24,6 @@ export async function handleOnboarding(formData: FormData) {
     year: formData.get("year") as string,
     semester: formData.get("semester") as string,
   };
-
 
   const validationResult = onboardingFormSchema.safeParse(rawData);
 
@@ -41,6 +38,8 @@ export async function handleOnboarding(formData: FormData) {
 
     await updateUserOnboardingStatus(session.user.id, true);
 
+    revalidateTag("user-onboarding");
+    revalidateTag("user-full-profile");
   } catch (error) {
     throw new Error("Failed to complete onboarding: " + error);
   }

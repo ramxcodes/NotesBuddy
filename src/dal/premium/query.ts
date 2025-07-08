@@ -13,6 +13,7 @@ import {
   convertPrismaValueToDisplayFormat,
 } from "@/utils/value-convert";
 import { unstable_cache } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 // Get user's current premium status
 export const getUserPremiumStatus = unstable_cache(
@@ -297,6 +298,10 @@ export async function updatePurchasePaymentStatus(
         isPremiumActive: true,
       },
     });
+
+    // Revalidate premium-related caches
+    revalidateTag("user-premium-status");
+    revalidateTag("user-purchase-history");
 
     // Process referral rewards if applicable
     if (purchase.referredByUserId) {

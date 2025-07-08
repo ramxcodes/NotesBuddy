@@ -48,23 +48,23 @@ export default async function NotePage({
     notFound();
   }
 
-  // Check user access to content with detailed status
-  const accessStatus = await checkUserAccessToContent(
-    session.user.id,
-    note.tier as PremiumTier,
-    note.university,
-    note.degree,
-    note.year,
-    note.semester,
-  );
-
-  // If user cannot access content, show access denied page
-  if (!accessStatus.canAccess) {
-    return (
-      <Container>
-        <AccessDenied accessStatus={accessStatus} />
-      </Container>
+  if (note.isPremium) {
+    const accessStatus = await checkUserAccessToContent(
+      session.user.id,
+      note.tier as PremiumTier,
+      note.university,
+      note.degree,
+      note.year,
+      note.semester,
     );
+    // If user cannot access content, show access denied page
+    if (!accessStatus.canAccess) {
+      return (
+        <Container>
+          <AccessDenied accessStatus={accessStatus} />
+        </Container>
+      );
+    }
   }
 
   const markdown = note.content || "";
@@ -74,10 +74,15 @@ export default async function NotePage({
       <div className="mx-auto mt-10 max-w-6xl">
         <h1 className="text-3xl font-bold">{note.title}</h1>
         <p className="text-sm text-gray-500">{note.syllabus}</p>
-        <p className="text-sm text-gray-500">{note.university}</p>
+        <div className="flex items-center gap-2 mt-2">
+          <p className="text-sm text-gray-500">{note.university}</p>
+          <p className="text-sm text-gray-500">{note.degree}</p>
+          <p className="text-sm text-gray-500">{note.year}</p>
+          <p className="text-sm text-gray-500">{note.semester}</p>
+        </div>
         <TableOfContent headings={note.headings} />
         {markdown ? (
-          <article className="prose prose-gray my-8 max-w-none">
+          <article className="prose dark:prose-invert my-8 max-w-none">
             <PortableText
               value={note.content || []}
               components={myPortableTextComponents}

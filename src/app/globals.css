@@ -146,11 +146,9 @@
   }
 }
 
-
 .text-secondary {
   @apply text-[#909092] dark:text-[#909092];
 }
-
 
 /* FONTS */
 
@@ -164,4 +162,25 @@
 
 .font-satoshi {
   font-family: "Satoshi", sans-serif;
+}
+
+@layer notes {
+  .note-h1 {
+    @apply mb-3 text-4xl font-bold text-[#2C0B8E] dark:text-[#E6B3FF];
+  }
+  .note-h2 {
+    @apply mb-3 text-3xl font-bold text-[#320e9f] dark:text-[#d1a2e9];
+  }
+  .note-h3 {
+    @apply mb-3 text-2xl font-bold text-[#320e9f] dark:text-[#d1a2e9];
+  }
+  .note-h4 {
+    @apply mb-3 text-xl font-bold text-[#3912b0] dark:text-[#c993e4];
+  }
+  .note-h5 {
+    @apply mb-3 text-lg font-bold text-[#4116c5] dark:text-[#c489e1];
+  }
+  .note-h6 {
+    @apply mb-3 text-base font-bold text-[#4b1adc] dark:text-[#ac77c7];
+  }
 }

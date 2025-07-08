@@ -19,6 +19,39 @@ export interface SimilarityMetrics {
   languages: number;
 }
 
+// Standardized device fingerprint for UI components
+export interface DeviceFingerprint {
+  userAgent?: string;
+  platform?: string;
+  vendor?: string;
+  language?: string;
+  timezone?: string;
+  screenResolution?: string;
+  browserName?: string;
+  screen?: {
+    width: number;
+    height: number;
+    colorDepth: number;
+    pixelDepth?: number;
+  };
+  cookieEnabled?: boolean;
+  hardwareConcurrency?: number;
+  maxTouchPoints?: number;
+  doNotTrack?: string | null;
+  languages?: string;
+  canvasFingerprint?: string;
+}
+
+// Standardized device interface for all UI components
+export interface Device {
+  id: string;
+  deviceLabel: string;
+  lastUsedAt: Date | string;
+  createdAt?: Date | string;
+  isActive?: boolean;
+  fingerprint: DeviceFingerprint;
+}
+
 // Validation schemas
 export const FingerprintSchema = z.object({
   platform: z.string().min(1),

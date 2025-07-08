@@ -210,42 +210,39 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: NOTES_QUERY
-// Query: *[_type == "note" && defined(slug.current) && !defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search ] | order(_createdAt desc) {  _id,  title,  syllabus,  slug,  university,  degree,  year,  semester,  subject}
-export type NOTES_QUERYResult = Array<
-  | {
-      _id: string;
-      title: string | null;
-      syllabus: null;
-      slug: null;
-      university: null;
-      degree: null;
-      year: null;
-      semester: null;
-      subject: null;
-    }
-  | {
-      _id: string;
-      title: string | null;
-      syllabus: string | null;
-      slug: Slug | null;
-      university: "ips" | "medicaps" | null;
-      degree: "btech-cse" | "btech-it" | null;
-      year: "1st-year" | "2nd-year" | "3rd-year" | "4th-year" | null;
-      semester:
-        | "1st-semester"
-        | "2nd-semester"
-        | "3rd-semester"
-        | "4th-semester"
-        | "5th-semester"
-        | "6th-semester"
-        | "7th-semester"
-        | "8th-semester"
-        | null;
-      subject: string | null;
-    }
->;
+// Query: *[_type == "note" && defined(slug.current) &&     (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&    (!defined($university) || university == $university) &&    (!defined($degree) || degree == $degree) &&    (!defined($year) || year == $year) &&    (!defined($semester) || semester == $semester) &&    (!defined($subject) || subject match $subject)  ] | order(_createdAt desc) [$start...$end] {  _id,  title,  syllabus,  slug,  university,  degree,  year,  semester,  subject,  isPremium,  tier}
+export type NOTES_QUERYResult = Array<{
+  _id: string;
+  title: string | null;
+  syllabus: string | null;
+  slug: Slug | null;
+  university: "ips" | "medicaps" | null;
+  degree: "btech-cse" | "btech-it" | null;
+  year: "1st-year" | "2nd-year" | "3rd-year" | "4th-year" | null;
+  semester:
+    | "1st-semester"
+    | "2nd-semester"
+    | "3rd-semester"
+    | "4th-semester"
+    | "5th-semester"
+    | "6th-semester"
+    | "7th-semester"
+    | "8th-semester"
+    | null;
+  subject: string | null;
+  isPremium: boolean | null;
+  tier: "TIER_1" | "TIER_2" | "TIER_3" | null;
+}>;
+// Variable: NOTES_COUNT_QUERY
+// Query: count(*[_type == "note" && defined(slug.current) &&     (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&    (!defined($university) || university == $university) &&    (!defined($degree) || degree == $degree) &&    (!defined($year) || year == $year) &&    (!defined($semester) || semester == $semester) &&    (!defined($subject) || subject match $subject)  ])
+export type NOTES_COUNT_QUERYResult = number;
+// Variable: SUBJECTS_QUERY
+// Query: *[_type == "note" && defined(subject) &&    (!defined($university) || university == $university) &&    (!defined($degree) || degree == $degree) &&    (!defined($year) || year == $year) &&    (!defined($semester) || semester == $semester)  ] {    "subject": subject  } | order(subject asc)
+export type SUBJECTS_QUERYResult = Array<{
+  subject: string | null;
+}>;
 // Variable: NOTE_BY_SLUG_QUERY
-// Query: *[_type == "note" && slug.current == $slug][0]{ _id,  title,  syllabus,  university,  degree,  year,  semester,  subject,  tier,  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],  content,  slug}
+// Query: *[_type == "note" && slug.current == $slug][0]{ _id,  title,  syllabus,  university,  degree,  year,  semester,  subject,  tier,  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],  content,  slug,  isPremium}
 export type NOTE_BY_SLUG_QUERYResult = {
   _id: string;
   title: string | null;
@@ -315,13 +312,16 @@ export type NOTE_BY_SLUG_QUERYResult = {
       }
   > | null;
   slug: Slug | null;
+  isPremium: boolean | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "note" && defined(slug.current) && !defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search ] | order(_createdAt desc) {\n  _id,\n  title,\n  syllabus,\n  slug,\n  university,\n  degree,\n  year,\n  semester,\n  subject\n}': NOTES_QUERYResult;
-    '\n*[_type == "note" && slug.current == $slug][0]{\n _id,\n  title,\n  syllabus,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  tier,\n  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],\n  content,\n  slug\n}  \n': NOTE_BY_SLUG_QUERYResult;
+    '*[_type == "note" && defined(slug.current) && \n    (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&\n    (!defined($university) || university == $university) &&\n    (!defined($degree) || degree == $degree) &&\n    (!defined($year) || year == $year) &&\n    (!defined($semester) || semester == $semester) &&\n    (!defined($subject) || subject match $subject)\n  ] | order(_createdAt desc) [$start...$end] {\n  _id,\n  title,\n  syllabus,\n  slug,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  isPremium,\n  tier\n}': NOTES_QUERYResult;
+    'count(*[_type == "note" && defined(slug.current) && \n    (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&\n    (!defined($university) || university == $university) &&\n    (!defined($degree) || degree == $degree) &&\n    (!defined($year) || year == $year) &&\n    (!defined($semester) || semester == $semester) &&\n    (!defined($subject) || subject match $subject)\n  ])': NOTES_COUNT_QUERYResult;
+    '\n  *[_type == "note" && defined(subject) &&\n    (!defined($university) || university == $university) &&\n    (!defined($degree) || degree == $degree) &&\n    (!defined($year) || year == $year) &&\n    (!defined($semester) || semester == $semester)\n  ] {\n    "subject": subject\n  } | order(subject asc)\n': SUBJECTS_QUERYResult;
+    '\n*[_type == "note" && slug.current == $slug][0]{\n _id,\n  title,\n  syllabus,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  tier,\n  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],\n  content,\n  slug,\n  isPremium\n}  \n': NOTE_BY_SLUG_QUERYResult;
   }
 }

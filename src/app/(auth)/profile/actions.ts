@@ -6,7 +6,7 @@ import {
   onboardingFormSchema,
   type OnboardingFormData,
 } from "@/dal/user/onboarding/types";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function handleProfileUpdate(data: OnboardingFormData) {
   const session = await getSession();
@@ -25,8 +25,10 @@ export async function handleProfileUpdate(data: OnboardingFormData) {
   try {
     await updateUserProfile(session.user.id, validData);
 
-    // Revalidate the profile page to show updated data
     revalidatePath("/profile");
+    revalidateTag("user-full-profile");
+    revalidateTag("user-onboarding");
+    revalidateTag("user-devices");
 
     return { success: true };
   } catch (error) {

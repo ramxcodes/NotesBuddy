@@ -13,17 +13,28 @@ export function DeviceFingerprint() {
 
     const collectDeviceFingerprint = async () => {
       try {
-        // Generate more unique browser identifier
+        // Generate more stable browser identifier
         const getCanvasFingerprint = () => {
           try {
             const canvas = document.createElement("canvas");
+            canvas.width = 200;
+            canvas.height = 50;
             const ctx = canvas.getContext("2d");
             if (!ctx) return "no-canvas";
 
-            ctx.textBaseline = "top";
-            ctx.font = "14px Arial";
-            ctx.fillText("Browser fingerprint test", 2, 2);
-            return canvas.toDataURL().slice(-50);
+            // Use stable text for consistent fingerprinting
+            ctx.textBaseline = "alphabetic";
+            ctx.fillStyle = "#f60";
+            ctx.fillRect(125, 1, 62, 20);
+            ctx.fillStyle = "#069";
+            ctx.font = "11pt Arial";
+            ctx.fillText("Device fingerprint 🔒", 2, 15);
+            ctx.fillStyle = "rgba(102, 204, 0, 0.2)";
+            ctx.font = "18pt Arial";
+            ctx.fillText("Secure device detection", 4, 45);
+
+            // Get a stable subset of the canvas data
+            return canvas.toDataURL().slice(-100);
           } catch {
             return "canvas-error";
           }
@@ -51,7 +62,8 @@ export function DeviceFingerprint() {
             hardwareConcurrency: navigator.hardwareConcurrency || 0,
             maxTouchPoints: navigator.maxTouchPoints || 0,
           },
-          deviceLabel: `${getBrowserName()} on ${navigator.platform} - ${new Date().toLocaleDateString()}`,
+          // Fix: Remove daily timestamp to make deviceLabel stable for same device
+          deviceLabel: `${getBrowserName()} on ${navigator.platform}`,
         };
 
         const result = await updateDeviceFingerprint(deviceData);
@@ -59,7 +71,6 @@ export function DeviceFingerprint() {
         if (result?.success) {
           hasRun.current = true;
         } else {
-
           // Handle specific errors
           if (result?.error?.includes("conflict")) {
             setError("Device registration conflict. Please refresh the page.");
@@ -68,9 +79,7 @@ export function DeviceFingerprint() {
           }
         }
       } catch (e) {
-        setError(
-          "Device registration failed. Please refresh the page. " + e
-        );
+        setError("Device registration failed. Please refresh the page. " + e);
       }
     };
 
@@ -100,11 +109,11 @@ export function DeviceFingerprint() {
   // Show error message if there's an issue
   if (error) {
     return (
-      <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
+      <div className="fixed top-4 right-4 z-50 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
         <p className="text-sm">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="text-xs underline mt-1"
+          className="mt-1 text-xs underline"
         >
           Refresh Page
         </button>

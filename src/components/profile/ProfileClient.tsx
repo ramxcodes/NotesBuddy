@@ -17,6 +17,7 @@ import {
 } from "@phosphor-icons/react";
 import { OnboardingFormData } from "@/dal/user/onboarding/types";
 import { handleProfileUpdate } from "@/app/(auth)/profile/actions";
+import { Device } from "@/types/device";
 
 interface ProfileClientProps {
   session: {
@@ -63,19 +64,7 @@ interface ProfileClientProps {
     discountCode?: string | null;
     referralCode?: string | null;
   }>;
-  devices: Array<{
-    id: string;
-    deviceLabel: string;
-    lastUsedAt: Date | string;
-    fingerprint: {
-      userAgent?: string;
-      platform?: string;
-      vendor?: string;
-      language?: string;
-      timezone?: string;
-      screenResolution?: string;
-    };
-  }>;
+  devices: Device[];
 }
 
 export default function ProfileClient({

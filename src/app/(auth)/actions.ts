@@ -4,9 +4,10 @@ import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
 import { createDeviceFingerprint } from "@/dal/user/device/query";
 import { DeviceFingerprintData } from "@/dal/user/device/types";
 import { redirect } from "next/navigation";
+import { revalidateTag } from "next/cache";
 
 export async function updateDeviceFingerprint(
-  deviceData: DeviceFingerprintData
+  deviceData: DeviceFingerprintData,
 ) {
   const session = await getSession();
 
@@ -22,13 +23,17 @@ export async function updateDeviceFingerprint(
   try {
     // Create device fingerprint with built-in limit checking and security
     await createDeviceFingerprint(session.user.id, deviceData);
+
+    // Invalidate device cache to ensure fresh data appears immediately
+    revalidateTag("user-devices");
+
     return { success: true };
   } catch (error) {
     if (error instanceof Error) {
       if (error.message.includes("Device limit exceeded")) {
         await import("@/dal/user/device/query").then(
           ({ blockUserForTooManyDevices }) =>
-            blockUserForTooManyDevices(session.user.id)
+            blockUserForTooManyDevices(session.user.id),
         );
         redirect("/blocked");
       }

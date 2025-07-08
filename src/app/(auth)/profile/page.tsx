@@ -13,6 +13,7 @@ import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import ProfileClient from "@/components/profile/ProfileClient";
+import { Device } from "@/types/device";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -104,24 +105,61 @@ export default async function Profile() {
                   discountCode: purchase.discountCode,
                   referralCode: purchase.referralCode,
                 }))}
-                devices={devices.map((device) => {
+                devices={devices.map((device): Device => {
                   const fingerprint = device.fingerprint as Record<
                     string,
                     unknown
                   >;
+                  const screen = fingerprint?.screen as {
+                    width: number;
+                    height: number;
+                    colorDepth: number;
+                    pixelDepth: number;
+                  };
+
                   return {
                     id: device.id,
                     deviceLabel: device.deviceLabel || "Unknown Device",
                     lastUsedAt: new Date(device.lastUsedAt),
+                    createdAt: device.createdAt
+                      ? new Date(device.createdAt)
+                      : undefined,
+                    isActive: true,
                     fingerprint: {
                       userAgent: fingerprint?.userAgent as string | undefined,
                       platform: fingerprint?.platform as string | undefined,
                       vendor: fingerprint?.vendor as string | undefined,
                       language: fingerprint?.language as string | undefined,
                       timezone: fingerprint?.timezone as string | undefined,
-                      screenResolution: fingerprint?.screenResolution as
+                      browserName: fingerprint?.browserName as
                         | string
                         | undefined,
+                      cookieEnabled: fingerprint?.cookieEnabled as
+                        | boolean
+                        | undefined,
+                      hardwareConcurrency: fingerprint?.hardwareConcurrency as
+                        | number
+                        | undefined,
+                      maxTouchPoints: fingerprint?.maxTouchPoints as
+                        | number
+                        | undefined,
+                      doNotTrack: fingerprint?.doNotTrack as string | null,
+                      languages: fingerprint?.languages as string | undefined,
+                      canvasFingerprint: fingerprint?.canvasFingerprint as
+                        | string
+                        | undefined,
+                      screen: screen
+                        ? {
+                            width: screen.width,
+                            height: screen.height,
+                            colorDepth: screen.colorDepth,
+                            pixelDepth: screen.pixelDepth,
+                          }
+                        : undefined,
+                      // Calculate screen resolution string for display
+                      screenResolution: screen
+                        ? `${screen.width}x${screen.height}`
+                        : undefined,
                     },
                   };
                 })}

@@ -13,6 +13,21 @@
  */
 
 // Source: schema.json
+export type CustomImage = {
+  _type: "customImage";
+  asset?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+  };
+  media?: unknown;
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt?: string;
+  caption?: string;
+};
+
 export type Note = {
   _id: string;
   _type: "note";
@@ -67,6 +82,9 @@ export type Note = {
     | ({
         _key: string;
       } & Latex)
+    | ({
+        _key: string;
+      } & CustomImage)
   >;
 };
 
@@ -194,6 +212,7 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | CustomImage
   | Note
   | Latex
   | SanityImagePaletteSwatch
@@ -281,6 +300,9 @@ export type NOTE_BY_SLUG_QUERYResult = {
     _key: string;
   }> | null;
   content: Array<
+    | ({
+        _key: string;
+      } & CustomImage)
     | ({
         _key: string;
       } & Latex)

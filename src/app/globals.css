@@ -107,7 +107,7 @@
 }
 
 .dark {
-  --background: oklch(0.031 0 0);
+  --background: oklch(0.1572 0.0039 229.1);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -229,6 +229,24 @@
   }
   .note-a {
     @apply flex items-center gap-1 text-[#101827] underline-offset-4 hover:underline-offset-8 dark:text-[#F3F7F6];
+  }
+
+  /* Image specific styles */
+  .note-image {
+    @apply my-6 rounded-lg shadow-sm transition-shadow duration-200 hover:shadow-md;
+  }
+  
+  .note-image-caption {
+    @apply mt-2 text-center text-sm text-gray-600 italic dark:text-gray-400;
+  }
+
+  /* Ensure images are responsive within the note content */
+  article figure {
+    @apply mx-auto max-w-full;
+  }
+
+  article figure img {
+    @apply w-full h-auto;
   }
 
   /* Font transition for smooth font changes */

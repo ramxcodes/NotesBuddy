@@ -11,7 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "../ui/dialog";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { GoogleLogoIcon } from "@phosphor-icons/react";
 
 export function SignInButton() {
@@ -35,7 +35,7 @@ export function SignInButton() {
             <Button
               onClick={signIn}
               variant="outline"
-              className="flex w-full items-center justify-center gap-2 bg-white text-black hover:cursor-pointer hover:bg-white/90 dark:bg-white dark:text-black dark:hover:bg-white/90 dark:hover:text-black mt-2"
+              className="mt-2 flex w-full items-center justify-center gap-2 bg-white text-black hover:cursor-pointer hover:bg-white/90 dark:bg-white dark:text-black dark:hover:bg-white/90 dark:hover:text-black"
             >
               <GoogleLogoIcon type="duotone" className="size-6" size={20} />
               Sign in with google

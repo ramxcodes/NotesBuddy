@@ -7,6 +7,7 @@ import {
 } from "@portabletext/react";
 import "katex/dist/katex.min.css";
 import { BlockMath } from "react-katex";
+import { ImageComponent } from "./ImageComponent";
 
 type HeadingProps = PortableTextComponentProps<PortableTextBlock>;
 
@@ -131,5 +132,6 @@ export const myPortableTextComponents = {
   },
   types: {
     latex: LaTeXComponent,
+    customImage: ImageComponent,
   },
 };

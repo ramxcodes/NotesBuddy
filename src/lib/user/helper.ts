@@ -11,10 +11,10 @@ export function getDisplayName(
     | typeof UNIVERSITY_OPTIONS
     | typeof DEGREE_OPTIONS
     | typeof YEAR_OPTIONS
-    | typeof SEMESTER_OPTIONS
+    | typeof SEMESTER_OPTIONS,
 ) {
   const option = Object.values(optionsObject).find(
-    (option) => option.prismaValue === prismaValue
+    (option) => option.prismaValue === prismaValue,
   );
   return option?.title || "";
 }

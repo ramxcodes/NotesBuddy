@@ -13,7 +13,7 @@ import {
   YEAR_OPTIONS,
   SEMESTER_OPTIONS,
 } from "@/utils/constant";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export default async function PremiumPage() {
   // Check authentication
@@ -124,7 +124,9 @@ export default async function PremiumPage() {
               {premiumStatus.daysRemaining} days remaining
             </p>
             <p className="mt-1 text-sm text-green-100">
-              Expires on: {premiumStatus.expiryDate && new Date(premiumStatus.expiryDate).toLocaleDateString()}
+              Expires on:{" "}
+              {premiumStatus.expiryDate &&
+                new Date(premiumStatus.expiryDate).toLocaleDateString()}
             </p>
           </div>
         )}

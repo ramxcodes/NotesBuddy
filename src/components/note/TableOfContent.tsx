@@ -196,9 +196,9 @@ export default function TableOfContent({
                           <li key={h3._key}>
                             <button
                               onClick={() => handleClick(h3Text)}
-                              className={`block w-full text-left transition-colors duration-200 hover:text-orange-500 ${
+                              className={`block w-full text-left transition-colors duration-200 hover:text-[#F29707] ${
                                 isActiveH3
-                                  ? "font-medium text-orange-500"
+                                  ? "font-medium text-[#F29707]"
                                   : "text-gray-600 dark:text-gray-400"
                               }`}
                             >

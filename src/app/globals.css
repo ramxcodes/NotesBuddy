@@ -1,7 +1,9 @@
+/* All @import statements must come first */
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
+/* Font faces */
 @font-face {
   font-family: "Excon";
   src: url("/fonts/excon.woff2") format("woff2");
@@ -26,6 +28,7 @@
   font-display: swap;
 }
 
+/* Tailwind configurations */
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -104,7 +107,7 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0.031 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -164,23 +167,81 @@
   font-family: "Satoshi", sans-serif;
 }
 
+.font-poppins {
+  font-family: var(--font-poppins), sans-serif;
+}
+
+.font-lexend {
+  font-family: var(--font-lexend), sans-serif;
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+.font-roboto {
+  font-family: var(--font-roboto), sans-serif;
+}
+
+.font-inter {
+  font-family: var(--font-inter), sans-serif;
+}
+
 @layer notes {
   .note-h1 {
-    @apply mb-3 text-4xl font-bold text-[#2C0B8E] dark:text-[#E6B3FF];
+    @apply text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl dark:text-gray-200;
   }
   .note-h2 {
-    @apply mb-3 text-3xl font-bold text-[#320e9f] dark:text-[#d1a2e9];
+    @apply text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl dark:text-gray-200;
   }
   .note-h3 {
-    @apply mb-3 text-2xl font-bold text-[#320e9f] dark:text-[#d1a2e9];
+    @apply text-lg font-semibold tracking-tight text-gray-900 sm:text-xl dark:text-gray-200;
   }
   .note-h4 {
-    @apply mb-3 text-xl font-bold text-[#3912b0] dark:text-[#c993e4];
+    @apply text-lg font-semibold tracking-tight text-gray-900 sm:text-xl dark:text-gray-200;
   }
   .note-h5 {
-    @apply mb-3 text-lg font-bold text-[#4116c5] dark:text-[#c489e1];
+    @apply text-base font-semibold tracking-tight text-gray-900 sm:text-lg dark:text-gray-200;
   }
   .note-h6 {
-    @apply mb-3 text-base font-bold text-[#4b1adc] dark:text-[#ac77c7];
+    @apply text-sm font-semibold tracking-tight text-gray-900 sm:text-base dark:text-gray-200;
+  }
+  .note-p {
+    @apply text-[#3E4342] dark:text-[#9EA3A2];
+  }
+  .note-span {
+    @apply text-[#3E4342] dark:text-[#9EA3A2];
+  }
+  .note-strong {
+    @apply text-[#171B1A] dark:text-[#F3F7F6];
+  }
+  .note-em {
+    @apply text-[#3E4342] dark:text-[#9EA3A2];
+  }
+  .note-ul {
+    @apply text-[#3E4342] dark:text-[#9EA3A2];
+  }
+  .note-ol {
+    @apply text-[#3E4342] dark:text-[#9EA3A2];
+  }
+  .note-li {
+    @apply text-[#3E4342] dark:text-[#9EA3A2];
+  }
+  .note-a {
+    @apply flex items-center gap-1 text-[#101827] underline-offset-4 hover:underline-offset-8 dark:text-[#F3F7F6];
+  }
+
+  /* Font transition for smooth font changes */
+  article {
+    transition:
+      font-family 0.3s ease,
+      font-size 0.3s ease;
+  }
+
+  /* Ensure adequate spacing from font control */
+  @media (min-width: 1024px) {
+    .note-content-wrapper {
+      margin-left: 4rem;
+    }
   }
 }

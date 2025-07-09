@@ -9,6 +9,10 @@ import Container from "@/components/core/Container";
 import { checkUserAccessToContent } from "@/dal/premium/query";
 import { PremiumTier } from "@prisma/client";
 import AccessDenied from "@/components/note/AccessDenied";
+import NoteHeader from "@/components/note/NoteHeader";
+import { Separator } from "@/components/ui/separator";
+import GreetUser from "@/components/note/GreetUser";
+import NotesFontControl from "@/components/note/NotesFontControl";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -71,35 +75,21 @@ export default async function NotePage({
 
   return (
     <div className="relative w-full">
-      <div className="flex pt-10">
-        {/* Main content - centered */}
+      {/* Font Control - Fixed position on the left */}
+      <NotesFontControl />
+
+      <div className="note-content-wrapper flex pt-10">
         <div className="flex flex-1 justify-center">
           <div className="w-full max-w-3xl px-4 sm:px-6">
-            <header className="mb-8">
-              <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-                {note.title}
-              </h1>
-              <p className="mb-3 text-lg text-gray-600 dark:text-gray-400">
-                {note.syllabus}
-              </p>
-              <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-                <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 dark:bg-gray-800">
-                  {note.university}
-                </span>
-                <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 dark:bg-gray-800">
-                  {note.degree}
-                </span>
-                <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 dark:bg-gray-800">
-                  {note.year}
-                </span>
-                <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 dark:bg-gray-800">
-                  {note.semester}
-                </span>
-              </div>
-            </header>
-
+            <NoteHeader note={note} />
+            <Separator className="my-8" />
+            <GreetUser
+              name={session.user.name}
+              image={session.user.image || null}
+              email={session.user.email}
+            />
             {markdown ? (
-              <article className="prose prose-lg dark:prose-invert prose-headings:scroll-mt-8 max-w-none">
+              <article className="prose prose-lg dark:prose-invert prose-headings:scroll-mt-8">
                 <PortableText
                   value={note.content || []}
                   components={myPortableTextComponents}
@@ -114,7 +104,7 @@ export default async function NotePage({
         </div>
 
         {/* Table of Contents - positioned to the right with minimal spacing */}
-        <aside className="hidden w-[16.5rem] fixed top-40 right-0 flex-shrink-0 pr-2 mr-10 lg:block">
+        <aside className="fixed top-40 right-0 mr-10 hidden w-[16.5rem] flex-shrink-0 pr-2 lg:block">
           <TableOfContent headings={note.headings} />
         </aside>
       </div>

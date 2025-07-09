@@ -9,7 +9,7 @@ import {
   LightningIcon,
 } from "@phosphor-icons/react";
 import { UserPremiumStatus, getTierConfig } from "@/dal/premium/types";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 interface PremiumStatusProps {
   premiumStatus: UserPremiumStatus;

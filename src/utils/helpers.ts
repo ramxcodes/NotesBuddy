@@ -68,6 +68,40 @@ export function sanityToPrismaValue(
   }
 }
 
+export function getDisplayNameFromSanityValue(
+  type: "university" | "degree" | "year" | "semester",
+  sanityValue: string,
+) {
+  switch (type) {
+    case "university":
+      return (
+        Object.values(UNIVERSITY_OPTIONS).find(
+          (option) => option.sanityValue === sanityValue,
+        )?.title || sanityValue
+      );
+    case "degree":
+      return (
+        Object.values(DEGREE_OPTIONS).find(
+          (option) => option.sanityValue === sanityValue,
+        )?.title || sanityValue
+      );
+    case "year":
+      return (
+        Object.values(YEAR_OPTIONS).find(
+          (option) => option.sanityValue === sanityValue,
+        )?.title || sanityValue
+      );
+    case "semester":
+      return (
+        Object.values(SEMESTER_OPTIONS).find(
+          (option) => option.sanityValue === sanityValue,
+        )?.title || sanityValue
+      );
+    default:
+      return sanityValue;
+  }
+}
+
 // Get default filter values (first option for each category)
 export function getDefaultFilterValues() {
   const firstUniversity = Object.values(UNIVERSITY_OPTIONS)[0];

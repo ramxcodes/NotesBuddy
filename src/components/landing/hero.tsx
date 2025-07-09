@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRightIcon, BookOpenIcon, StarIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export default function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -30,7 +30,8 @@ export default function Hero() {
         <div className="flex flex-col items-center justify-center gap-8 py-20 lg:py-40">
           <div>
             <Button variant="secondary" size="sm" className="gap-4">
-              Now it is time to study <ArrowRightIcon type="duotone" className="size-4" />
+              Now it is time to study{" "}
+              <ArrowRightIcon type="duotone" className="size-4" />
             </Button>
           </div>
           <div className="flex flex-col gap-4">

@@ -1,7 +1,9 @@
+import { LinkIcon } from "@/components/icons/LinkIcon";
 import { slugify } from "@/utils/helpers";
 import {
   PortableTextComponentProps,
   PortableTextBlock,
+  PortableTextMarkComponentProps,
 } from "@portabletext/react";
 import "katex/dist/katex.min.css";
 import { BlockMath } from "react-katex";
@@ -85,6 +87,45 @@ export const myPortableTextComponents = {
         <h6 id={slugify(text)} className="note-h6">
           {text}
         </h6>
+      );
+    },
+    normal: ({ children }: PortableTextComponentProps<PortableTextBlock>) => {
+      return <p className="note-p">{children}</p>;
+    },
+  },
+  list: {
+    bullet: ({ children }: PortableTextComponentProps<PortableTextBlock>) => {
+      return <ul className="note-ul">{children}</ul>;
+    },
+    number: ({ children }: PortableTextComponentProps<PortableTextBlock>) => {
+      return <ol className="note-ol">{children}</ol>;
+    },
+  },
+  listItem: {
+    bullet: ({ children }: PortableTextComponentProps<PortableTextBlock>) => {
+      return <li className="note-li">{children}</li>;
+    },
+    number: ({ children }: PortableTextComponentProps<PortableTextBlock>) => {
+      return <li className="note-li">{children}</li>;
+    },
+  },
+  marks: {
+    strong: ({ children }: PortableTextMarkComponentProps) => {
+      return <strong className="note-strong">{children}</strong>;
+    },
+    em: ({ children }: PortableTextMarkComponentProps) => {
+      return <em className="note-em">{children}</em>;
+    },
+    link: ({ children, value }: PortableTextMarkComponentProps) => {
+      return (
+        <a
+          href={value?.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="note-a"
+        >
+          {children} <LinkIcon className="inline-block h-4 w-4" />
+        </a>
       );
     },
   },

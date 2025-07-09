@@ -42,6 +42,11 @@ export default async function Profile() {
       getUserPurchaseHistory(session.user.id),
     ]);
 
+  // Check if user completed onboarding
+  if (!isOnboarded.isOnboarded) {
+    redirect("/onboarding");
+  }
+
   return (
     <>
       <div className="bg-background min-h-screen">

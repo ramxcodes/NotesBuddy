@@ -30,15 +30,29 @@ import {
   onboardingFormSchema,
   type OnboardingFormData,
   getUniversityOptions,
-  getDegreeOptions,
-  getYearOptions,
-  getSemesterOptions,
 } from "@/dal/user/onboarding/types";
+import {
+  getDegreesByUniversity,
+  getYearsByUniversityAndDegree,
+  getSemestersByUniversityDegreeAndYear,
+  type AcademicOption,
+} from "@/utils/academic-config";
 import { handleOnboarding } from "@/app/(auth)/onboarding/actions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { UserIcon } from "@/components/icons/UserIcon";
+import { GraduationCapIcon } from "@/components/icons/GraduationCapIcon";
+import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
 
 export function OnboardingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [availableDegrees, setAvailableDegrees] = useState<AcademicOption[]>(
+    [],
+  );
+  const [availableYears, setAvailableYears] = useState<AcademicOption[]>([]);
+  const [availableSemesters, setAvailableSemesters] = useState<
+    AcademicOption[]
+  >([]);
 
   const form = useForm<OnboardingFormData>({
     resolver: zodResolver(onboardingFormSchema),
@@ -53,202 +67,433 @@ export function OnboardingForm() {
     },
   });
 
+  // Watch form values to trigger cascading updates
+  const watchedUniversity = form.watch("university");
+  const watchedDegree = form.watch("degree");
+  const watchedYear = form.watch("year");
+
+  // Update available degrees when university changes
+  useEffect(() => {
+    if (watchedUniversity) {
+      const degrees = getDegreesByUniversity(watchedUniversity);
+      setAvailableDegrees(degrees);
+
+      // Reset dependent fields
+      form.resetField("degree");
+      form.resetField("year");
+      form.resetField("semester");
+      setAvailableYears([]);
+      setAvailableSemesters([]);
+    } else {
+      setAvailableDegrees([]);
+      setAvailableYears([]);
+      setAvailableSemesters([]);
+    }
+  }, [watchedUniversity, form]);
+
+  // Update available years when university or degree changes
+  useEffect(() => {
+    if (watchedUniversity && watchedDegree) {
+      const years = getYearsByUniversityAndDegree(
+        watchedUniversity,
+        watchedDegree,
+      );
+      setAvailableYears(years);
+
+      // Reset dependent fields
+      form.resetField("year");
+      form.resetField("semester");
+      setAvailableSemesters([]);
+    } else {
+      setAvailableYears([]);
+      setAvailableSemesters([]);
+    }
+  }, [watchedUniversity, watchedDegree, form]);
+
+  // Update available semesters when university, degree, or year changes
+  useEffect(() => {
+    if (watchedUniversity && watchedDegree && watchedYear) {
+      const semesters = getSemestersByUniversityDegreeAndYear(
+        watchedUniversity,
+        watchedDegree,
+        watchedYear,
+      );
+      setAvailableSemesters(semesters);
+
+      // Reset semester field
+      form.resetField("semester");
+    } else {
+      setAvailableSemesters([]);
+    }
+  }, [watchedUniversity, watchedDegree, watchedYear, form]);
+
   const onSubmit = async (data: OnboardingFormData) => {
     setIsSubmitting(true);
+    setSubmitError(null);
+
     try {
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
         formData.append(key, value as string);
       });
 
-      await handleOnboarding(formData);
-    } catch {
+      const result = await handleOnboarding(formData);
 
+      if (!result.success) {
+        if (result.fieldErrors) {
+          // Set field-specific errors
+          Object.entries(result.fieldErrors).forEach(([field, errors]) => {
+            if (errors && errors.length > 0) {
+              form.setError(field as keyof OnboardingFormData, {
+                type: "server",
+                message: errors[0],
+              });
+            }
+          });
+        }
+
+        if (result.error) {
+          setSubmitError(result.error);
+        }
+      }
+      // If successful, the action will redirect automatically
+    } catch {
+      setSubmitError("An unexpected error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Complete Your Profile</CardTitle>
-        <CardDescription>
-          Help us personalize your experience by providing some basic
-          information.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-2xl space-y-8">
+        {/* Header Section */}
+        <div className="space-y-4 text-center">
+          <div className="bg-primary/10 mx-auto flex h-16 w-16 items-center justify-center rounded-full">
+            <UserIcon className="text-primary h-8 w-8" />
+          </div>
+          <div className="space-y-2">
+            <h1 className="text-foreground text-3xl font-bold tracking-tight">
+              Complete Your Profile
+            </h1>
+            <p className="text-muted-foreground mx-auto max-w-md text-lg">
+              Help us personalize your experience. If you fill this form, get
+              notes for your semester & also purchase premium notes.
+            </p>
+          </div>
+        </div>
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Personal Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>First Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* Personal Information Card */}
+            <Card className="border-border/40 shadow-sm">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-950/50">
+                    <UserIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg font-semibold">
+                      Personal Information
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Your basic details for account personalization
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          First Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Raj"
+                            {...field}
+                            className="focus:border-primary h-11 transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Last Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          Last Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Kumar"
+                            {...field}
+                            className="focus:border-primary h-11 transition-colors"
+                          />
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium">
+                        Phone Number
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="9876543210"
+                          {...field}
+                          className="focus:border-primary h-11 transition-colors"
+                          type="tel"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+                {submitError && (
+                  <p className="text-red-500 text-xs hidden">{submitError}</p>
                 )}
-              />
+              </CardContent>
+            </Card>
+
+            {/* Academic Information Card */}
+            <Card className="border-border/40 shadow-sm">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-950/50">
+                    <GraduationCapIcon className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg font-semibold">
+                      Academic Information
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      Your university and course details for relevant content
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="university"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          University
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value || ""}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="focus:border-primary h-11 transition-colors">
+                              <SelectValue placeholder="Select university" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {getUniversityOptions().map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="degree"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          Degree
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value || ""}
+                          disabled={
+                            !watchedUniversity || availableDegrees.length === 0
+                          }
+                        >
+                          <FormControl>
+                            <SelectTrigger className="focus:border-primary h-11 transition-colors disabled:opacity-50">
+                              <SelectValue
+                                placeholder={
+                                  !watchedUniversity
+                                    ? "Select university first"
+                                    : availableDegrees.length === 0
+                                      ? "No degrees available"
+                                      : "Select degree"
+                                }
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {availableDegrees.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <FormField
+                    control={form.control}
+                    name="year"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          Year
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value || ""}
+                          disabled={
+                            !watchedUniversity ||
+                            !watchedDegree ||
+                            availableYears.length === 0
+                          }
+                        >
+                          <FormControl>
+                            <SelectTrigger className="focus:border-primary h-11 transition-colors disabled:opacity-50">
+                              <SelectValue
+                                placeholder={
+                                  !watchedUniversity
+                                    ? "Select university first"
+                                    : !watchedDegree
+                                      ? "Select degree first"
+                                      : availableYears.length === 0
+                                        ? "No years available"
+                                        : "Select year"
+                                }
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {availableYears.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="semester"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">
+                          Semester
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value || ""}
+                          disabled={
+                            !watchedUniversity ||
+                            !watchedDegree ||
+                            !watchedYear ||
+                            availableSemesters.length === 0
+                          }
+                        >
+                          <FormControl>
+                            <SelectTrigger className="focus:border-primary h-11 transition-colors disabled:opacity-50">
+                              <SelectValue
+                                placeholder={
+                                  !watchedUniversity
+                                    ? "Select university first"
+                                    : !watchedDegree
+                                      ? "Select degree first"
+                                      : !watchedYear
+                                        ? "Select year first"
+                                        : availableSemesters.length === 0
+                                          ? "No semesters available"
+                                          : "Select semester"
+                                }
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {availableSemesters.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Submit Button */}
+            <div className="flex justify-center pt-4">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="h-12 min-w-[200px] px-8 text-base font-medium transition-all duration-300 hover:shadow-lg disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Creating Profile...
+                  </>
+                ) : (
+                  <>
+                    Complete Onboarding
+                    <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </>
+                )}
+              </Button>
             </div>
-
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <Input placeholder="+91 9876543210" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Academic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="university"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>University</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select university" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {getUniversityOptions().map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="degree"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Degree</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select degree" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {getDegreeOptions().map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="year"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Year</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select year" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {getYearOptions().map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="semester"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Semester</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select semester" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {getSemesterOptions().map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Creating Profile..." : "Complete Onboarding"}
-            </Button>
           </form>
         </Form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

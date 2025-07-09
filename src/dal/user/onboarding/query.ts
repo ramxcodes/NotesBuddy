@@ -1,6 +1,7 @@
 import prisma from "@/lib/db/prisma";
 import { OnboardingFormData } from "./types";
 import { unstable_cache } from "next/cache";
+import { University, Degree, Year, Semester } from "@prisma/client";
 
 // Check if user completed onboarding
 export const getUserOnboardingStatus = unstable_cache(
@@ -36,10 +37,10 @@ export async function createUserProfile(
       firstName: data.firstName,
       lastName: data.lastName,
       phoneNumber: data.phoneNumber,
-      university: data.university,
-      degree: data.degree,
-      year: data.year,
-      semester: data.semester,
+      university: data.university as University,
+      degree: data.degree as Degree,
+      year: data.year as Year,
+      semester: data.semester as Semester,
     },
   });
 
@@ -96,10 +97,10 @@ export async function updateUserProfile(
       firstName: data.firstName,
       lastName: data.lastName,
       phoneNumber: data.phoneNumber,
-      university: data.university,
-      degree: data.degree,
-      year: data.year,
-      semester: data.semester,
+      university: data.university as University,
+      degree: data.degree as Degree,
+      year: data.year as Year,
+      semester: data.semester as Semester,
     },
   });
 

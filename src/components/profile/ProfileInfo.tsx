@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ import {
   UNIVERSITY_OPTIONS,
   YEAR_OPTIONS,
 } from "@/utils/constant";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 interface UserProfileData {
   firstName?: string | null;
@@ -74,14 +74,15 @@ export function ProfileInfo({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6 md:flex-row">
-            {/* Avatar */}
-            <div className="flex-shrink-0">
-              <img
+            <Avatar className="size-24">
+              <AvatarImage
+                className="border-border rounded-full border-2"
                 src={session?.image || ""}
-                alt={session.name || "User avatar"}
-                className="border-border h-24 w-24 rounded-full border-2"
               />
-            </div>
+              <AvatarFallback className="border-border rounded-full border-2">
+                {session.name?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
 
             {/* Basic Info */}
             <div className="flex-1 space-y-4">

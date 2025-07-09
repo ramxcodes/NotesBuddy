@@ -62,10 +62,10 @@ export default async function NotesPage({
   // Prepare filter object
   const filters = {
     search: query,
-    university,
-    degree,
-    year,
-    semester,
+    university: university === "all" ? undefined : university,
+    degree: degree === "all" ? undefined : degree,
+    year: year === "all" ? undefined : year,
+    semester: semester === "all" ? undefined : semester,
     subject: subject === "all" ? undefined : subject,
   };
 

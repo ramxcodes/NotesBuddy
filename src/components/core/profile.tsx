@@ -28,6 +28,8 @@ export default async function Profile() {
     );
   }
 
+  const userFirstName = session.user.name?.split(" ")[0];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -38,7 +40,7 @@ export default async function Profile() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mt-2 mr-4 md:mr-10">
         <DropdownMenuLabel>
-          <p className="font-excon text-sm">Hi, {session.user.name}!</p>
+          <p className="font-excon text-sm">Hi, {userFirstName}!</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <Link className="hover:cursor-pointer" href="/profile">

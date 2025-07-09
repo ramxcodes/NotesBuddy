@@ -32,14 +32,38 @@ interface RegistrationResponse {
   error?: string;
 }
 
+// Local storage keys for persistent state
+const STORAGE_KEY_PREFIX = "device-fingerprint-";
+const getStorageKey = (userId: string, key: string) =>
+  `${STORAGE_KEY_PREFIX}${userId}-${key}`;
+
+const getPersistedState = (userId: string, key: string): boolean => {
+  if (typeof window === "undefined") return false;
+  try {
+    const value = localStorage.getItem(getStorageKey(userId, key));
+    return value === "true";
+  } catch {
+    return false;
+  }
+};
+
+const setPersistedState = (userId: string, key: string, value: boolean) => {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(getStorageKey(userId, key), value.toString());
+  } catch {
+    // Ignore localStorage errors
+  }
+};
+
 export function AutoDeviceFingerprint(): null {
-  const hasRegistered = useRef(false);
   const hasRetried = useRef(false);
+  const currentUserId = useRef<string | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
-    // Only run once per session
-    if (hasRegistered.current || isRegistering) return;
+    // Skip if already processing
+    if (isRegistering) return;
 
     const getCanvasFingerprint = (): string => {
       try {
@@ -77,7 +101,10 @@ export function AutoDeviceFingerprint(): null {
       return "Unknown";
     };
 
-    const registerDeviceFingerprint = async (): Promise<boolean> => {
+    const registerDeviceFingerprint = async (): Promise<{
+      success: boolean;
+      shouldRetry: boolean;
+    }> => {
       try {
         setIsRegistering(true);
 
@@ -117,26 +144,71 @@ export function AutoDeviceFingerprint(): null {
           },
         );
 
+        const userId = currentUserId.current;
+
         if (!response.ok) {
           const errorText = await response.text();
           console.error(
             `Device fingerprinting failed: ${response.status} ${errorText}`,
           );
-          return false;
+
+          // Handle specific error cases that should not be retried
+          if (response.status === 429) {
+            // Device limit exceeded - don't retry
+            console.warn(
+              "Device limit exceeded. Stopping device registration attempts.",
+            );
+            if (userId) setPersistedState(userId, "unrecoverable-error", true);
+            return { success: false, shouldRetry: false };
+          }
+
+          if (response.status === 409) {
+            // Device fingerprint conflict - don't retry
+            console.warn(
+              "Device fingerprint conflict. Stopping device registration attempts.",
+            );
+            if (userId) setPersistedState(userId, "unrecoverable-error", true);
+            return { success: false, shouldRetry: false };
+          }
+
+          if (response.status === 403) {
+            // User blocked or access denied - don't retry
+            console.warn(
+              "User blocked or access denied. Stopping device registration attempts.",
+            );
+            if (userId) setPersistedState(userId, "unrecoverable-error", true);
+            return { success: false, shouldRetry: false };
+          }
+
+          // For other errors (network, 500, etc.), allow retry
+          return { success: false, shouldRetry: true };
         }
 
         const result: RegistrationResponse = await response.json();
 
         if (result.success) {
-          hasRegistered.current = true;
-          return true;
+          if (userId) setPersistedState(userId, "registered", true);
+          console.info("Device registration successful");
+          return { success: true, shouldRetry: false };
         } else {
           console.error("Device fingerprinting failed:", result.error);
-          return false;
+
+          // Check if the error message indicates unrecoverable conditions
+          if (
+            result.error?.includes("Device limit exceeded") ||
+            result.error?.includes("User is blocked") ||
+            result.error?.includes("belongs to another user")
+          ) {
+            if (userId) setPersistedState(userId, "unrecoverable-error", true);
+            return { success: false, shouldRetry: false };
+          }
+
+          return { success: false, shouldRetry: true };
         }
       } catch (error) {
         console.error("Device fingerprinting failed:", error);
-        return false;
+        // Network errors and unexpected errors can be retried
+        return { success: false, shouldRetry: true };
       } finally {
         setIsRegistering(false);
       }
@@ -147,15 +219,24 @@ export function AutoDeviceFingerprint(): null {
         const { data: session } = await authClient.getSession();
 
         if (session?.user) {
-          const success = await registerDeviceFingerprint();
+          const result = await registerDeviceFingerprint();
 
-          // Retry on failure if retries remaining
-          if (!success && retries > 0 && !hasRetried.current) {
+          // Only retry if the operation was not successful and retries are allowed
+          if (
+            !result.success &&
+            result.shouldRetry &&
+            retries > 0 &&
+            !hasRetried.current
+          ) {
             hasRetried.current = true;
             setTimeout(() => {
-              hasRegistered.current = false;
               checkAndRegister(retries - 1);
             }, 3000);
+          } else if (!result.success && !result.shouldRetry) {
+            // Unrecoverable error - stop all attempts
+            console.info(
+              "Device registration stopped due to unrecoverable error.",
+            );
           }
         } else if (retries > 0) {
           // Retry if no session found (OAuth might still be processing)
@@ -171,9 +252,46 @@ export function AutoDeviceFingerprint(): null {
       }
     };
 
-    // Start with longer delay for OAuth flows
+    const initializeDeviceRegistration = async () => {
+      try {
+        const { data: session } = await authClient.getSession();
+
+        if (!session?.user?.id) {
+          return; // No session, nothing to do
+        }
+
+        const userId = session.user.id;
+        currentUserId.current = userId;
+
+        // Check persistent state for this user
+        const persistedRegistered = getPersistedState(userId, "registered");
+        const persistedUnrecoverableError = getPersistedState(
+          userId,
+          "unrecoverable-error",
+        );
+
+        if (persistedRegistered) {
+          console.info("Device already registered for this session");
+          return;
+        }
+
+        if (persistedUnrecoverableError) {
+          console.info(
+            "Device registration previously failed with unrecoverable error",
+          );
+          return;
+        }
+
+        // Proceed with device registration
+        await checkAndRegister();
+      } catch (error) {
+        console.error("Failed to initialize device registration:", error);
+      }
+    };
+
+    // Start with a delay to allow session to be established
     const timer = setTimeout(() => {
-      checkAndRegister();
+      initializeDeviceRegistration();
     }, 2000);
 
     return () => {

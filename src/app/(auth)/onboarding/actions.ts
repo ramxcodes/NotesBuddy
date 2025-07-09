@@ -12,7 +12,10 @@ import { onboardingFormSchema } from "@/dal/user/onboarding/types";
 export async function handleOnboarding(formData: FormData) {
   const session = await getSession();
   if (!session?.user?.id) {
-    throw new Error("Unauthorized");
+    return {
+      success: false,
+      error: "Unauthorized",
+    };
   }
 
   const rawData = {
@@ -28,7 +31,11 @@ export async function handleOnboarding(formData: FormData) {
   const validationResult = onboardingFormSchema.safeParse(rawData);
 
   if (!validationResult.success) {
-    throw new Error("Invalid form data");
+    return {
+      success: false,
+      error: "Invalid form data",
+      fieldErrors: validationResult.error.flatten().fieldErrors,
+    };
   }
 
   const validData = validationResult.data;
@@ -40,8 +47,35 @@ export async function handleOnboarding(formData: FormData) {
 
     revalidateTag("user-onboarding");
     revalidateTag("user-full-profile");
-  } catch (error) {
-    throw new Error("Failed to complete onboarding: " + error);
+  } catch (error: unknown) {
+    // Check if the error is due to unique constraint violation for phone number
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "P2002" &&
+      "meta" in error &&
+      error.meta &&
+      typeof error.meta === "object" &&
+      "target" in error.meta &&
+      Array.isArray(error.meta.target) &&
+      error.meta.target.includes("phoneNumber")
+    ) {
+      return {
+        success: false,
+        error: "Phone number is already in use",
+        fieldErrors: {
+          phoneNumber: [
+            "This phone number is already registered with another account",
+          ],
+        },
+      };
+    }
+
+    return {
+      success: false,
+      error: "Failed to complete onboarding. Please try again.",
+    };
   }
 
   redirect("/profile");

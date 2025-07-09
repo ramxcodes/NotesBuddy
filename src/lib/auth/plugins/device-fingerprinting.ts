@@ -1,6 +1,7 @@
 import { createAuthEndpoint, sessionMiddleware } from "better-auth/api";
 import { createDeviceFingerprint } from "@/dal/user/device/query";
 import { DeviceFingerprintData } from "@/dal/user/device/types";
+import { checkUserBlockedStatus } from "@/lib/db/user";
 import type { BetterAuthPlugin } from "better-auth";
 
 export const deviceFingerprintingPlugin = () => {
@@ -24,6 +25,14 @@ export const deviceFingerprintingPlugin = () => {
           }
 
           try {
+            const isBlocked = await checkUserBlockedStatus(session.user.id);
+            if (isBlocked) {
+              return ctx.json(
+                { success: false, error: "User is blocked" },
+                { status: 403 },
+              );
+            }
+
             // Validate request body
             if (!ctx.body || typeof ctx.body !== "object") {
               return ctx.json(
@@ -67,6 +76,12 @@ export const deviceFingerprintingPlugin = () => {
                 return ctx.json(
                   { success: false, error: "Device fingerprint conflict" },
                   { status: 409 },
+                );
+              }
+              if (error.message.includes("User is blocked")) {
+                return ctx.json(
+                  { success: false, error: "User is blocked" },
+                  { status: 403 },
                 );
               }
             }

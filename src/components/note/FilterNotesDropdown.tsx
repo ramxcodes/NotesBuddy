@@ -10,10 +10,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  getDefaultFilterValues,
   getFilterOptions,
   userProfileToFilterValues,
-} from "@/utils/helpers";
+} from "@/utils/academic-config";
 import { getAvailableSubjects } from "@/dal/note/helper";
 import { useDebounce } from "@/hooks/use-debounce";
 
@@ -59,28 +58,19 @@ export default function FilterNotesDropdown({
     if (isAuthenticated && isOnboarded && userProfile) {
       const profileFilters = userProfileToFilterValues(userProfile);
       return {
-        university:
-          urlUniversity ||
-          profileFilters.university ||
-          getDefaultFilterValues().university,
-        degree:
-          urlDegree || profileFilters.degree || getDefaultFilterValues().degree,
-        year: urlYear || profileFilters.year || getDefaultFilterValues().year,
-        semester:
-          urlSemester ||
-          profileFilters.semester ||
-          getDefaultFilterValues().semester,
+        university: urlUniversity || profileFilters.university || "all",
+        degree: urlDegree || profileFilters.degree || "all",
+        year: urlYear || profileFilters.year || "all",
+        semester: urlSemester || profileFilters.semester || "all",
         subject: urlSubject || "all",
       };
     }
 
-    // Otherwise use default values or URL params
-    const defaults = getDefaultFilterValues();
     return {
-      university: urlUniversity || defaults.university,
-      degree: urlDegree || defaults.degree,
-      year: urlYear || defaults.year,
-      semester: urlSemester || defaults.semester,
+      university: urlUniversity || "all",
+      degree: urlDegree || "all",
+      year: urlYear || "all",
+      semester: urlSemester || "all",
       subject: urlSubject || "all",
     };
   }, [searchParams, isAuthenticated, isOnboarded, userProfile]);
@@ -96,26 +86,26 @@ export default function FilterNotesDropdown({
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
-    // Update URL parameters
-    if (debouncedFilters.university) {
+    // Update URL parameters - only add if not "all"
+    if (debouncedFilters.university && debouncedFilters.university !== "all") {
       params.set("university", debouncedFilters.university);
     } else {
       params.delete("university");
     }
 
-    if (debouncedFilters.degree) {
+    if (debouncedFilters.degree && debouncedFilters.degree !== "all") {
       params.set("degree", debouncedFilters.degree);
     } else {
       params.delete("degree");
     }
 
-    if (debouncedFilters.year) {
+    if (debouncedFilters.year && debouncedFilters.year !== "all") {
       params.set("year", debouncedFilters.year);
     } else {
       params.delete("year");
     }
 
-    if (debouncedFilters.semester) {
+    if (debouncedFilters.semester && debouncedFilters.semester !== "all") {
       params.set("semester", debouncedFilters.semester);
     } else {
       params.delete("semester");
@@ -143,16 +133,18 @@ export default function FilterNotesDropdown({
       setIsLoadingSubjects(true);
       try {
         const subjectData = await getAvailableSubjects({
-          university: filters.university,
-          degree: filters.degree,
-          year: filters.year,
-          semester: filters.semester,
+          university:
+            filters.university === "all" ? undefined : filters.university,
+          degree: filters.degree === "all" ? undefined : filters.degree,
+          year: filters.year === "all" ? undefined : filters.year,
+          semester: filters.semester === "all" ? undefined : filters.semester,
         });
 
-        // Remove duplicates and filter out empty subjects
+        // Ensure subjectData is an array and remove duplicates and filter out empty subjects
+        const dataArray = Array.isArray(subjectData) ? subjectData : [];
         const uniqueSubjects = Array.from(
           new Set(
-            subjectData
+            dataArray
               .map((item: { subject: string | null }) => item.subject)
               .filter((subject): subject is string => Boolean(subject)),
           ),
@@ -176,8 +168,24 @@ export default function FilterNotesDropdown({
       setFilters((prev) => {
         const updated = { ...prev, [filterType]: value };
 
-        // Reset subject when other filters change
-        if (filterType !== "subject") {
+        // Reset dependent filters when parent filter changes
+        if (filterType === "university") {
+          // Reset all dependent filters when university changes
+          updated.degree = "all";
+          updated.year = "all";
+          updated.semester = "all";
+          updated.subject = "all";
+        } else if (filterType === "degree") {
+          // Reset year, semester, and subject when degree changes
+          updated.year = "all";
+          updated.semester = "all";
+          updated.subject = "all";
+        } else if (filterType === "year") {
+          // Reset semester and subject when year changes
+          updated.semester = "all";
+          updated.subject = "all";
+        } else if (filterType === "semester") {
+          // Reset subject when semester changes
           updated.subject = "all";
         }
 
@@ -188,7 +196,7 @@ export default function FilterNotesDropdown({
   );
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-4 border border-primary/20 my-6 py-12 px-8 rounded-md">
+    <div className="border-primary/20 my-6 flex flex-wrap items-center justify-center gap-4 rounded-md border px-8 py-12">
       {/* University Filter */}
       <div className="flex flex-col gap-1">
         <label className="text-muted-foreground text-sm font-medium">

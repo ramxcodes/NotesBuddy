@@ -19,16 +19,27 @@ export const getNoteBySlug = cache(async (slug: string) => {
 });
 
 // Get all available subjects based on filters
-export async function getAvailableSubjects(filters: {
-  university?: string;
-  degree?: string;
-  year?: string;
-  semester?: string;
-}) {
-  return await client.fetch(SUBJECTS_QUERY, filters, {
-    next: { revalidate: 1800 },
-  });
-}
+export const getAvailableSubjects = cache(
+  async (filters: {
+    university?: string;
+    degree?: string;
+    year?: string;
+    semester?: string;
+  }) => {
+    return await client.fetch(
+      SUBJECTS_QUERY,
+      {
+        university: filters.university || null,
+        degree: filters.degree || null,
+        year: filters.year || null,
+        semester: filters.semester || null,
+      },
+      {
+        next: { revalidate: 1800 },
+      },
+    );
+  },
+);
 
 // Get total count of notes matching filters
 export const getNotesCount = unstable_cache(

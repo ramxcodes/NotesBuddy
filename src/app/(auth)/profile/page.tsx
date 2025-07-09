@@ -1,4 +1,3 @@
-import { DeviceFingerprint } from "@/components/auth/DeviceFingerprint";
 import Container from "@/components/core/Container";
 import {
   getUserFullProfile,
@@ -45,7 +44,6 @@ export default async function Profile() {
 
   return (
     <>
-      <DeviceFingerprint />
       <div className="bg-background min-h-screen">
         <Container>
           <div className="space-y-8 py-8">

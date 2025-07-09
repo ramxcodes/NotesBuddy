@@ -1,29 +1,29 @@
 "use client";
 
 import { signOut } from "@/lib/auth/auth-client";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export default function LogOutButton() {
-  const router = useRouter();
+  const handleSignOut = async (event: React.MouseEvent): Promise<void> => {
+    event.preventDefault();
 
-  const handleSignOut = async () => {
     try {
       await signOut();
-      router.push("/");
-    } catch {
-      router.push("/");
+    } catch (error) {
+      console.error("Sign out failed:", error);
+      if (typeof window !== "undefined") {
+        window.location.href = "/";
+      }
     }
   };
 
   return (
-    <Link
+    <button
       data-umami-event="Logout button clicked"
-      href="/"
       onClick={handleSignOut}
-      className="font-excon"
+      className="font-excon cursor-pointer hover:underline"
+      type="button"
     >
       Log Out
-    </Link>
+    </button>
   );
 }

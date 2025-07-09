@@ -2,17 +2,16 @@
 
 import { signOut } from "@/lib/auth/auth-client";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
 
 export default function SignOutButton() {
-  const router = useRouter();
-
-  const handleSignOut = async () => {
+  const handleSignOut = async (): Promise<void> => {
     try {
       await signOut();
-      router.push("/");
-    } catch {
-      router.push("/");
+    } catch (error) {
+      console.error("Sign out failed:", error);
+      if (typeof window !== "undefined") {
+        window.location.href = "/";
+      }
     }
   };
 

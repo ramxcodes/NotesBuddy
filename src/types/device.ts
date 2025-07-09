@@ -16,7 +16,6 @@ export interface SimilarityMetrics {
   vendor: number;
   maxTouchPoints: number;
   doNotTrack: number;
-  languages: number;
 }
 
 // Standardized device fingerprint for UI components

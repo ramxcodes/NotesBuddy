@@ -31,7 +31,6 @@ function createOptimizedHash(data: Record<string, unknown>): string {
   return crypto.createHash("sha256").update(sortedString, "utf8").digest("hex");
 }
 
-// Type guards and validation
 function validateFingerprint(
   fingerprint: unknown,
 ): asserts fingerprint is DeviceFingerprintData["fingerprint"] {
@@ -50,7 +49,6 @@ function validateDeviceData(
   }
 }
 
-// FIXED: Issue #5 - Optimized hash generation
 function generateDeviceHash(
   fingerprint: DeviceFingerprintData["fingerprint"],
 ): string {
@@ -58,12 +56,10 @@ function generateDeviceHash(
   return createOptimizedHash(fingerprint as Record<string, unknown>);
 }
 
-// FIXED: Issue #23 - Use UAParser.js for accurate browser/OS detection
 function extractBrowserOSInfo(userAgent: string): BrowserOSInfo {
   const parser = new UAParser(userAgent);
   const result = parser.getResult();
 
-  // Normalize browser names
   const browserName = result.browser.name?.toLowerCase() || "unknown";
   let browser = "other";
 
@@ -77,7 +73,6 @@ function extractBrowserOSInfo(userAgent: string): BrowserOSInfo {
     browser = "edge";
   }
 
-  // Normalize OS names
   const osName = result.os.name?.toLowerCase() || "unknown";
   let os = "other";
 
@@ -96,12 +91,10 @@ function extractBrowserOSInfo(userAgent: string): BrowserOSInfo {
   return { browser, os };
 }
 
-// Enhanced similarity calculation functions with better edge case handling
 function calculatePlatformSimilarity(
   fp1: DeviceFingerprintData["fingerprint"],
   fp2: DeviceFingerprintData["fingerprint"],
 ): number {
-  // Handle missing platform data gracefully
   if (!fp1.platform || !fp2.platform) {
     return 0;
   }
@@ -117,7 +110,6 @@ function calculateScreenSimilarity(
   const screen1 = fp1.screen;
   const screen2 = fp2.screen;
 
-  // Handle missing screen data gracefully
   if (!screen1 || !screen2) {
     return 0;
   }
@@ -125,16 +117,14 @@ function calculateScreenSimilarity(
   const sameResolution =
     screen1.width === screen2.width && screen1.height === screen2.height;
 
-  // More lenient color depth comparison for better device recognition
   const colorDepthDiff = Math.abs(screen1.colorDepth - screen2.colorDepth);
   const similarColorDepth =
     colorDepthDiff <= DEVICE_CONFIG.COLOR_DEPTH_VARIANCE;
 
-  // Give partial credit for matching resolution even if color depth differs slightly
   if (sameResolution && similarColorDepth) {
     return DEVICE_CONFIG.SIMILARITY_WEIGHTS.screen;
   } else if (sameResolution) {
-    return DEVICE_CONFIG.SIMILARITY_WEIGHTS.screen * 0.8; // 80% credit for resolution match
+    return DEVICE_CONFIG.SIMILARITY_WEIGHTS.screen * 0.8;
   }
 
   return 0;
@@ -144,7 +134,6 @@ function calculateUserAgentSimilarity(
   fp1: DeviceFingerprintData["fingerprint"],
   fp2: DeviceFingerprintData["fingerprint"],
 ): number {
-  // Handle missing user agent data gracefully
   if (!fp1.userAgent || !fp2.userAgent) {
     return 0;
   }
@@ -154,13 +143,16 @@ function calculateUserAgentSimilarity(
 
   if (browser1.browser === browser2.browser && browser1.os === browser2.os) {
     return DEVICE_CONFIG.SIMILARITY_WEIGHTS.userAgent;
-  } else if (browser1.os === browser2.os) {
-    // Same OS, different browser - partial credit
-    return DEVICE_CONFIG.SIMILARITY_WEIGHTS.userAgent * 0.6;
-  } else if (browser1.browser === browser2.browser) {
-    // Same browser, different OS - less likely but possible (e.g., Chrome on different OS)
-    return DEVICE_CONFIG.SIMILARITY_WEIGHTS.userAgent * 0.3;
   }
+
+  if (browser1.os === browser2.os) {
+    return DEVICE_CONFIG.SIMILARITY_WEIGHTS.userAgent * 0.7;
+  }
+
+  if (browser1.browser === browser2.browser) {
+    return DEVICE_CONFIG.SIMILARITY_WEIGHTS.userAgent * 0.4;
+  }
+
   return 0;
 }
 
@@ -169,7 +161,6 @@ function calculateFieldSimilarity<T>(
   value2: T,
   weight: number,
 ): number {
-  // Handle undefined/null values gracefully
   if (value1 == null || value2 == null) {
     return 0;
   }
@@ -222,11 +213,6 @@ function calculateDeviceSimilarity(
       fingerprint2.doNotTrack,
       DEVICE_CONFIG.SIMILARITY_WEIGHTS.doNotTrack,
     ),
-    languages: calculateFieldSimilarity(
-      fingerprint1.languages,
-      fingerprint2.languages,
-      DEVICE_CONFIG.SIMILARITY_WEIGHTS.languages,
-    ),
   };
 
   const totalScore = Object.values(similarities).reduce(
@@ -234,18 +220,14 @@ function calculateDeviceSimilarity(
     0,
   );
 
-  // Ensure score never exceeds 1.0 and apply minimum threshold for data quality
   const normalizedScore = Math.min(totalScore, 1.0);
-
-  // Require at least platform and screen data for any meaningful similarity
   const hasMinimumData = similarities.platform > 0 && similarities.screen > 0;
 
   return hasMinimumData ? normalizedScore : 0;
 }
 
-// FIXED: Issue #3 - Combined database queries for better performance
 async function getActiveUserDevicesOptimized(userId: string) {
-  return await prisma.deviceFingerprint.findMany({
+  const devices = await prisma.deviceFingerprint.findMany({
     where: {
       userId,
       isActive: true,
@@ -262,10 +244,41 @@ async function getActiveUserDevicesOptimized(userId: string) {
       lastUsedAt: "desc",
     },
   });
+
+  const uniqueDevices = new Map<string, (typeof devices)[0]>();
+
+  for (const device of devices) {
+    try {
+      const fingerprint =
+        device.fingerprint as DeviceFingerprintData["fingerprint"];
+
+      const deviceKey = JSON.stringify({
+        platform: fingerprint.platform,
+        screen: fingerprint.screen
+          ? `${fingerprint.screen.width}x${fingerprint.screen.height}`
+          : null,
+        hardwareConcurrency: fingerprint.hardwareConcurrency,
+      });
+
+      const existing = uniqueDevices.get(deviceKey);
+      if (
+        !existing ||
+        new Date(device.lastUsedAt) > new Date(existing.lastUsedAt)
+      ) {
+        uniqueDevices.set(deviceKey, device);
+      }
+    } catch (error) {
+      console.warn(`Error processing device ${device.id}:`, error);
+      uniqueDevices.set(device.id, device);
+    }
+  }
+
+  return Array.from(uniqueDevices.values()).sort(
+    (a, b) =>
+      new Date(b.lastUsedAt).getTime() - new Date(a.lastUsedAt).getTime(),
+  );
 }
 
-// FIXED: Issue #1 & #2 - Moved similarity calculation outside transaction
-// Early filtering based on basic criteria before expensive similarity calculation
 async function findSimilarDeviceOptimized(
   userId: string,
   fingerprint: DeviceFingerprintData["fingerprint"],
@@ -273,35 +286,42 @@ async function findSimilarDeviceOptimized(
 ) {
   validateFingerprint(fingerprint);
 
-  // Get devices with basic filtering using indexes
   const userDevices = await getActiveUserDevicesOptimized(userId);
 
-  // Early return if no devices
   if (userDevices.length === 0) {
     return null;
   }
 
-  // OPTIMIZATION: Pre-filter devices based on high-weight criteria before expensive similarity calculation
   const candidateDevices = userDevices.filter((device) => {
     try {
       const deviceFingerprint =
         device.fingerprint as DeviceFingerprintData["fingerprint"];
       validateFingerprint(deviceFingerprint);
 
-      // Quick platform check (highest weight) - but allow through if platform missing
       if (deviceFingerprint.platform && fingerprint.platform) {
         if (deviceFingerprint.platform !== fingerprint.platform) {
           return false;
         }
       }
 
-      // Quick screen resolution check (second highest weight) - but allow through if screen missing
       if (deviceFingerprint.screen && fingerprint.screen) {
         const screenMatch =
           deviceFingerprint.screen.width === fingerprint.screen.width &&
           deviceFingerprint.screen.height === fingerprint.screen.height;
 
         if (!screenMatch) {
+          return false;
+        }
+      }
+
+      if (
+        deviceFingerprint.hardwareConcurrency &&
+        fingerprint.hardwareConcurrency
+      ) {
+        if (
+          deviceFingerprint.hardwareConcurrency !==
+          fingerprint.hardwareConcurrency
+        ) {
           return false;
         }
       }
@@ -313,8 +333,6 @@ async function findSimilarDeviceOptimized(
     }
   });
 
-  // FIXED: Issue #1 - Reduced linear search by pre-filtering
-  // Now do full similarity calculation only on candidate devices
   for (const device of candidateDevices) {
     try {
       const deviceFingerprint =
@@ -339,12 +357,10 @@ async function findSimilarDeviceOptimized(
   return null;
 }
 
-// FIXED: Issue #3 - Consolidated device count validation with fewer queries
 async function validateDeviceLimitWithLock(
   userId: string,
   tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0],
 ): Promise<number> {
-  // Single query to get user info and check if blocked
   const user = await tx.user.findUnique({
     where: { id: userId },
     select: {
@@ -370,9 +386,7 @@ async function validateDeviceLimitWithLock(
 
   const currentDeviceCount = user._count.deviceFingerprints;
 
-  // Fix: Use > instead of >= to allow exactly MAX_DEVICES_PER_USER devices
   if (currentDeviceCount > APP_CONFIG.MAX_DEVICES_PER_USER) {
-    // Block user and throw error atomically
     await tx.user.update({
       where: { id: userId },
       data: { isBlocked: true },
@@ -392,7 +406,6 @@ async function handleExactHashMatch(
   tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0],
 ) {
   if (exactMatch.userId !== userId) {
-    // Different user has same hash - validate limit and create new device
     await validateDeviceLimitWithLock(userId, tx);
 
     const collisionHash = createOptimizedHash({
@@ -413,7 +426,6 @@ async function handleExactHashMatch(
     });
   }
 
-  // Same user - update last used time
   return await tx.deviceFingerprint.update({
     where: { id: exactMatch.id },
     data: { lastUsedAt: new Date() },
@@ -457,7 +469,6 @@ async function createNewDevice(
   });
 }
 
-// FIXED: Issue #2 - Heavy computation moved outside transaction
 export async function createDeviceFingerprint(
   userId: string,
   deviceData: DeviceFingerprintData,
@@ -465,10 +476,7 @@ export async function createDeviceFingerprint(
 ) {
   validateDeviceData(deviceData);
 
-  // FIXED: Issue #2 - Generate hash outside transaction
   const fingerprintHash = generateDeviceHash(deviceData.fingerprint);
-
-  // FIXED: Issue #2 - Do similarity calculation outside transaction
   const similarDevice = await findSimilarDeviceOptimized(
     userId,
     deviceData.fingerprint,
@@ -476,7 +484,6 @@ export async function createDeviceFingerprint(
   );
 
   const result = await prisma.$transaction(async (tx) => {
-    // Check for exact hash match
     const exactMatch = await tx.deviceFingerprint.findUnique({
       where: { hash: fingerprintHash },
     });
@@ -485,7 +492,6 @@ export async function createDeviceFingerprint(
       return await handleExactHashMatch(exactMatch, userId, deviceData, tx);
     }
 
-    // Use pre-calculated similar device
     if (similarDevice) {
       return await handleSimilarDevice(
         similarDevice,
@@ -495,41 +501,35 @@ export async function createDeviceFingerprint(
       );
     }
 
-    // Create new device
     return await createNewDevice(userId, deviceData, fingerprintHash, tx);
   });
 
-  // Invalidate device cache after any device operation
   revalidateTag("user-devices");
-
   return result;
 }
 
-// Cached device query with optimized performance and proper cache invalidation
 export const getUserDevices = unstable_cache(
   async (userId: string) => {
     return await getActiveUserDevicesOptimized(userId);
   },
   ["user-devices"],
   {
-    revalidate: 1800, // 30 minutes cache - devices don't change frequently
-    tags: ["user-devices"], // Tag for selective cache invalidation
+    revalidate: 1800,
+    tags: ["user-devices"],
   },
 );
 
-// Additional cached query for device count with shorter cache time for limits
 export const getUserDeviceCount = unstable_cache(
   async (userId: string) => {
     return await getUserActiveDeviceCount(userId);
   },
   ["user-device-count"],
   {
-    revalidate: 300, // 5 minutes cache - device counts need fresher data for limits
-    tags: ["user-devices"], // Same tag so both invalidate together
+    revalidate: 300,
+    tags: ["user-devices"],
   },
 );
 
-// FIXED: Issue #3 - Optimized with single query
 export async function getUserActiveDeviceCount(
   userId: string,
 ): Promise<number> {
@@ -555,13 +555,10 @@ export async function blockUserForTooManyDevices(userId: string) {
     data: { isBlocked: true },
   });
 
-  // Invalidate device cache when user is blocked for device limit
   revalidateTag("user-devices");
-
   return result;
 }
 
-// FIXED: Issue #3 - Optimized device limit check
 export async function checkAndBlockUserForDeviceLimit(
   userId: string,
 ): Promise<boolean> {
@@ -598,13 +595,10 @@ export async function clearAllUserDevices(userId: string) {
     where: { userId },
   });
 
-  // Invalidate device cache after clearing devices
   revalidateTag("user-devices");
-
   return result;
 }
 
-// Consistent device state management with optimized queries
 export async function getAllUserDevicesWithDetails(
   userId: string,
   includeInactive: boolean = false,
@@ -630,8 +624,6 @@ export async function unblockUser(userId: string) {
     data: { isBlocked: false },
   });
 
-  // Invalidate device cache when user is unblocked
   revalidateTag("user-devices");
-
   return result;
 }

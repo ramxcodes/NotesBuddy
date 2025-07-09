@@ -8,13 +8,11 @@ import { PremiumStatus } from "@/components/profile/PremiumStatus";
 import { PremiumHistory } from "@/components/profile/PremiumHistory";
 import { DeviceManagement } from "@/components/profile/DeviceManagement";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  UserIcon,
-  CrownIcon,
-  ReceiptIcon,
-  DeviceTabletIcon,
-  SignOutIcon,
-} from "@phosphor-icons/react";
+import { UserIcon } from "@/components/icons/UserIcon";
+import { CrownIcon } from "@/components/icons/CrownIcon";
+import { ReceiptIcon } from "@/components/icons/ReceiptIcon";
+import { DevicesIcon } from "@/components/icons/DevicesIcon";
+import { SignOutIcon } from "@/components/icons/SignOutIcon";
 import { OnboardingFormData } from "@/dal/user/onboarding/types";
 import { handleProfileUpdate } from "@/app/(auth)/profile/actions";
 import { Device } from "@/types/device";
@@ -124,7 +122,7 @@ export default function ProfileClient({
           value="devices"
           className="data-[state=active]:bg-background gap-2"
         >
-          <DeviceTabletIcon className="h-4 w-4" />
+          <DevicesIcon className="h-4 w-4" />
           <span className="hidden sm:inline">Devices</span>
         </TabsTrigger>
         <TabsTrigger

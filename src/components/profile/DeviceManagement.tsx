@@ -37,9 +37,9 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
     if (!userAgent) {
       // Fallback to screen size detection if userAgent not available
       if (screen && screen.width <= 768) {
-        return <DeviceMobileIcon className="h-5 w-5" />;
+        return <DeviceMobileIcon type="duotone" className="h-5 w-5" />;
       }
-      return <DeviceTabletIcon className="h-5 w-5" />;
+      return <DeviceTabletIcon type="duotone" className="h-5 w-5" />;
     }
 
     const ua = userAgent.toLowerCase();
@@ -48,11 +48,11 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
       ua.includes("android") ||
       ua.includes("iphone")
     ) {
-      return <DeviceMobileIcon className="h-5 w-5" />;
+      return <DeviceMobileIcon type="duotone" className="h-5 w-5" />;
     } else if (ua.includes("tablet") || ua.includes("ipad")) {
-      return <DeviceTabletIcon className="h-5 w-5" />;
+      return <DeviceTabletIcon type="duotone" className="h-5 w-5" />;
     } else {
-      return <DesktopIcon className="h-5 w-5" />;
+      return <DesktopIcon type="duotone" className="h-5 w-5" />;
     }
   };
 
@@ -123,7 +123,7 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-              <DeviceTabletIcon className="h-6 w-6" />
+              <DeviceTabletIcon type="duotone" className="h-6 w-6" />
               Device Management
             </CardTitle>
             <Button
@@ -142,7 +142,10 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
         </CardHeader>
         <CardContent>
           <div className="py-8 text-center">
-            <DeviceTabletIcon className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+            <DeviceTabletIcon
+              type="duotone"
+              className="text-muted-foreground mx-auto mb-4 h-12 w-12"
+            />
             <h3 className="font-excon mb-2 text-lg font-semibold">
               No Devices Found
             </h3>
@@ -161,7 +164,7 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-            <DeviceTabletIcon className="h-6 w-6" />
+            <DeviceTabletIcon type="duotone" className="h-6 w-6" />
             Device Management
           </CardTitle>
           <Button
@@ -207,7 +210,7 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
                       </p>
                     </div>
                     <Badge variant="outline" className="gap-1">
-                      <GlobeIcon className="h-3 w-3" />
+                      <GlobeIcon type="duotone"  className="h-3 w-3" />
                       {device.isActive ? "Active" : "Inactive"}
                     </Badge>
                   </div>

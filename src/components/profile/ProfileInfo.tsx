@@ -66,7 +66,7 @@ export function ProfileInfo({
                 onClick={onEditClick}
                 className="gap-2"
               >
-                <PencilIcon className="h-4 w-4" />
+                <PencilIcon type="duotone" className="h-4 w-4" />
                 Edit Profile
               </Button>
             )}
@@ -93,7 +93,7 @@ export function ProfileInfo({
                   <p className="text-muted-foreground">{session.email}</p>
                   {session.emailVerified && (
                     <Badge variant="secondary" className="gap-1">
-                      <CheckCircleIcon className="h-3 w-3" />
+                      <CheckCircleIcon type="duotone" className="h-3 w-3" />
                       Verified
                     </Badge>
                   )}

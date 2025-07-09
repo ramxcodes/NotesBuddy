@@ -3,11 +3,9 @@
 import { NOTE_BY_SLUG_QUERYResult } from "@/sanity/types";
 import { slugify } from "@/utils/helpers";
 import { useEffect, useState } from "react";
-import {
-  BookOpenTextIcon,
-  CaretDownIcon,
-  CaretRightIcon,
-} from "@phosphor-icons/react";
+import { BookOpenIcon } from "@/components/icons/BookOpenIcon";
+import { CaretDownIcon } from "@/components/icons/CaretDownIcon";
+import { CaretRightIcon } from "@/components/icons/CaretRightIcon";
 
 type HeadingItem = NonNullable<
   NonNullable<NOTE_BY_SLUG_QUERYResult>["headings"]
@@ -145,7 +143,7 @@ export default function TableOfContent({
   return (
     <div className="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
-        <BookOpenTextIcon />
+        <BookOpenIcon className="size-4" />
         On this page
       </h3>
       <div className="border-l border-gray-200 pl-4 dark:border-gray-700">
@@ -168,7 +166,11 @@ export default function TableOfContent({
                         isActiveH2 ? "Collapse section" : "Expand section"
                       }
                     >
-                      {isActiveH2 ? <CaretDownIcon /> : <CaretRightIcon />}
+                      {isActiveH2 ? (
+                        <CaretDownIcon className="size-4" />
+                      ) : (
+                        <CaretRightIcon className="size-4" />
+                      )}
                     </button>
                     <button
                       onClick={() => handleClick(h2Text)}

@@ -21,14 +21,20 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
       <Card>
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-            <StarIcon className="text-muted-foreground h-6 w-6" />
+            <StarIcon
+              type="duotone"
+              className="text-muted-foreground h-6 w-6"
+            />
             Premium Status
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4 text-center">
             <div className="border-muted-foreground/20 rounded-lg border-2 border-dashed p-8">
-              <StarIcon className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+              <StarIcon
+                type="duotone"
+                className="text-muted-foreground mx-auto mb-4 h-12 w-12"
+              />
               <h3 className="font-excon mb-2 text-lg font-semibold">
                 No Active Premium
               </h3>
@@ -38,7 +44,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
               </p>
               <Link href="/premium">
                 <Button className="gap-2">
-                  <CrownIcon className="h-4 w-4" />
+                  <CrownIcon type="duotone" className="h-4 w-4" />
                   Upgrade to Premium
                 </Button>
               </Link>
@@ -58,13 +64,13 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
   const getTierIcon = (tier: string) => {
     switch (tier) {
       case "TIER_1":
-        return <StarIcon className="h-5 w-5" />;
+        return <StarIcon type="duotone" className="h-5 w-5" />;
       case "TIER_2":
-        return <LightningIcon className="h-5 w-5" />;
+        return <LightningIcon type="duotone" className="h-5 w-5" />;
       case "TIER_3":
-        return <CrownIcon className="h-5 w-5" />;
+        return <CrownIcon type="duotone" className="h-5 w-5" />;
       default:
-        return <StarIcon className="h-5 w-5" />;
+        return <StarIcon type="duotone" className="h-5 w-5" />;
     }
   };
 
@@ -117,7 +123,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
               <span className="flex items-center gap-1 font-medium">
-                <CalendarIcon className="h-4 w-4" />
+                <CalendarIcon type="duotone" className="h-4 w-4" />
                 Days Remaining
               </span>
               <span className="font-semibold">
@@ -166,7 +172,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
             </p>
             <Link href="/premium">
               <Button variant="outline" size="sm" className="gap-2">
-                <CrownIcon className="h-4 w-4" />
+                <CrownIcon type="duotone" className="h-4 w-4" />
                 Upgrade Plan
               </Button>
             </Link>

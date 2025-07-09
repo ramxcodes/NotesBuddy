@@ -47,28 +47,28 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
           variant="secondary"
           className="gap-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
         >
-          <CheckCircleIcon className="h-3 w-3" />
+          <CheckCircleIcon type="duotone" className="h-3 w-3" />
           Active
         </Badge>
       );
     } else if (status === "CAPTURED" && !isActive) {
       return (
         <Badge variant="secondary" className="gap-1">
-          <CheckCircleIcon className="h-3 w-3" />
+          <CheckCircleIcon type="duotone" className="h-3 w-3" />
           Expired
         </Badge>
       );
     } else if (status === "FAILED") {
       return (
         <Badge variant="destructive" className="gap-1">
-          <XCircleIcon className="h-3 w-3" />
+          <XCircleIcon type="duotone" className="h-3 w-3" />
           Failed
         </Badge>
       );
     } else {
       return (
         <Badge variant="outline" className="gap-1">
-          <ClockIcon className="h-3 w-3" />
+          <ClockIcon type="duotone" className="h-3 w-3" />
           Pending
         </Badge>
       );
@@ -87,13 +87,16 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       <Card>
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-            <ReceiptIcon className="h-6 w-6" />
+            <ReceiptIcon type="duotone" className="h-6 w-6" />
             Purchase History
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="py-8 text-center">
-            <ReceiptIcon className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+            <ReceiptIcon
+              type="duotone"
+              className="text-muted-foreground mx-auto mb-4 h-12 w-12"
+            />
             <h3 className="font-excon mb-2 text-lg font-semibold">
               No Purchase History
             </h3>
@@ -110,7 +113,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
     <Card>
       <CardHeader>
         <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-          <ReceiptIcon className="h-6 w-6" />
+          <ReceiptIcon type="duotone" className="h-6 w-6" />
           Purchase History
         </CardTitle>
       </CardHeader>

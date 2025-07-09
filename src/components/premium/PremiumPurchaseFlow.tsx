@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,14 +15,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 import {
-  Spinner,
-  CheckCircle,
-  Gift,
-  Star,
-  Lightning,
-  CreditCard,
-  ShieldCheck,
-  Clock,
+  SpinnerIcon,
+  CheckCircleIcon,
+  GiftIcon,
+  StarIcon,
+  LightningIcon,
+  CreditCardIcon,
+  ShieldCheckIcon,
+  ClockIcon,
 } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "motion/react";
 import { PremiumTier } from "@prisma/client";
@@ -84,7 +85,7 @@ function TierCard({ tier, isSelected, onClick, delay = 0 }: TierCardProps) {
       >
         {tier.tier === "TIER_2" && (
           <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700">
-            <Star className="mr-1 h-3 w-3" weight="fill" />
+            <StarIcon type="duotone" className="mr-1 h-3 w-3" />
             Popular
           </Badge>
         )}
@@ -112,9 +113,9 @@ function TierCard({ tier, isSelected, onClick, delay = 0 }: TierCardProps) {
           <ul className="space-y-3">
             {tier.features.map((feature: string, index: number) => (
               <li key={index} className="flex items-start text-sm">
-                <CheckCircle
+                <CheckCircleIcon
+                  type="duotone"
                   className="mt-0.5 mr-3 h-4 w-4 flex-shrink-0 text-green-500"
-                  weight="fill"
                 />
                 <span className="font-satoshi text-foreground">{feature}</span>
               </li>
@@ -128,7 +129,10 @@ function TierCard({ tier, isSelected, onClick, delay = 0 }: TierCardProps) {
               className="bg-primary/10 ring-primary/20 mt-6 rounded-xl p-4 ring-1"
             >
               <p className="font-satoshi text-primary text-sm font-medium">
-                <CheckCircle className="mr-2 inline h-4 w-4" weight="fill" />
+                <CheckCircleIcon
+                  type="duotone"
+                  className="mr-2 inline h-4 w-4"
+                />
                 Selected Plan
               </p>
             </motion.div>
@@ -364,7 +368,7 @@ export function PremiumPurchaseFlow({
           <Card className="border-border/50 bg-card/50 mx-auto max-w-2xl backdrop-blur-sm">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-3 text-center">
-                <Gift className="h-6 w-6 text-purple-500" weight="duotone" />
+                <GiftIcon type="duotone" className="h-6 w-6 text-purple-500" />
                 <span className="font-excon text-xl font-bold">
                   Have a discount or referral code?
                 </span>
@@ -387,7 +391,7 @@ export function PremiumPurchaseFlow({
                   className="font-satoshi border-border/50 bg-background/50 backdrop-blur-sm"
                 >
                   {isCalculating ? (
-                    <Spinner className="h-4 w-4 animate-spin" />
+                    <SpinnerIcon type="duotone" className="h-4 w-4 animate-spin" />
                   ) : (
                     "Apply"
                   )}
@@ -409,9 +413,9 @@ export function PremiumPurchaseFlow({
               <Card className="border-primary/20 from-primary/5 mx-auto mb-8 max-w-2xl border-2 bg-gradient-to-br to-transparent backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <Lightning
+                    <LightningIcon
+                      type="duotone"
                       className="text-primary h-6 w-6"
-                      weight="duotone"
                     />
                     <span className="font-excon text-xl font-bold">
                       Price Summary
@@ -492,17 +496,17 @@ export function PremiumPurchaseFlow({
             <div className="relative z-10 flex items-center gap-3">
               {isProcessing ? (
                 <>
-                  <Spinner className="h-5 w-5 animate-spin" />
+                  <SpinnerIcon type="duotone" className="h-5 w-5 animate-spin" />
                   <span className="font-excon">Processing Payment...</span>
                 </>
               ) : currentPremiumStatus.isActive ? (
                 <>
-                  <ShieldCheck className="h-5 w-5" weight="fill" />
+                  <ShieldCheckIcon type="duotone" className="h-5 w-5" />
                   <span className="font-excon">Premium Already Active</span>
                 </>
               ) : (
                 <>
-                  <CreditCard className="h-5 w-5" weight="duotone" />
+                  <CreditCardIcon type="duotone" className="h-5 w-5" />
                   <span className="font-excon">
                     Pay ₹{priceCalculation?.finalAmount || 0} & Upgrade Now
                   </span>
@@ -514,17 +518,17 @@ export function PremiumPurchaseFlow({
 
           <div className="text-muted-foreground mt-4 flex items-center justify-center gap-4 text-sm">
             <div className="flex items-center gap-1">
-              <ShieldCheck className="h-4 w-4" weight="duotone" />
+              <ShieldCheckIcon type="duotone" className="h-4 w-4" />
               <span className="font-satoshi">
                 Secure payment powered by Razorpay
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" weight="duotone" />
+              <ClockIcon type="duotone" className="h-4 w-4" />
               <span className="font-satoshi">6 months access</span>
             </div>
             <div className="flex items-center gap-1">
-              <Lightning className="h-4 w-4" weight="duotone" />
+              <LightningIcon type="duotone" className="h-4 w-4" />
               <span className="font-satoshi">Instant activation</span>
             </div>
           </div>

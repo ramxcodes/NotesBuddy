@@ -5,11 +5,9 @@ import { signOut } from "@/lib/auth/auth-client";
 export default function LogOutButton() {
   const handleSignOut = async (event: React.MouseEvent): Promise<void> => {
     event.preventDefault();
-
     try {
       await signOut();
-    } catch (error) {
-      console.error("Sign out failed:", error);
+    } catch {
       if (typeof window !== "undefined") {
         window.location.href = "/";
       }
@@ -20,7 +18,7 @@ export default function LogOutButton() {
     <button
       data-umami-event="Logout button clicked"
       onClick={handleSignOut}
-      className="font-excon cursor-pointer hover:underline"
+      className="font-excon cursor-pointer text-red-500"
       type="button"
     >
       Log Out

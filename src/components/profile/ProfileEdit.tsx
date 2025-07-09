@@ -35,7 +35,7 @@ import {
   getSemesterOptions,
 } from "@/dal/user/onboarding/types";
 import { useState } from "react";
-import { XIcon } from "@phosphor-icons/react";
+import { XCircleIcon } from "@/components/icons/XCIrcleIcon";
 
 interface UserProfileData {
   firstName?: string | null;
@@ -101,7 +101,7 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
             onClick={onCancel}
             className="gap-2"
           >
-            <XIcon className="h-4 w-4" />
+            <XCircleIcon className="size-4" />
             Cancel
           </Button>
         </div>

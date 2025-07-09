@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
 import { useEffect, useState } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
-import { XIcon } from "@phosphor-icons/react";
+import { XCircleIcon } from "@/components/icons/XCIrcleIcon";
 
 export default function Search({ query }: { query: string }) {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function Search({ query }: { query: string }) {
       <Input
         type="text"
         placeholder="Search"
-        className="pr-8 placeholder:text-muted-foreground shadow-none"
+        className="placeholder:text-muted-foreground pr-8 shadow-none"
         value={search}
         onChange={handleInputChange}
       />
@@ -35,7 +35,7 @@ export default function Search({ query }: { query: string }) {
           className="text-muted-foreground absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
           onClick={() => setSearch("")}
         >
-          <XIcon className="text-muted-foreground" size={20} />
+          <XCircleIcon className="size-4" />
         </span>
       )}
     </div>

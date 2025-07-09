@@ -30,7 +30,7 @@ export default function Hero() {
         <div className="flex flex-col items-center justify-center gap-8 py-20 lg:py-40">
           <div>
             <Button variant="secondary" size="sm" className="gap-4">
-              Now it is time to study <ArrowRightIcon className="h-4 w-4" />
+              Now it is time to study <ArrowRightIcon type="duotone" className="size-4" />
             </Button>
           </div>
           <div className="flex flex-col gap-4">
@@ -71,11 +71,11 @@ export default function Hero() {
           </div>
           <div className="flex flex-row gap-3">
             <Button size="lg" className="gap-4" variant="outline">
-              Visit Notes <BookOpenIcon className="h-4 w-4" />
+              Visit Notes <BookOpenIcon type="duotone" className="size-4" />
             </Button>
             <Link href="/premium">
               <Button size="lg" className="gap-4">
-                Purchase Premium <StarIcon className="h-4 w-4" />
+                Purchase Premium <StarIcon type="duotone" className="size-4" />
               </Button>
             </Link>
           </div>

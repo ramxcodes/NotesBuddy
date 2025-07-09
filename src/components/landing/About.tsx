@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CheckCircle, Brain, Lightning } from "@phosphor-icons/react";
+import { CheckCircleIcon, BrainIcon, LightningIcon } from "@phosphor-icons/react";
 
 interface AnimatedTextCycleProps {
   words: string[];
@@ -121,19 +121,19 @@ function FeatureCard({
 export default function About() {
   const features = [
     {
-      icon: <CheckCircle className="text-primary h-6 w-6" />,
+      icon: <CheckCircleIcon type="duotone" className="text-primary h-6 w-6" />,
       title: "Clarity Over Complexity",
       description:
         "Notes Buddy simplifies concepts for deeper and better understanding. We break down complex topics into digestible.",
     },
     {
-      icon: <Brain className="text-primary h-6 w-6" />,
+      icon: <BrainIcon type="duotone" className="text-primary h-6 w-6" />,
       title: "Answers at Your Fingertips",
       description:
         "Our AI answers your questions instantly, helping you learn faster. Get immediate support whenever you need clarification.",
     },
     {
-      icon: <Lightning className="text-primary h-6 w-6" />,
+      icon: <LightningIcon type="duotone" className="text-primary h-6 w-6" />,
       title: "Fast and Efficient Learning",
       description:
         "Notes Buddy accelerates learning with quick, focused resources. Study smarter with optimized content and streamlined processes.",

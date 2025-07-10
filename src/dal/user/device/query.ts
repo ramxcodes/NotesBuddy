@@ -12,6 +12,8 @@ import {
 import { UAParser } from "ua-parser-js";
 import { unstable_cache } from "next/cache";
 import { revalidateTag } from "next/cache";
+import { getCacheOptions } from "@/cache/cache";
+import { userCacheConfig } from "@/cache/user";
 
 function createOptimizedHash(data: Record<string, unknown>): string {
   const createSortedString = (obj: unknown): string => {
@@ -512,22 +514,16 @@ export const getUserDevices = unstable_cache(
   async (userId: string) => {
     return await getActiveUserDevicesOptimized(userId);
   },
-  ["user-devices"],
-  {
-    revalidate: 1800,
-    tags: ["user-devices"],
-  },
+  [userCacheConfig.getUserDevices.cacheKey!],
+  getCacheOptions(userCacheConfig.getUserDevices),
 );
 
 export const getUserDeviceCount = unstable_cache(
   async (userId: string) => {
     return await getUserActiveDeviceCount(userId);
   },
-  ["user-device-count"],
-  {
-    revalidate: 300,
-    tags: ["user-devices"],
-  },
+  [userCacheConfig.getUserDeviceCount.cacheKey!],
+  getCacheOptions(userCacheConfig.getUserDeviceCount),
 );
 
 export async function getUserActiveDeviceCount(

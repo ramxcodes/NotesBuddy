@@ -1,12 +1,5 @@
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
+import { NOTES_QUERYResult } from "@/sanity/types";
 
 interface SearchParams {
   query?: string;
@@ -15,110 +8,49 @@ interface SearchParams {
   year?: string;
   semester?: string;
   subject?: string;
-  page?: string;
+  lastCreatedAt?: string;
+  lastId?: string;
 }
 
 export function NotesPagination({
-  totalPages,
-  currentPage,
+  hasMore,
+  lastNote,
   searchParams,
 }: {
-  totalPages: number;
-  currentPage: number;
+  hasMore: boolean;
+  lastNote: NOTES_QUERYResult[0];
   searchParams: SearchParams;
 }) {
-  // Helper function to build URL with updated page
-  const buildPageUrl = (page: number) => {
+  // Helper function to build URL with cursor for next page
+  const buildNextPageUrl = () => {
     const params = new URLSearchParams();
 
-    // Add all current search params except page
+    // Add all current search params except cursor params
     Object.entries(searchParams).forEach(([key, value]) => {
-      if (key !== "page" && value) {
+      if (key !== "lastCreatedAt" && key !== "lastId" && value) {
         params.set(key, value);
       }
     });
 
-    // Add the new page
-    if (page > 1) {
-      params.set("page", page.toString());
+    // Add cursor parameters from the last note
+    if (lastNote) {
+      params.set("lastCreatedAt", lastNote._createdAt);
+      params.set("lastId", lastNote._id);
     }
 
     const queryString = params.toString();
     return `/notes${queryString ? `?${queryString}` : ""}`;
   };
 
-  // Calculate which pages to show
-  const getVisiblePages = () => {
-    const pages: (number | "ellipsis")[] = [];
-
-    if (totalPages <= 7) {
-      // Show all pages if 7 or fewer
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      // Always show first page
-      pages.push(1);
-
-      if (currentPage > 3) {
-        pages.push("ellipsis");
-      }
-
-      // Show pages around current page
-      const start = Math.max(2, currentPage - 1);
-      const end = Math.min(totalPages - 1, currentPage + 1);
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-
-      if (currentPage < totalPages - 2) {
-        pages.push("ellipsis");
-      }
-
-      // Always show last page
-      if (totalPages > 1) {
-        pages.push(totalPages);
-      }
-    }
-
-    return pages;
-  };
-
-  const visiblePages = getVisiblePages();
-  const hasPrevious = currentPage > 1;
-  const hasNext = currentPage < totalPages;
+  if (!hasMore) {
+    return null;
+  }
 
   return (
-    <Pagination className="mt-10 flex justify-center">
-      <PaginationContent>
-        {hasPrevious && (
-          <PaginationItem>
-            <PaginationPrevious href={buildPageUrl(currentPage - 1)} />
-          </PaginationItem>
-        )}
-
-        {visiblePages.map((page, index) => (
-          <PaginationItem key={index}>
-            {page === "ellipsis" ? (
-              <PaginationEllipsis />
-            ) : (
-              <PaginationLink
-                href={buildPageUrl(page)}
-                isActive={page === currentPage}
-              >
-                {page}
-              </PaginationLink>
-            )}
-          </PaginationItem>
-        ))}
-
-        {hasNext && (
-          <PaginationItem>
-            <PaginationNext href={buildPageUrl(currentPage + 1)} />
-          </PaginationItem>
-        )}
-      </PaginationContent>
-    </Pagination>
+    <div className="mt-10 flex justify-center">
+      <Button asChild variant="outline" size="lg">
+        <a href={buildNextPageUrl()}>Load More Notes</a>
+      </Button>
+    </div>
   );
 }

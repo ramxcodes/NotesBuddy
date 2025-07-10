@@ -2,6 +2,8 @@ import prisma from "@/lib/db/prisma";
 import { OnboardingFormData } from "./types";
 import { unstable_cache } from "next/cache";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { getCacheOptions } from "@/cache/cache";
+import { userCacheConfig } from "@/cache/user";
 
 // Check if user completed onboarding
 export const getUserOnboardingStatus = unstable_cache(
@@ -19,11 +21,8 @@ export const getUserOnboardingStatus = unstable_cache(
       isOnboarded: user?.isOnboarded,
     };
   },
-  ["user-onboarding-status"],
-  {
-    revalidate: 1800,
-    tags: ["user-onboarding"],
-  },
+  [userCacheConfig.getUserOnboardingStatus.cacheKey!],
+  getCacheOptions(userCacheConfig.getUserOnboardingStatus),
 );
 
 // Create the detailed user profile
@@ -63,27 +62,24 @@ export async function updateUserOnboardingStatus(
 // Get user profile
 export const getUserFullProfile = unstable_cache(
   async (userId: string) => {
-  const profile = await prisma.userProfile.findUnique({
-    where: { userId },
-    select: {
-      firstName: true,
-      lastName: true,
-      phoneNumber: true,
-      university: true,
-      degree: true,
-      year: true,
-      semester: true,
-      createdAt: true,
-    },
-  });
+    const profile = await prisma.userProfile.findUnique({
+      where: { userId },
+      select: {
+        firstName: true,
+        lastName: true,
+        phoneNumber: true,
+        university: true,
+        degree: true,
+        year: true,
+        semester: true,
+        createdAt: true,
+      },
+    });
 
-  return profile;
-},
-  ["user-full-profile"],
-  {
-    revalidate: 1800,
-    tags: ["user-full-profile"],
+    return profile;
   },
+  [userCacheConfig.getUserFullProfile.cacheKey!],
+  getCacheOptions(userCacheConfig.getUserFullProfile),
 );
 
 // Update user profile

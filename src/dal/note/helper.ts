@@ -7,6 +7,8 @@ import {
 } from "@/sanity/lib/queries";
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
+import { getCacheOptions, getNextOptions } from "@/cache/cache";
+import { notesCacheConfig } from "@/cache/notes";
 
 export const getNoteBySlug = cache(async (slug: string) => {
   return await client.fetch(
@@ -61,19 +63,13 @@ export const getNotesCount = unstable_cache(
         semester: filters.semester || null,
         subject: filters.subject || null,
       },
-      {
-        next: { revalidate: 3600 },
-      },
+      getNextOptions(notesCacheConfig.getNotesCount),
     );
   },
-  ["notes-count"],
-  {
-    revalidate: 3600,
-    tags: ["notes"],
-  },
+  [notesCacheConfig.getNotesCount.cacheKey!],
+  getCacheOptions(notesCacheConfig.getNotesCount),
 );
 
-// Get filtered notes with pagination
 export const getFilteredNotes = unstable_cache(
   async (
     filters: {
@@ -84,14 +80,11 @@ export const getFilteredNotes = unstable_cache(
       semester?: string;
       subject?: string;
     },
-    pagination: {
-      page: number;
-      limit: number;
-    } = { page: 1, limit: 6 },
+    cursor?: {
+      lastCreatedAt?: string;
+      lastId?: string;
+    },
   ) => {
-    const start = (pagination.page - 1) * pagination.limit;
-    const end = start + pagination.limit - 1;
-
     return await client.fetch(
       NOTES_QUERY,
       {
@@ -101,17 +94,12 @@ export const getFilteredNotes = unstable_cache(
         year: filters.year || null,
         semester: filters.semester || null,
         subject: filters.subject || null,
-        start,
-        end,
+        lastCreatedAt: cursor?.lastCreatedAt || null,
+        lastId: cursor?.lastId || null,
       },
-      {
-        next: { revalidate: 3600 },
-      },
+      getNextOptions(notesCacheConfig.getFilteredNotes),
     );
   },
-  ["filtered-notes"],
-  {
-    revalidate: 3600,
-    tags: ["notes"],
-  },
+  [notesCacheConfig.getFilteredNotes.cacheKey!],
+  getCacheOptions(notesCacheConfig.getFilteredNotes),
 );

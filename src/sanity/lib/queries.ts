@@ -7,9 +7,11 @@ export const NOTES_QUERY =
     (!defined($degree) || degree == $degree) &&
     (!defined($year) || year == $year) &&
     (!defined($semester) || semester == $semester) &&
-    (!defined($subject) || subject match $subject)
-  ] | order(_createdAt desc) [$start...$end] {
+    (!defined($subject) || subject match $subject) &&
+    (!defined($lastCreatedAt) || _createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id > $lastId))
+  ] | order(_createdAt desc, _id asc) [0...6] {
   _id,
+  _createdAt,
   title,
   syllabus,
   slug,

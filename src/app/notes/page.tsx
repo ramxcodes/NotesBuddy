@@ -2,7 +2,7 @@ import Search from "@/components/note/Search";
 import { Metadata } from "next";
 import NotesCard from "@/components/note/NotesCard";
 import FilterNotesDropdown from "@/components/note/FilterNotesDropdown";
-import { getFilteredNotes, getNotesCount } from "@/dal/note/helper";
+import { getFilteredNotes } from "@/dal/note/helper";
 import { getSession } from "@/lib/db/user";
 import {
   getUserOnboardingStatus,
@@ -23,7 +23,8 @@ interface SearchParams {
   year?: string;
   semester?: string;
   subject?: string;
-  page?: string;
+  lastCreatedAt?: string;
+  lastId?: string;
 }
 
 export default async function NotesPage({
@@ -33,11 +34,16 @@ export default async function NotesPage({
 }) {
   // Get search parameters
   const params = await searchParams;
-  const { query, university, degree, year, semester, subject, page } = params;
-
-  // Parse page number with default of 1
-  const currentPage = parseInt(page || "1", 10);
-  const notesPerPage = 6;
+  const {
+    query,
+    university,
+    degree,
+    year,
+    semester,
+    subject,
+    lastCreatedAt,
+    lastId,
+  } = params;
 
   // Get user session and profile data
   const session = await getSession();
@@ -69,14 +75,11 @@ export default async function NotesPage({
     subject: subject === "all" ? undefined : subject,
   };
 
-  // Fetch filtered notes with pagination and total count
-  const [notes, totalCount] = await Promise.all([
-    getFilteredNotes(filters, { page: currentPage, limit: notesPerPage }),
-    getNotesCount(filters),
-  ]);
+  // Fetch filtered notes with cursor-based pagination
+  const notes = await getFilteredNotes(filters, { lastCreatedAt, lastId });
 
-  // Calculate total pages
-  const totalPages = Math.ceil(totalCount / notesPerPage);
+  // Check if there are more notes (if we got 6 results, there might be more)
+  const hasMore = notes.length === 6;
 
   return (
     <div className="mx-auto mt-10 flex max-w-6xl flex-col items-center justify-center gap-4 space-y-10 py-5">
@@ -116,11 +119,11 @@ export default async function NotesPage({
         )}
       </div>
 
-      {/* Pagination - only show if there are notes and more than one page */}
-      {notes.length > 0 && totalPages > 1 && (
+      {/* Load More button - only show if there are notes and potentially more */}
+      {notes.length > 0 && hasMore && (
         <NotesPagination
-          totalPages={totalPages}
-          currentPage={currentPage}
+          hasMore={hasMore}
+          lastNote={notes[notes.length - 1]}
           searchParams={params}
         />
       )}

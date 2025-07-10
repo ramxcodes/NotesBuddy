@@ -14,6 +14,8 @@ import {
 } from "@/utils/value-convert";
 import { unstable_cache } from "next/cache";
 import { revalidateTag } from "next/cache";
+import { getCacheOptions } from "@/cache/cache";
+import { premiumCacheConfig } from "@/cache/premium";
 
 // Get user's current premium status
 export const getUserPremiumStatus = unstable_cache(
@@ -46,11 +48,8 @@ export const getUserPremiumStatus = unstable_cache(
       daysRemaining: isStillActive ? daysRemaining : 0,
     };
   },
-  ["user-premium-status"],
-  {
-    revalidate: 1800,
-    tags: ["user-premium-status"],
-  },
+  [premiumCacheConfig.getUserPremiumStatus.cacheKey!],
+  getCacheOptions(premiumCacheConfig.getUserPremiumStatus),
 );
 
 // Calculate price with discounts (server-side only)
@@ -367,11 +366,8 @@ export const getUserPurchaseHistory = unstable_cache(
       },
     });
   },
-  ["user-purchase-history"],
-  {
-    revalidate: 1800,
-    tags: ["user-purchase-history"],
-  },
+  [premiumCacheConfig.getUserPurchaseHistory.cacheKey!],
+  getCacheOptions(premiumCacheConfig.getUserPurchaseHistory),
 );
 
 // Enhanced access check that returns detailed status

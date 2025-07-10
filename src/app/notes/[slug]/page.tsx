@@ -13,6 +13,7 @@ import NoteHeader from "@/components/note/NoteHeader";
 import { Separator } from "@/components/ui/separator";
 import GreetUser from "@/components/note/GreetUser";
 import NotesFontControl from "@/components/note/NotesFontControl";
+import NotesScrollProcess from "@/components/note/NotesScrollProcess";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -78,18 +79,25 @@ export default async function NotePage({
       {/* Font Control - Fixed position on the left */}
       <NotesFontControl />
 
-      <div className="note-content-wrapper flex pt-10">
-        <div className="flex flex-1 justify-center">
-          <div className="w-full max-w-3xl px-4 sm:px-6">
+      {/* Table of Contents - Toggle component */}
+      <TableOfContent headings={note.headings} />
+
+      {/* Scroll Progress - Fixed position on the right */}
+      <NotesScrollProcess />
+
+      <div className="note-content-wrapper pt-10">
+        <div className="flex justify-center">
+          <div className="w-full max-w-4xl px-4 sm:px-6 lg:px-8">
             <NoteHeader note={note} />
             <Separator className="my-8" />
             <GreetUser
               name={session.user.name}
               image={session.user.image || null}
               email={session.user.email}
+              content={note.content || undefined}
             />
             {markdown ? (
-              <article className="prose prose-lg dark:prose-invert prose-headings:scroll-mt-8">
+              <article className="prose prose-lg dark:prose-invert prose-headings:scroll-mt-8 mx-auto">
                 <PortableText
                   value={note.content || []}
                   components={myPortableTextComponents}
@@ -102,11 +110,6 @@ export default async function NotePage({
             )}
           </div>
         </div>
-
-        {/* Table of Contents - positioned to the right with minimal spacing */}
-        <aside className="fixed top-40 right-0 mr-10 hidden w-[16.5rem] flex-shrink-0 pr-2 lg:block">
-          <TableOfContent headings={note.headings} />
-        </aside>
       </div>
     </div>
   );

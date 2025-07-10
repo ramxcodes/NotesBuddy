@@ -171,7 +171,7 @@ export default function NotesFontControl() {
   return (
     <>
       {/* Desktop  */}
-      <div className="fixed top-1/2 left-4 z-50 hidden -translate-y-1/2 lg:block">
+      <div className="fixed top-1/2 right-4 z-50 hidden -translate-y-1/2 lg:block">
         <div className="flex flex-col gap-2 rounded-lg border p-2 backdrop-blur-sm">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

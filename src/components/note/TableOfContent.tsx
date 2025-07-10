@@ -3,9 +3,21 @@
 import { NOTE_BY_SLUG_QUERYResult } from "@/sanity/types";
 import { slugify } from "@/utils/helpers";
 import { useEffect, useState } from "react";
-import { BookOpenIcon } from "@/components/icons/BookOpenIcon";
-import { CaretDownIcon } from "@/components/icons/CaretDownIcon";
-import { CaretRightIcon } from "@/components/icons/CaretRightIcon";
+import {
+  BookOpenIcon,
+  CaretDownIcon,
+  CaretRightIcon,
+  ListIcon,
+} from "@phosphor-icons/react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type HeadingItem = NonNullable<
   NonNullable<NOTE_BY_SLUG_QUERYResult>["headings"]
@@ -23,6 +35,14 @@ export default function TableOfContent({
 }) {
   const [activeId, setActiveId] = useState<string>("");
   const [activeH2Id, setActiveH2Id] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const isMobile = useIsMobile();
+
+  // Handle hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const getHeadingText = (heading: HeadingItem) => {
     if (!heading?.children) return "Untitled";
@@ -127,12 +147,22 @@ export default function TableOfContent({
     return null;
   }
 
+  // Don't render until mounted to avoid hydration mismatch
+  if (!isMounted) {
+    return null;
+  }
+
   const handleClick = (text: string) => {
     const id = slugify(text);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
       setActiveId(id);
+
+      // Close sheet on mobile after clicking
+      if (isMobile) {
+        setIsOpen(false);
+      }
     }
   };
 
@@ -140,13 +170,13 @@ export default function TableOfContent({
     setActiveH2Id(activeH2Id === h2Id ? "" : h2Id);
   };
 
-  return (
-    <div className="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
+  const TableOfContentInner = () => (
+    <div className="flex h-full flex-col">
       <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
-        <BookOpenIcon className="size-4" />
+        <BookOpenIcon className="size-4" weight="duotone" />
         On this page
       </h3>
-      <div className="border-l border-gray-200 pl-4 dark:border-gray-700">
+      <div className="flex-1 overflow-y-auto border-l border-gray-200 pl-4 dark:border-gray-700">
         <nav>
           <ul className="space-y-1">
             {groupedHeadings.map((group) => {
@@ -167,9 +197,9 @@ export default function TableOfContent({
                       }
                     >
                       {isActiveH2 ? (
-                        <CaretDownIcon className="size-4" />
+                        <CaretDownIcon className="bg-muted size-4 rounded-md p-0.5" />
                       ) : (
-                        <CaretRightIcon className="size-4" />
+                        <CaretRightIcon className="bg-muted size-4 rounded-md p-0.5" />
                       )}
                     </button>
                     <button
@@ -215,6 +245,57 @@ export default function TableOfContent({
           </ul>
         </nav>
       </div>
+    </div>
+  );
+
+  return (
+    <div
+      className={`fixed z-40 ${
+        isMobile ? "top-20 -right-1" : "top-40 right-6"
+      }`}
+    >
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <Button
+            variant="outline"
+            size={isMobile ? "lg" : "sm"}
+            className={`bg-background/95 border backdrop-blur-sm ${
+              isMobile ? "rounded-l-3xl" : ""
+            }`}
+            aria-label="Toggle table of contents"
+          >
+            <ListIcon
+              className={`${isMobile ? "size-5" : "size-4"}`}
+              weight="duotone"
+            />
+            <span className="hidden lg:block">
+              {activeId
+                ? headings?.find((h) => slugify(getHeadingText(h)) === activeId)
+                  ? (() => {
+                      const fullText = getHeadingText(
+                        headings.find(
+                          (h) => slugify(getHeadingText(h)) === activeId,
+                        )!,
+                      );
+                      const words = fullText.split(' ');
+                      const truncated = words.slice(0, 4).join(' ');
+                      return words.length > 4 ? `${truncated}...` : fullText;
+                    })()
+                  : "Table of Contents"
+                : "Table of Contents"}
+            </span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent
+          side="right"
+          className={`${isMobile ? "w-[280px] p-4" : "w-[320px] p-6 sm:w-[400px]"}`}
+        >
+          <SheetHeader>
+            <SheetTitle className="sr-only">Table of Contents</SheetTitle>
+          </SheetHeader>
+          <TableOfContentInner />
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import Search from "@/components/note/Search";
 import { Metadata } from "next";
-import NotesCard from "@/components/note/NotesCard";
 import FilterNotesDropdown from "@/components/note/FilterNotesDropdown";
 import { getFilteredNotes } from "@/dal/note/helper";
 import { getSession } from "@/lib/db/user";
@@ -8,8 +7,7 @@ import {
   getUserOnboardingStatus,
   getUserFullProfile,
 } from "@/dal/user/onboarding/query";
-import { NotesPagination } from "@/components/note/NotesPagination";
-import { NOTES_QUERYResult } from "@/sanity/types";
+import { NotesInfiniteList } from "@/components/note/NotesInfiniteList";
 
 export const metadata: Metadata = {
   title: "Notes",
@@ -34,16 +32,7 @@ export default async function NotesPage({
 }) {
   // Get search parameters
   const params = await searchParams;
-  const {
-    query,
-    university,
-    degree,
-    year,
-    semester,
-    subject,
-    lastTitle,
-    lastId,
-  } = params;
+  const { query, university, degree, year, semester, subject } = params;
 
   // Get user session and profile data
   const session = await getSession();
@@ -75,11 +64,18 @@ export default async function NotesPage({
     subject: subject === "all" ? undefined : subject,
   };
 
-  // Fetch filtered notes with cursor-based pagination
-  const notes = await getFilteredNotes(filters, { lastTitle, lastId });
+  // Fetch initial notes (first page only)
+  const initialNotes = await getFilteredNotes(filters);
 
-  // Check if there are more notes (if we got 6 results, there might be more)
-  const hasMore = notes.length === 6;
+  // Prepare search params for the infinite list (excluding cursor params)
+  const searchParamsForList = {
+    query,
+    university,
+    degree,
+    year,
+    semester,
+    subject,
+  };
 
   return (
     <div className="mx-auto mt-10 flex max-w-6xl flex-col items-center justify-center gap-4 space-y-10 py-5">
@@ -101,32 +97,11 @@ export default async function NotesPage({
         isAuthenticated={!!session?.user}
       />
 
-      {/* Notes Grid */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {notes.length > 0 ? (
-          notes.map((note: NOTES_QUERYResult[0]) => (
-            <NotesCard key={note._id} note={note} />
-          ))
-        ) : (
-          <div className="col-span-full py-12 text-center">
-            <p className="text-muted-foreground text-lg">
-              No notes found with the current filters.
-            </p>
-            <p className="text-muted-foreground mt-2 text-sm">
-              Try adjusting your search criteria or filters.
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* Load More button - only show if there are notes and potentially more */}
-      {notes.length > 0 && hasMore && (
-        <NotesPagination
-          hasMore={hasMore}
-          lastNote={notes[notes.length - 1]}
-          searchParams={params}
-        />
-      )}
+      {/* Infinite List Component */}
+      <NotesInfiniteList
+        initialNotes={initialNotes}
+        searchParams={searchParamsForList}
+      />
     </div>
   );
 }

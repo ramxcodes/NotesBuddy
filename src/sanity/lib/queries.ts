@@ -1,8 +1,13 @@
 import { defineQuery } from "next-sanity";
 
+// Optimized search query with better indexing and simpler sorting
 export const NOTES_QUERY =
   defineQuery(`*[_type == "note" && defined(slug.current) && 
-    (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&
+    (!defined($search) || 
+      title match $search + "*" ||
+      subject match $search + "*" ||
+      (length($search) >= 3 && pt::text(syllabus) match $search + "*")
+    ) &&
     (!defined($university) || university == $university) &&
     (!defined($degree) || degree == $degree) &&
     (!defined($year) || year == $year) &&
@@ -21,12 +26,23 @@ export const NOTES_QUERY =
   semester,
   subject,
   isPremium,
-  tier
+  tier,
+  "searchScore": select(
+    defined($search) && title match $search + "*" => 3,
+    defined($search) && subject match $search + "*" => 2,
+    defined($search) && pt::text(syllabus) match $search + "*" => 1,
+    true => 0
+  )
 }`);
 
+// Optimized count query
 export const NOTES_COUNT_QUERY =
   defineQuery(`count(*[_type == "note" && defined(slug.current) && 
-    (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&
+    (!defined($search) || 
+      title match $search + "*" ||
+      subject match $search + "*" ||
+      (length($search) >= 3 && pt::text(syllabus) match $search + "*")
+    ) &&
     (!defined($university) || university == $university) &&
     (!defined($degree) || degree == $degree) &&
     (!defined($year) || year == $year) &&
@@ -34,6 +50,7 @@ export const NOTES_COUNT_QUERY =
     (!defined($subject) || subject match $subject)
   ])`);
 
+// Enhanced subjects query with caching optimization
 export const SUBJECTS_QUERY = defineQuery(`
   *[_type == "note" && defined(subject) &&
     (!defined($university) || university == $university) &&

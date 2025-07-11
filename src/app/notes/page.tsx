@@ -23,7 +23,7 @@ interface SearchParams {
   year?: string;
   semester?: string;
   subject?: string;
-  lastCreatedAt?: string;
+  lastTitle?: string;
   lastId?: string;
 }
 
@@ -41,7 +41,7 @@ export default async function NotesPage({
     year,
     semester,
     subject,
-    lastCreatedAt,
+    lastTitle,
     lastId,
   } = params;
 
@@ -76,7 +76,7 @@ export default async function NotesPage({
   };
 
   // Fetch filtered notes with cursor-based pagination
-  const notes = await getFilteredNotes(filters, { lastCreatedAt, lastId });
+  const notes = await getFilteredNotes(filters, { lastTitle, lastId });
 
   // Check if there are more notes (if we got 6 results, there might be more)
   const hasMore = notes.length === 6;

@@ -1,3 +1,5 @@
+"use client";
+
 import { LinkIcon } from "@/components/icons/LinkIcon";
 import { slugify } from "@/utils/helpers";
 import {
@@ -8,6 +10,7 @@ import {
 import "katex/dist/katex.min.css";
 import { BlockMath } from "react-katex";
 import { ImageComponent } from "./ImageComponent";
+import { CodeComponent } from "./CodeComponent";
 
 type HeadingProps = PortableTextComponentProps<PortableTextBlock>;
 
@@ -133,5 +136,6 @@ export const myPortableTextComponents = {
   types: {
     latex: LaTeXComponent,
     customImage: ImageComponent,
+    code: CodeComponent,
   },
 };

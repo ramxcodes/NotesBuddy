@@ -8,7 +8,7 @@ interface SearchParams {
   year?: string;
   semester?: string;
   subject?: string;
-  lastCreatedAt?: string;
+  lastTitle?: string;
   lastId?: string;
 }
 
@@ -27,14 +27,14 @@ export function NotesPagination({
 
     // Add all current search params except cursor params
     Object.entries(searchParams).forEach(([key, value]) => {
-      if (key !== "lastCreatedAt" && key !== "lastId" && value) {
+      if (key !== "lastTitle" && key !== "lastId" && value) {
         params.set(key, value);
       }
     });
 
     // Add cursor parameters from the last note
     if (lastNote) {
-      params.set("lastCreatedAt", lastNote._createdAt);
+      params.set("lastTitle", lastNote.title || "");
       params.set("lastId", lastNote._id);
     }
 

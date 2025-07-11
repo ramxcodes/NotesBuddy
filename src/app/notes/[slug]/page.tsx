@@ -1,7 +1,6 @@
 import { notFound, redirect } from "next/navigation";
-import { PortableText } from "@portabletext/react";
 import TableOfContent from "@/components/note/TableOfContent";
-import { myPortableTextComponents } from "@/components/note/custom-components/PortableTextComponent";
+import { PortableTextRenderer } from "@/components/note/PortableTextRenderer";
 import { checkUserBlockedStatus, getSession } from "@/lib/db/user";
 import type { Metadata } from "next";
 import { getNoteBySlug } from "@/dal/note/helper";
@@ -72,8 +71,6 @@ export default async function NotePage({
     }
   }
 
-  const markdown = note.content || "";
-
   return (
     <div className="relative w-full">
       {/* Font Control - Fixed position on the left */}
@@ -96,12 +93,9 @@ export default async function NotePage({
               email={session.user.email}
               content={note.content || undefined}
             />
-            {markdown ? (
+            {note.content && note.content.length > 0 ? (
               <article className="prose prose-lg dark:prose-invert prose-headings:scroll-mt-8 mx-auto">
-                <PortableText
-                  value={note.content || []}
-                  components={myPortableTextComponents}
-                />
+                <PortableTextRenderer value={note.content} />
               </article>
             ) : (
               <p className="text-gray-500 dark:text-gray-400">

@@ -13,6 +13,43 @@
  */
 
 // Source: schema.json
+export type Code = {
+  _type: "code";
+  language?:
+    | "text"
+    | "javascript"
+    | "typescript"
+    | "python"
+    | "java"
+    | "c"
+    | "cpp"
+    | "csharp"
+    | "php"
+    | "ruby"
+    | "go"
+    | "rust"
+    | "swift"
+    | "kotlin"
+    | "html"
+    | "css"
+    | "scss"
+    | "sql"
+    | "bash"
+    | "powershell"
+    | "json"
+    | "xml"
+    | "yaml"
+    | "markdown"
+    | "dockerfile"
+    | "r"
+    | "matlab"
+    | "perl"
+    | "lua"
+    | "assembly";
+  code?: string;
+  filename?: string;
+};
+
 export type CustomImage = {
   _type: "customImage";
   asset?: {
@@ -85,12 +122,32 @@ export type Note = {
     | ({
         _key: string;
       } & CustomImage)
+    | ({
+        _key: string;
+      } & Table)
+    | ({
+        _key: string;
+      } & Code)
   >;
 };
 
 export type Latex = {
   _type: "latex";
   body?: string;
+};
+
+export type Table = {
+  _type: "table";
+  rows?: Array<
+    {
+      _key: string;
+    } & TableRow
+  >;
+};
+
+export type TableRow = {
+  _type: "tableRow";
+  cells?: Array<string>;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -212,9 +269,12 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | Code
   | CustomImage
   | Note
   | Latex
+  | Table
+  | TableRow
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -229,7 +289,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: NOTES_QUERY
-// Query: *[_type == "note" && defined(slug.current) &&     (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&    (!defined($university) || university == $university) &&    (!defined($degree) || degree == $degree) &&    (!defined($year) || year == $year) &&    (!defined($semester) || semester == $semester) &&    (!defined($subject) || subject match $subject) &&    (!defined($lastCreatedAt) || _createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id > $lastId))  ] | order(_createdAt desc, _id asc) [0...6] {  _id,  _createdAt,  title,  syllabus,  slug,  university,  degree,  year,  semester,  subject,  isPremium,  tier}
+// Query: *[_type == "note" && defined(slug.current) &&     (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&    (!defined($university) || university == $university) &&    (!defined($degree) || degree == $degree) &&    (!defined($year) || year == $year) &&    (!defined($semester) || semester == $semester) &&    (!defined($subject) || subject match $subject) &&    (!defined($lastTitle) || title > $lastTitle || (title == $lastTitle && _id > $lastId))  ] | order(title asc, _id asc) [0...6] {  _id,  _createdAt,  title,  syllabus,  slug,  university,  degree,  year,  semester,  subject,  isPremium,  tier}
 export type NOTES_QUERYResult = Array<{
   _id: string;
   _createdAt: string;
@@ -303,10 +363,16 @@ export type NOTE_BY_SLUG_QUERYResult = {
   content: Array<
     | ({
         _key: string;
+      } & Code)
+    | ({
+        _key: string;
       } & CustomImage)
     | ({
         _key: string;
       } & Latex)
+    | ({
+        _key: string;
+      } & Table)
     | {
         children?: Array<{
           marks?: Array<string>;
@@ -342,7 +408,7 @@ export type NOTE_BY_SLUG_QUERYResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "note" && defined(slug.current) && \n    (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&\n    (!defined($university) || university == $university) &&\n    (!defined($degree) || degree == $degree) &&\n    (!defined($year) || year == $year) &&\n    (!defined($semester) || semester == $semester) &&\n    (!defined($subject) || subject match $subject) &&\n    (!defined($lastCreatedAt) || _createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id > $lastId))\n  ] | order(_createdAt desc, _id asc) [0...6] {\n  _id,\n  _createdAt,\n  title,\n  syllabus,\n  slug,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  isPremium,\n  tier\n}': NOTES_QUERYResult;
+    '*[_type == "note" && defined(slug.current) && \n    (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&\n    (!defined($university) || university == $university) &&\n    (!defined($degree) || degree == $degree) &&\n    (!defined($year) || year == $year) &&\n    (!defined($semester) || semester == $semester) &&\n    (!defined($subject) || subject match $subject) &&\n    (!defined($lastTitle) || title > $lastTitle || (title == $lastTitle && _id > $lastId))\n  ] | order(title asc, _id asc) [0...6] {\n  _id,\n  _createdAt,\n  title,\n  syllabus,\n  slug,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  isPremium,\n  tier\n}': NOTES_QUERYResult;
     'count(*[_type == "note" && defined(slug.current) && \n    (!defined($search) || title match $search || university match $search || degree match $search || year match $search || semester match $search || subject match $search || syllabus match $search) &&\n    (!defined($university) || university == $university) &&\n    (!defined($degree) || degree == $degree) &&\n    (!defined($year) || year == $year) &&\n    (!defined($semester) || semester == $semester) &&\n    (!defined($subject) || subject match $subject)\n  ])': NOTES_COUNT_QUERYResult;
     '\n  *[_type == "note" && defined(subject) &&\n    (!defined($university) || university == $university) &&\n    (!defined($degree) || degree == $degree) &&\n    (!defined($year) || year == $year) &&\n    (!defined($semester) || semester == $semester)\n  ] {\n    "subject": subject\n  } | order(subject asc)\n': SUBJECTS_QUERYResult;
     '\n*[_type == "note" && slug.current == $slug][0]{\n _id,\n  title,\n  syllabus,\n  university,\n  degree,\n  year,\n  semester,\n  subject,\n  tier,\n  "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],\n  content,\n  slug,\n  isPremium\n}  \n': NOTE_BY_SLUG_QUERYResult;

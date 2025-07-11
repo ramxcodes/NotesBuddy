@@ -74,12 +74,9 @@ export function ProfileInfo({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6 md:flex-row">
-            <Avatar className="size-24">
-              <AvatarImage
-                className="border-border rounded-full border-2"
-                src={session?.image || ""}
-              />
-              <AvatarFallback className="border-border rounded-full border-2">
+            <Avatar className="border-border flex size-24 items-center justify-center rounded-full border-2">
+              <AvatarImage src={session?.image || ""} />
+              <AvatarFallback className="font-bold">
                 {session.name?.charAt(0)}
               </AvatarFallback>
             </Avatar>

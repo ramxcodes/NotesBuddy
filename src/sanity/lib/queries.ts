@@ -8,8 +8,8 @@ export const NOTES_QUERY =
     (!defined($year) || year == $year) &&
     (!defined($semester) || semester == $semester) &&
     (!defined($subject) || subject match $subject) &&
-    (!defined($lastCreatedAt) || _createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id > $lastId))
-  ] | order(_createdAt desc, _id asc) [0...6] {
+    (!defined($lastTitle) || title > $lastTitle || (title == $lastTitle && _id > $lastId))
+  ] | order(title asc, _id asc) [0...6] {
   _id,
   _createdAt,
   title,

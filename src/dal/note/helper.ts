@@ -81,7 +81,7 @@ export const getFilteredNotes = unstable_cache(
       subject?: string;
     },
     cursor?: {
-      lastCreatedAt?: string;
+      lastTitle?: string;
       lastId?: string;
     },
   ) => {
@@ -94,7 +94,7 @@ export const getFilteredNotes = unstable_cache(
         year: filters.year || null,
         semester: filters.semester || null,
         subject: filters.subject || null,
-        lastCreatedAt: cursor?.lastCreatedAt || null,
+        lastTitle: cursor?.lastTitle || null,
         lastId: cursor?.lastId || null,
       },
       getNextOptions(notesCacheConfig.getFilteredNotes),

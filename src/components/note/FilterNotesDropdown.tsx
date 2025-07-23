@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Select,
@@ -79,14 +79,20 @@ export default function FilterNotesDropdown({
   const [subjects, setSubjects] = useState<{ subject: string }[]>([]);
   const [isLoadingSubjects, setIsLoadingSubjects] = useState(false);
 
-  // Debounce filter changes to avoid too many URL updates
+  const hasActiveSearch = Boolean(searchParams.get("query")?.trim());
+
+  const prevSearchState = useRef(hasActiveSearch);
+
   const debouncedFilters = useDebounce(filters, 300);
 
-  // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
-    // Update URL parameters - only add if not "all"
+    const currentQuery = searchParams.get("query");
+    if (currentQuery && currentQuery.trim()) {
+      params.set("query", currentQuery);
+    }
+
     if (debouncedFilters.university && debouncedFilters.university !== "all") {
       params.set("university", debouncedFilters.university);
     } else {
@@ -117,17 +123,30 @@ export default function FilterNotesDropdown({
       params.delete("subject");
     }
 
-    // Preserve existing search query
-    const currentQuery = searchParams.get("query");
-    if (currentQuery) {
-      params.set("query", currentQuery);
-    }
-
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     router.replace(newUrl);
   }, [debouncedFilters, router, searchParams]);
 
-  // Fetch available subjects when other filters change
+  useEffect(() => {
+    const currentQuery = searchParams.get("query");
+    const wasSearching = prevSearchState.current;
+    const isSearching = Boolean(currentQuery && currentQuery.trim());
+
+    prevSearchState.current = isSearching;
+
+    if (isSearching && !wasSearching) {
+      setFilters({
+        university: "all",
+        degree: "all",
+        year: "all",
+        semester: "all",
+        subject: "all",
+      });
+    } else if (!isSearching && wasSearching) {
+      setFilters(initializeFilters());
+    }
+  }, [searchParams, initializeFilters]);
+
   useEffect(() => {
     const fetchSubjects = async () => {
       setIsLoadingSubjects(true);
@@ -140,7 +159,6 @@ export default function FilterNotesDropdown({
           semester: filters.semester === "all" ? undefined : filters.semester,
         });
 
-        // Ensure subjectData is an array and remove duplicates and filter out empty subjects
         const dataArray = Array.isArray(subjectData) ? subjectData : [];
         const uniqueSubjects = Array.from(
           new Set(
@@ -162,30 +180,24 @@ export default function FilterNotesDropdown({
     fetchSubjects();
   }, [filters.university, filters.degree, filters.year, filters.semester]);
 
-  // Handle filter changes
   const handleFilterChange = useCallback(
     (filterType: keyof FilterState, value: string) => {
       setFilters((prev) => {
         const updated = { ...prev, [filterType]: value };
 
-        // Reset dependent filters when parent filter changes
         if (filterType === "university") {
-          // Reset all dependent filters when university changes
           updated.degree = "all";
           updated.year = "all";
           updated.semester = "all";
           updated.subject = "all";
         } else if (filterType === "degree") {
-          // Reset year, semester, and subject when degree changes
           updated.year = "all";
           updated.semester = "all";
           updated.subject = "all";
         } else if (filterType === "year") {
-          // Reset semester and subject when year changes
           updated.semester = "all";
           updated.subject = "all";
         } else if (filterType === "semester") {
-          // Reset subject when semester changes
           updated.subject = "all";
         }
 
@@ -196,7 +208,15 @@ export default function FilterNotesDropdown({
   );
 
   return (
-    <div className="my-6 flex flex-wrap items-center justify-center gap-4 rounded-md border px-8 py-12 border-b-8 border-r-8 border-primary dark:border-secondary">
+    <div className="border-primary dark:border-secondary my-6 flex flex-wrap items-center justify-center gap-4 rounded-md border border-r-8 border-b-8 px-8 py-12">
+      {hasActiveSearch && (
+        <div className="mb-4 w-full text-center">
+          <p className="text-muted-foreground text-sm">
+            Searching all notes. Use filters below to narrow down results.
+          </p>
+        </div>
+      )}
+
       {/* University Filter */}
       <div className="flex flex-col gap-1">
         <label className="text-muted-foreground text-sm font-medium">

@@ -15,7 +15,6 @@ export default function Search({ query }: { query: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Only trigger search if search term is different and either empty or at least 3 characters
     if (
       debouncedSearch !== query &&
       (debouncedSearch.length === 0 || debouncedSearch.length >= 3)
@@ -24,8 +23,6 @@ export default function Search({ query }: { query: string }) {
       if (debouncedSearch.trim()) {
         searchParams.set("query", debouncedSearch.trim());
       }
-      // Remove all filter params when searching
-      // (do not add university, degree, year, semester, subject)
       router.push(
         `/notes${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
       );
@@ -65,7 +62,6 @@ export default function Search({ query }: { query: string }) {
   };
 
   const handleBlur = () => {
-    // Small delay to allow for click events on clear button
     setTimeout(() => {
       setIsSearchOpen(false);
     }, 100);

@@ -9,7 +9,7 @@ import {
   UNIVERSITY_OPTIONS,
   YEAR_OPTIONS,
 } from "@/utils/constant";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface UserProfileData {
   firstName?: string | null;
@@ -75,8 +75,11 @@ export function ProfileInfo({
         <CardContent>
           <div className="flex flex-col gap-6 md:flex-row">
             <Avatar className="border-border flex size-24 items-center justify-center rounded-full border-2">
-              <AvatarImage src={session?.image || ""} />
-              <AvatarFallback className="font-bold">
+              <AvatarImage
+                className="rounded-full"
+                src={session?.image || ""}
+              />
+              <AvatarFallback className="rounded-full font-bold">
                 {session.name?.charAt(0)}
               </AvatarFallback>
             </Avatar>

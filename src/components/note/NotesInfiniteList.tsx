@@ -149,13 +149,13 @@ export function NotesInfiniteList({
 
       {/* Load More button */}
       {notes.length > 0 && hasMore && (
-        <div className="mt-10 flex justify-center group hover:cursor-pointer">
+        <div className="group mt-10 flex justify-center hover:cursor-pointer">
           <Button
             variant="outline"
             size="lg"
             onClick={loadMoreNotes}
             disabled={isPending}
-            className="group-hover:cursor-pointer"
+            className="border-primary dark:border-secondary border-r-4 border-b-4 transition-all duration-300 group-hover:cursor-pointer hover:border-r-1 hover:border-b-1"
           >
             {isPending ? "Loading..." : "Load More Notes"}
           </Button>
@@ -165,7 +165,9 @@ export function NotesInfiniteList({
       {/* End message */}
       {notes.length > 0 && !hasMore && (
         <div className="mt-10 flex justify-center">
-          <p className="text-muted-foreground">No more notes to load</p>
+          <p className="text-muted-foreground">
+            Its the end {">"}.{"<"}
+          </p>
         </div>
       )}
     </>

@@ -196,7 +196,7 @@ export default function FilterNotesDropdown({
   );
 
   return (
-    <div className="border-primary/20 my-6 flex flex-wrap items-center justify-center gap-4 rounded-md border px-8 py-12">
+    <div className="my-6 flex flex-wrap items-center justify-center gap-4 rounded-md border px-8 py-12 border-b-8 border-r-8 border-primary dark:border-secondary">
       {/* University Filter */}
       <div className="flex flex-col gap-1">
         <label className="text-muted-foreground text-sm font-medium">

@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import GreetUser from "@/components/note/GreetUser";
 import NotesFontControl from "@/components/note/NotesFontControl";
 import NotesScrollProcess from "@/components/note/NotesScrollProcess";
+import ScrollToTop from "@/components/core/ScrollToTop";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -73,6 +74,7 @@ export default async function NotePage({
 
   return (
     <div className="relative w-full">
+      <ScrollToTop />
       {/* Font Control - Fixed position on the left */}
       <NotesFontControl />
 

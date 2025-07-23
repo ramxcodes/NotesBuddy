@@ -1,4 +1,4 @@
-import Search from "@/components/note/Search";
+import Search from "@/components/note/NotesSearch";
 import { Metadata } from "next";
 import FilterNotesDropdown from "@/components/note/FilterNotesDropdown";
 import { getFilteredNotes } from "@/dal/note/helper";
@@ -78,30 +78,35 @@ export default async function NotesPage({
   };
 
   return (
-    <div className="mx-auto mt-10 flex max-w-6xl flex-col items-center justify-center gap-4 space-y-10 py-5">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-5xl font-bold">Welcome to Notes Buddy!</h1>
-        <p className="text-muted-foreground text-lg">
-          Find your notes by searching or filtering by university, degree, year,
-          semester, and subject.
+    <div className="mx-auto mt-6 flex max-w-6xl flex-col items-center justify-center gap-4 space-y-6 px-4 py-5 sm:mt-8 sm:space-y-8 sm:px-6 lg:mt-10 lg:space-y-10 lg:px-8">
+      <div className="flex flex-col items-center justify-center gap-3 text-center sm:gap-4">
+        <h1 className="text-3xl font-bold sm:text-4xl lg:text-5xl">Welcome to Notes Buddy!</h1>
+        <p className="text-muted-foreground text-base sm:text-lg max-w-2xl">
+          Find your notes by searching or filtering.
         </p>
       </div>
 
       {/* Search Component */}
-      <Search query={query || ""} />
+      <div className="w-full max-w-2xl">
+        <Search query={query || ""} />
+      </div>
 
       {/* Filter Dropdown */}
-      <FilterNotesDropdown
-        userProfile={userProfile}
-        isOnboarded={isOnboarded}
-        isAuthenticated={!!session?.user}
-      />
+      <div className="w-full max-w-4xl">
+        <FilterNotesDropdown
+          userProfile={userProfile}
+          isOnboarded={isOnboarded}
+          isAuthenticated={!!session?.user}
+        />
+      </div>
 
       {/* Infinite List Component */}
-      <NotesInfiniteList
-        initialNotes={initialNotes}
-        searchParams={searchParamsForList}
-      />
+      <div className="w-full">
+        <NotesInfiniteList
+          initialNotes={initialNotes}
+          searchParams={searchParamsForList}
+        />
+      </div>
     </div>
   );
 }

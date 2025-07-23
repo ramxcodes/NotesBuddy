@@ -22,7 +22,7 @@ export default function NotesCard({
   note: NOTES_QUERYResult[number];
 }) {
   return (
-    <Card className="relative min-h-fit shadow-none">
+    <Card className="relative h-[350px] shadow-none border-b-8 border-r-8 border-primary dark:border-secondary transition-all duration-300 hover:border-b-1 hover:border-r-1">
       <CardHeader className="pb-4">
         {note.isPremium && (
           <Badge
@@ -80,7 +80,7 @@ export default function NotesCard({
         </div>
       </CardContent>
 
-      <CardFooter className="pt-4">
+      <CardFooter className="pt-4 absolute bottom-6 left-0 right-0">
         <Link href={`/notes/${note?.slug?.current}`} className="w-full">
           <Button
             variant="default"

@@ -18,7 +18,7 @@ const footerItems = [
   },
   {
     label: "Cancellation & Refund Policy",
-    href: "/about",
+    href: "/refund",
   },
   {
     label: "Terms of Conditions",

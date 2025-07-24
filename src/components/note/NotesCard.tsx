@@ -84,7 +84,7 @@ export default function NotesCard({
         <Link href={`/notes/${note?.slug?.current}`} className="w-full">
           <Button
             variant="default"
-            className="w-full font-medium transition-all duration-200 border-b-4 border-r-4 border-primary/50 dark:border-secondary/50 hover:border-b-1 hover:border-r-1 hover:shadow-lg dark:hover:shadow-lg hover:shadow-black/30 dark:hover:shadow-white/10 hover:-translate-y-0.5 hover:translate-x-0.5 hover:cursor-pointer"
+            className="w-full font-medium transition-all duration-200 border-b-4 border-r-4 border-primary/50 dark:border-secondary/50 hover:border-b-1 hover:border-r-1 hover:-translate-y-0.5 hover:translate-x-0.5 hover:cursor-pointer"
           >
             View Notes
             <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

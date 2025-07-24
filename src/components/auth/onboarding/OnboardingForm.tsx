@@ -488,7 +488,7 @@ export function OnboardingForm() {
                     Creating Profile...
                   </>
                 ) : (
-                  <div className="text-white">
+                  <div className="text-black dark:text-white flex items-center hover:text-white">
                     Complete Onboarding
                     <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </div>

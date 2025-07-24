@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     "Learn more about Notes Buddy, our mission, and how we help students learn smarter.",
 };
 
+// Force static generation
+export const dynamic = "force-static";
+
 export default function AboutPage() {
   return (
     <div className="font-satoshi container mx-auto min-h-screen max-w-6xl">

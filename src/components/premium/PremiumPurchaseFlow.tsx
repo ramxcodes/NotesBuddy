@@ -116,6 +116,8 @@ export function PremiumPurchaseFlow({
   // State management
   const [selectedTier, setSelectedTier] = useState<PremiumTier>("TIER_1");
   const [discountCode, setDiscountCode] = useState("");
+  const [useWalletBalance, setUseWalletBalance] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(0);
   const [isCalculating, setIsCalculating] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [priceCalculation, setPriceCalculation] =
@@ -137,7 +139,23 @@ export function PremiumPurchaseFlow({
     if (codeFromUrl) {
       setDiscountCode(codeFromUrl);
     }
+
+    // Fetch wallet balance
+    fetchWalletBalance();
   }, [searchParams]);
+
+  // Fetch wallet balance
+  const fetchWalletBalance = async () => {
+    try {
+      const response = await fetch("/api/user/wallet-balance");
+      if (response.ok) {
+        const data = await response.json();
+        setWalletBalance(data.walletBalance || 0);
+      }
+    } catch (err) {
+      console.error("Failed to fetch wallet balance:", err);
+    }
+  };
 
   // Update URL when state changes
   useEffect(() => {
@@ -149,14 +167,28 @@ export function PremiumPurchaseFlow({
     router.replace(`/premium?${params.toString()}`);
   }, [selectedTier, discountCode, router]);
 
-  // Calculate price when tier or discount changes
+  // Calculate price when tier, discount, or wallet usage changes
   useEffect(() => {
     calculatePrice();
-  }, [selectedTier, discountCode]);
+  }, [selectedTier, discountCode, useWalletBalance]);
+
+  // Reset wallet usage if balance is 0
+  useEffect(() => {
+    if (walletBalance <= 0) {
+      setUseWalletBalance(false);
+    }
+  }, [walletBalance]);
 
   const calculatePrice = async () => {
     setIsCalculating(true);
     setError("");
+
+    // Validate wallet usage
+    if (useWalletBalance && walletBalance <= 0) {
+      setError("Insufficient wallet balance");
+      setIsCalculating(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/premium/calculate-price", {
@@ -166,6 +198,8 @@ export function PremiumPurchaseFlow({
           tier: selectedTier,
           discountCode: discountCode.trim() || undefined,
           referralCode: discountCode.trim() || undefined, // Same input for both
+          useWalletBalance: useWalletBalance,
+          walletAmount: useWalletBalance ? walletBalance : undefined,
         }),
       });
 
@@ -187,6 +221,18 @@ export function PremiumPurchaseFlow({
   const initiatePayment = async () => {
     if (!priceCalculation) return;
 
+    // Validate wallet usage before payment
+    if (useWalletBalance && walletBalance <= 0) {
+      setError("Insufficient wallet balance for discount");
+      return;
+    }
+
+    // Validate final amount
+    if (priceCalculation.finalAmount < 0) {
+      setError("Invalid payment amount calculated");
+      return;
+    }
+
     setIsProcessing(true);
     setError("");
 
@@ -199,6 +245,8 @@ export function PremiumPurchaseFlow({
           tier: selectedTier,
           discountCode: discountCode.trim() || undefined,
           referralCode: discountCode.trim() || undefined,
+          useWalletBalance: useWalletBalance,
+          walletAmount: useWalletBalance ? walletBalance : undefined,
         }),
       });
 
@@ -318,7 +366,10 @@ export function PremiumPurchaseFlow({
             <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <UserIcon className="h-5 w-5 text-black dark:text-white" type="duotone" />
+                  <UserIcon
+                    className="h-5 w-5 text-black dark:text-white"
+                    type="duotone"
+                  />
                   <span className="font-excon text-xl font-black text-black dark:text-white">
                     Academic Profile
                   </span>
@@ -327,33 +378,59 @@ export function PremiumPurchaseFlow({
               <CardContent>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <GraduationCapIcon className="h-4 w-4 text-black dark:text-white" type="duotone" />
+                    <GraduationCapIcon
+                      className="h-4 w-4 text-black dark:text-white"
+                      type="duotone"
+                    />
                     <div>
-                      <span className="font-satoshi font-bold text-black dark:text-white">University:</span>
+                      <span className="font-satoshi font-bold text-black dark:text-white">
+                        University:
+                      </span>
                       <p className="font-satoshi font-bold text-black dark:text-white">
                         {academicDetails.university}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <BookOpenIcon className="h-4 w-4 text-black dark:text-white" type="duotone" />
+                    <BookOpenIcon
+                      className="h-4 w-4 text-black dark:text-white"
+                      type="duotone"
+                    />
                     <div>
-                      <span className="font-satoshi font-bold text-black dark:text-white">Degree:</span>
-                      <p className="font-satoshi font-bold text-black dark:text-white">{academicDetails.degree}</p>
+                      <span className="font-satoshi font-bold text-black dark:text-white">
+                        Degree:
+                      </span>
+                      <p className="font-satoshi font-bold text-black dark:text-white">
+                        {academicDetails.degree}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CalendarIcon className="h-4 w-4 text-black dark:text-white" type="duotone" />
+                    <CalendarIcon
+                      className="h-4 w-4 text-black dark:text-white"
+                      type="duotone"
+                    />
                     <div>
-                      <span className="font-satoshi font-bold text-black dark:text-white">Year:</span>
-                      <p className="font-satoshi font-bold text-black dark:text-white">{academicDetails.year}</p>
+                      <span className="font-satoshi font-bold text-black dark:text-white">
+                        Year:
+                      </span>
+                      <p className="font-satoshi font-bold text-black dark:text-white">
+                        {academicDetails.year}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <StarIcon className="h-4 w-4 text-black dark:text-white" type="duotone" />
+                    <StarIcon
+                      className="h-4 w-4 text-black dark:text-white"
+                      type="duotone"
+                    />
                     <div>
-                      <span className="font-satoshi font-bold text-black dark:text-white">Semester:</span>
-                      <p className="font-satoshi font-bold text-black dark:text-white">{academicDetails.semester}</p>
+                      <span className="font-satoshi font-bold text-black dark:text-white">
+                        Semester:
+                      </span>
+                      <p className="font-satoshi font-bold text-black dark:text-white">
+                        {academicDetails.semester}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -391,11 +468,18 @@ export function PremiumPurchaseFlow({
                   </SelectTrigger>
                   <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
                     {tierConfigs.map((tier) => (
-                      <SelectItem key={tier.tier} value={tier.tier} className="font-satoshi font-bold text-black dark:text-white">
+                      <SelectItem
+                        key={tier.tier}
+                        value={tier.tier}
+                        className="font-satoshi font-bold text-black dark:text-white"
+                      >
                         <div className="flex w-full items-center justify-between">
                           <span>{tier.title}</span>
                           {tier.tier === "TIER_2" && (
-                            <Badge variant="secondary" className="ml-2 rounded-xl border-2 border-black bg-white font-satoshi font-black text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+                            <Badge
+                              variant="secondary"
+                              className="font-satoshi ml-2 rounded-xl border-2 border-black bg-white font-black text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                            >
                               Popular
                             </Badge>
                           )}
@@ -425,7 +509,10 @@ export function PremiumPurchaseFlow({
           <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <GiftIcon className="h-5 w-5 text-black dark:text-white" type="duotone" />
+                <GiftIcon
+                  className="h-5 w-5 text-black dark:text-white"
+                  type="duotone"
+                />
                 <span className="font-excon text-xl font-black text-black dark:text-white">
                   Discount Code
                 </span>
@@ -464,6 +551,106 @@ export function PremiumPurchaseFlow({
           </Card>
         </motion.div>
 
+        {/* Wallet Balance Section */}
+        {walletBalance > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <CreditCardIcon
+                    className="h-5 w-5 text-black dark:text-white"
+                    type="duotone"
+                  />
+                  <span className="font-excon text-xl font-black text-black dark:text-white">
+                    Wallet Balance
+                  </span>
+                </CardTitle>
+                <CardDescription className="font-satoshi font-bold text-black dark:text-white">
+                  Use your referral earnings to get a discount
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white">
+                        <span className="font-excon text-sm font-black text-white dark:text-black">
+                          ₹
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-satoshi font-bold text-black dark:text-white">
+                          Available Balance
+                        </p>
+                        <p className="font-excon text-lg font-black text-black dark:text-white">
+                          ₹{walletBalance}
+                        </p>
+                        {walletBalance <= 0 && (
+                          <p className="font-satoshi text-xs text-gray-500 dark:text-gray-400">
+                            Earn more through referrals
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="useWalletBalance"
+                        checked={useWalletBalance}
+                        onChange={(e) => setUseWalletBalance(e.target.checked)}
+                        disabled={walletBalance <= 0}
+                        className="sr-only"
+                      />
+                      <label
+                        htmlFor="useWalletBalance"
+                        className={`relative flex h-6 w-11 rounded-full border-2 border-black transition-colors dark:border-white ${
+                          walletBalance <= 0
+                            ? "cursor-not-allowed opacity-50"
+                            : "cursor-pointer"
+                        } ${
+                          useWalletBalance
+                            ? "bg-black dark:bg-white"
+                            : "bg-white dark:bg-zinc-900"
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full border-2 border-black bg-white transition-transform dark:border-white dark:bg-zinc-900 ${
+                            useWalletBalance ? "translate-x-5" : "translate-x-0"
+                          }`}
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  {useWalletBalance && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]"
+                    >
+                      <div className="flex items-center gap-2">
+                        <CheckCircleIcon
+                          className="h-4 w-4 text-black dark:text-white"
+                          type="duotone"
+                        />
+                        <span className="font-satoshi text-sm font-bold text-black dark:text-white">
+                          Wallet discount will be applied at checkout
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
         {/* Price Summary */}
         <AnimatePresence>
           {priceCalculation && (
@@ -476,7 +663,10 @@ export function PremiumPurchaseFlow({
               <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <LightningIcon className="h-5 w-5 text-black dark:text-white" type="duotone" />
+                    <LightningIcon
+                      className="h-5 w-5 text-black dark:text-white"
+                      type="duotone"
+                    />
                     <span className="font-excon text-xl font-black text-black dark:text-white">
                       Price Summary
                     </span>
@@ -485,17 +675,16 @@ export function PremiumPurchaseFlow({
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex justify-between text-lg">
-                      <span className="font-satoshi font-bold text-black dark:text-white">Original Price:</span>
+                      <span className="font-satoshi font-bold text-black dark:text-white">
+                        Original Price:
+                      </span>
                       <span className="font-excon font-black text-black dark:text-white">
                         ₹{priceCalculation.originalAmount}
                       </span>
                     </div>
 
                     {priceCalculation.discounts.map((discount, index) => (
-                      <div
-                        key={index}
-                        className="flex justify-between"
-                      >
+                      <div key={index} className="flex justify-between">
                         <span className="font-satoshi font-bold text-black dark:text-white">
                           {discount.description}:
                         </span>
@@ -508,7 +697,9 @@ export function PremiumPurchaseFlow({
                     <Separator className="border-2 border-black dark:border-white" />
 
                     <div className="flex justify-between text-2xl font-bold">
-                      <span className="font-excon font-black text-black dark:text-white">Total:</span>
+                      <span className="font-excon font-black text-black dark:text-white">
+                        Total:
+                      </span>
                       <span className="font-excon font-black text-black dark:text-white">
                         ₹{priceCalculation.finalAmount}
                       </span>

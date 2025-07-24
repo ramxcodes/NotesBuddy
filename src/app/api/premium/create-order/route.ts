@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { tier, discountCode, referralCode } = validationResult.data;
+    const { tier, discountCode, referralCode, useWalletBalance, walletAmount } =
+      validationResult.data;
 
     // Calculate price with discounts (server-side verification)
     const priceCalculation = await calculatePurchasePrice(
@@ -48,6 +49,8 @@ export async function POST(req: NextRequest) {
       tier,
       discountCode,
       referralCode,
+      useWalletBalance,
+      walletAmount,
     );
 
     // Generate unique receipt ID

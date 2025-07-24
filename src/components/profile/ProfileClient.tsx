@@ -1,21 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import SignOutButton from "@/components/auth/SignOutButton";
 import { ProfileInfo } from "@/components/profile/ProfileInfo";
 import { ProfileEdit } from "@/components/profile/ProfileEdit";
 import { PremiumStatus } from "@/components/profile/PremiumStatus";
 import { PremiumHistory } from "@/components/profile/PremiumHistory";
 import { DeviceManagement } from "@/components/profile/DeviceManagement";
+import { ReferralSection } from "@/components/profile/ReferralSection";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserIcon } from "@/components/icons/UserIcon";
 import { CrownIcon } from "@/components/icons/CrownIcon";
 import { ReceiptIcon } from "@/components/icons/ReceiptIcon";
 import { DevicesIcon } from "@/components/icons/DevicesIcon";
+import ShareNetworkIcon from "@/components/icons/ShareNetworkIcon";
 import { SignOutIcon } from "@/components/icons/SignOutIcon";
 import { OnboardingFormData } from "@/dal/user/onboarding/types";
 import { handleProfileUpdate } from "@/app/(auth)/profile/actions";
 import { Device } from "@/types/device";
+import { ReferralStatus } from "@/dal/referral/types";
 
 interface ProfileClientProps {
   session: {
@@ -63,6 +66,7 @@ interface ProfileClientProps {
     referralCode?: string | null;
   }>;
   devices: Device[];
+  referralStatus?: ReferralStatus;
 }
 
 export default function ProfileClient({
@@ -72,6 +76,7 @@ export default function ProfileClient({
   premiumStatus,
   purchases,
   devices,
+  referralStatus,
 }: ProfileClientProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
@@ -96,7 +101,7 @@ export default function ProfileClient({
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="grid h-auto w-full grid-cols-2 border-2 border-black bg-white p-2 shadow-[4px_4px_0px_0px_#000] md:grid-cols-4 lg:grid-cols-5 dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff] gap-4">
+      <TabsList className="grid h-auto w-full grid-cols-2 gap-4 border-2 border-black bg-white p-2 shadow-[4px_4px_0px_0px_#000] md:grid-cols-3 lg:grid-cols-6 dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <TabsTrigger
           value="profile"
           className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#fff]"
@@ -110,6 +115,13 @@ export default function ProfileClient({
         >
           <CrownIcon className="h-4 w-4" />
           <span className="hidden sm:inline">Premium</span>
+        </TabsTrigger>
+        <TabsTrigger
+          value="referral"
+          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#fff]"
+        >
+          <ShareNetworkIcon className="h-4 w-4" />
+          <span className="hidden sm:inline">Referral</span>
         </TabsTrigger>
         <TabsTrigger
           value="history"
@@ -154,6 +166,10 @@ export default function ProfileClient({
 
         <TabsContent value="premium">
           <PremiumStatus premiumStatus={premiumStatus} />
+        </TabsContent>
+
+        <TabsContent value="referral">
+          <ReferralSection initialReferralStatus={referralStatus} />
         </TabsContent>
 
         <TabsContent value="history">

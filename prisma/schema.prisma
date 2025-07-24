@@ -83,6 +83,9 @@ model User {
   // Referral code for this user
   referralCode         String?           @unique
   
+  // Wallet for referral earnings
+  walletBalance        Decimal           @default(0)
+  
   // Current premium status (denormalized for quick access)
   currentPremiumTier   PremiumTier?
   premiumExpiryDate    DateTime?

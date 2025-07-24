@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: "Notes Buddy",
 };
 
+// Force static generation
+export const dynamic = "force-static";
+
 export default function Home() {
   return (
     <div className="font-satoshi container mx-auto min-h-screen max-w-6xl">

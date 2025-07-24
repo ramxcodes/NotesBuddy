@@ -7,6 +7,7 @@ import {
   getUserFullProfile,
 } from "@/dal/user/onboarding/query";
 import { getUserPremiumStatus } from "@/dal/premium/query";
+import { getUserWalletBalance } from "@/dal/user/wallet";
 import { PremiumPurchaseFlow } from "@/components/premium/PremiumPurchaseFlow";
 import { Link } from "next-view-transitions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,9 +52,9 @@ export default async function PremiumPage() {
             </div>
           </div>
 
-          <div className="p-6 text-center group hover:cursor-pointer">
+          <div className="group p-6 text-center hover:cursor-pointer">
             <Link href="/onboarding">
-              <button className="font-excon w-full rounded-md border-2 border-black bg-white px-6 py-3 text-lg font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-none group-hover:cursor-pointer">
+              <button className="font-excon w-full rounded-md border-2 border-black bg-white px-6 py-3 text-lg font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:cursor-pointer group-hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
                 Complete Onboarding
               </button>
             </Link>
@@ -66,6 +67,7 @@ export default async function PremiumPage() {
   const [userProfile, premiumStatus] = await Promise.all([
     getUserFullProfile(session.user.id),
     getUserPremiumStatus(session.user.id),
+    getUserWalletBalance(session.user.id),
   ]);
 
   if (!userProfile) {
@@ -78,39 +80,42 @@ export default async function PremiumPage() {
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold md:text-5xl">
-            Upgrade to Premium
+            {premiumStatus.isActive
+              ? "Your Premium Status"
+              : "Upgrade to Premium"}
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-gray-600">
-            Unlock exclusive study materials and get ahead in your academic
-            journey
+            {premiumStatus.isActive
+              ? "Manage your premium subscription and benefits"
+              : "Upgrade to Premium for exclusive features and benefits"}
           </p>
         </div>
 
         {/* Premium Status (if active) */}
         {premiumStatus.isActive && (
-          <Card className="border-border bg-card mx-auto mb-8 max-w-2xl">
+          <Card className="mx-auto mb-8 max-w-2xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <ShieldCheckIcon className="h-5 w-5" />
-                <span className="font-excon text-xl font-bold">
+                <ShieldCheckIcon className="h-5 w-5 text-black dark:text-white" />
+                <span className="font-excon text-xl font-black text-black dark:text-white">
                   Premium Active
                 </span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2">
-                <StarIcon className="h-4 w-4" />
-                <span className="font-satoshi">
+                <StarIcon className="h-4 w-4 text-black dark:text-white" />
+                <span className="font-satoshi font-bold text-black dark:text-white">
                   Your {premiumStatus.tier?.replace("_", " ")} is active with{" "}
-                  <span className="font-bold">
+                  <span className="font-black">
                     {premiumStatus.daysRemaining} days
                   </span>{" "}
                   remaining
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <CalendarIcon className="h-4 w-4" />
-                <span className="font-satoshi text-muted-foreground text-sm">
+                <CalendarIcon className="h-4 w-4 text-black dark:text-white" />
+                <span className="font-satoshi text-sm text-black dark:text-white">
                   Expires on:{" "}
                   {premiumStatus.expiryDate &&
                     new Date(premiumStatus.expiryDate).toLocaleDateString()}

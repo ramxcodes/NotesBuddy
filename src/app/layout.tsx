@@ -8,6 +8,7 @@ import { ViewTransitions } from "next-view-transitions";
 import Footer from "@/components/core/Footer";
 import { Poppins, Lexend, Montserrat, Roboto, Inter } from "next/font/google";
 import { ReactLenis } from "@/utils/lenis";
+import { Toaster } from "@/components/ui/sonner";
 
 export const poppins = Poppins({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({
             <ThemeProvider defaultTheme="light" storageKey="notes-buddy-theme">
               <NavBar />
               {children}
+              <Toaster />
               <Footer />
             </ThemeProvider>
           </body>

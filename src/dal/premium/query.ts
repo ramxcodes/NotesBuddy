@@ -52,12 +52,30 @@ export const getUserPremiumStatus = unstable_cache(
   getCacheOptions(premiumCacheConfig.getUserPremiumStatus),
 );
 
+// Get user's wallet balance
+export const getUserWalletBalance = unstable_cache(
+  async (userId: string) => {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        walletBalance: true,
+      },
+    });
+
+    return user ? Number(user.walletBalance) : 0;
+  },
+  [premiumCacheConfig.getUserPremiumStatus.cacheKey!],
+  getCacheOptions(premiumCacheConfig.getUserPremiumStatus),
+);
+
 // Calculate price with discounts (server-side only)
 export async function calculatePurchasePrice(
   userId: string,
   tier: PremiumTier,
   discountCode?: string,
   referralCode?: string,
+  useWalletBalance?: boolean,
+  walletAmount?: number,
 ): Promise<PriceCalculation> {
   const tierConfig = getTierConfig(tier);
   const originalAmount = tierConfig.price;
@@ -121,40 +139,73 @@ export async function calculatePurchasePrice(
 
   // Apply referral discount
   if (referralCode) {
-    const referrer = await prisma.user.findUnique({
-      where: { referralCode },
-      select: { id: true },
+    // Check if referral code exists and belongs to a different user
+    const referrer = await prisma.user.findFirst({
+      where: {
+        referralCode,
+        NOT: {
+          id: userId,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
     });
 
-    if (referrer && referrer.id !== userId) {
-      const referralProgram = await prisma.referralProgram.findFirst({
+    if (referrer) {
+      // Check if user has already used a referral code for any purchase
+      const existingUsage = await prisma.premiumPurchase.findFirst({
         where: {
-          isActive: true,
-          validFrom: { lte: new Date() },
-          OR: [{ validUntil: null }, { validUntil: { gte: new Date() } }],
+          userId,
+          referralCode: {
+            not: null,
+          },
+          paymentStatus: "CAPTURED",
         },
       });
 
-      if (referralProgram) {
-        let referralDiscount = 0;
-
-        if (referralProgram.refereeDiscountType === "PERCENTAGE") {
-          referralDiscount =
-            (originalAmount * referralProgram.refereeDiscountValue.toNumber()) /
-            100;
-        } else {
-          referralDiscount = Math.min(
-            referralProgram.refereeDiscountValue.toNumber(),
-            originalAmount,
-          );
-        }
+      // Only apply referral discount if user hasn't used any referral code before
+      if (!existingUsage) {
+        // Use fixed referral discount amount from config
+        const referralDiscount = Math.min(10, originalAmount - totalDiscount); // ₹10 fixed discount
 
         totalDiscount += referralDiscount;
         discounts.push({
           type: "REFERRAL",
           code: referralCode,
           amount: referralDiscount,
-          description: "Referral discount",
+          description: `Referral discount from ${referrer.name || "friend"}`,
+        });
+      }
+    }
+  }
+
+  // Apply wallet balance discount
+  if (useWalletBalance && walletAmount && walletAmount > 0) {
+    // Get user's wallet balance
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { walletBalance: true },
+    });
+
+    if (user && user.walletBalance.toNumber() > 0) {
+      // Calculate maximum wallet discount that can be applied
+      const availableBalance = user.walletBalance.toNumber();
+      const remainingAmount = originalAmount - totalDiscount;
+      const maxWalletDiscount = Math.min(
+        availableBalance,
+        remainingAmount,
+        walletAmount,
+      );
+
+      if (maxWalletDiscount > 0) {
+        totalDiscount += maxWalletDiscount;
+        discounts.push({
+          type: "WALLET",
+          code: "WALLET_BALANCE",
+          amount: maxWalletDiscount,
+          description: `Wallet balance discount`,
         });
       }
     }
@@ -233,7 +284,11 @@ export async function createPremiumPurchase(
       discounts: {
         create: priceCalculation.discounts.map((discount) => ({
           discountType:
-            discount.type === "COUPON" ? "FIXED_AMOUNT" : "REFERRAL_BONUS",
+            discount.type === "COUPON"
+              ? "FIXED_AMOUNT"
+              : discount.type === "WALLET"
+                ? "FIXED_AMOUNT"
+                : "REFERRAL_BONUS",
           discountCode: discount.code,
           discountValue: discount.amount,
           discountAmount: discount.amount,
@@ -260,7 +315,10 @@ export async function updatePurchasePaymentStatus(
 ) {
   const purchase = await prisma.premiumPurchase.findUnique({
     where: { razorpayOrderId },
-    include: { user: true },
+    include: {
+      user: true,
+      discounts: true,
+    },
   });
 
   if (!purchase) {
@@ -298,9 +356,28 @@ export async function updatePurchasePaymentStatus(
       },
     });
 
+    // Deduct wallet balance if used
+    const walletDiscount = purchase.discounts.find(
+      (d) => d.discountCode === "WALLET_BALANCE",
+    );
+
+    if (walletDiscount) {
+      await prisma.user.update({
+        where: { id: purchase.userId },
+        data: {
+          walletBalance: {
+            decrement: walletDiscount.discountAmount,
+          },
+        },
+      });
+    }
+
     // Revalidate premium-related caches
     revalidateTag("user-premium-status");
     revalidateTag("user-purchase-history");
+    revalidateTag("user-referral-status");
+    revalidateTag("user-wallet-balance");
+    revalidateTag("user-wallet-history");
 
     // Process referral rewards if applicable
     if (purchase.referredByUserId) {
@@ -331,25 +408,81 @@ async function processReferralReward(
   referrerUserId: string,
   refereeUserId: string,
 ) {
-  const referralProgram = await prisma.referralProgram.findFirst({
-    where: {
-      isActive: true,
-      validFrom: { lte: new Date() },
-      OR: [{ validUntil: null }, { validUntil: { gte: new Date() } }],
-    },
-  });
-
-  if (referralProgram) {
-    await prisma.referralReward.create({
-      data: {
-        referrerUserId,
-        refereeUserId,
-        purchaseId,
-        rewardAmount: referralProgram.referrerDiscountValue,
-        rewardType: referralProgram.referrerDiscountType,
-        isProcessed: false,
+  try {
+    // Get or create the referral program
+    let referralProgram = await prisma.referralProgram.findFirst({
+      where: {
+        isActive: true,
+        validFrom: { lte: new Date() },
+        OR: [{ validUntil: null }, { validUntil: { gte: new Date() } }],
       },
     });
+
+    // Auto-create referral program if it doesn't exist
+    if (!referralProgram) {
+      console.log(
+        "No active referral program found, creating default program...",
+      );
+      referralProgram = await prisma.referralProgram.create({
+        data: {
+          name: "Default Referral Program",
+          description:
+            "Get ₹10 discount for both referrer and referee on premium purchases",
+          referrerDiscountType: "FIXED_AMOUNT",
+          referrerDiscountValue: 10, // ₹10
+          refereeDiscountType: "FIXED_AMOUNT",
+          refereeDiscountValue: 10, // ₹10
+          isActive: true,
+          validFrom: new Date(),
+          validUntil: null, // No expiry
+        },
+      });
+      console.log("Created referral program:", referralProgram.id);
+    }
+
+    if (referralProgram) {
+      // Create referral reward for the referrer
+      const reward = await prisma.referralReward.create({
+        data: {
+          referrerUserId,
+          refereeUserId,
+          purchaseId,
+          rewardAmount: referralProgram.referrerDiscountValue,
+          rewardType: referralProgram.referrerDiscountType,
+          isProcessed: true, // Mark as processed immediately since discount was already applied
+        },
+      });
+
+      // Add reward to referrer's wallet balance
+      await prisma.user.update({
+        where: { id: referrerUserId },
+        data: {
+          walletBalance: {
+            increment: referralProgram.referrerDiscountValue,
+          },
+        },
+      });
+
+      console.log(
+        "Referral reward created:",
+        reward.id,
+        "for purchase:",
+        purchaseId,
+      );
+      console.log(
+        "Added ₹",
+        referralProgram.referrerDiscountValue.toString(),
+        "to referrer's wallet",
+      );
+
+      // Invalidate referral cache to show new reward
+      revalidateTag("user-referral-status");
+      revalidateTag("user-wallet-balance");
+      revalidateTag("user-wallet-history");
+    }
+  } catch (error) {
+    console.error("Error processing referral reward:", error);
+    // Don't throw error to avoid breaking the payment flow
   }
 }
 

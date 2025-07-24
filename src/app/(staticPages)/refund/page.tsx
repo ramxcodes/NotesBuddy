@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     "Learn about our refund policy and how to request a refund for your purchase.",
 };
 
+// Force static generation
+export const dynamic = "force-static";
+
 export default function RefundPage() {
   return (
     <section className="relative z-10 my-20 mt-10 flex flex-col items-center justify-center gap-8">

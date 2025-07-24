@@ -53,7 +53,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       );
     } else if (status === "CAPTURED" && !isActive) {
       return (
-        <Badge 
+        <Badge
           variant="secondary"
           className="border-2 border-black bg-zinc-200 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
         >
@@ -63,7 +63,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       );
     } else if (status === "FAILED") {
       return (
-        <Badge 
+        <Badge
           variant="destructive"
           className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
         >
@@ -73,7 +73,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       );
     } else {
       return (
-        <Badge 
+        <Badge
           variant="outline"
           className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
         >
@@ -96,7 +96,10 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
-            <ReceiptIcon type="duotone" className="h-6 w-6 text-black dark:text-white" />
+            <ReceiptIcon
+              type="duotone"
+              className="h-6 w-6 text-black dark:text-white"
+            />
             Purchase History
           </CardTitle>
         </CardHeader>
@@ -122,27 +125,43 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
     <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
       <CardHeader>
         <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
-          <ReceiptIcon type="duotone" className="h-6 w-6 text-black dark:text-white" />
+          <ReceiptIcon
+            type="duotone"
+            className="h-6 w-6 text-black dark:text-white"
+          />
           Purchase History
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+        <div className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
           <Table>
             <TableHeader>
               <TableRow className="border-b-2 border-black dark:border-white">
-                <TableHead className="font-excon font-black text-black dark:text-white">Plan</TableHead>
-                <TableHead className="font-excon font-black text-black dark:text-white">Amount</TableHead>
-                <TableHead className="font-excon font-black text-black dark:text-white">Status</TableHead>
-                <TableHead className="font-excon font-black text-black dark:text-white">Purchase Date</TableHead>
-                <TableHead className="font-excon font-black text-black dark:text-white">Expiry Date</TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">
+                  Plan
+                </TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">
+                  Amount
+                </TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">
+                  Status
+                </TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">
+                  Purchase Date
+                </TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">
+                  Expiry Date
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {purchases.map((purchase) => {
                 const tierConfig = getTierConfig(purchase.tier);
                 return (
-                  <TableRow key={purchase.id} className="border-b border-black dark:border-white">
+                  <TableRow
+                    key={purchase.id}
+                    className="border-b border-black dark:border-white"
+                  >
                     <TableCell>
                       <div>
                         <p className="font-satoshi font-black text-black dark:text-white">
@@ -152,11 +171,19 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                           {tierConfig.description}
                         </p>
                         {purchase.discountCode && (
-                          <Badge 
-                            variant="outline" 
+                          <Badge
+                            variant="outline"
                             className="mt-1 border-2 border-black bg-white font-bold text-black shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[1px_1px_0px_0px_#fff]"
                           >
                             Code: {purchase.discountCode}
+                          </Badge>
+                        )}
+                        {purchase.referralCode && (
+                          <Badge
+                            variant="outline"
+                            className="mt-1 border-2 border-green-500 bg-green-50 font-bold text-green-800 shadow-[1px_1px_0px_0px_#22c55e] dark:border-green-400 dark:bg-green-900/20 dark:text-green-300 dark:shadow-[1px_1px_0px_0px_#4ade80]"
+                          >
+                            Referral: {purchase.referralCode}
                           </Badge>
                         )}
                       </div>
@@ -222,21 +249,31 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
         </div>
 
         {/* Summary */}
-        <div className="mt-6 border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
-          <h4 className="font-excon mb-2 font-black text-black dark:text-white">Summary</h4>
+        <div className="mt-6 rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+          <h4 className="font-excon mb-2 font-black text-black dark:text-white">
+            Summary
+          </h4>
           <div className="font-satoshi grid grid-cols-2 gap-4 text-sm md:grid-cols-3">
             <div>
-              <p className="font-bold text-black dark:text-white">Total Purchases</p>
-              <p className="font-black text-black dark:text-white">{purchases.length}</p>
+              <p className="font-bold text-black dark:text-white">
+                Total Purchases
+              </p>
+              <p className="font-black text-black dark:text-white">
+                {purchases.length}
+              </p>
             </div>
             <div>
-              <p className="font-bold text-black dark:text-white">Successful Payments</p>
+              <p className="font-bold text-black dark:text-white">
+                Successful Payments
+              </p>
               <p className="font-black text-black dark:text-white">
                 {purchases.filter((p) => p.paymentStatus === "CAPTURED").length}
               </p>
             </div>
             <div>
-              <p className="font-bold text-black dark:text-white">Total Spent</p>
+              <p className="font-bold text-black dark:text-white">
+                Total Spent
+              </p>
               <p className="font-black text-black dark:text-white">
                 {formatAmount(
                   purchases

@@ -62,6 +62,8 @@ export const purchaseRequestSchema = z.object({
   tier: premiumTierSchema,
   discountCode: discountCodeSchema,
   referralCode: discountCodeSchema,
+  useWalletBalance: z.boolean().optional(),
+  walletAmount: z.number().min(0).optional(),
 });
 
 export const razorpayOrderSchema = z.object({
@@ -101,7 +103,7 @@ export interface PriceCalculation {
 }
 
 export interface DiscountApplication {
-  type: "COUPON" | "REFERRAL";
+  type: "COUPON" | "REFERRAL" | "WALLET";
   code: string;
   amount: number;
   description: string;

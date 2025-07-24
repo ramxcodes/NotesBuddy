@@ -3,9 +3,11 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms | Notes Buddy",
-  description:
-    "Learn about the terms and conditions for using Notes Buddy.",
+  description: "Learn about the terms and conditions for using Notes Buddy.",
 };
+
+// Force static generation
+export const dynamic = "force-static";
 
 export default function TermsPage() {
   return (

@@ -3,9 +3,11 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shipping | Notes Buddy",
-  description:
-    "Learn about our shipping policy and how to track your order.",
+  description: "Learn about our shipping policy and how to track your order.",
 };
+
+// Force static generation
+export const dynamic = "force-static";
 
 export default function ShippingPage() {
   return (

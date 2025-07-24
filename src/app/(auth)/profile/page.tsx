@@ -8,6 +8,7 @@ import {
   getUserPremiumStatus,
   getUserPurchaseHistory,
 } from "@/dal/premium/query";
+import { getUserReferralStatus } from "@/dal/referral/query";
 import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -33,14 +34,32 @@ export default async function Profile() {
   }
 
   // Fetch all necessary data
-  const [isOnboarded, profile, devices, premiumStatus, purchases] =
-    await Promise.all([
-      getUserOnboardingStatus(session.user.id),
-      getUserFullProfile(session.user.id),
-      getUserDevices(session.user.id),
-      getUserPremiumStatus(session.user.id),
-      getUserPurchaseHistory(session.user.id),
-    ]);
+  const [
+    isOnboarded,
+    profile,
+    devices,
+    premiumStatus,
+    purchases,
+    referralStatus,
+  ] = await Promise.all([
+    getUserOnboardingStatus(session.user.id),
+    getUserFullProfile(session.user.id),
+    getUserDevices(session.user.id),
+    getUserPremiumStatus(session.user.id),
+    getUserPurchaseHistory(session.user.id),
+    getUserReferralStatus(session.user.id).catch((error) => {
+      console.error("Failed to load referral status:", error);
+      // Return a default referral status
+      return {
+        hasReferralCode: false,
+        referralCode: null,
+        totalReferrals: 0,
+        totalEarnings: 0,
+        walletBalance: 0,
+        referrals: [],
+      };
+    }),
+  ]);
 
   // Check if user completed onboarding
   if (!isOnboarded.isOnboarded) {
@@ -159,13 +178,13 @@ export default async function Profile() {
                             pixelDepth: screen.pixelDepth,
                           }
                         : undefined,
-                      // Calculate screen resolution string for display
                       screenResolution: screen
                         ? `${screen.width}x${screen.height}`
                         : undefined,
                     },
                   };
                 })}
+                referralStatus={referralStatus}
               />
             </div>
           </div>

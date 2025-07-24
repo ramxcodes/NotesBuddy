@@ -7,9 +7,12 @@ export const metadata: Metadata = {
     "Get in touch with Notes Buddy, share your feedback, or ask any questions.",
 };
 
+// Force static generation
+export const dynamic = "force-static";
+
 export default function ContactPage() {
   return (
-    <section className="relative z-10 mt-10 flex flex-col items-center justify-center gap-8 my-20">
+    <section className="relative z-10 my-20 mt-10 flex flex-col items-center justify-center gap-8">
       <h1 className="font-excon mb-4 text-center text-4xl font-black tracking-tight text-black drop-shadow-[2px_2px_0px_rgba(0,0,0,0.8)] md:text-5xl dark:text-white">
         Contact Us
       </h1>

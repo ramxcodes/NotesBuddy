@@ -1,4 +1,3 @@
-import React from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,6 +5,9 @@ export const metadata: Metadata = {
   description:
     "Learn about how we collect, use, and protect your personal information.",
 };
+
+// Force static generation
+export const dynamic = "force-static";
 
 export default function PrivacyPage() {
   return (

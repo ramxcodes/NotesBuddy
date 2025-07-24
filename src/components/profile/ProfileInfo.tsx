@@ -53,10 +53,10 @@ export function ProfileInfo({
   return (
     <div className="space-y-6">
       {/* User Basic Info */}
-      <Card>
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="font-excon text-2xl font-bold">
+            <CardTitle className="font-excon text-2xl font-black">
               Profile Information
             </CardTitle>
             {isOnboarded && (
@@ -64,7 +64,7 @@ export function ProfileInfo({
                 variant="outline"
                 size="sm"
                 onClick={onEditClick}
-                className="gap-2"
+                className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
               >
                 <PencilIcon type="duotone" className="h-4 w-4" />
                 Edit Profile
@@ -74,12 +74,12 @@ export function ProfileInfo({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-6 md:flex-row">
-            <Avatar className="border-border flex size-24 items-center justify-center rounded-full border-2">
+            <Avatar className="flex size-24 items-center justify-center rounded-full border-4 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
               <AvatarImage
                 className="rounded-full"
                 src={session?.image || ""}
               />
-              <AvatarFallback className="rounded-full font-bold">
+              <AvatarFallback className="rounded-full font-black text-black dark:text-white">
                 {session.name?.charAt(0)}
               </AvatarFallback>
             </Avatar>
@@ -87,13 +87,13 @@ export function ProfileInfo({
             {/* Basic Info */}
             <div className="flex-1 space-y-4">
               <div>
-                <h3 className="font-excon text-xl font-semibold">
+                <h3 className="font-excon text-xl font-black">
                   {session.name}
                 </h3>
                 <div className="mt-1 flex items-center gap-2">
-                  <p className="text-muted-foreground">{session.email}</p>
+                  <p className="text-black font-bold dark:text-white">{session.email}</p>
                   {session.emailVerified && (
-                    <Badge variant="secondary" className="gap-1">
+                    <Badge variant="secondary" className="gap-1 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
                       <CheckCircleIcon type="duotone" className="h-3 w-3" />
                       Verified
                     </Badge>
@@ -103,19 +103,19 @@ export function ProfileInfo({
 
               {isOnboarded && profile?.firstName && (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <div>
-                    <label className="text-muted-foreground text-sm font-medium">
+                  <div className="rounded-md border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+                    <label className="text-black text-sm font-black dark:text-white">
                       Full Name
                     </label>
-                    <p className="font-satoshi">
+                    <p className="font-satoshi font-bold text-black dark:text-white">
                       {profile.firstName} {profile.lastName}
                     </p>
                   </div>
-                  <div>
-                    <label className="text-muted-foreground text-sm font-medium">
+                  <div className="rounded-md border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+                    <label className="text-black text-sm font-black dark:text-white">
                       Phone Number
                     </label>
-                    <p className="font-satoshi">{profile.phoneNumber}</p>
+                    <p className="font-satoshi font-bold text-black dark:text-white">{profile.phoneNumber}</p>
                   </div>
                 </div>
               )}
@@ -126,37 +126,37 @@ export function ProfileInfo({
 
       {/* Academic Information */}
       {isOnboarded && (
-        <Card>
+        <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
           <CardHeader>
-            <CardTitle className="font-excon text-xl font-semibold">
+            <CardTitle className="font-excon text-xl font-black">
               Academic Information
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div>
-                <label className="text-muted-foreground text-sm font-medium">
+              <div className="rounded-md border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+                <label className="text-black text-sm font-black dark:text-white">
                   University
                 </label>
-                <p className="font-satoshi">{university}</p>
+                <p className="font-satoshi font-bold text-black dark:text-white">{university}</p>
               </div>
-              <div>
-                <label className="text-muted-foreground text-sm font-medium">
+              <div className="rounded-md border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+                <label className="text-black text-sm font-black dark:text-white">
                   Degree
                 </label>
-                <p className="font-satoshi">{degree}</p>
+                <p className="font-satoshi font-bold text-black dark:text-white">{degree}</p>
               </div>
-              <div>
-                <label className="text-muted-foreground text-sm font-medium">
+              <div className="rounded-md border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+                <label className="text-black text-sm font-black dark:text-white">
                   Year
                 </label>
-                <p className="font-satoshi">{year}</p>
+                <p className="font-satoshi font-bold text-black dark:text-white">{year}</p>
               </div>
-              <div>
-                <label className="text-muted-foreground text-sm font-medium">
+              <div className="rounded-md border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+                <label className="text-black text-sm font-black dark:text-white">
                   Semester
                 </label>
-                <p className="font-satoshi">{semester}</p>
+                <p className="font-satoshi font-bold text-black dark:text-white">{semester}</p>
               </div>
             </div>
           </CardContent>
@@ -165,17 +165,20 @@ export function ProfileInfo({
 
       {/* Onboarding Prompt */}
       {!isOnboarded && (
-        <Card className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950">
+        <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
           <CardContent className="pt-6">
             <div className="space-y-3 text-center">
-              <h3 className="font-excon text-lg font-semibold">
+              <h3 className="font-excon text-lg font-black text-black dark:text-white">
                 Complete Your Profile
               </h3>
-              <p className="text-muted-foreground font-satoshi">
+              <p className="font-satoshi font-bold text-black dark:text-white">
                 Please complete your profile to unlock all features and
                 personalize your experience.
               </p>
-              <Button asChild className="mt-4">
+              <Button 
+                asChild 
+                className="mt-4 border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+              >
                 <a href="/onboarding">Complete Profile</a>
               </Button>
             </div>

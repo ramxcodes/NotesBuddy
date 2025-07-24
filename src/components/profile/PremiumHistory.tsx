@@ -45,7 +45,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="secondary"
-          className="gap-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-black dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
         >
           <CheckCircleIcon type="duotone" className="h-3 w-3" />
           Active
@@ -53,21 +53,30 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       );
     } else if (status === "CAPTURED" && !isActive) {
       return (
-        <Badge variant="secondary" className="gap-1">
+        <Badge 
+          variant="secondary"
+          className="border-2 border-black bg-zinc-200 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+        >
           <CheckCircleIcon type="duotone" className="h-3 w-3" />
           Expired
         </Badge>
       );
     } else if (status === "FAILED") {
       return (
-        <Badge variant="destructive" className="gap-1">
+        <Badge 
+          variant="destructive"
+          className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
+        >
           <XCircleIcon type="duotone" className="h-3 w-3" />
           Failed
         </Badge>
       );
     } else {
       return (
-        <Badge variant="outline" className="gap-1">
+        <Badge 
+          variant="outline"
+          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+        >
           <ClockIcon type="duotone" className="h-3 w-3" />
           Pending
         </Badge>
@@ -84,23 +93,23 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
 
   if (purchases.length === 0) {
     return (
-      <Card>
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <CardHeader>
-          <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-            <ReceiptIcon type="duotone" className="h-6 w-6" />
+          <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
+            <ReceiptIcon type="duotone" className="h-6 w-6 text-black dark:text-white" />
             Purchase History
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="py-8 text-center">
+          <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
             <ReceiptIcon
               type="duotone"
-              className="text-muted-foreground mx-auto mb-4 h-12 w-12"
+              className="mx-auto mb-4 h-12 w-12 text-black dark:text-white"
             />
-            <h3 className="font-excon mb-2 text-lg font-semibold">
+            <h3 className="font-excon mb-2 text-lg font-black text-black dark:text-white">
               No Purchase History
             </h3>
-            <p className="text-muted-foreground font-satoshi">
+            <p className="font-satoshi font-bold text-black dark:text-white">
               You haven&apos;t made any premium purchases yet.
             </p>
           </div>
@@ -110,40 +119,43 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
   }
 
   return (
-    <Card>
+    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
       <CardHeader>
-        <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-          <ReceiptIcon type="duotone" className="h-6 w-6" />
+        <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
+          <ReceiptIcon type="duotone" className="h-6 w-6 text-black dark:text-white" />
           Purchase History
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="rounded-lg border">
+        <div className="border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="font-excon">Plan</TableHead>
-                <TableHead className="font-excon">Amount</TableHead>
-                <TableHead className="font-excon">Status</TableHead>
-                <TableHead className="font-excon">Purchase Date</TableHead>
-                <TableHead className="font-excon">Expiry Date</TableHead>
+              <TableRow className="border-b-2 border-black dark:border-white">
+                <TableHead className="font-excon font-black text-black dark:text-white">Plan</TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">Amount</TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">Status</TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">Purchase Date</TableHead>
+                <TableHead className="font-excon font-black text-black dark:text-white">Expiry Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {purchases.map((purchase) => {
                 const tierConfig = getTierConfig(purchase.tier);
                 return (
-                  <TableRow key={purchase.id}>
+                  <TableRow key={purchase.id} className="border-b border-black dark:border-white">
                     <TableCell>
                       <div>
-                        <p className="font-satoshi font-medium">
+                        <p className="font-satoshi font-black text-black dark:text-white">
                           {tierConfig.title}
                         </p>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="font-satoshi font-bold text-black dark:text-white">
                           {tierConfig.description}
                         </p>
                         {purchase.discountCode && (
-                          <Badge variant="outline" className="mt-1 text-xs">
+                          <Badge 
+                            variant="outline" 
+                            className="mt-1 border-2 border-black bg-white font-bold text-black shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[1px_1px_0px_0px_#fff]"
+                          >
                             Code: {purchase.discountCode}
                           </Badge>
                         )}
@@ -151,14 +163,14 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                     </TableCell>
                     <TableCell>
                       <div className="font-satoshi">
-                        <p className="flex items-center gap-1 font-medium">
+                        <p className="flex items-center gap-1 font-black text-black dark:text-white">
                           {formatAmount(
                             purchase.finalAmount,
                             purchase.currency,
                           )}
                         </p>
                         {purchase.discountAmount > 0 && (
-                          <p className="text-muted-foreground text-sm line-through">
+                          <p className="font-bold text-black line-through dark:text-white">
                             {formatAmount(
                               purchase.originalAmount,
                               purchase.currency,
@@ -173,12 +185,12 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                         purchase.isActive,
                       )}
                       {purchase.failureReason && (
-                        <p className="text-destructive mt-1 text-xs">
+                        <p className="mt-1 font-bold text-black dark:text-white">
                           {purchase.failureReason}
                         </p>
                       )}
                     </TableCell>
-                    <TableCell className="font-satoshi">
+                    <TableCell className="font-satoshi font-bold text-black dark:text-white">
                       {new Date(purchase.createdAt).toLocaleDateString(
                         "en-US",
                         {
@@ -188,7 +200,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                         },
                       )}
                     </TableCell>
-                    <TableCell className="font-satoshi">
+                    <TableCell className="font-satoshi font-bold text-black dark:text-white">
                       {purchase.paymentStatus === "CAPTURED" ? (
                         new Date(purchase.expiryDate).toLocaleDateString(
                           "en-US",
@@ -199,7 +211,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                           },
                         )
                       ) : (
-                        <span className="text-muted-foreground">-</span>
+                        <span className="text-black dark:text-white">-</span>
                       )}
                     </TableCell>
                   </TableRow>
@@ -210,22 +222,22 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
         </div>
 
         {/* Summary */}
-        <div className="bg-muted/50 mt-6 rounded-lg p-4">
-          <h4 className="font-excon mb-2 font-semibold">Summary</h4>
+        <div className="mt-6 border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+          <h4 className="font-excon mb-2 font-black text-black dark:text-white">Summary</h4>
           <div className="font-satoshi grid grid-cols-2 gap-4 text-sm md:grid-cols-3">
             <div>
-              <p className="text-muted-foreground">Total Purchases</p>
-              <p className="font-medium">{purchases.length}</p>
+              <p className="font-bold text-black dark:text-white">Total Purchases</p>
+              <p className="font-black text-black dark:text-white">{purchases.length}</p>
             </div>
             <div>
-              <p className="text-muted-foreground">Successful Payments</p>
-              <p className="font-medium">
+              <p className="font-bold text-black dark:text-white">Successful Payments</p>
+              <p className="font-black text-black dark:text-white">
                 {purchases.filter((p) => p.paymentStatus === "CAPTURED").length}
               </p>
             </div>
             <div>
-              <p className="text-muted-foreground">Total Spent</p>
-              <p className="font-medium">
+              <p className="font-bold text-black dark:text-white">Total Spent</p>
+              <p className="font-black text-black dark:text-white">
                 {formatAmount(
                   purchases
                     .filter((p) => p.paymentStatus === "CAPTURED")

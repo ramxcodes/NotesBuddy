@@ -19,33 +19,40 @@ export function SignInButton() {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="default"
-          className="font-ranade font-regular rounded-full"
+          variant="outline"
+          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
         >
           Sign In
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-opacity-10 space-y-4 border-none bg-clip-padding text-white backdrop-blur backdrop-contrast-100 backdrop-saturate-100 backdrop-filter">
+      <DialogContent className="space-y-6 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Sign In</DialogTitle>
+          <DialogTitle className="font-excon text-2xl font-black text-black dark:text-white">
+            Sign In
+          </DialogTitle>
           <DialogDescription className="space-y-4">
-            <span className="text-sm text-gray-300">
+            <span className="font-satoshi font-bold text-black dark:text-white">
               One step closer to your notes
             </span>
             <Button
               onClick={signIn}
               variant="outline"
-              className="mt-2 flex w-full items-center justify-center gap-2 bg-white text-black hover:cursor-pointer hover:bg-white/90 dark:bg-white dark:text-black dark:hover:bg-white/90 dark:hover:text-black"
+              className="mt-4 flex w-full items-center justify-center gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
             >
-              <GoogleLogoIcon type="duotone" className="size-6" size={20} />
-              Sign in with google
+              <GoogleLogoIcon type="duotone" className="h-5 w-5" />
+              Sign in with Google
             </Button>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex flex-col gap-2">
-          <span className="text-xs">
+          <span className="font-satoshi text-xs font-bold text-black dark:text-white">
             By signing in, you agree to our{" "}
-            <Link href="/terms">Terms of Service</Link>.
+            <DialogTrigger asChild>
+              <Link href="/terms" className="underline decoration-2 underline-offset-2 font-black">
+                Terms of Service
+              </Link>
+            </DialogTrigger>
+            .
           </span>
         </DialogFooter>
       </DialogContent>

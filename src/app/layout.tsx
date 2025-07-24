@@ -7,6 +7,7 @@ import { AutoDeviceFingerprint } from "@/components/auth/AutoDeviceFingerprint";
 import { ViewTransitions } from "next-view-transitions";
 import Footer from "@/components/core/Footer";
 import { Poppins, Lexend, Montserrat, Roboto, Inter } from "next/font/google";
+import { ReactLenis } from "@/utils/lenis";
 
 export const poppins = Poppins({
   subsets: ["latin"],
@@ -57,16 +58,18 @@ export default function RootLayout({
     <ViewTransitions>
       <html lang="en">
         {process.env.NEXT_PUBLIC_ENABLE_UMAMI === "true" && <Umami />}
-        <body
-          className={`${poppins.variable} ${lexend.variable} ${montserrat.variable} ${roboto.variable} ${inter.variable}`}
-        >
-          <AutoDeviceFingerprint />
-          <ThemeProvider defaultTheme="light" storageKey="notes-buddy-theme">
-            <NavBar />
-            {children}
-            <Footer />
-          </ThemeProvider>
-        </body>
+        <ReactLenis root>
+          <body
+            className={`${poppins.variable} ${lexend.variable} ${montserrat.variable} ${roboto.variable} ${inter.variable}`}
+          >
+            <AutoDeviceFingerprint />
+            <ThemeProvider defaultTheme="light" storageKey="notes-buddy-theme">
+              <NavBar />
+              {children}
+              <Footer />
+            </ThemeProvider>
+          </body>
+        </ReactLenis>
       </html>
     </ViewTransitions>
   );

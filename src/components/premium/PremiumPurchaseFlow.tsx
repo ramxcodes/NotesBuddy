@@ -315,11 +315,11 @@ export function PremiumPurchaseFlow({
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Card className="border-border bg-card">
+            <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                  <UserIcon className="h-5 w-5" type="duotone" />
-                  <span className="font-excon text-xl font-bold">
+                  <UserIcon className="h-5 w-5 text-black dark:text-white" type="duotone" />
+                  <span className="font-excon text-xl font-black text-black dark:text-white">
                     Academic Profile
                   </span>
                 </CardTitle>
@@ -327,33 +327,33 @@ export function PremiumPurchaseFlow({
               <CardContent>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <GraduationCapIcon className="h-4 w-4" type="duotone" />
+                    <GraduationCapIcon className="h-4 w-4 text-black dark:text-white" type="duotone" />
                     <div>
-                      <span className="text-muted-foreground">University:</span>
-                      <p className="font-medium">
+                      <span className="font-satoshi font-bold text-black dark:text-white">University:</span>
+                      <p className="font-satoshi font-bold text-black dark:text-white">
                         {academicDetails.university}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <BookOpenIcon className="h-4 w-4" type="duotone" />
+                    <BookOpenIcon className="h-4 w-4 text-black dark:text-white" type="duotone" />
                     <div>
-                      <span className="text-muted-foreground">Degree:</span>
-                      <p className="font-medium">{academicDetails.degree}</p>
+                      <span className="font-satoshi font-bold text-black dark:text-white">Degree:</span>
+                      <p className="font-satoshi font-bold text-black dark:text-white">{academicDetails.degree}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CalendarIcon className="h-4 w-4" type="duotone" />
+                    <CalendarIcon className="h-4 w-4 text-black dark:text-white" type="duotone" />
                     <div>
-                      <span className="text-muted-foreground">Year:</span>
-                      <p className="font-medium">{academicDetails.year}</p>
+                      <span className="font-satoshi font-bold text-black dark:text-white">Year:</span>
+                      <p className="font-satoshi font-bold text-black dark:text-white">{academicDetails.year}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <StarIcon className="h-4 w-4" type="duotone" />
+                    <StarIcon className="h-4 w-4 text-black dark:text-white" type="duotone" />
                     <div>
-                      <span className="text-muted-foreground">Semester:</span>
-                      <p className="font-medium">{academicDetails.semester}</p>
+                      <span className="font-satoshi font-bold text-black dark:text-white">Semester:</span>
+                      <p className="font-satoshi font-bold text-black dark:text-white">{academicDetails.semester}</p>
                     </div>
                   </div>
                 </div>
@@ -369,12 +369,12 @@ export function PremiumPurchaseFlow({
           transition={{ duration: 0.6, delay: 0.1 }}
           viewport={{ once: true }}
         >
-          <Card className="border-border bg-card">
+          <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
             <CardHeader>
-              <CardTitle className="font-excon text-xl font-bold">
+              <CardTitle className="font-excon text-xl font-black text-black dark:text-white">
                 Select Your Plan
               </CardTitle>
-              <CardDescription className="font-satoshi">
+              <CardDescription className="font-satoshi font-bold text-black dark:text-white">
                 Choose the plan that best fits your study needs
               </CardDescription>
             </CardHeader>
@@ -386,16 +386,16 @@ export function PremiumPurchaseFlow({
                     setSelectedTier(value as PremiumTier)
                   }
                 >
-                  <SelectTrigger className="border-border bg-background">
+                  <SelectTrigger className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
                     <SelectValue placeholder="Select a plan" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
                     {tierConfigs.map((tier) => (
-                      <SelectItem key={tier.tier} value={tier.tier}>
+                      <SelectItem key={tier.tier} value={tier.tier} className="font-satoshi font-bold text-black dark:text-white">
                         <div className="flex w-full items-center justify-between">
                           <span>{tier.title}</span>
                           {tier.tier === "TIER_2" && (
-                            <Badge variant="secondary" className="ml-2">
+                            <Badge variant="secondary" className="ml-2 rounded-xl border-2 border-black bg-white font-satoshi font-black text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
                               Popular
                             </Badge>
                           )}
@@ -406,7 +406,7 @@ export function PremiumPurchaseFlow({
                 </Select>
 
                 {selectedTierConfig && (
-                  <div className="border-border bg-muted/30 rounded-lg border p-4">
+                  <div className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
                     <TierBenefits tier={selectedTierConfig} />
                   </div>
                 )}
@@ -422,15 +422,15 @@ export function PremiumPurchaseFlow({
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <Card className="border-border bg-card">
+          <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
-                <GiftIcon className="h-5 w-5" type="duotone" />
-                <span className="font-excon text-xl font-bold">
+                <GiftIcon className="h-5 w-5 text-black dark:text-white" type="duotone" />
+                <span className="font-excon text-xl font-black text-black dark:text-white">
                   Discount Code
                 </span>
               </CardTitle>
-              <CardDescription className="font-satoshi">
+              <CardDescription className="font-satoshi font-bold text-black dark:text-white">
                 Have a discount or referral code? Enter it below
               </CardDescription>
             </CardHeader>
@@ -442,17 +442,17 @@ export function PremiumPurchaseFlow({
                   onChange={(e) =>
                     setDiscountCode(e.target.value.toUpperCase())
                   }
-                  className="font-satoshi border-border bg-background flex-1"
+                  className="font-satoshi flex-1 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
                 />
                 <Button
                   variant="outline"
                   onClick={calculatePrice}
                   disabled={isCalculating}
-                  className="font-satoshi border-border bg-background"
+                  className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
                 >
                   {isCalculating ? (
                     <SpinnerIcon
-                      className="h-4 w-4 animate-spin"
+                      className="h-4 w-4 animate-spin text-black dark:text-white"
                       type="duotone"
                     />
                   ) : (
@@ -473,11 +473,11 @@ export function PremiumPurchaseFlow({
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.4 }}
             >
-              <Card className="border-border bg-card">
+              <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <LightningIcon className="h-5 w-5" type="duotone" />
-                    <span className="font-excon text-xl font-bold">
+                    <LightningIcon className="h-5 w-5 text-black dark:text-white" type="duotone" />
+                    <span className="font-excon text-xl font-black text-black dark:text-white">
                       Price Summary
                     </span>
                   </CardTitle>
@@ -485,8 +485,8 @@ export function PremiumPurchaseFlow({
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex justify-between text-lg">
-                      <span className="font-satoshi">Original Price:</span>
-                      <span className="font-excon font-bold">
+                      <span className="font-satoshi font-bold text-black dark:text-white">Original Price:</span>
+                      <span className="font-excon font-black text-black dark:text-white">
                         ₹{priceCalculation.originalAmount}
                       </span>
                     </div>
@@ -494,22 +494,22 @@ export function PremiumPurchaseFlow({
                     {priceCalculation.discounts.map((discount, index) => (
                       <div
                         key={index}
-                        className="flex justify-between text-green-600"
+                        className="flex justify-between"
                       >
-                        <span className="font-satoshi">
+                        <span className="font-satoshi font-bold text-black dark:text-white">
                           {discount.description}:
                         </span>
-                        <span className="font-excon font-bold">
+                        <span className="font-excon font-black text-black dark:text-white">
                           -₹{discount.amount}
                         </span>
                       </div>
                     ))}
 
-                    <Separator className="border-border" />
+                    <Separator className="border-2 border-black dark:border-white" />
 
                     <div className="flex justify-between text-2xl font-bold">
-                      <span className="font-excon">Total:</span>
-                      <span className="font-excon">
+                      <span className="font-excon font-black text-black dark:text-white">Total:</span>
+                      <span className="font-excon font-black text-black dark:text-white">
                         ₹{priceCalculation.finalAmount}
                       </span>
                     </div>
@@ -518,7 +518,7 @@ export function PremiumPurchaseFlow({
                       <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="font-satoshi text-center text-green-600"
+                        className="font-satoshi text-center font-bold text-black dark:text-white"
                       >
                         🎉 You save ₹{priceCalculation.totalDiscount}!
                       </motion.p>
@@ -537,7 +537,7 @@ export function PremiumPurchaseFlow({
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="mx-auto rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300"
+              className="mx-auto rounded-xl border-2 border-black bg-white p-4 text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
             >
               <p className="font-satoshi">{error}</p>
             </motion.div>
@@ -548,7 +548,7 @@ export function PremiumPurchaseFlow({
         <motion.div className="text-center">
           <Button
             size="lg"
-            className="group bg-foreground text-background hover:bg-foreground/90 relative overflow-hidden px-8 py-4 text-lg font-bold transition-all duration-300"
+            className="group rounded-xl border-2 border-black bg-white px-8 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-300 hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]"
             onClick={initiatePayment}
             disabled={
               !priceCalculation || isProcessing || currentPremiumStatus.isActive
@@ -577,10 +577,9 @@ export function PremiumPurchaseFlow({
                 </>
               )}
             </div>
-            <div className="absolute inset-0 bg-white/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           </Button>
 
-          <div className="text-muted-foreground mt-4 flex items-center justify-center gap-4 text-sm">
+          <div className="mt-4 flex items-center justify-center gap-4 text-sm text-black dark:text-white">
             <div className="flex items-center gap-1">
               <ShieldCheckIcon className="h-4 w-4" type="duotone" />
               <span className="font-satoshi">

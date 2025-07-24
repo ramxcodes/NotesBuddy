@@ -37,9 +37,9 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
     if (!userAgent) {
       // Fallback to screen size detection if userAgent not available
       if (screen && screen.width <= 768) {
-        return <DeviceMobileIcon type="duotone" className="h-5 w-5" />;
+        return <DeviceMobileIcon type="duotone" className="h-5 w-5 text-black dark:text-white" />;
       }
-      return <DeviceTabletIcon type="duotone" className="h-5 w-5" />;
+      return <DeviceTabletIcon type="duotone" className="h-5 w-5 text-black dark:text-white" />;
     }
 
     const ua = userAgent.toLowerCase();
@@ -48,11 +48,11 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
       ua.includes("android") ||
       ua.includes("iphone")
     ) {
-      return <DeviceMobileIcon type="duotone" className="h-5 w-5" />;
+      return <DeviceMobileIcon type="duotone" className="h-5 w-5 text-black dark:text-white" />;
     } else if (ua.includes("tablet") || ua.includes("ipad")) {
-      return <DeviceTabletIcon type="duotone" className="h-5 w-5" />;
+      return <DeviceTabletIcon type="duotone" className="h-5 w-5 text-black dark:text-white" />;
     } else {
-      return <DesktopIcon type="duotone" className="h-5 w-5" />;
+      return <DesktopIcon type="duotone" className="h-5 w-5 text-black dark:text-white" />;
     }
   };
 
@@ -119,19 +119,18 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
 
   if (devices.length === 0) {
     return (
-      <Card>
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-              <DeviceTabletIcon type="duotone" className="h-6 w-6" />
+            <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
+              <DeviceTabletIcon type="duotone" className="h-6 w-6 text-black dark:text-white" />
               Device Management
             </CardTitle>
             <Button
               variant="outline"
-              size="sm"
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className="gap-2"
+              className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
             >
               <ArrowClockwiseIcon
                 className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
@@ -141,15 +140,15 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="py-8 text-center">
+          <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
             <DeviceTabletIcon
               type="duotone"
-              className="text-muted-foreground mx-auto mb-4 h-12 w-12"
+              className="mx-auto mb-4 h-12 w-12 text-black dark:text-white"
             />
-            <h3 className="font-excon mb-2 text-lg font-semibold">
+            <h3 className="font-excon mb-2 text-lg font-black text-black dark:text-white">
               No Devices Found
             </h3>
-            <p className="text-muted-foreground font-satoshi">
+            <p className="font-satoshi font-bold text-black dark:text-white">
               No active devices are currently registered. Try refreshing or log
               in from a device to see it here.
             </p>
@@ -160,19 +159,18 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
   }
 
   return (
-    <Card>
+    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-            <DeviceTabletIcon type="duotone" className="h-6 w-6" />
+          <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
+            <DeviceTabletIcon type="duotone" className="h-6 w-6 text-black dark:text-white" />
             Device Management
           </CardTitle>
           <Button
             variant="outline"
-            size="sm"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="gap-2"
+            className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
           >
             <ArrowClockwiseIcon
               className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
@@ -186,89 +184,81 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
           {devices.map((device) => (
             <div
               key={device.id}
-              className="bg-card hover:bg-muted/50 rounded-lg border p-4 transition-colors"
+              className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
             >
               <div className="flex items-start gap-4">
-                <div className="bg-muted rounded-lg p-2">
+                <div className="rounded-md border-2 border-black bg-white p-2 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:shadow-[2px_2px_0px_0px_#fff]">
                   {getDeviceIcon(
                     device.fingerprint.userAgent,
                     device.fingerprint.screen,
                   )}
                 </div>
 
-                <div className="flex-1 space-y-2">
+                <div className="flex-1 space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-excon font-semibold">
+                      <h4 className="font-excon font-black text-black dark:text-white">
                         {device.deviceLabel}
                       </h4>
-                      <p className="text-muted-foreground font-satoshi text-sm">
+                      <p className="font-satoshi text-sm font-bold text-black dark:text-white">
                         {getDeviceType(
                           device.fingerprint.userAgent,
                           device.fingerprint.screen,
                         )}
                       </p>
                     </div>
-                    <Badge variant="outline" className="gap-1">
-                      <GlobeIcon type="duotone"  className="h-3 w-3" />
+                    <Badge 
+                      variant="secondary"
+                      className="gap-1 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                    >
+                      <GlobeIcon type="duotone" className="h-3 w-3" />
                       {device.isActive ? "Active" : "Inactive"}
                     </Badge>
                   </div>
 
-                  <div className="font-satoshi grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
-                    <div>
-                      <span className="text-muted-foreground">Browser: </span>
-                      <span>
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                    <div className="rounded border-2 border-black bg-white p-2 shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:shadow-[1px_1px_0px_0px_#fff]">
+                      <span className="font-satoshi block text-xs font-bold text-black dark:text-white">
+                        BROWSER
+                      </span>
+                      <span className="font-excon block font-black text-black dark:text-white">
                         {getBrowserInfo(
                           device.fingerprint.userAgent,
                           device.fingerprint.browserName,
                         )}
                       </span>
                     </div>
-                    <div>
-                      <span className="text-muted-foreground">Platform: </span>
-                      <span>{device.fingerprint.platform || "Unknown"}</span>
+                    <div className="rounded border-2 border-black bg-white p-2 shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:shadow-[1px_1px_0px_0px_#fff]">
+                      <span className="font-satoshi block text-xs font-bold text-black dark:text-white">
+                        PLATFORM
+                      </span>
+                      <span className="font-excon block font-black text-black dark:text-white">
+                        {device.fingerprint.platform || "Unknown"}
+                      </span>
                     </div>
-                    <div>
-                      <span className="text-muted-foreground">Language: </span>
-                      <span>{device.fingerprint.language || "Unknown"}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Last used: </span>
-                      <span>{getTimeSince(device.lastUsedAt)}</span>
+                    <div className="rounded border-2 border-black bg-white p-2 shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:shadow-[1px_1px_0px_0px_#fff]">
+                      <span className="font-satoshi block text-xs font-bold text-black dark:text-white">
+                        LAST USED
+                      </span>
+                      <span className="font-excon block font-black text-black dark:text-white">
+                        {getTimeSince(device.lastUsedAt)}
+                      </span>
                     </div>
                   </div>
-
-                  {device.fingerprint.screenResolution && (
-                    <div className="font-satoshi text-sm">
-                      <span className="text-muted-foreground">Screen: </span>
-                      <span>{device.fingerprint.screenResolution}</span>
-                    </div>
-                  )}
-
-                  {/* Additional technical details for debugging */}
-                  {device.fingerprint.hardwareConcurrency && (
-                    <div className="font-satoshi text-sm">
-                      <span className="text-muted-foreground">CPU Cores: </span>
-                      <span>{device.fingerprint.hardwareConcurrency}</span>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Enhanced Security Note */}
-        <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950">
-          <h4 className="font-excon mb-2 font-semibold text-blue-800 dark:text-blue-200">
-            Security Information
+        <div className="mt-6 rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+          <h4 className="font-excon mb-2 font-black text-black dark:text-white">
+            SECURITY INFORMATION
           </h4>
-          <p className="font-satoshi text-sm text-blue-600 dark:text-blue-400">
+          <p className="font-satoshi font-bold text-black dark:text-white">
             Your account can be accessed from up to{" "}
             {APP_CONFIG.MAX_DEVICES_PER_USER} devices. If you notice any
-            unfamiliar devices, please contact support immediately. Devices with
-            80% or higher similarity are considered the same device.
+            unfamiliar devices, please contact support immediately.
           </p>
         </div>
       </CardContent>

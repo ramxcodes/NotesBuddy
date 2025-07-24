@@ -172,13 +172,13 @@ export default function TableOfContent({
 
   const TableOfContentInner = () => (
     <div className="flex h-full flex-col">
-      <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
+      <h3 className="mb-4 flex items-center gap-2 text-sm font-bold text-black dark:text-white">
         <BookOpenIcon className="size-4" weight="duotone" />
         On this page
       </h3>
-      <div className="flex-1 overflow-y-auto border-l border-gray-200 pl-4 dark:border-gray-700">
+      <div className="flex-1 overflow-y-auto pl-1 mb-8 pb-8">
         <nav>
-          <ul className="space-y-1">
+          <ul className="space-y-2">
             {groupedHeadings.map((group) => {
               const h2Text = getHeadingText(group.h2);
               const h2Id = slugify(h2Text);
@@ -191,23 +191,23 @@ export default function TableOfContent({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => toggleH2Section(h2Id)}
-                      className="mr-1 flex-shrink-0 p-0.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                      className="mr-1 flex-shrink-0 rounded-md border-2 border-black bg-white p-1 font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
                       aria-label={
                         isActiveH2 ? "Collapse section" : "Expand section"
                       }
                     >
                       {isActiveH2 ? (
-                        <CaretDownIcon className="bg-muted size-4 rounded-md p-0.5" />
+                        <CaretDownIcon className="size-3 text-black dark:text-white" />
                       ) : (
-                        <CaretRightIcon className="bg-muted size-4 rounded-md p-0.5" />
+                        <CaretRightIcon className="size-3 text-black dark:text-white" />
                       )}
                     </button>
                     <button
                       onClick={() => handleClick(h2Text)}
-                      className={`flex-1 text-left text-lg font-medium transition-colors duration-200 hover:text-orange-500 ${
+                      className={`flex-1 rounded-md border-2 border-black px-3 py-2 text-left text-sm font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:hover:shadow-[3px_3px_0px_0px_#fff] ${
                         isCurrentH2
-                          ? "text-orange-500"
-                          : "text-gray-900 dark:text-gray-100"
+                          ? "bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
+                          : "bg-white text-black shadow-[2px_2px_0px_0px_#000] dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
                       }`}
                     >
                       {h2Text}
@@ -216,20 +216,20 @@ export default function TableOfContent({
 
                   {/* H3 Headings - Only show if this H2 section is active */}
                   {isActiveH2 && group.h3s.length > 0 && (
-                    <ul className="mt-1 ml-10 space-y-2 text-sm">
+                    <ul className="mt-2 ml-6 space-y-2">
                       {group.h3s.map((h3) => {
                         const h3Text = getHeadingText(h3);
                         const h3Id = slugify(h3Text);
                         const isActiveH3 = activeId === h3Id;
 
                         return (
-                          <li key={h3._key}>
+                          <li className="border-l-4 pl-2" key={h3._key}>
                             <button
                               onClick={() => handleClick(h3Text)}
-                              className={`block w-full text-left transition-colors duration-200 hover:text-[#F29707] ${
+                              className={`block w-full rounded-md border-2 border-black px-3 py-2 text-left text-xs font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:hover:shadow-[3px_3px_0px_0px_#fff] ${
                                 isActiveH3
-                                  ? "font-medium text-[#F29707]"
-                                  : "text-gray-600 dark:text-gray-400"
+                                  ? "bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
+                                  : "bg-white text-black shadow-[2px_2px_0px_0px_#000] dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
                               }`}
                             >
                               {h3Text}
@@ -259,7 +259,7 @@ export default function TableOfContent({
           <Button
             variant="outline"
             size={isMobile ? "lg" : "sm"}
-            className={`bg-background/95 border backdrop-blur-sm ${
+            className={`border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] backdrop-blur-sm transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] ${
               isMobile ? "rounded-l-3xl" : ""
             }`}
             aria-label="Toggle table of contents"
@@ -288,7 +288,7 @@ export default function TableOfContent({
         </SheetTrigger>
         <SheetContent
           side="right"
-          className={`${isMobile ? "w-[280px] p-4" : "w-[320px] p-6 sm:w-[400px]"}`}
+          className={`border-l-2 border-black bg-white dark:border-white dark:bg-zinc-900 ${isMobile ? "w-[280px] p-4" : "w-[320px] p-6 sm:w-[400px]"}`}
         >
           <SheetHeader>
             <SheetTitle className="sr-only">Table of Contents</SheetTitle>

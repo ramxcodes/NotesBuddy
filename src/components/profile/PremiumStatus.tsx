@@ -18,32 +18,32 @@ interface PremiumStatusProps {
 export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
   if (!premiumStatus.isActive) {
     return (
-      <Card>
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <CardHeader>
-          <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
+          <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
             <StarIcon
               type="duotone"
-              className="text-muted-foreground h-6 w-6"
+              className="h-6 w-6 text-black dark:text-white"
             />
             Premium Status
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4 text-center">
-            <div className="border-muted-foreground/20 rounded-lg border-2 border-dashed p-8">
+            <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
               <StarIcon
                 type="duotone"
-                className="text-muted-foreground mx-auto mb-4 h-12 w-12"
+                className="mx-auto mb-4 h-12 w-12 text-black dark:text-white"
               />
-              <h3 className="font-excon mb-2 text-lg font-semibold">
+              <h3 className="font-excon mb-2 text-lg font-black text-black dark:text-white">
                 No Active Premium
               </h3>
-              <p className="text-muted-foreground font-satoshi mb-4">
+              <p className="font-satoshi mb-4 font-bold text-black dark:text-white">
                 Upgrade to premium to unlock all features and get access to
                 exclusive content.
               </p>
               <Link href="/premium">
-                <Button className="gap-2">
+                <Button className="gap-2 border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]">
                   <CrownIcon type="duotone" className="h-4 w-4" />
                   Upgrade to Premium
                 </Button>
@@ -74,26 +74,11 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
     }
   };
 
-  const getTierColor = (tier: string) => {
-    switch (tier) {
-      case "TIER_1":
-        return "bg-blue-500";
-      case "TIER_2":
-        return "bg-purple-500";
-      case "TIER_3":
-        return "bg-yellow-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
-
   return (
-    <Card>
+    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
       <CardHeader>
-        <CardTitle className="font-excon flex items-center gap-2 text-2xl font-bold">
-          <div
-            className={`rounded-lg p-2 ${getTierColor(premiumStatus.tier!)}`}
-          >
+        <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
+          <div className="rounded-md border-2 border-black bg-white p-2 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
             {getTierIcon(premiumStatus.tier!)}
           </div>
           Premium Status
@@ -101,19 +86,19 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Active Premium Info */}
-        <div className="rounded-lg border border-green-200 bg-green-50 p-6 dark:border-green-800 dark:bg-green-950">
+        <div className="rounded-md border-2 border-black bg-white p-6 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h3 className="font-excon text-lg font-semibold text-green-800 dark:text-green-200">
+              <h3 className="font-excon text-lg font-black text-black dark:text-white">
                 {tierConfig.title}
               </h3>
-              <p className="font-satoshi text-green-600 dark:text-green-400">
+              <p className="font-satoshi font-bold text-black dark:text-white">
                 {tierConfig.description}
               </p>
             </div>
             <Badge
               variant="secondary"
-              className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+              className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
             >
               Active
             </Badge>
@@ -122,16 +107,19 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
           {/* Time Remaining */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-1 font-medium">
+              <span className="flex items-center gap-1 font-black text-black dark:text-white">
                 <CalendarIcon type="duotone" className="h-4 w-4" />
                 Days Remaining
               </span>
-              <span className="font-semibold">
+              <span className="font-black text-black dark:text-white">
                 {daysRemaining} of {totalDays} days
               </span>
             </div>
-            <Progress value={progressPercentage} className="h-2" />
-            <p className="text-muted-foreground text-center text-xs">
+            <Progress
+              value={progressPercentage}
+              className="h-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]"
+            />
+            <p className="text-center text-xs font-bold text-black dark:text-white">
               Expires on{" "}
               {premiumStatus.expiryDate &&
                 new Date(premiumStatus.expiryDate).toLocaleDateString("en-US", {
@@ -145,39 +133,21 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
 
         {/* Features */}
         <div>
-          <h4 className="font-excon mb-3 text-lg font-semibold">
+          <h4 className="font-excon mb-3 text-lg font-black text-black dark:text-white">
             Your Premium Features
           </h4>
           <div className="grid gap-2">
             {tierConfig.features.map((feature, index) => (
               <div
                 key={index}
-                className="font-satoshi flex items-center gap-2 text-sm"
+                className="font-satoshi flex items-center gap-2 text-sm font-bold text-black dark:text-white"
               >
-                <div className="h-2 w-2 rounded-full bg-green-500" />
+                <div className="h-3 w-3 rounded-full border-2 border-black bg-black dark:border-white dark:bg-white" />
                 {feature}
               </div>
             ))}
           </div>
         </div>
-
-        {/* Upgrade Option */}
-        {premiumStatus.tier !== "TIER_3" && (
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950">
-            <h4 className="font-excon mb-2 font-semibold">
-              Want More Features?
-            </h4>
-            <p className="text-muted-foreground font-satoshi mb-3 text-sm">
-              Upgrade to get access to even more premium features and content.
-            </p>
-            <Link href="/premium">
-              <Button variant="outline" size="sm" className="gap-2">
-                <CrownIcon type="duotone" className="h-4 w-4" />
-                Upgrade Plan
-              </Button>
-            </Link>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

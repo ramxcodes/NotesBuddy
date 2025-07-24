@@ -116,14 +116,18 @@ export default function NotesFontControl() {
     <div className="flex flex-col gap-4">
       {/* Font Family Section */}
       <div>
-        <h3 className="mb-3 text-lg font-semibold">Font Family</h3>
+        <h3 className="mb-3 text-lg font-bold text-black dark:text-white">Font Family</h3>
         <div className="grid grid-cols-2 gap-2">
           {FONT_OPTIONS.map((font) => (
             <Button
               key={font.name}
               variant={selectedFont.name === font.name ? "default" : "outline"}
               onClick={() => handleFontChange(font)}
-              className={`${font.class} h-12`}
+              className={`${font.class} h-12 border-2 border-black font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] ${
+                selectedFont.name === font.name 
+                  ? 'bg-black text-white dark:bg-white dark:text-black' 
+                  : 'bg-white text-black dark:bg-zinc-900 dark:text-white'
+              }`}
             >
               {font.label}
             </Button>
@@ -133,7 +137,7 @@ export default function NotesFontControl() {
 
       {/* Font Size Section */}
       <div>
-        <h3 className="mb-3 text-lg font-semibold">Font Size</h3>
+        <h3 className="mb-3 text-lg font-bold text-black dark:text-white">Font Size</h3>
         <div className="flex items-center justify-center gap-4">
           <Button
             variant="outline"
@@ -141,15 +145,16 @@ export default function NotesFontControl() {
             onClick={decreaseFontSize}
             disabled={fontSize === minFontSize}
             title="Decrease font size"
+            className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:disabled:hover:shadow-[2px_2px_0px_0px_#fff]"
           >
             <MinusCircleIcon size={20} weight="duotone" />
           </Button>
 
           <div className="min-w-[80px] text-center">
-            <span className="text-xl font-semibold">
+            <span className="text-xl font-bold text-black dark:text-white">
               {FONT_SIZES[fontSize as keyof typeof FONT_SIZES]}px
             </span>
-            <p className="text-muted-foreground text-sm capitalize">
+            <p className="text-sm font-medium capitalize text-zinc-600 dark:text-zinc-400">
               {fontSize.replace("-", " ")}
             </p>
           </div>
@@ -160,6 +165,7 @@ export default function NotesFontControl() {
             onClick={increaseFontSize}
             disabled={fontSize === maxFontSize}
             title="Increase font size"
+            className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:disabled:hover:shadow-[2px_2px_0px_0px_#fff]"
           >
             <PlusCircleIcon size={20} weight="duotone" />
           </Button>
@@ -171,22 +177,28 @@ export default function NotesFontControl() {
   return (
     <>
       {/* Desktop  */}
-      <div className="fixed top-1/2 right-4 z-50 hidden -translate-y-1/2 lg:block">
-        <div className="flex flex-col gap-2 rounded-lg border p-2 backdrop-blur-sm">
+      <div className="fixed top-1/2 right-8 z-50 hidden -translate-y-1/2 lg:block">
+        <div className="flex flex-col gap-2 rounded-lg border-2 border-black bg-zinc-100 p-2 shadow-[4px_4px_0px_0px_#000] backdrop-blur-sm dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="w-full">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+              >
                 <TextAaIcon size={16} weight="duotone" />
                 <span className="ml-1 text-xs">{selectedFont.label}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
+            <DropdownMenuContent align="start" className="w-48 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
               {FONT_OPTIONS.map((font) => (
                 <DropdownMenuItem
                   key={font.name}
                   onClick={() => handleFontChange(font)}
-                  className={`${font.class} ${
-                    selectedFont.name === font.name ? "bg-accent" : ""
+                  className={`${font.class} font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] ${
+                    selectedFont.name === font.name 
+                      ? "bg-black text-white dark:bg-white dark:text-black" 
+                      : "text-black hover:bg-zinc-100 dark:text-white dark:hover:bg-zinc-800"
                   }`}
                 >
                   {font.label}
@@ -195,7 +207,7 @@ export default function NotesFontControl() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator className="border-black dark:border-white" />
 
           {/* Font Size Controls */}
           <div className="flex flex-col gap-1">
@@ -204,14 +216,14 @@ export default function NotesFontControl() {
               size="sm"
               onClick={increaseFontSize}
               disabled={fontSize === maxFontSize}
-              className="w-full"
+              className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:disabled:hover:shadow-[2px_2px_0px_0px_#fff]"
               title="Increase font size"
             >
               <PlusCircleIcon size={16} weight="duotone" />
             </Button>
 
             <div className="text-center">
-              <span className="text-muted-foreground text-xs">
+              <span className="text-xs font-bold text-zinc-600 dark:text-zinc-400">
                 {FONT_SIZES[fontSize as keyof typeof FONT_SIZES]}px
               </span>
             </div>
@@ -221,7 +233,7 @@ export default function NotesFontControl() {
               size="sm"
               onClick={decreaseFontSize}
               disabled={fontSize === minFontSize}
-              className="w-full"
+              className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:disabled:hover:shadow-[2px_2px_0px_0px_#fff]"
               title="Decrease font size"
             >
               <MinusCircleIcon size={16} weight="duotone" />
@@ -237,15 +249,15 @@ export default function NotesFontControl() {
             <Button
               variant="outline"
               size="lg"
-              className="bg-background/95 rounded-full backdrop-blur-sm"
+              className="rounded-full border-2 border-black bg-zinc-100 font-bold text-black shadow-[4px_4px_0px_0px_#000] backdrop-blur-sm transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff] dark:hover:shadow-[6px_6px_0px_0px_#fff]"
             >
               <GearSixIcon size={24} weight="duotone" />
             </Button>
           </DrawerTrigger>
-          <DrawerContent>
+          <DrawerContent className="border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
             <DrawerHeader className="text-center">
-              <DrawerTitle>Reading Preferences</DrawerTitle>
-              <DrawerDescription>
+              <DrawerTitle className="text-2xl font-bold text-black dark:text-white">Reading Preferences</DrawerTitle>
+              <DrawerDescription className="font-medium text-zinc-600 dark:text-zinc-400">
                 Customize your reading experience with different fonts and sizes
               </DrawerDescription>
             </DrawerHeader>

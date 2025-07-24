@@ -124,7 +124,7 @@ export default function About() {
       icon: <CheckCircleIcon type="duotone" className="text-primary h-6 w-6" />,
       title: "Clarity Over Complexity",
       description:
-        "Notes Buddy simplifies concepts for deeper and better understanding. We break down complex topics into digestible.",
+        "Simplifies concepts for deeper and better understanding. We break down complex topics into digestible.",
     },
     {
       icon: <BrainIcon type="duotone" className="text-primary h-6 w-6" />,
@@ -136,7 +136,7 @@ export default function About() {
       icon: <LightningIcon type="duotone" className="text-primary h-6 w-6" />,
       title: "Fast and Efficient Learning",
       description:
-        "Notes Buddy accelerates learning with quick, focused resources. Study smarter with optimized content and streamlined processes.",
+        "Accelerates learning with quick, focused resources. Study smarter with optimized content and streamlined processes.",
     },
   ];
 

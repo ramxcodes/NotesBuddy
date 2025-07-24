@@ -12,7 +12,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 import {
   SpinnerIcon,
@@ -23,6 +31,10 @@ import {
   CreditCardIcon,
   ShieldCheckIcon,
   ClockIcon,
+  UserIcon,
+  GraduationCapIcon,
+  CalendarIcon,
+  BookOpenIcon,
 } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "motion/react";
 import { PremiumTier } from "@prisma/client";
@@ -32,6 +44,12 @@ import {
   type PriceCalculation,
   type UserPremiumStatus,
 } from "@/dal/premium/types";
+import {
+  UNIVERSITY_OPTIONS,
+  DEGREE_OPTIONS,
+  YEAR_OPTIONS,
+  SEMESTER_OPTIONS,
+} from "@/utils/constant";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -55,91 +73,34 @@ interface PremiumPurchaseFlowProps {
   userEmail: string;
   userName: string;
   currentPremiumStatus: UserPremiumStatus;
+  userProfile?: {
+    university: string;
+    degree: string;
+    year: string;
+    semester: string;
+  };
 }
 
-interface TierCardProps {
+interface TierBenefitsProps {
   tier: TierDetails;
-  isSelected: boolean;
-  onClick: () => void;
-  delay?: number;
 }
 
-function TierCard({ tier, isSelected, onClick, delay = 0 }: TierCardProps) {
+function TierBenefits({ tier }: TierBenefitsProps) {
   return (
-    <motion.div
-      className="group relative cursor-pointer"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: delay }}
-      viewport={{ once: true, amount: 0.3 }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-    >
-      <div
-        className={`relative h-full overflow-hidden rounded-2xl border-2 backdrop-blur-sm transition-all duration-300 ${
-          isSelected
-            ? "border-primary/50 bg-primary/5 shadow-primary/10 shadow-xl"
-            : "border-border/50 bg-card hover:border-primary/30 hover:shadow-primary/5 hover:shadow-lg"
-        }`}
-      >
-        {tier.tier === "TIER_2" && (
-          <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700">
-            <StarIcon type="duotone" className="mr-1 h-3 w-3" />
-            Popular
-          </Badge>
-        )}
-
-        <div className="from-primary/5 absolute inset-0 bg-gradient-to-br via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-        <CardHeader className="relative z-10 pb-2 text-center">
-          <CardTitle className="font-excon text-foreground text-xl font-bold">
-            {tier.title}
-          </CardTitle>
-          <CardDescription className="font-satoshi text-muted-foreground">
-            {tier.description}
-          </CardDescription>
-          <div className="mt-6">
-            <span className="font-excon text-primary text-4xl font-black">
-              ₹{tier.price}
-            </span>
-            <span className="font-satoshi text-muted-foreground ml-1">
-              /6 months
-            </span>
+    <div className="space-y-3">
+      <h3 className="font-excon text-lg font-bold">What&apos;s included:</h3>
+      <div className="space-y-2">
+        {tier.features.map((feature, index) => (
+          <div key={index} className="flex items-center gap-3">
+            <CheckCircleIcon
+              className="text-foreground h-4 w-4"
+              type="duotone"
+            />
+            <span className="font-satoshi text-sm">{feature}</span>
           </div>
-        </CardHeader>
-
-        <CardContent className="relative z-10 pt-2">
-          <ul className="space-y-3">
-            {tier.features.map((feature: string, index: number) => (
-              <li key={index} className="flex items-start text-sm">
-                <CheckCircleIcon
-                  type="duotone"
-                  className="mt-0.5 mr-3 h-4 w-4 flex-shrink-0 text-green-500"
-                />
-                <span className="font-satoshi text-foreground">{feature}</span>
-              </li>
-            ))}
-          </ul>
-
-          {isSelected && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-primary/10 ring-primary/20 mt-6 rounded-xl p-4 ring-1"
-            >
-              <p className="font-satoshi text-primary text-sm font-medium">
-                <CheckCircleIcon
-                  type="duotone"
-                  className="mr-2 inline h-4 w-4"
-                />
-                Selected Plan
-              </p>
-            </motion.div>
-          )}
-        </CardContent>
+        ))}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -147,6 +108,7 @@ export function PremiumPurchaseFlow({
   userEmail,
   userName,
   currentPremiumStatus,
+  userProfile,
 }: PremiumPurchaseFlowProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -161,6 +123,7 @@ export function PremiumPurchaseFlow({
   const [error, setError] = useState("");
 
   const tierConfigs = getAllTierConfigs();
+  const selectedTierConfig = tierConfigs.find((t) => t.tier === selectedTier);
 
   // Initialize from URL params
   useEffect(() => {
@@ -258,7 +221,7 @@ export function PremiumPurchaseFlow({
           email: userEmail,
         },
         theme: {
-          color: "#3B82F6",
+          color: "#000000",
         },
         handler: async (response: RazorpayResponse) => {
           await verifyPayment(response);
@@ -321,58 +284,155 @@ export function PremiumPurchaseFlow({
     };
   }, []);
 
-  return (
-    <div className="relative mx-auto max-w-6xl overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0" />
+  // Format academic details for display
+  const academicDetails = userProfile
+    ? {
+        university:
+          UNIVERSITY_OPTIONS[
+            userProfile.university as keyof typeof UNIVERSITY_OPTIONS
+          ]?.title || userProfile.university,
+        degree:
+          DEGREE_OPTIONS[userProfile.degree as keyof typeof DEGREE_OPTIONS]
+            ?.title || userProfile.degree,
+        year:
+          YEAR_OPTIONS[userProfile.year as keyof typeof YEAR_OPTIONS]?.title ||
+          userProfile.year,
+        semester:
+          SEMESTER_OPTIONS[
+            userProfile.semester as keyof typeof SEMESTER_OPTIONS
+          ]?.title || userProfile.semester,
+      }
+    : null;
 
-      <div className="relative z-10">
-        {/* Header Section */}
-        <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <h1 className="font-excon text-foreground mb-4 text-4xl font-black tracking-tight md:text-5xl lg:text-6xl">
-            Choose Your Plan
-          </h1>
-          <p className="font-satoshi text-muted-foreground mx-auto max-w-2xl text-lg md:text-xl">
-            Unlock the full potential of your learning journey with premium
-            features
-          </p>
-        </motion.div>
+  return (
+    <div className="relative mx-auto max-w-4xl overflow-hidden">
+      <div className="relative z-10 space-y-8">
+        {/* Academic Information */}
+        {academicDetails && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Card className="border-border bg-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <UserIcon className="h-5 w-5" type="duotone" />
+                  <span className="font-excon text-xl font-bold">
+                    Academic Profile
+                  </span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <GraduationCapIcon className="h-4 w-4" type="duotone" />
+                    <div>
+                      <span className="text-muted-foreground">University:</span>
+                      <p className="font-medium">
+                        {academicDetails.university}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <BookOpenIcon className="h-4 w-4" type="duotone" />
+                    <div>
+                      <span className="text-muted-foreground">Degree:</span>
+                      <p className="font-medium">{academicDetails.degree}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CalendarIcon className="h-4 w-4" type="duotone" />
+                    <div>
+                      <span className="text-muted-foreground">Year:</span>
+                      <p className="font-medium">{academicDetails.year}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <StarIcon className="h-4 w-4" type="duotone" />
+                    <div>
+                      <span className="text-muted-foreground">Semester:</span>
+                      <p className="font-medium">{academicDetails.semester}</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {/* Tier Selection */}
-        <div className="mb-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {tierConfigs.map((tier, index) => (
-            <TierCard
-              key={tier.tier}
-              tier={tier}
-              isSelected={selectedTier === tier.tier}
-              onClick={() => setSelectedTier(tier.tier)}
-              delay={index * 0.1}
-            />
-          ))}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          viewport={{ once: true }}
+        >
+          <Card className="border-border bg-card">
+            <CardHeader>
+              <CardTitle className="font-excon text-xl font-bold">
+                Select Your Plan
+              </CardTitle>
+              <CardDescription className="font-satoshi">
+                Choose the plan that best fits your study needs
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <Select
+                  value={selectedTier}
+                  onValueChange={(value) =>
+                    setSelectedTier(value as PremiumTier)
+                  }
+                >
+                  <SelectTrigger className="border-border bg-background">
+                    <SelectValue placeholder="Select a plan" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {tierConfigs.map((tier) => (
+                      <SelectItem key={tier.tier} value={tier.tier}>
+                        <div className="flex w-full items-center justify-between">
+                          <span>{tier.title}</span>
+                          {tier.tier === "TIER_2" && (
+                            <Badge variant="secondary" className="ml-2">
+                              Popular
+                            </Badge>
+                          )}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {selectedTierConfig && (
+                  <div className="border-border bg-muted/30 rounded-lg border p-4">
+                    <TierBenefits tier={selectedTierConfig} />
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
         {/* Discount Code Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="mb-8"
         >
-          <Card className="border-border/50 bg-card/50 mx-auto max-w-2xl backdrop-blur-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="flex items-center gap-3 text-center">
-                <GiftIcon type="duotone" className="h-6 w-6 text-purple-500" />
+          <Card className="border-border bg-card">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3">
+                <GiftIcon className="h-5 w-5" type="duotone" />
                 <span className="font-excon text-xl font-bold">
-                  Have a discount or referral code?
+                  Discount Code
                 </span>
               </CardTitle>
+              <CardDescription className="font-satoshi">
+                Have a discount or referral code? Enter it below
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex gap-3">
@@ -382,16 +442,19 @@ export function PremiumPurchaseFlow({
                   onChange={(e) =>
                     setDiscountCode(e.target.value.toUpperCase())
                   }
-                  className="font-satoshi border-border/50 bg-background/50 flex-1 backdrop-blur-sm"
+                  className="font-satoshi border-border bg-background flex-1"
                 />
                 <Button
                   variant="outline"
                   onClick={calculatePrice}
                   disabled={isCalculating}
-                  className="font-satoshi border-border/50 bg-background/50 backdrop-blur-sm"
+                  className="font-satoshi border-border bg-background"
                 >
                   {isCalculating ? (
-                    <SpinnerIcon type="duotone" className="h-4 w-4 animate-spin" />
+                    <SpinnerIcon
+                      className="h-4 w-4 animate-spin"
+                      type="duotone"
+                    />
                   ) : (
                     "Apply"
                   )}
@@ -410,13 +473,10 @@ export function PremiumPurchaseFlow({
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.4 }}
             >
-              <Card className="border-primary/20 from-primary/5 mx-auto mb-8 max-w-2xl border-2 bg-gradient-to-br to-transparent backdrop-blur-sm">
+              <Card className="border-border bg-card">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <LightningIcon
-                      type="duotone"
-                      className="text-primary h-6 w-6"
-                    />
+                    <LightningIcon className="h-5 w-5" type="duotone" />
                     <span className="font-excon text-xl font-bold">
                       Price Summary
                     </span>
@@ -434,7 +494,7 @@ export function PremiumPurchaseFlow({
                     {priceCalculation.discounts.map((discount, index) => (
                       <div
                         key={index}
-                        className="flex justify-between text-green-600 dark:text-green-400"
+                        className="flex justify-between text-green-600"
                       >
                         <span className="font-satoshi">
                           {discount.description}:
@@ -445,10 +505,11 @@ export function PremiumPurchaseFlow({
                       </div>
                     ))}
 
-                    <hr className="border-border/50" />
+                    <Separator className="border-border" />
+
                     <div className="flex justify-between text-2xl font-bold">
                       <span className="font-excon">Total:</span>
-                      <span className="font-excon text-primary">
+                      <span className="font-excon">
                         ₹{priceCalculation.finalAmount}
                       </span>
                     </div>
@@ -457,7 +518,7 @@ export function PremiumPurchaseFlow({
                       <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="font-satoshi text-center text-green-600 dark:text-green-400"
+                        className="font-satoshi text-center text-green-600"
                       >
                         🎉 You save ₹{priceCalculation.totalDiscount}!
                       </motion.p>
@@ -476,7 +537,7 @@ export function PremiumPurchaseFlow({
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="mx-auto mb-6 max-w-2xl rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300"
+              className="mx-auto rounded-xl border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300"
             >
               <p className="font-satoshi">{error}</p>
             </motion.div>
@@ -487,7 +548,7 @@ export function PremiumPurchaseFlow({
         <motion.div className="text-center">
           <Button
             size="lg"
-            className="group from-primary hover:from-primary/90 hover:shadow-primary/25 relative overflow-hidden bg-gradient-to-r to-purple-600 px-8 py-4 text-lg font-bold transition-all duration-300 hover:to-purple-600/90 hover:shadow-lg"
+            className="group bg-foreground text-background hover:bg-foreground/90 relative overflow-hidden px-8 py-4 text-lg font-bold transition-all duration-300"
             onClick={initiatePayment}
             disabled={
               !priceCalculation || isProcessing || currentPremiumStatus.isActive
@@ -496,39 +557,42 @@ export function PremiumPurchaseFlow({
             <div className="relative z-10 flex items-center gap-3">
               {isProcessing ? (
                 <>
-                  <SpinnerIcon type="duotone" className="h-5 w-5 animate-spin" />
+                  <SpinnerIcon
+                    className="h-5 w-5 animate-spin"
+                    type="duotone"
+                  />
                   <span className="font-excon">Processing Payment...</span>
                 </>
               ) : currentPremiumStatus.isActive ? (
                 <>
-                  <ShieldCheckIcon type="duotone" className="h-5 w-5" />
+                  <ShieldCheckIcon className="h-5 w-5" type="duotone" />
                   <span className="font-excon">Premium Already Active</span>
                 </>
               ) : (
                 <>
-                  <CreditCardIcon type="duotone" className="h-5 w-5" />
+                  <CreditCardIcon className="h-5 w-5" type="duotone" />
                   <span className="font-excon">
                     Pay ₹{priceCalculation?.finalAmount || 0} & Upgrade Now
                   </span>
                 </>
               )}
             </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-white/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           </Button>
 
           <div className="text-muted-foreground mt-4 flex items-center justify-center gap-4 text-sm">
             <div className="flex items-center gap-1">
-              <ShieldCheckIcon type="duotone" className="h-4 w-4" />
+              <ShieldCheckIcon className="h-4 w-4" type="duotone" />
               <span className="font-satoshi">
                 Secure payment powered by Razorpay
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <ClockIcon type="duotone" className="h-4 w-4" />
+              <ClockIcon className="h-4 w-4" type="duotone" />
               <span className="font-satoshi">6 months access</span>
             </div>
             <div className="flex items-center gap-1">
-              <LightningIcon type="duotone" className="h-4 w-4" />
+              <LightningIcon className="h-4 w-4" type="duotone" />
               <span className="font-satoshi">Instant activation</span>
             </div>
           </div>

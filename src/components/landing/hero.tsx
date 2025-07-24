@@ -79,7 +79,7 @@ export default function Hero() {
               <span className="font-ranade relative flex w-full justify-center overflow-hidden text-center md:pt-1 md:pb-4">
                 &nbsp;
                 {titles.map((title, index) => (
-                  <motion.span
+                  <motion.div
                     key={index}
                     className="absolute font-light"
                     initial={{ opacity: 0, y: "-100" }}
@@ -97,7 +97,7 @@ export default function Hero() {
                     }
                   >
                     {title}
-                  </motion.span>
+                  </motion.div>
                 ))}
               </span>
             </h1>

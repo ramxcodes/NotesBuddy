@@ -43,14 +43,14 @@ export default async function Profile() {
           <p className="font-excon text-sm">Hi, {userFirstName}!</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link className="hover:cursor-pointer" href="/profile">
-          <DropdownMenuItem>
+        <Link href="/profile">
+          <DropdownMenuItem className="hover:cursor-pointer">
             <UserIcon />
             Profile
           </DropdownMenuItem>
         </Link>
-        <Link className="hover:cursor-pointer" href="/notes">
-          <DropdownMenuItem>
+        <Link href="/notes">
+          <DropdownMenuItem className="hover:cursor-pointer">
             <NotesbookIcon />
             Notes
           </DropdownMenuItem>

@@ -38,10 +38,8 @@ function PricingCard({
 
   return (
     <motion.div
-      className={`bg-card relative flex flex-col rounded-2xl border p-8 shadow-lg transition-all duration-300 ${
-        highlight
-          ? "border-primary/60 ring-primary/40 z-10 scale-105 ring-2"
-          : "border-border"
+      className={`bg-card border-primary dark:border-secondary relative flex flex-col rounded-2xl border border-r-8 border-b-8 p-8 shadow-none transition-all duration-300 hover:shadow-lg ${
+        highlight ? "border-primary/60 ring-primary/40 z-10 scale-105 ring-2" : "border-border"
       }`}
     >
       {/* Tag */}
@@ -90,9 +88,9 @@ function PricingCard({
       </ul>
       <Link className="mt-auto w-full" href={`/premium?tier=${tier}`}>
         <Button
-          className={`rounded-lg border px-6 py-2 font-bold transition-all duration-200 w-full ${
+          className={`w-full rounded-lg border px-6 py-2 font-bold transition-all duration-200 ${
             highlight
-              ? "bg-primary/25 border-primary hover:bg-primary/30 text-white"
+              ? "bg-primary/70 border-primary hover:bg-primary dark:bg-primary/30 dark:hover:bg-primary text-white dark:hover:text-black"
               : "bg-background text-foreground border-border hover:bg-muted"
           }`}
         >

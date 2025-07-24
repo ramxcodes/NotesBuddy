@@ -2,7 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CheckCircleIcon, BrainIcon, LightningIcon } from "@phosphor-icons/react";
+import {
+  CheckCircleIcon,
+  BrainIcon,
+  LightningIcon,
+} from "@phosphor-icons/react";
 
 interface AnimatedTextCycleProps {
   words: string[];
@@ -97,7 +101,7 @@ function FeatureCard({
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
     >
-      <div className="bg-card border-border hover:shadow-primary/5 hover:border-primary/20 relative rounded-2xl border p-8 backdrop-blur-sm transition-all duration-300 hover:shadow-lg">
+      <div className="bg-card hover:shadow-primary/5 hover:border-primary/20 border-primary dark:border-secondary relative rounded-2xl border border-r-8 border-b-8 p-8 shadow-none backdrop-blur-sm transition-all duration-300 hover:border-r-1 hover:border-b-1 hover:shadow-lg">
         <div className="from-primary/5 absolute inset-0 rounded-2xl bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
         <div className="relative z-10">
@@ -109,7 +113,7 @@ function FeatureCard({
             {title}
           </h3>
 
-          <p className="text-muted-foreground font-satoshi leading-relaxed">
+          <p className="text-muted-foreground font-satoshi mt-4 text-lg leading-relaxed">
             {description}
           </p>
         </div>
@@ -124,7 +128,7 @@ export default function About() {
       icon: <CheckCircleIcon type="duotone" className="text-primary h-6 w-6" />,
       title: "Clarity Over Complexity",
       description:
-        "Simplifies concepts for deeper and better understanding. We break down complex topics into digestible.",
+        "Simplifies concepts for deeper and better understanding. We break down complex topics into digestible chunks.",
     },
     {
       icon: <BrainIcon type="duotone" className="text-primary h-6 w-6" />,

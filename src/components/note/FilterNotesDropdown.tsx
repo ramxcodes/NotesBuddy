@@ -208,10 +208,10 @@ export default function FilterNotesDropdown({
   );
 
   return (
-    <div className="my-6 rounded-xl border-4 border-black dark:border-white bg-white dark:bg-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:shadow-[8px_8px_0px_0px_#fff]">
+    <div className="my-6 rounded-xl border-4 border-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:border-white dark:shadow-[8px_8px_0px_0px_#757373]">
       {hasActiveSearch && (
         <div className="mb-4 w-full text-center">
-          <p className="text-black/70 dark:text-white/70 text-sm font-bold uppercase tracking-wide">
+          <p className="text-sm font-bold tracking-wide text-black/70 uppercase dark:text-white/70">
             Searching all notes. Use filters below to narrow down results.
           </p>
         </div>
@@ -220,22 +220,22 @@ export default function FilterNotesDropdown({
       <div className="flex flex-wrap items-end justify-center gap-4">
         {/* University Filter */}
         <div className="flex flex-col gap-2">
-          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+          <label className="text-sm font-black tracking-wider text-black uppercase dark:text-white">
             University
           </label>
           <Select
             value={filters.university}
             onValueChange={(value) => handleFilterChange("university", value)}
           >
-            <SelectTrigger className="w-[180px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1">
+            <SelectTrigger className="w-[180px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select university" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
               {filterOptions.universities.map((option) => (
-                <SelectItem 
-                  key={option.value} 
+                <SelectItem
+                  key={option.value}
                   value={option.value}
-                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                  className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
                   {option.label}
                 </SelectItem>
@@ -246,22 +246,22 @@ export default function FilterNotesDropdown({
 
         {/* Degree Filter */}
         <div className="flex flex-col gap-2">
-          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+          <label className="text-sm font-black tracking-wider text-black uppercase dark:text-white">
             Degree
           </label>
           <Select
             value={filters.degree}
             onValueChange={(value) => handleFilterChange("degree", value)}
           >
-            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1">
+            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select degree" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
               {filterOptions.degrees.map((option) => (
-                <SelectItem 
-                  key={option.value} 
+                <SelectItem
+                  key={option.value}
                   value={option.value}
-                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                  className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
                   {option.label}
                 </SelectItem>
@@ -272,22 +272,22 @@ export default function FilterNotesDropdown({
 
         {/* Year Filter */}
         <div className="flex flex-col gap-2">
-          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+          <label className="text-sm font-black tracking-wider text-black uppercase dark:text-white">
             Year
           </label>
           <Select
             value={filters.year}
             onValueChange={(value) => handleFilterChange("year", value)}
           >
-            <SelectTrigger className="w-[120px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1">
+            <SelectTrigger className="w-[120px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select year" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
               {filterOptions.years.map((option) => (
-                <SelectItem 
-                  key={option.value} 
+                <SelectItem
+                  key={option.value}
                   value={option.value}
-                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                  className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
                   {option.label}
                 </SelectItem>
@@ -298,22 +298,22 @@ export default function FilterNotesDropdown({
 
         {/* Semester Filter */}
         <div className="flex flex-col gap-2">
-          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+          <label className="text-sm font-black tracking-wider text-black uppercase dark:text-white">
             Semester
           </label>
           <Select
             value={filters.semester}
             onValueChange={(value) => handleFilterChange("semester", value)}
           >
-            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1">
+            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select semester" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
               {filterOptions.semesters.map((option) => (
-                <SelectItem 
-                  key={option.value} 
+                <SelectItem
+                  key={option.value}
                   value={option.value}
-                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                  className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
                   {option.label}
                 </SelectItem>
@@ -324,7 +324,7 @@ export default function FilterNotesDropdown({
 
         {/* Subject Filter */}
         <div className="flex flex-col gap-2">
-          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+          <label className="text-sm font-black tracking-wider text-black uppercase dark:text-white">
             Subject
           </label>
           <Select
@@ -332,20 +332,23 @@ export default function FilterNotesDropdown({
             onValueChange={(value) => handleFilterChange("subject", value)}
             disabled={isLoadingSubjects}
           >
-            <SelectTrigger className="w-[160px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
+            <SelectTrigger className="w-[160px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue
                 placeholder={isLoadingSubjects ? "Loading..." : "All subjects"}
               />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
-              <SelectItem value="all" className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
+              <SelectItem
+                value="all"
+                className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+              >
                 All subjects
               </SelectItem>
               {subjects.map((subject, index) => (
-                <SelectItem 
-                  key={index} 
+                <SelectItem
+                  key={index}
                   value={subject.subject}
-                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                  className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
                   {subject.subject}
                 </SelectItem>

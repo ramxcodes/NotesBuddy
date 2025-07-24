@@ -363,7 +363,7 @@ export function PremiumPurchaseFlow({
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+            <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <UserIcon
@@ -446,7 +446,7 @@ export function PremiumPurchaseFlow({
           transition={{ duration: 0.6, delay: 0.1 }}
           viewport={{ once: true }}
         >
-          <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+          <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             <CardHeader>
               <CardTitle className="font-excon text-xl font-black text-black dark:text-white">
                 Select Your Plan
@@ -463,10 +463,10 @@ export function PremiumPurchaseFlow({
                     setSelectedTier(value as PremiumTier)
                   }
                 >
-                  <SelectTrigger className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <SelectTrigger className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                     <SelectValue placeholder="Select a plan" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                     {tierConfigs.map((tier) => (
                       <SelectItem
                         key={tier.tier}
@@ -478,7 +478,7 @@ export function PremiumPurchaseFlow({
                           {tier.tier === "TIER_2" && (
                             <Badge
                               variant="secondary"
-                              className="font-satoshi ml-2 rounded-xl border-2 border-black bg-white font-black text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                              className="font-satoshi ml-2 rounded-xl border-2 border-black bg-white font-black text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                             >
                               Popular
                             </Badge>
@@ -490,7 +490,7 @@ export function PremiumPurchaseFlow({
                 </Select>
 
                 {selectedTierConfig && (
-                  <div className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <div className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                     <TierBenefits tier={selectedTierConfig} />
                   </div>
                 )}
@@ -506,7 +506,7 @@ export function PremiumPurchaseFlow({
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+          <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <GiftIcon
@@ -529,13 +529,13 @@ export function PremiumPurchaseFlow({
                   onChange={(e) =>
                     setDiscountCode(e.target.value.toUpperCase())
                   }
-                  className="font-satoshi flex-1 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                  className="font-satoshi flex-1 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 />
                 <Button
                   variant="outline"
                   onClick={calculatePrice}
                   disabled={isCalculating}
-                  className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                  className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 >
                   {isCalculating ? (
                     <SpinnerIcon
@@ -559,7 +559,7 @@ export function PremiumPurchaseFlow({
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+            <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <CreditCardIcon
@@ -576,7 +576,7 @@ export function PremiumPurchaseFlow({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <div className="flex items-center justify-between rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                     <div className="flex items-center gap-3">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white">
                         <span className="font-excon text-sm font-black text-white dark:text-black">
@@ -632,7 +632,7 @@ export function PremiumPurchaseFlow({
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]"
+                      className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
                     >
                       <div className="flex items-center gap-2">
                         <CheckCircleIcon
@@ -660,7 +660,7 @@ export function PremiumPurchaseFlow({
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.4 }}
             >
-              <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+              <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
                     <LightningIcon
@@ -728,7 +728,7 @@ export function PremiumPurchaseFlow({
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="mx-auto rounded-xl border-2 border-black bg-white p-4 text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+              className="mx-auto rounded-xl border-2 border-black bg-white p-4 text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
             >
               <p className="font-satoshi">{error}</p>
             </motion.div>
@@ -739,7 +739,7 @@ export function PremiumPurchaseFlow({
         <motion.div className="text-center">
           <Button
             size="lg"
-            className="group rounded-xl border-2 border-black bg-white px-8 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-300 hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]"
+            className="group rounded-xl border-2 border-black bg-white px-8 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-300 hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]"
             onClick={initiatePayment}
             disabled={
               !priceCalculation || isProcessing || currentPremiumStatus.isActive

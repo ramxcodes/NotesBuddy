@@ -22,7 +22,7 @@ export default function NotesCard({
   note: NOTES_QUERYResult[number];
 }) {
   return (
-    <Card className="relative h-[350px] shadow-none border-b-8 border-r-8 border-primary dark:border-secondary transition-all duration-200 hover:border-b-2 hover:border-r-2 hover:-translate-y-1 hover:translate-x-1">
+    <Card className="relative h-[350px] border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
       <CardHeader className="pb-4">
         {note.isPremium && (
           <Badge
@@ -48,36 +48,36 @@ export default function NotesCard({
       </CardHeader>
 
       <CardContent className="space-y-2 -mt-4">
-        <div className="flex flex-wrap items-center justify-start gap-2">
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary border-primary/20 px-3 py-1 font-medium"
-          >
-            <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
-            {getDisplayNameFromSanityValue("university", note.university || "")}
-          </Badge>
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary border-primary/20 px-3 py-1 font-medium"
-          >
-            <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
-            {getDisplayNameFromSanityValue("degree", note.degree || "")}
-          </Badge>
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary border-primary/20 px-3 py-1 font-medium"
-          >
-            <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
-            {getDisplayNameFromSanityValue("year", note.year || "")}
-          </Badge>
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary border-primary/20 px-3 py-1 font-medium"
-          >
-            <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
-            {getDisplayNameFromSanityValue("semester", note.semester || "")}
-          </Badge>
-        </div>
+      <div className="flex flex-wrap items-center justify-start gap-2">
+        <Badge
+          variant="secondary"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+        >
+          <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
+          {getDisplayNameFromSanityValue("university", note.university || "")}
+        </Badge>
+        <Badge
+          variant="secondary"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+        >
+          <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
+          {getDisplayNameFromSanityValue("degree", note.degree || "")}
+        </Badge>
+        <Badge
+          variant="secondary"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+        >
+          <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
+          {getDisplayNameFromSanityValue("year", note.year || "")}
+        </Badge>
+        <Badge
+          variant="secondary"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+        >
+          <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
+          {getDisplayNameFromSanityValue("semester", note.semester || "")}
+        </Badge>
+      </div>
       </CardContent>
 
       <CardFooter className="pt-4 absolute bottom-6 left-0 right-0">

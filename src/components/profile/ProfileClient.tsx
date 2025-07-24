@@ -101,45 +101,45 @@ export default function ProfileClient({
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="grid h-auto w-full grid-cols-2 gap-4 border-2 border-black bg-white p-2 shadow-[4px_4px_0px_0px_#000] md:grid-cols-3 lg:grid-cols-6 dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+      <TabsList className="grid h-auto w-full grid-cols-2 gap-4 border-2 border-black bg-white p-2 shadow-[4px_4px_0px_0px_#000] md:grid-cols-3 lg:grid-cols-6 dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <TabsTrigger
           value="profile"
-          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#fff]"
+          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#757373]"
         >
           <UserIcon className="h-4 w-4" />
           <span className="hidden sm:inline">Profile</span>
         </TabsTrigger>
         <TabsTrigger
           value="premium"
-          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#fff]"
+          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#757373]"
         >
           <CrownIcon className="h-4 w-4" />
           <span className="hidden sm:inline">Premium</span>
         </TabsTrigger>
         <TabsTrigger
           value="referral"
-          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#fff]"
+          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#757373]"
         >
           <ShareNetworkIcon className="h-4 w-4" />
           <span className="hidden sm:inline">Referral</span>
         </TabsTrigger>
         <TabsTrigger
           value="history"
-          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#fff]"
+          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#757373]"
         >
           <ReceiptIcon className="h-4 w-4" />
           <span className="hidden sm:inline">History</span>
         </TabsTrigger>
         <TabsTrigger
           value="devices"
-          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#fff]"
+          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#757373]"
         >
           <DevicesIcon className="h-4 w-4" />
           <span className="hidden sm:inline">Devices</span>
         </TabsTrigger>
         <TabsTrigger
           value="settings"
-          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#fff]"
+          className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:data-[state=active]:bg-white dark:data-[state=active]:text-black dark:data-[state=active]:shadow-[2px_2px_0px_0px_#757373]"
         >
           <SignOutIcon className="h-4 w-4" />
           <span className="hidden sm:inline">Settings</span>
@@ -182,7 +182,7 @@ export default function ProfileClient({
 
         <TabsContent value="settings" className="space-y-6">
           <div className="max-w-2xl">
-            <div className="space-y-4 rounded-lg border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+            <div className="space-y-4 rounded-lg border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
               <h3 className="font-excon text-xl font-bold text-black dark:text-white">
                 Account Settings
               </h3>

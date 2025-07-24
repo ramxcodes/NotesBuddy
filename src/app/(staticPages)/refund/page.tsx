@@ -20,7 +20,7 @@ export default function RefundPage() {
         Last updated: Jan 18, 2025
       </p>
       <div className="flex w-full max-w-2xl flex-col gap-8">
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-2xl font-bold">
             Refund Policy for Notes Buddy
           </h2>
@@ -30,7 +30,7 @@ export default function RefundPage() {
             refunds once a purchase is completed.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">No Refunds</h2>
           <p className="font-satoshi text-base">
             All purchases of digital notes, flashcards, and other resources are
@@ -38,7 +38,7 @@ export default function RefundPage() {
             your purchase.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">Exceptions</h2>
           <p className="font-satoshi text-base">
             If you experience technical issues or do not receive access to your
@@ -47,7 +47,7 @@ export default function RefundPage() {
             for.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">Contact Us</h2>
           <p className="font-satoshi text-base">
             If you have questions or concerns about this refund policy, please

@@ -109,12 +109,18 @@ export default function Hero() {
           </div>
           <div className="flex flex-row gap-3">
             <Link href="/notes">
-              <Button size="lg" className="gap-4 bg-background dark:bg-card text-foreground dark:text-foreground border-2 border-primary dark:border-secondary rounded-2xl border-r-8 border-b-8 shadow-none hover:shadow-lg transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:text-white">
+              <Button
+                size="lg"
+                className="gap-4 border-2 border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:text-white hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              >
                 Visit Notes <BookOpenIcon type="duotone" className="size-4" />
               </Button>
             </Link>
             <Link href="/premium">
-              <Button size="lg" className="gap-4 bg-primary dark:bg-primary text-white dark:text-black border-2 border-primary dark:border-secondary rounded-2xl border-r-8 border-b-8 shadow-none hover:shadow-lg transition-all duration-200 hover:translate-x-1 hover:translate-y-1">
+              <Button
+                size="lg"
+                className="gap-4 border-2 border-black bg-black hover:bg-white hover:text-black text-white shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              >
                 Purchase Premium <StarIcon type="duotone" className="size-4" />
               </Button>
             </Link>

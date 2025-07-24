@@ -169,7 +169,7 @@ export function OnboardingForm() {
       <div className="w-full max-w-2xl space-y-8">
         {/* Header Section */}
         <div className="space-y-4 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
             <UserIcon className="h-8 w-8 text-black dark:text-white" />
           </div>
           <div className="space-y-2">
@@ -186,10 +186,10 @@ export function OnboardingForm() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             {/* Personal Information Card */}
-            <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+            <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
                     <UserIcon className="h-5 w-5 text-black dark:text-white" />
                   </div>
                   <div>
@@ -216,7 +216,7 @@ export function OnboardingForm() {
                           <Input
                             placeholder="Raj"
                             {...field}
-                            className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]"
+                            className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                           />
                         </FormControl>
                         <FormMessage className="font-satoshi text-xs font-bold" />
@@ -236,7 +236,7 @@ export function OnboardingForm() {
                           <Input
                             placeholder="Kumar"
                             {...field}
-                            className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]"
+                            className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                           />
                         </FormControl>
                         <FormMessage className="font-satoshi text-xs font-bold" />
@@ -257,7 +257,7 @@ export function OnboardingForm() {
                         <Input
                           placeholder="9876543210"
                           {...field}
-                          className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]"
+                          className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                           type="tel"
                         />
                       </FormControl>
@@ -266,16 +266,16 @@ export function OnboardingForm() {
                   )}
                 />
                 {submitError && (
-                  <p className="text-red-500 text-xs hidden">{submitError}</p>
+                  <p className="hidden text-xs text-red-500">{submitError}</p>
                 )}
               </CardContent>
             </Card>
 
             {/* Academic Information Card */}
-            <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+            <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
                     <GraduationCapIcon className="h-5 w-5 text-black dark:text-white" />
                   </div>
                   <div>
@@ -303,11 +303,11 @@ export function OnboardingForm() {
                           value={field.value || ""}
                         >
                           <FormControl>
-                            <SelectTrigger className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]">
+                            <SelectTrigger className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
                               <SelectValue placeholder="Select university" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+                          <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                             {getUniversityOptions().map((option) => (
                               <SelectItem
                                 key={option.value}
@@ -340,7 +340,7 @@ export function OnboardingForm() {
                           }
                         >
                           <FormControl>
-                            <SelectTrigger className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]">
+                            <SelectTrigger className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
                               <SelectValue
                                 placeholder={
                                   !watchedUniversity
@@ -352,7 +352,7 @@ export function OnboardingForm() {
                               />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+                          <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                             {availableDegrees.map((option) => (
                               <SelectItem
                                 key={option.value}
@@ -389,7 +389,7 @@ export function OnboardingForm() {
                           }
                         >
                           <FormControl>
-                            <SelectTrigger className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]">
+                            <SelectTrigger className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
                               <SelectValue
                                 placeholder={
                                   !watchedUniversity
@@ -403,7 +403,7 @@ export function OnboardingForm() {
                               />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+                          <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                             {availableYears.map((option) => (
                               <SelectItem
                                 key={option.value}
@@ -439,7 +439,7 @@ export function OnboardingForm() {
                           }
                         >
                           <FormControl>
-                            <SelectTrigger className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]">
+                            <SelectTrigger className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
                               <SelectValue
                                 placeholder={
                                   !watchedUniversity
@@ -455,7 +455,7 @@ export function OnboardingForm() {
                               />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+                          <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                             {availableSemesters.map((option) => (
                               <SelectItem
                                 key={option.value}
@@ -480,7 +480,7 @@ export function OnboardingForm() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-12 min-w-[200px] border-2 border-black bg-white px-8 text-base font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff] dark:hover:shadow-[6px_6px_0px_0px_#fff]"
+                className="h-12 min-w-[200px] border-2 border-black bg-white px-8 text-base font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[6px_6px_0px_0px_#757373]"
               >
                 {isSubmitting ? (
                   <>
@@ -488,7 +488,7 @@ export function OnboardingForm() {
                     Creating Profile...
                   </>
                 ) : (
-                  <div className="text-black dark:text-white flex items-center hover:text-white">
+                  <div className="flex items-center text-black hover:text-white dark:text-white">
                     Complete Onboarding
                     <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </div>

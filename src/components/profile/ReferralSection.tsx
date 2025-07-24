@@ -108,7 +108,7 @@ export function ReferralSection({
   if (!referralStatus) {
     return (
       <div className="space-y-6">
-        <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+        <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
           <CardContent className="pt-6">
             <div className="flex items-center justify-center py-8">
               <div className="text-center">
@@ -127,7 +127,7 @@ export function ReferralSection({
   return (
     <div className="space-y-6">
       {/* Referral Overview */}
-      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="flex items-center gap-3">
             <Gift
@@ -142,7 +142,7 @@ export function ReferralSection({
         <CardContent className="space-y-6">
           {/* Stats */}
           <div className="flex flex-col gap-4 md:flex-row md:justify-between">
-            <div className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+            <div className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
               <div className="flex items-center gap-2">
                 <Users
                   className="h-5 w-5 text-black dark:text-white"
@@ -159,7 +159,7 @@ export function ReferralSection({
               </div>
             </div>
 
-            <div className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+            <div className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
               <div className="flex items-center gap-2">
                 <Coins
                   className="h-5 w-5 text-black dark:text-white"
@@ -176,7 +176,7 @@ export function ReferralSection({
               </div>
             </div>
 
-            <div className="min-w-fit rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+            <div className="min-w-fit rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
               <div className="flex items-center gap-2">
                 <QrCode
                   className="h-5 w-5 text-black dark:text-white"
@@ -199,7 +199,7 @@ export function ReferralSection({
           <Separator className="bg-black dark:bg-white" />
 
           {/* How it works */}
-          <div className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+          <div className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
             <h4 className="font-excon mb-3 font-black text-black dark:text-white">
               HOW IT WORKS
             </h4>
@@ -235,7 +235,7 @@ export function ReferralSection({
       </Card>
 
       {/* Generate/Manage Referral Code */}
-      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="font-excon text-xl font-black text-black dark:text-white">
             Your Referral Code
@@ -248,11 +248,11 @@ export function ReferralSection({
                 <Input
                   value={referralStatus.referralCode || ""}
                   readOnly
-                  className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                  className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 />
                 <Button
                   onClick={handleCopyCode}
-                  className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+                  className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
                 >
                   {copied ? (
                     <Check className="h-4 w-4" weight="bold" />
@@ -262,7 +262,7 @@ export function ReferralSection({
                 </Button>
               </div>
 
-              <div className="rounded-md border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+              <div className="rounded-md border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
                 <p className="font-satoshi text-sm font-bold text-black dark:text-white">
                   💡 Share this code with friends when they&apos;re purchasing
                   premium plans. Both of you will get ₹10 off!
@@ -278,7 +278,7 @@ export function ReferralSection({
               <Button
                 onClick={handleGenerateCode}
                 disabled={isGenerating}
-                className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+                className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
               >
                 {isGenerating ? (
                   <div className="flex items-center gap-2">
@@ -298,7 +298,7 @@ export function ReferralSection({
       </Card>
 
       {/* Test Referral Code Validator */}
-      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="font-excon text-xl font-black text-black dark:text-white">
             Test Referral Code
@@ -314,12 +314,12 @@ export function ReferralSection({
               value={testCode}
               onChange={(e) => setTestCode(e.target.value.toUpperCase())}
               placeholder="Enter referral code..."
-              className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+              className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
             />
             <Button
               onClick={handleValidateCode}
               disabled={isValidating || !testCode.trim()}
-              className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+              className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
             >
               {isValidating ? "Checking..." : "Validate"}
             </Button>
@@ -327,7 +327,7 @@ export function ReferralSection({
 
           {validationResult && (
             <div
-              className={`rounded-md border-2 p-3 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff] ${
+              className={`rounded-md border-2 p-3 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#757373] ${
                 validationResult.isValid && validationResult.canUse
                   ? "border-green-500 bg-green-50 dark:bg-green-900/20"
                   : "border-red-500 bg-red-50 dark:bg-red-900/20"
@@ -348,7 +348,7 @@ export function ReferralSection({
 
               {validationResult.discountAmount && (
                 <div className="mt-2">
-                  <Badge className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <Badge className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]">
                     ₹{validationResult.discountAmount} Discount
                   </Badge>
                 </div>
@@ -360,7 +360,7 @@ export function ReferralSection({
 
       {/* Referral History */}
       {referralStatus.referrals.length > 0 && (
-        <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+        <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
           <CardHeader>
             <CardTitle className="font-excon text-xl font-black text-black dark:text-white">
               Referral History
@@ -371,7 +371,7 @@ export function ReferralSection({
               {referralStatus.referrals.map((referral) => (
                 <div
                   key={referral.id}
-                  className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]"
+                  className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -389,7 +389,7 @@ export function ReferralSection({
                       </p>
                       <Badge
                         variant={referral.isProcessed ? "default" : "secondary"}
-                        className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                        className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                       >
                         {referral.isProcessed ? "Processed" : "Pending"}
                       </Badge>

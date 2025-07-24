@@ -84,7 +84,7 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
   };
 
   return (
-    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -99,7 +99,7 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
             variant="outline"
             size="sm"
             onClick={onCancel}
-            className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+            className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
           >
             <XCircleIcon className="size-4" />
             Cancel
@@ -120,12 +120,14 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold text-black dark:text-white">First Name</FormLabel>
+                      <FormLabel className="font-bold text-black dark:text-white">
+                        First Name
+                      </FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="John" 
-                          {...field} 
-                          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]" 
+                        <Input
+                          placeholder="John"
+                          {...field}
+                          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -138,12 +140,14 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold text-black dark:text-white">Last Name</FormLabel>
+                      <FormLabel className="font-bold text-black dark:text-white">
+                        Last Name
+                      </FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Doe" 
-                          {...field} 
-                          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]" 
+                        <Input
+                          placeholder="Doe"
+                          {...field}
+                          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -157,12 +161,14 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                 name="phoneNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold text-black dark:text-white">Phone Number</FormLabel>
+                    <FormLabel className="font-bold text-black dark:text-white">
+                      Phone Number
+                    </FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="9876543210" 
-                        {...field} 
-                        className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:focus:shadow-[3px_3px_0px_0px_#fff]" 
+                      <Input
+                        placeholder="9876543210"
+                        {...field}
+                        className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -182,20 +188,22 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                   name="university"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold text-black dark:text-white">University</FormLabel>
+                      <FormLabel className="font-bold text-black dark:text-white">
+                        University
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value || ""}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]">
+                          <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]">
                             <SelectValue placeholder="Select university" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+                        <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                           {getUniversityOptions().map((option) => (
-                            <SelectItem 
-                              key={option.value} 
+                            <SelectItem
+                              key={option.value}
                               value={option.value}
                               className="font-bold text-black transition-all hover:bg-black hover:text-white dark:text-white dark:hover:bg-white dark:hover:text-black"
                             >
@@ -214,20 +222,22 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                   name="degree"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold text-black dark:text-white">Degree</FormLabel>
+                      <FormLabel className="font-bold text-black dark:text-white">
+                        Degree
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value || ""}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]">
+                          <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]">
                             <SelectValue placeholder="Select degree" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+                        <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                           {getDegreeOptions().map((option) => (
-                            <SelectItem 
-                              key={option.value} 
+                            <SelectItem
+                              key={option.value}
                               value={option.value}
                               className="font-bold text-black transition-all hover:bg-black hover:text-white dark:text-white dark:hover:bg-white dark:hover:text-black"
                             >
@@ -248,20 +258,22 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                   name="year"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold text-black dark:text-white">Year</FormLabel>
+                      <FormLabel className="font-bold text-black dark:text-white">
+                        Year
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value || ""}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]">
+                          <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]">
                             <SelectValue placeholder="Select year" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+                        <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                           {getYearOptions().map((option) => (
-                            <SelectItem 
-                              key={option.value} 
+                            <SelectItem
+                              key={option.value}
                               value={option.value}
                               className="font-bold text-black transition-all hover:bg-black hover:text-white dark:text-white dark:hover:bg-white dark:hover:text-black"
                             >
@@ -280,20 +292,22 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                   name="semester"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-bold text-black dark:text-white">Semester</FormLabel>
+                      <FormLabel className="font-bold text-black dark:text-white">
+                        Semester
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value || ""}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]">
+                          <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]">
                             <SelectValue placeholder="Select semester" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+                        <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                           {getSemesterOptions().map((option) => (
-                            <SelectItem 
-                              key={option.value} 
+                            <SelectItem
+                              key={option.value}
                               value={option.value}
                               className="font-bold text-black transition-all hover:bg-black hover:text-white dark:text-white dark:hover:bg-white dark:hover:text-black"
                             >
@@ -310,10 +324,10 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
             </div>
 
             <div className="flex gap-3 pt-4">
-              <Button 
-                type="submit" 
-                disabled={isSubmitting} 
-                className="flex-1 border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:cursor-not-allowed dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
               >
                 {isSubmitting ? "Saving..." : "Save Changes"}
               </Button>
@@ -322,7 +336,7 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                 variant="outline"
                 onClick={onCancel}
                 disabled={isSubmitting}
-                className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:cursor-not-allowed dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+                className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
               >
                 Cancel
               </Button>

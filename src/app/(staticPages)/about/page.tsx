@@ -24,13 +24,13 @@ export default function AboutPage() {
             trying to understand your textbooks, Notes Buddy is here to help.
           </p>
           <ul className="mx-auto flex w-full max-w-2xl flex-col gap-4 text-left">
-            <li className="rounded-lg border-2 border-black bg-zinc-100 px-6 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+            <li className="rounded-lg border-2 border-black bg-zinc-100 px-6 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
               • Minimal, distraction-free interface
             </li>
-            <li className="rounded-lg border-2 border-black bg-zinc-100 px-6 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+            <li className="rounded-lg border-2 border-black bg-zinc-100 px-6 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
               • Customzation & Personalization
             </li>
-            <li className="rounded-lg border-2 border-black bg-zinc-100 px-6 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+            <li className="rounded-lg border-2 border-black bg-zinc-100 px-6 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
               • Fast, efficient, and always accessible
             </li>
           </ul>

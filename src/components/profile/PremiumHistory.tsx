@@ -45,7 +45,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-black dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           <CheckCircleIcon type="duotone" className="h-3 w-3" />
           Active
@@ -55,7 +55,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-zinc-200 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+          className="border-2 border-black bg-zinc-200 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           <CheckCircleIcon type="duotone" className="h-3 w-3" />
           Expired
@@ -65,7 +65,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="destructive"
-          className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
+          className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           <XCircleIcon type="duotone" className="h-3 w-3" />
           Failed
@@ -75,7 +75,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="outline"
-          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           <ClockIcon type="duotone" className="h-3 w-3" />
           Pending
@@ -93,7 +93,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
 
   if (purchases.length === 0) {
     return (
-      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
             <ReceiptIcon
@@ -104,7 +104,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+          <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
             <ReceiptIcon
               type="duotone"
               className="mx-auto mb-4 h-12 w-12 text-black dark:text-white"
@@ -122,7 +122,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
   }
 
   return (
-    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <CardHeader>
         <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
           <ReceiptIcon
@@ -133,7 +133,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+        <div className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
           <Table>
             <TableHeader>
               <TableRow className="border-b-2 border-black dark:border-white">
@@ -173,7 +173,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                         {purchase.discountCode && (
                           <Badge
                             variant="outline"
-                            className="mt-1 border-2 border-black bg-white font-bold text-black shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[1px_1px_0px_0px_#fff]"
+                            className="mt-1 border-2 border-black bg-white font-bold text-black shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[1px_1px_0px_0px_#757373]"
                           >
                             Code: {purchase.discountCode}
                           </Badge>
@@ -249,7 +249,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
         </div>
 
         {/* Summary */}
-        <div className="mt-6 rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#fff]">
+        <div className="mt-6 rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
           <h4 className="font-excon mb-2 font-black text-black dark:text-white">
             Summary
           </h4>

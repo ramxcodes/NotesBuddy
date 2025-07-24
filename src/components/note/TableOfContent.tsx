@@ -176,7 +176,7 @@ export default function TableOfContent({
         <BookOpenIcon className="size-4" weight="duotone" />
         On this page
       </h3>
-      <div className="flex-1 overflow-y-auto pl-1 mb-8 pb-8">
+      <div className="mb-8 flex-1 overflow-y-auto pb-8 pl-1">
         <nav>
           <ul className="space-y-2">
             {groupedHeadings.map((group) => {
@@ -191,7 +191,7 @@ export default function TableOfContent({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => toggleH2Section(h2Id)}
-                      className="mr-1 flex-shrink-0 rounded-md border-2 border-black bg-white p-1 font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff]"
+                      className="mr-1 flex-shrink-0 rounded-md border-2 border-black bg-white p-1 font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
                       aria-label={
                         isActiveH2 ? "Collapse section" : "Expand section"
                       }
@@ -204,10 +204,10 @@ export default function TableOfContent({
                     </button>
                     <button
                       onClick={() => handleClick(h2Text)}
-                      className={`flex-1 rounded-md border-2 border-black px-3 py-2 text-left text-sm font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:hover:shadow-[3px_3px_0px_0px_#fff] ${
+                      className={`flex-1 rounded-md border-2 border-black px-3 py-2 text-left text-sm font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
                         isCurrentH2
-                          ? "bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
-                          : "bg-white text-black shadow-[2px_2px_0px_0px_#000] dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                          ? "bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
+                          : "bg-white text-black shadow-[2px_2px_0px_0px_#000] dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                       }`}
                     >
                       {h2Text}
@@ -226,10 +226,10 @@ export default function TableOfContent({
                           <li className="border-l-4 pl-2" key={h3._key}>
                             <button
                               onClick={() => handleClick(h3Text)}
-                              className={`block w-full rounded-md border-2 border-black px-3 py-2 text-left text-xs font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:hover:shadow-[3px_3px_0px_0px_#fff] ${
+                              className={`block w-full rounded-md border-2 border-black px-3 py-2 text-left text-xs font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
                                 isActiveH3
-                                  ? "bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
-                                  : "bg-white text-black shadow-[2px_2px_0px_0px_#000] dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
+                                  ? "bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
+                                  : "bg-white text-black shadow-[2px_2px_0px_0px_#000] dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                               }`}
                             >
                               {h3Text}
@@ -259,7 +259,7 @@ export default function TableOfContent({
           <Button
             variant="outline"
             size={isMobile ? "lg" : "sm"}
-            className={`border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] backdrop-blur-sm transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] dark:hover:shadow-[3px_3px_0px_0px_#fff] ${
+            className={`border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] backdrop-blur-sm transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
               isMobile ? "rounded-l-3xl" : ""
             }`}
             aria-label="Toggle table of contents"
@@ -277,8 +277,8 @@ export default function TableOfContent({
                           (h) => slugify(getHeadingText(h)) === activeId,
                         )!,
                       );
-                      const words = fullText.split(' ');
-                      const truncated = words.slice(0, 4).join(' ');
+                      const words = fullText.split(" ");
+                      const truncated = words.slice(0, 4).join(" ");
                       return words.length > 4 ? `${truncated}...` : fullText;
                     })()
                   : "Table of Contents"

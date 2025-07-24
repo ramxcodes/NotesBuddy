@@ -107,7 +107,7 @@
 }
 
 .dark {
-  --background: oklch(0.1572 0.0039 229.1);
+  --background: oklch(0.1912 0.0025 253.06);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -146,6 +146,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .neuro {
+    @apply border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373];
   }
 }
 
@@ -235,7 +238,7 @@
   .note-image {
     @apply my-6 rounded-lg shadow-sm transition-shadow duration-200 hover:shadow-md;
   }
-  
+
   .note-image-caption {
     @apply mt-2 text-center text-sm text-gray-600 italic dark:text-gray-400;
   }
@@ -246,7 +249,7 @@
   }
 
   article figure img {
-    @apply w-full h-auto;
+    @apply h-auto w-full;
   }
 
   /* Font transition for smooth font changes */

@@ -19,7 +19,7 @@ export default function PrivacyPage() {
         Last updated: Jan 18, 2025
       </p>
       <div className="flex w-full max-w-2xl flex-col gap-8">
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-2xl font-bold">
             Privacy Policy for Notes Buddy
           </h2>
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             please contact us.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Information We Collect and How We Use It
           </h2>
@@ -46,7 +46,7 @@ export default function PrivacyPage() {
             efforts.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Use of Your Information
           </h2>
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
             <li>Enhance our marketing and promotional efforts</li>
           </ul>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Disclosure of Your Information
           </h2>
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
             personal information is kept confidential within our organization.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Security of Your Information
           </h2>
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
             unauthorized access, use, or disclosure.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#fff]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">Contact Us</h2>
           <p className="font-satoshi text-base">
             If you have questions or concerns about this privacy policy, please

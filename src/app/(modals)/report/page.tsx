@@ -41,7 +41,7 @@ export default function ReportModal() {
 
   return (
     <Dialog open onOpenChange={() => router.back()}>
-      <DialogContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+      <DialogContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <DialogHeader>
           <DialogTitle className="font-excon text-xl font-black text-black dark:text-white">
             Report Issue
@@ -74,7 +74,7 @@ export default function ReportModal() {
           <Button
             type="submit"
             disabled={loading}
-            className="font-excon w-full border-2 border-black bg-black text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
+            className="font-excon w-full border-2 border-black bg-black text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
           >
             {loading ? "Submitting..." : "Submit Report"}
           </Button>

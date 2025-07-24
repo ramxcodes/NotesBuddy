@@ -38,7 +38,7 @@ export default async function PremiumPage() {
         <div className="w-full max-w-md space-y-8">
           {/* Header Section */}
           <div className="space-y-4 text-center">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
               <ShieldCheckIcon className="h-8 w-8 text-black dark:text-white" />
             </div>
             <div className="space-y-2">
@@ -54,7 +54,7 @@ export default async function PremiumPage() {
 
           <div className="group p-6 text-center hover:cursor-pointer">
             <Link href="/onboarding">
-              <button className="font-excon w-full rounded-md border-2 border-black bg-white px-6 py-3 text-lg font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:cursor-pointer group-hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+              <button className="font-excon w-full rounded-md border-2 border-black bg-white px-6 py-3 text-lg font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:cursor-pointer group-hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]">
                 Complete Onboarding
               </button>
             </Link>
@@ -93,7 +93,7 @@ export default async function PremiumPage() {
 
         {/* Premium Status (if active) */}
         {premiumStatus.isActive && (
-          <Card className="mx-auto mb-8 max-w-2xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#fff]">
+          <Card className="mx-auto mb-8 max-w-2xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <ShieldCheckIcon className="h-5 w-5 text-black dark:text-white" />

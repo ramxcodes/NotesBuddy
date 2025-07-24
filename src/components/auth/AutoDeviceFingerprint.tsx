@@ -271,7 +271,6 @@ export function AutoDeviceFingerprint(): null {
         );
 
         if (persistedRegistered) {
-          console.info("Device already registered for this session");
           return;
         }
 

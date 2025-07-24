@@ -15,6 +15,7 @@ import { SignInButton } from "../auth/SignInButton";
 import { UserIcon } from "../icons/UserIcon";
 import { NotesbookIcon } from "../icons/NotebookIcon";
 import { SignOutIcon } from "../icons/SignOutIcon";
+import ReportButton from "../navbar/ReportButton";
 
 export default async function Profile() {
   const session = await getSession();
@@ -58,6 +59,10 @@ export default async function Profile() {
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex items-center justify-center">
           <ThemeToggle />
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <ReportButton />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { Link } from "next-view-transitions";
-import Profile from "./Profile";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Profile from "./profile";
 
 const navItems = [
   {

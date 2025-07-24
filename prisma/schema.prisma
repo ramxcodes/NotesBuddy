@@ -72,6 +72,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   deviceFingerprints DeviceFingerprint[]
+  reports       Report[]
 
   // Premium related
   premiumPurchases     PremiumPurchase[]
@@ -88,6 +89,17 @@ model User {
   isPremiumActive      Boolean           @default(false)
 
   @@map("user")
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  report    String
+  url       String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 enum Role {

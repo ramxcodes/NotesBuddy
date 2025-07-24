@@ -101,19 +101,19 @@ function FeatureCard({
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
     >
-      <div className="bg-card hover:shadow-primary/5 hover:border-primary/20 border-primary dark:border-secondary relative rounded-2xl border border-r-8 border-b-8 p-8 shadow-none backdrop-blur-sm transition-all duration-300 hover:border-r-1 hover:border-b-1 hover:shadow-lg">
-        <div className="from-primary/5 absolute inset-0 rounded-2xl bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="bg-card dark:bg-card hover:shadow-primary/5 hover:border-primary/20 border-primary dark:border-secondary relative rounded-2xl border border-r-8 border-b-8 p-8 shadow-none backdrop-blur-sm transition-all duration-300 hover:border-r-1 hover:border-b-1 hover:shadow-lg">
+        <div className="from-primary/5 dark:from-primary/10 absolute inset-0 rounded-2xl bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
         <div className="relative z-10">
-          <div className="bg-primary/10 group-hover:bg-primary/20 mb-6 flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-300">
+          <div className="bg-primary/10 dark:bg-primary/20 group-hover:bg-primary/20 dark:group-hover:bg-primary/30 mb-6 flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-300">
             {icon}
           </div>
 
-          <h3 className="text-foreground font-excon mb-3 text-xl font-semibold">
+          <h3 className="text-foreground dark:text-foreground font-excon mb-3 text-xl font-semibold">
             {title}
           </h3>
 
-          <p className="text-muted-foreground font-satoshi mt-4 text-lg leading-relaxed">
+          <p className="text-muted-foreground dark:text-muted-foreground font-satoshi mt-4 text-lg leading-relaxed">
             {description}
           </p>
         </div>

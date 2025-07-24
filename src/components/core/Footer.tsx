@@ -1,19 +1,68 @@
 import React from "react";
+import { Separator } from "../ui/separator";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
+
+const footerItems = [
+  {
+    label: "Contact Us",
+    href: "/contact",
+  },
+  {
+    label: "Shipping & Delivery",
+    href: "/shipping",
+  },
+  {
+    label: "Privacy Policy",
+    href: "/privacy",
+  },
+  {
+    label: "Cancellation & Refund Policy",
+    href: "/about",
+  },
+  {
+    label: "Terms of Conditions",
+    href: "/terms",
+  },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-background/50 dark:bg-background/50 mt-10">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-200">
-              Notes Buddy
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Notes Buddy is a platform for students to find and share notes.
-            </p>
-          </div>
-        </div>
+    <footer className="mt-10 mb-5 flex w-full flex-col items-center justify-center gap-6">
+      <Separator className="w-full max-w-6xl" />
+      <div className="container flex max-w-4xl flex-row gap-4">
+        {footerItems.map((item) => (
+          <Link
+            href={item.href}
+            key={item.label}
+            className="bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full px-3 py-1 text-sm font-medium transition-colors"
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
+      <div className="text-muted-foreground text-sm">
+        © 2024 Notes Buddy. All rights reserved.
+      </div>
+      <div className="font-excon text-9xl font-black tracking-tighter text-nowrap opacity-15">
+        Notes Buddy
+      </div>
+      <div className="group flex items-center gap-2">
+        <Image
+          className="hidden size-12 rounded-2xl border border-gray-400 group-hover:border-2 md:block"
+          src="/ram.png"
+          width={48}
+          height={48}
+          alt="Ram"
+        />
+        <p className="opacity-50 transition-all duration-300 ease-in-out group-hover:opacity-100">
+          <Link target="_blank" href="https://www.ramx.in">
+            Build with ❤️{" "}
+            <span className="transition-all duration-300 ease-in-out group-hover:underline">
+              Ram
+            </span>
+          </Link>
+        </p>
       </div>
     </footer>
   );

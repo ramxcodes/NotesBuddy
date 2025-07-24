@@ -109,12 +109,12 @@ export default function Hero() {
           </div>
           <div className="flex flex-row gap-3">
             <Link href="/notes">
-              <Button size="lg" className="gap-4" variant="outline">
+              <Button size="lg" className="gap-4 bg-background dark:bg-card text-foreground dark:text-foreground border-2 border-primary dark:border-secondary rounded-2xl border-r-8 border-b-8 shadow-none hover:shadow-lg transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:text-white">
                 Visit Notes <BookOpenIcon type="duotone" className="size-4" />
               </Button>
             </Link>
             <Link href="/premium">
-              <Button size="lg" className="gap-4">
+              <Button size="lg" className="gap-4 bg-primary dark:bg-primary text-white dark:text-black border-2 border-primary dark:border-secondary rounded-2xl border-r-8 border-b-8 shadow-none hover:shadow-lg transition-all duration-200 hover:translate-x-1 hover:translate-y-1">
                 Purchase Premium <StarIcon type="duotone" className="size-4" />
               </Button>
             </Link>

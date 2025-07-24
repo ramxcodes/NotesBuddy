@@ -68,14 +68,14 @@ export default function Search({ query }: { query: string }) {
   };
 
   return (
-    <div className="relative w-full">
-      <div className="border-primary dark:border-secondary relative rounded-xl border-r-8 border-b-8 transition-all duration-300 hover:border-r-0 hover:border-b-0">
-        <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
+    <div className="relative w-full rounded-xl">
+      <div className="relative border-4 border-black dark:border-white bg-white dark:bg-black shadow-[8px_8px_0px_0px_#000] dark:shadow-[8px_8px_0px_0px_#fff] transition-all duration-200 hover:shadow-[4px_4px_0px_0px_#000] dark:hover:shadow-[4px_4px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1 rounded-xl">
+        <SearchIcon className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-black dark:text-white" />
         <Input
           ref={inputRef}
           type="text"
           placeholder="Search notes by title or subject..."
-          className="placeholder:text-muted-foreground pr-16 pl-10 shadow-none"
+          className="border-0 bg-transparent pr-16 pl-12 text-black dark:text-white placeholder:text-black/70 dark:placeholder:text-white/70 shadow-none font-bold focus-visible:ring-0 focus-visible:ring-offset-0 rounded-xl"
           value={search}
           onChange={handleInputChange}
           onFocus={handleFocus}
@@ -83,12 +83,12 @@ export default function Search({ query }: { query: string }) {
         />
         {!isSearchOpen && !search && (
           <div className="absolute top-1/2 right-3 flex -translate-y-1/2 transform gap-1">
-            <kbd className="bg-muted text-muted-foreground rounded-md px-1.5 py-0.5 text-xs font-semibold">
+            <kbd className="bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white px-2 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff]">
               {navigator.platform.toUpperCase().includes("MAC")
                 ? "CMD"
                 : "CTRL"}
             </kbd>
-            <kbd className="bg-muted text-muted-foreground rounded-md px-1.5 py-0.5 text-xs font-semibold">
+            <kbd className="bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white px-2 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff]">
               K
             </kbd>
           </div>
@@ -96,14 +96,14 @@ export default function Search({ query }: { query: string }) {
         {search && (
           <button
             onClick={clearSearch}
-            className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transform transition-colors"
+            className="absolute top-1/2 right-3 -translate-y-1/2 transform text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-400 transition-colors duration-200 hover:scale-110"
           >
-            <XCircleIcon className="h-4 w-4" />
+            <XCircleIcon className="h-5 w-5" />
           </button>
         )}
       </div>
       {search.length > 0 && search.length < 2 && (
-        <p className="text-muted-foreground mt-1 text-xs">
+        <p className="mt-2 text-sm font-bold text-black dark:text-white bg-gray-200 dark:bg-gray-800 border-2 border-black dark:border-white px-3 py-1 shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] uppercase tracking-wide">
           Type at least 2 characters to search
         </p>
       )}

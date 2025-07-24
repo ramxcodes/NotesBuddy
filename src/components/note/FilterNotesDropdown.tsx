@@ -208,127 +208,151 @@ export default function FilterNotesDropdown({
   );
 
   return (
-    <div className="border-primary dark:border-secondary my-6 flex flex-wrap items-center justify-center gap-4 rounded-md border border-r-8 border-b-8 px-8 py-12">
+    <div className="my-6 rounded-xl border-4 border-black dark:border-white bg-white dark:bg-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:shadow-[8px_8px_0px_0px_#fff]">
       {hasActiveSearch && (
         <div className="mb-4 w-full text-center">
-          <p className="text-muted-foreground text-sm">
+          <p className="text-black/70 dark:text-white/70 text-sm font-bold uppercase tracking-wide">
             Searching all notes. Use filters below to narrow down results.
           </p>
         </div>
       )}
 
-      {/* University Filter */}
-      <div className="flex flex-col gap-1">
-        <label className="text-muted-foreground text-sm font-medium">
-          University
-        </label>
-        <Select
-          value={filters.university}
-          onValueChange={(value) => handleFilterChange("university", value)}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select university" />
-          </SelectTrigger>
-          <SelectContent>
-            {filterOptions.universities.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <div className="flex flex-wrap items-end justify-center gap-4">
+        {/* University Filter */}
+        <div className="flex flex-col gap-2">
+          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+            University
+          </label>
+          <Select
+            value={filters.university}
+            onValueChange={(value) => handleFilterChange("university", value)}
+          >
+            <SelectTrigger className="w-[180px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1">
+              <SelectValue placeholder="Select university" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+              {filterOptions.universities.map((option) => (
+                <SelectItem 
+                  key={option.value} 
+                  value={option.value}
+                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      {/* Degree Filter */}
-      <div className="flex flex-col gap-1">
-        <label className="text-muted-foreground text-sm font-medium">
-          Degree
-        </label>
-        <Select
-          value={filters.degree}
-          onValueChange={(value) => handleFilterChange("degree", value)}
-        >
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Select degree" />
-          </SelectTrigger>
-          <SelectContent>
-            {filterOptions.degrees.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        {/* Degree Filter */}
+        <div className="flex flex-col gap-2">
+          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+            Degree
+          </label>
+          <Select
+            value={filters.degree}
+            onValueChange={(value) => handleFilterChange("degree", value)}
+          >
+            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1">
+              <SelectValue placeholder="Select degree" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+              {filterOptions.degrees.map((option) => (
+                <SelectItem 
+                  key={option.value} 
+                  value={option.value}
+                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      {/* Year Filter */}
-      <div className="flex flex-col gap-1">
-        <label className="text-muted-foreground text-sm font-medium">
-          Year
-        </label>
-        <Select
-          value={filters.year}
-          onValueChange={(value) => handleFilterChange("year", value)}
-        >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue placeholder="Select year" />
-          </SelectTrigger>
-          <SelectContent>
-            {filterOptions.years.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        {/* Year Filter */}
+        <div className="flex flex-col gap-2">
+          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+            Year
+          </label>
+          <Select
+            value={filters.year}
+            onValueChange={(value) => handleFilterChange("year", value)}
+          >
+            <SelectTrigger className="w-[120px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1">
+              <SelectValue placeholder="Select year" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+              {filterOptions.years.map((option) => (
+                <SelectItem 
+                  key={option.value} 
+                  value={option.value}
+                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      {/* Semester Filter */}
-      <div className="flex flex-col gap-1">
-        <label className="text-muted-foreground text-sm font-medium">
-          Semester
-        </label>
-        <Select
-          value={filters.semester}
-          onValueChange={(value) => handleFilterChange("semester", value)}
-        >
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Select semester" />
-          </SelectTrigger>
-          <SelectContent>
-            {filterOptions.semesters.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        {/* Semester Filter */}
+        <div className="flex flex-col gap-2">
+          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+            Semester
+          </label>
+          <Select
+            value={filters.semester}
+            onValueChange={(value) => handleFilterChange("semester", value)}
+          >
+            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1">
+              <SelectValue placeholder="Select semester" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+              {filterOptions.semesters.map((option) => (
+                <SelectItem 
+                  key={option.value} 
+                  value={option.value}
+                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      {/* Subject Filter */}
-      <div className="flex flex-col gap-1">
-        <label className="text-muted-foreground text-sm font-medium">
-          Subject
-        </label>
-        <Select
-          value={filters.subject}
-          onValueChange={(value) => handleFilterChange("subject", value)}
-          disabled={isLoadingSubjects}
-        >
-          <SelectTrigger className="w-[160px]">
-            <SelectValue
-              placeholder={isLoadingSubjects ? "Loading..." : "All subjects"}
-            />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All subjects</SelectItem>
-            {subjects.map((subject, index) => (
-              <SelectItem key={index} value={subject.subject}>
-                {subject.subject}
+        {/* Subject Filter */}
+        <div className="flex flex-col gap-2">
+          <label className="text-black dark:text-white text-sm font-black uppercase tracking-wider">
+            Subject
+          </label>
+          <Select
+            value={filters.subject}
+            onValueChange={(value) => handleFilterChange("subject", value)}
+            disabled={isLoadingSubjects}
+          >
+            <SelectTrigger className="w-[160px] rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white font-bold shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:hover:shadow-[2px_2px_0px_0px_#fff] hover:translate-x-1 hover:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
+              <SelectValue
+                placeholder={isLoadingSubjects ? "Loading..." : "All subjects"}
+              />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#fff]">
+              <SelectItem value="all" className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10">
+                All subjects
               </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+              {subjects.map((subject, index) => (
+                <SelectItem 
+                  key={index} 
+                  value={subject.subject}
+                  className="text-black dark:text-white font-bold hover:bg-black/10 dark:hover:bg-white/10"
+                >
+                  {subject.subject}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </div>
   );

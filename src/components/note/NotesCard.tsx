@@ -22,7 +22,7 @@ export default function NotesCard({
   note: NOTES_QUERYResult[number];
 }) {
   return (
-    <Card className="relative h-[350px] shadow-none border-b-8 border-r-8 border-primary dark:border-secondary transition-all duration-300 hover:border-b-1 hover:border-r-1">
+    <Card className="relative h-[350px] shadow-none border-b-8 border-r-8 border-primary dark:border-secondary transition-all duration-200 hover:border-b-2 hover:border-r-2 hover:-translate-y-1 hover:translate-x-1">
       <CardHeader className="pb-4">
         {note.isPremium && (
           <Badge
@@ -84,7 +84,7 @@ export default function NotesCard({
         <Link href={`/notes/${note?.slug?.current}`} className="w-full">
           <Button
             variant="default"
-            className="w-full font-medium transition-all duration-300 group-hover:shadow-md hover:cursor-pointer"
+            className="w-full font-medium transition-all duration-200 border-b-4 border-r-4 border-primary/50 dark:border-secondary/50 hover:border-b-1 hover:border-r-1 hover:shadow-lg dark:hover:shadow-lg hover:shadow-black/30 dark:hover:shadow-white/10 hover:-translate-y-0.5 hover:translate-x-0.5 hover:cursor-pointer"
           >
             View Notes
             <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

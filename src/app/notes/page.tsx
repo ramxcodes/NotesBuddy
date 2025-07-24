@@ -78,34 +78,40 @@ export default async function NotesPage({
   };
 
   return (
-    <div className="mx-auto mt-6 flex max-w-6xl flex-col items-center justify-center gap-4 space-y-6 px-4 py-5 sm:mt-8 sm:space-y-8 sm:px-6 lg:mt-10 lg:space-y-10 lg:px-8">
-      <div className="flex flex-col items-center justify-center gap-3 text-center sm:gap-4">
-        <h1 className="text-3xl font-bold sm:text-4xl lg:text-5xl">Welcome to Notes Buddy!</h1>
-        <p className="text-muted-foreground text-base sm:text-lg max-w-2xl">
-          Find your notes by searching or filtering.
-        </p>
-      </div>
+    <div className="font-satoshi container mx-auto min-h-screen max-w-6xl">
+      <div className="mx-4">
+        <div className="mx-auto mt-6 flex max-w-6xl flex-col items-center justify-center gap-4 space-y-6 px-4 py-5 sm:mt-8 sm:space-y-8 sm:px-6 lg:mt-10 lg:space-y-10 lg:px-8">
+          <div className="flex flex-col items-center justify-center gap-3 text-center sm:gap-4">
+            <h1 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
+              Welcome to Notes Buddy!
+            </h1>
+            <p className="text-muted-foreground max-w-2xl text-base sm:text-lg">
+              Find your notes by searching or filtering.
+            </p>
+          </div>
 
-      {/* Search Component */}
-      <div className="w-full max-w-2xl">
-        <Search query={query || ""} />
-      </div>
+          {/* Search Component */}
+          <div className="w-full max-w-2xl">
+            <Search query={query || ""} />
+          </div>
 
-      {/* Filter Dropdown */}
-      <div className="w-full max-w-4xl">
-        <FilterNotesDropdown
-          userProfile={userProfile}
-          isOnboarded={isOnboarded}
-          isAuthenticated={!!session?.user}
-        />
-      </div>
+          {/* Filter Dropdown */}
+          <div className="w-full max-w-4xl">
+            <FilterNotesDropdown
+              userProfile={userProfile}
+              isOnboarded={isOnboarded}
+              isAuthenticated={!!session?.user}
+            />
+          </div>
 
-      {/* Infinite List Component */}
-      <div className="w-full">
-        <NotesInfiniteList
-          initialNotes={initialNotes}
-          searchParams={searchParamsForList}
-        />
+          {/* Infinite List Component */}
+          <div className="w-full">
+            <NotesInfiniteList
+              initialNotes={initialNotes}
+              searchParams={searchParamsForList}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

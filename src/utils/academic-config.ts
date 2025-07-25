@@ -477,6 +477,38 @@ export function getDisplayNameFromSanityValue(
   }
 }
 
+export function getDisplayNameFromPrismaValue(
+  type: "university" | "degree" | "year" | "semester",
+  prismaValue: string,
+): string {
+  switch (type) {
+    case "university":
+      return (
+        Object.values(ACADEMIC_CONFIG).find(
+          (university) => university.info.prismaValue === prismaValue,
+        )?.info.label || prismaValue
+      );
+    case "degree":
+      return (
+        getAllDegrees().find((degree) => degree.prismaValue === prismaValue)
+          ?.label || prismaValue
+      );
+    case "year":
+      return (
+        getAllYears().find((year) => year.prismaValue === prismaValue)?.label ||
+        prismaValue
+      );
+    case "semester":
+      return (
+        getAllSemesters().find(
+          (semester) => semester.prismaValue === prismaValue,
+        )?.label || prismaValue
+      );
+    default:
+      return prismaValue;
+  }
+}
+
 /**
  * Get default filter values (all options for each category)
  */
@@ -513,3 +545,11 @@ export function userProfileToFilterValues(profile: {
       : "all",
   };
 }
+
+export const normalizedTierValues = () => {
+  return {
+    TIER_1: "TIER 1",
+    TIER_2: "TIER 2",
+    TIER_3: "TIER 3",
+  };
+};

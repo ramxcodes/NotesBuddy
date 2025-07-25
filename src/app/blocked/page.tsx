@@ -17,21 +17,25 @@ export default function BlockedPage() {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center h-screen p-8">
-      <div className="text-center max-w-md">
-        <h1 className="text-3xl font-bold text-red-600 mb-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-100 p-8 dark:bg-zinc-900">
+      <div className="max-w-md rounded-xl border-4 border-black bg-white p-8 text-center shadow-[8px_8px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
+        <h1 className="mb-6 text-4xl font-black text-red-500 dark:text-red-400">
           Account Blocked
         </h1>
-        <p className="text-gray-600 mb-6">
+        <p className="mb-6 text-lg font-bold text-black dark:text-white">
           Your account has been blocked due to too many active devices. For
           security reasons, we limit accounts to{" "}
           {APP_CONFIG.MAX_DEVICES_PER_USER} active devices.
         </p>
-        <p className="text-sm text-gray-500 mb-8">
+        <p className="mb-8 text-sm font-semibold text-black dark:text-white">
           Please contact support if you believe this is an error or if you need
           to manage your active devices.
         </p>
-        <Button data-umami-event="SignOut button" onClick={handleSignOut}>
+        <Button 
+          data-umami-event="SignOut button" 
+          onClick={handleSignOut}
+          className="border-2 border-black bg-zinc-100 px-6 py-3 font-black text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]"
+        >
           Try Again
         </Button>
       </div>

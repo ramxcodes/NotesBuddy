@@ -11,6 +11,7 @@ export const minutesToSeconds = (minutes: number): number => minutes * 60;
 export * from "./notes";
 export * from "./user";
 export * from "./premium";
+export * from "./admin";
 
 // Utility function to get cache options for unstable_cache
 export const getCacheOptions = (config: CacheConfig) => ({

@@ -16,3 +16,13 @@ export const checkUserBlockedStatus = cache(async (userId: string) => {
   });
   return user?.isBlocked || false;
 });
+
+export const adminStatus = cache(async () => {
+  const session = await getSession();
+  if (!session?.user?.id) return false;
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { role: true },
+  });
+  return user?.role === "ADMIN";
+});

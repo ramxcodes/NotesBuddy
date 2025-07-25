@@ -227,10 +227,10 @@ export default function FilterNotesDropdown({
             value={filters.university}
             onValueChange={(value) => handleFilterChange("university", value)}
           >
-            <SelectTrigger className="w-[180px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-[180px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select university" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
               {filterOptions.universities.map((option) => (
                 <SelectItem
                   key={option.value}
@@ -253,10 +253,10 @@ export default function FilterNotesDropdown({
             value={filters.degree}
             onValueChange={(value) => handleFilterChange("degree", value)}
           >
-            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select degree" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
               {filterOptions.degrees.map((option) => (
                 <SelectItem
                   key={option.value}
@@ -279,10 +279,10 @@ export default function FilterNotesDropdown({
             value={filters.year}
             onValueChange={(value) => handleFilterChange("year", value)}
           >
-            <SelectTrigger className="w-[120px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-[120px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select year" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
               {filterOptions.years.map((option) => (
                 <SelectItem
                   key={option.value}
@@ -305,10 +305,10 @@ export default function FilterNotesDropdown({
             value={filters.semester}
             onValueChange={(value) => handleFilterChange("semester", value)}
           >
-            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select semester" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
               {filterOptions.semesters.map((option) => (
                 <SelectItem
                   key={option.value}
@@ -332,12 +332,12 @@ export default function FilterNotesDropdown({
             onValueChange={(value) => handleFilterChange("subject", value)}
             disabled={isLoadingSubjects}
           >
-            <SelectTrigger className="w-[160px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white  dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-[160px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue
                 placeholder={isLoadingSubjects ? "Loading..." : "All subjects"}
               />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white  dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"

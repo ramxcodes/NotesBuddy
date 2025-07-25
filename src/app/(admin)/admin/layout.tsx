@@ -14,9 +14,9 @@ export default async function layout({
     redirect("/");
   }
   return (
-    <div className="container mx-auto flex flex-col items-center justify-center gap-4 px-10 py-8">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <AdminNavbar />
-      {children}
+      <div className="mt-8">{children}</div>
     </div>
   );
 }

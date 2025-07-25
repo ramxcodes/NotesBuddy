@@ -1,7 +1,15 @@
-import React from 'react'
+import AdminCouponController from "@/components/admin/coupons/AdminCouponController";
+import { Metadata } from "next";
 
-export default function page() {
+export const metadata: Metadata = {
+  title: "Discount Coupons",
+  description: "Admin panel for managing discount coupons and promotions",
+};
+
+export default function CouponsPage() {
   return (
-    <div>page</div>
-  )
+    <div className="space-y-8">
+      <AdminCouponController />
+    </div>
+  );
 }

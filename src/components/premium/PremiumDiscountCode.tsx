@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,13 +11,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { GiftIcon, SpinnerIcon } from "@phosphor-icons/react";
+import {
+  CheckIcon,
+  GiftIcon,
+  PercentIcon,
+  SpinnerIcon,
+  XIcon,
+} from "@phosphor-icons/react";
+import { TagIcon } from "@phosphor-icons/react";
+import { DollarSignIcon } from "lucide-react";
 
 interface PremiumDiscountCodeProps {
   discountCode: string;
   onDiscountCodeChange: (code: string) => void;
   onApplyCode: () => void;
   isCalculating: boolean;
+  validationMessage?: string;
+  isValidCode?: boolean;
+  appliedDiscount?: {
+    type: string;
+    code: string;
+    amount: number;
+    description: string;
+  } | null;
 }
 
 export function PremiumDiscountCode({
@@ -24,7 +41,35 @@ export function PremiumDiscountCode({
   onDiscountCodeChange,
   onApplyCode,
   isCalculating,
+  validationMessage,
+  isValidCode,
+  appliedDiscount,
 }: PremiumDiscountCodeProps) {
+  const getValidationIcon = () => {
+    if (isCalculating) {
+      return (
+        <SpinnerIcon className="h-4 w-4 animate-spin text-black dark:text-white" />
+      );
+    }
+
+    if (validationMessage && !isValidCode) {
+      return (
+        <XIcon type="duotone" className="h-4 w-4 text-black dark:text-white" />
+      );
+    }
+
+    if (isValidCode && appliedDiscount) {
+      return (
+        <CheckIcon
+          type="duotone"
+          className="h-4 w-4 text-black dark:text-white"
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -41,24 +86,29 @@ export function PremiumDiscountCode({
             </span>
           </CardTitle>
           <CardDescription className="font-satoshi font-bold text-black dark:text-white">
-            Have a discount or referral code? Enter it below
+            Have a discount or referral code? Enter it below to save money!
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <div className="flex gap-3">
-            <Input
-              placeholder="Enter code (e.g., STUDENT10, FRIEND123)"
-              value={discountCode}
-              onChange={(e) =>
-                onDiscountCodeChange(e.target.value.toUpperCase())
-              }
-              className="font-satoshi flex-1 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
-            />
+            <div className="relative flex-1">
+              <Input
+                placeholder="Enter code (e.g., STUDENT10, SAVE25)"
+                value={discountCode}
+                onChange={(e) =>
+                  onDiscountCodeChange(e.target.value.toUpperCase())
+                }
+                className="font-satoshi rounded-xl border-2 border-black bg-white pr-10 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+              />
+              <div className="absolute top-1/2 right-3 -translate-y-1/2">
+                {getValidationIcon()}
+              </div>
+            </div>
             <Button
               variant="outline"
               onClick={onApplyCode}
               disabled={isCalculating}
-              className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+              className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
             >
               {isCalculating ? (
                 <SpinnerIcon className="h-4 w-4 animate-spin text-black dark:text-white" />
@@ -67,6 +117,58 @@ export function PremiumDiscountCode({
               )}
             </Button>
           </div>
+
+          {/* Validation Message */}
+          {validationMessage && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="font-satoshi text-sm font-bold text-black dark:text-white"
+            >
+              {validationMessage}
+            </motion.div>
+          )}
+
+          {/* Applied Discount Details */}
+          {isValidCode && appliedDiscount && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="rounded-lg border-2 border-black bg-white p-3 dark:border-white dark:bg-zinc-900"
+            >
+              <div className="mb-2 flex items-center gap-2">
+                <TagIcon
+                  type="duotone"
+                  className="h-4 w-4 text-black dark:text-white"
+                />
+                <span className="font-excon text-sm font-black text-black dark:text-white">
+                  {appliedDiscount.code}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {appliedDiscount.type === "PERCENTAGE" ? (
+                  <PercentIcon
+                    type="duotone"
+                    className="h-4 w-4 text-black dark:text-white"
+                  />
+                ) : (
+                  <DollarSignIcon
+                    type="duotone"
+                    className="h-4 w-4 text-black dark:text-white"
+                  />
+                )}
+                <span className="font-satoshi text-sm font-bold text-black dark:text-white">
+                  ₹{appliedDiscount.amount} discount applied
+                </span>
+              </div>
+
+              <p className="font-satoshi mt-1 text-xs text-black/70 dark:text-white/70">
+                {appliedDiscount.description}
+              </p>
+            </motion.div>
+          )}
         </CardContent>
       </Card>
     </motion.div>

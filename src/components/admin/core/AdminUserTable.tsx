@@ -11,6 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useDebounce } from "@/hooks/use-debounce";
 import {
   getDisplayNameFromPrismaValue,
@@ -225,27 +233,41 @@ export default function AdminUserTable() {
 
       {/* Table */}
       {!loading && usersData && (
-        <div className="overflow-x-auto rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b-2 border-black dark:border-white">
-                <th className="p-3 text-left font-black">No.</th>
-                <th className="p-3 text-left font-black">Profile</th>
-                <th className="p-3 text-left font-black">Name & Contact</th>
-                <th className="p-3 text-left font-black">User Profile</th>
-                <th className="p-3 text-left font-black">Devices</th>
-                <th className="p-3 text-left font-black">Premium Status</th>
-                <th className="p-3 text-left font-black">Action</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div className="rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-b-2 border-black dark:border-white">
+                <TableHead className="p-3 text-left font-black">No.</TableHead>
+                <TableHead className="p-3 text-left font-black">
+                  Profile
+                </TableHead>
+                <TableHead className="p-3 text-left font-black">
+                  Name & Contact
+                </TableHead>
+                <TableHead className="p-3 text-left font-black">
+                  User Profile
+                </TableHead>
+                <TableHead className="p-3 text-left font-black">
+                  Devices
+                </TableHead>
+                <TableHead className="p-3 text-left font-black">
+                  Premium Status
+                </TableHead>
+                <TableHead className="p-3 text-left font-black">
+                  Action
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {usersData.users.map((user, index) => (
-                <tr
+                <TableRow
                   key={user.id}
                   className="border-b border-zinc-300 dark:border-zinc-600"
                 >
-                  <td className="p-3">{(currentPage - 1) * 10 + index + 1}</td>
-                  <td className="p-3">
+                  <TableCell className="p-3">
+                    {(currentPage - 1) * 10 + index + 1}
+                  </TableCell>
+                  <TableCell className="p-3">
                     <Image
                       src={user.image || "/avatar/1.jpg"}
                       alt={user.name}
@@ -253,8 +275,8 @@ export default function AdminUserTable() {
                       height={40}
                       className="rounded-xl border-2 border-black dark:border-white"
                     />
-                  </td>
-                  <td className="p-3">
+                  </TableCell>
+                  <TableCell className="p-3">
                     <div>
                       <div className="font-bold">{user.name}</div>
                       <div className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -266,8 +288,8 @@ export default function AdminUserTable() {
                         </div>
                       )}
                     </div>
-                  </td>
-                  <td className="p-3">
+                  </TableCell>
+                  <TableCell className="p-3">
                     {user.profile ? (
                       <div className="text-sm">
                         <div className="font-semibold">
@@ -299,15 +321,15 @@ export default function AdminUserTable() {
                     ) : (
                       <span className="text-zinc-500">No profile</span>
                     )}
-                  </td>
-                  <td className="p-3">
+                  </TableCell>
+                  <TableCell className="p-3">
                     <div className="flex items-center justify-center">
                       <span className="rounded-lg border-2 border-black px-2 py-1 text-sm font-bold text-blue-800 dark:border-white dark:text-blue-200">
                         {user.deviceCount}
                       </span>
                     </div>
-                  </td>
-                  <td className="p-3">
+                  </TableCell>
+                  <TableCell className="p-3">
                     <span
                       className={`rounded-lg border-2 border-black px-2 py-1 text-xs font-bold dark:border-white ${
                         user.isPremiumActive
@@ -317,8 +339,8 @@ export default function AdminUserTable() {
                     >
                       {getPremiumStatus(user)}
                     </span>
-                  </td>
-                  <td className="p-3">
+                  </TableCell>
+                  <TableCell className="p-3">
                     <Button
                       onClick={() => handleBlockUser(user.id)}
                       variant="outline"
@@ -331,11 +353,11 @@ export default function AdminUserTable() {
                     >
                       {user.isBlocked ? "Unblock" : "Block"}
                     </Button>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
 

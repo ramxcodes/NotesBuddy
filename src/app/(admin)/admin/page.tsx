@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function Admin() {
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
+    <div className="space-y-8">
       <AdminStatics />
       <AdminUserTable />
     </div>

@@ -289,6 +289,25 @@ export function PremiumPurchaseFlowController({
           onDiscountCodeChange={setDiscountCode}
           onApplyCode={calculatePrice}
           isCalculating={isCalculating}
+          validationMessage={
+            error && discountCode.trim()
+              ? "Invalid or expired coupon code"
+              : priceCalculation?.discounts.find(
+                    (d) => d.type === "COUPON" || d.type === "REFERRAL",
+                  )
+                ? `${priceCalculation.discounts.find((d) => d.type === "COUPON" || d.type === "REFERRAL")?.description} applied!`
+                : undefined
+          }
+          isValidCode={
+            priceCalculation?.discounts.some(
+              (d) => d.type === "COUPON" || d.type === "REFERRAL",
+            ) || false
+          }
+          appliedDiscount={
+            priceCalculation?.discounts.find(
+              (d) => d.type === "COUPON" || d.type === "REFERRAL",
+            ) || null
+          }
         />
 
         {/* Wallet Balance Section */}

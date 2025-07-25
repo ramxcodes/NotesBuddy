@@ -8,12 +8,11 @@ import {
 } from "@/dal/user/onboarding/query";
 import { getUserPremiumStatus } from "@/dal/premium/query";
 import { getUserWalletBalance } from "@/dal/user/wallet";
-import { PremiumPurchaseFlow } from "@/components/premium/PremiumPurchaseFlow";
+import { PremiumPurchaseFlowController } from "@/components/premium/PremiumPurchaseFlowController";
+import { PremiumHeader } from "@/components/premium/PremiumHeader";
+import { PremiumPurchasedUserDisplayMessage } from "@/components/premium/PremiumPurchasedUserDisplayMessage";
 import { Link } from "next-view-transitions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ShieldCheckIcon from "@/components/icons/ShieldCheckIcon";
-import StarIcon from "@/components/icons/StarIcon";
-import CalendarIcon from "@/components/icons/CalendarIcon";
 
 export const metadata: Metadata = {
   title: "Premium | NotesBuddy",
@@ -78,54 +77,13 @@ export default async function PremiumPage() {
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">
-            {premiumStatus.isActive
-              ? "Your Premium Status"
-              : "Upgrade to Premium"}
-          </h1>
-          <p className="mx-auto max-w-2xl text-lg text-gray-600">
-            {premiumStatus.isActive
-              ? "Manage your premium subscription and benefits"
-              : "Upgrade to Premium for exclusive features and benefits"}
-          </p>
-        </div>
+        <PremiumHeader isActive={premiumStatus.isActive} />
 
         {/* Premium Status (if active) */}
-        {premiumStatus.isActive && (
-          <Card className="mx-auto mb-8 max-w-2xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <ShieldCheckIcon className="h-5 w-5 text-black dark:text-white" />
-                <span className="font-excon text-xl font-black text-black dark:text-white">
-                  Premium Active
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <StarIcon className="h-4 w-4 text-black dark:text-white" />
-                <span className="font-satoshi font-bold text-black dark:text-white">
-                  Your {premiumStatus.tier?.replace("_", " ")} is active with{" "}
-                  <span className="font-black">
-                    {premiumStatus.daysRemaining} days
-                  </span>{" "}
-                  remaining
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CalendarIcon className="h-4 w-4 text-black dark:text-white" />
-                <span className="font-satoshi text-sm text-black dark:text-white">
-                  Expires on:{" "}
-                  {premiumStatus.expiryDate &&
-                    new Date(premiumStatus.expiryDate).toLocaleDateString()}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        <PremiumPurchasedUserDisplayMessage premiumStatus={premiumStatus} />
+
         {!premiumStatus.isActive && (
-          <PremiumPurchaseFlow
+          <PremiumPurchaseFlowController
             userId={session.user.id}
             userEmail={session.user.email!}
             userName={`${userProfile.firstName} ${userProfile.lastName}`}

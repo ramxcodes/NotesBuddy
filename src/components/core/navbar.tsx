@@ -21,6 +21,10 @@ const navItems = [
     href: "/notes",
   },
   {
+    label: "Quiz",
+    href: "/quiz",
+  },
+  {
     label: "Pricing",
     href: "/premium?tier=TIER_3",
   },

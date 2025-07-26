@@ -1,0 +1,137 @@
+import { Suspense } from "react";
+import Link from "next/link";
+import FilterQuizDropdown from "@/components/quiz/FilterQuizDropdown";
+import QuizCard from "@/components/quiz/QuizCard";
+import QuizListSkeleton from "@/components/quiz/QuizListSkeleton";
+import { loadUserQuizzesAction, getUserContextAction } from "./actions";
+import type { University, Degree, Year, Semester } from "@prisma/client";
+import { GraduationCapIcon } from "@/components/icons/GraduationCapIcon";
+import { sanityToPrismaValue } from "@/utils/academic-config";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Quiz - Notes Buddy",
+  description: "Test your knowledge with our comprehensive quizzes",
+};
+
+interface QuizPageProps {
+  searchParams?: Promise<{
+    q?: string;
+    university?: string;
+    degree?: string;
+    year?: string;
+    semester?: string;
+    subject?: string;
+    isPremium?: string;
+  }>;
+}
+
+async function QuizList({ searchParams }: QuizPageProps) {
+  // Await searchParams since it's now a Promise in Next.js 15+
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+
+  // Convert sanity values to Prisma values
+  const university = resolvedSearchParams?.university
+    ? (sanityToPrismaValue("university", resolvedSearchParams.university) as
+        | University
+        | undefined)
+    : undefined;
+  const degree = resolvedSearchParams?.degree
+    ? (sanityToPrismaValue("degree", resolvedSearchParams.degree) as
+        | Degree
+        | undefined)
+    : undefined;
+  const year = resolvedSearchParams?.year
+    ? (sanityToPrismaValue("year", resolvedSearchParams.year) as
+        | Year
+        | undefined)
+    : undefined;
+  const semester = resolvedSearchParams?.semester
+    ? (sanityToPrismaValue("semester", resolvedSearchParams.semester) as
+        | Semester
+        | undefined)
+    : undefined;
+
+  const [quizzes, userContext] = await Promise.all([
+    loadUserQuizzesAction({
+      search: resolvedSearchParams?.q,
+      university,
+      degree,
+      year,
+      semester,
+      subject: resolvedSearchParams?.subject,
+      isPremium:
+        resolvedSearchParams?.isPremium === "true"
+          ? true
+          : resolvedSearchParams?.isPremium === "false"
+            ? false
+            : undefined,
+    }),
+    getUserContextAction(),
+  ]);
+
+  if (!quizzes) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16">
+        <GraduationCapIcon className="mb-4 size-64 text-gray-400" />
+        <h3 className="mb-2 text-xl font-bold">Error loading quizzes</h3>
+        <p className="text-center text-gray-600 dark:text-gray-400">
+          Please try again later.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 mx-4">
+      <div className="space-y-6">
+        <FilterQuizDropdown
+          userProfile={userContext.userProfile}
+          isOnboarded={userContext.isOnboarded}
+          isAuthenticated={userContext.isAuthenticated}
+        />
+      </div>
+
+      {quizzes.quizzes.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16">
+          <GraduationCapIcon className="mb-4 size-64 text-gray-400" />
+          <h3 className="mb-2 text-xl font-bold">No quizzes found</h3>
+          <p className="text-center text-gray-600 dark:text-gray-400">
+            Try adjusting your search or filter criteria, or{" "}
+            <Link href="/notes" className="text-blue-600 hover:underline">
+              explore our notes collection
+            </Link>
+            .
+          </p>
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {quizzes.quizzes.map((quiz) => (
+            <QuizCard
+              key={quiz.id}
+              quiz={quiz}
+              isAuthenticated={userContext.isAuthenticated}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default async function QuizPage({ searchParams }: QuizPageProps) {
+  return (
+    <div className="font-satoshi container mx-auto mt-10 min-h-screen max-w-6xl">
+      <div className="mb-8 text-center">
+        <h1 className="mb-2 text-4xl font-bold">Quiz</h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Test your knowledge with our comprehensive quizzes
+        </p>
+      </div>
+
+      <Suspense fallback={<QuizListSkeleton />}>
+        <QuizList searchParams={searchParams} />
+      </Suspense>
+    </div>
+  );
+}

@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  compiler: {
+    removeConsole: true,
+  },
   async rewrites() {
     return [
       {

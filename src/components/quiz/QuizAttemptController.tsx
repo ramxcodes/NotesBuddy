@@ -49,7 +49,9 @@ interface Attempt {
   optionSeed: number;
 }
 
-export default function QuizAttemptController({ quizId }: QuizAttemptControllerProps) {
+export default function QuizAttemptController({
+  quizId,
+}: QuizAttemptControllerProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [countdown, setCountdown] = useState<number | null>(null);
@@ -146,11 +148,11 @@ export default function QuizAttemptController({ quizId }: QuizAttemptControllerP
     }
   };
 
-  const handleCompleteQuiz = async () => {
+  const handleCompleteQuiz = async (isTimeUp: boolean = false) => {
     if (!attempt) return;
 
     try {
-      const result = await completeQuizAttemptAction(attempt.id);
+      const result = await completeQuizAttemptAction(attempt.id, isTimeUp);
 
       if (result.success) {
         // Redirect to score page
@@ -247,7 +249,7 @@ export default function QuizAttemptController({ quizId }: QuizAttemptControllerP
       setTimeRemaining((prev) => {
         if (prev && prev <= 1) {
           // Time's up, auto-submit
-          handleCompleteQuiz();
+          handleCompleteQuiz(true);
           return 0;
         }
         return prev ? prev - 1 : null;
@@ -286,7 +288,7 @@ export default function QuizAttemptController({ quizId }: QuizAttemptControllerP
   const currentQuestion = quiz.questions[currentQuestionIndex];
 
   return (
-    <div className="mt-10 min-h-screen mx-4">
+    <div className="mx-4 mt-10 min-h-screen">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <QuizAttemptHeader

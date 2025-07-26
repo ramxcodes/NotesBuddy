@@ -483,9 +483,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
             </div>
 
             <div className="space-y-1">
-              <span className="font-satoshi text-sm font-bold">
-                Completed
-              </span>
+              <span className="font-satoshi text-sm font-bold">Completed</span>
               <p className="font-excon text-2xl font-black">
                 {stats.completed}
               </p>
@@ -501,36 +499,26 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
             </div>
 
             <div className="space-y-1">
-              <span className="font-satoshi text-sm font-bold">
-                Abandoned
-              </span>
+              <span className="font-satoshi text-sm font-bold">Abandoned</span>
               <p className="font-excon text-2xl font-black">
                 {stats.abandoned}
               </p>
             </div>
 
             <div className="space-y-1">
-              <span className="font-satoshi text-sm font-bold">
-                Timed Out
-              </span>
-              <p className="font-excon text-2xl font-black">
-                {stats.timedOut}
-              </p>
+              <span className="font-satoshi text-sm font-bold">Timed Out</span>
+              <p className="font-excon text-2xl font-black">{stats.timedOut}</p>
             </div>
 
             <div className="space-y-1">
-              <span className="font-satoshi text-sm font-bold">
-                Avg Score
-              </span>
+              <span className="font-satoshi text-sm font-bold">Avg Score</span>
               <p className="font-excon text-2xl font-black">
                 {stats.avgScore.toFixed(1)}%
               </p>
             </div>
 
             <div className="space-y-1">
-              <span className="font-satoshi text-sm font-bold">
-                Avg Time
-              </span>
+              <span className="font-satoshi text-sm font-bold">Avg Time</span>
               <p className="font-excon text-xl font-black">
                 {formatDuration(Math.round(stats.avgTime))}
               </p>
@@ -721,8 +709,9 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
                         <Button
                           className="neuro-button-sm font-satoshi font-bold"
                           onClick={() => {
-                            // In a real app, this would navigate to detailed view
-                            console.log("View attempt details:", attempt.id);
+                            router.push(
+                              `/admin/quiz/${quizId}/attempt/${attempt.id}/view`,
+                            );
                           }}
                         >
                           <EyeIcon className="h-4 w-4" />

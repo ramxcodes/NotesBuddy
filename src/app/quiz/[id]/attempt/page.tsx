@@ -1,6 +1,12 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/db/user";
 import QuizAttemptController from "@/components/quiz/QuizAttemptController";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Attempting Quiz",
+  description: "Attempt a quiz and track your progress.",
+};
 
 interface AttemptPageProps {
   params: Promise<{

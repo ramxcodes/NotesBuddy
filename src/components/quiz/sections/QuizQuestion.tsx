@@ -1,5 +1,3 @@
-import { motion } from "motion/react";
-
 interface Question {
   id: string;
   question: string;
@@ -33,11 +31,8 @@ export default function QuizQuestion({
 
         <div className="space-y-4">
           {question.options.map((option, index) => (
-            <motion.button
+            <button
               key={option.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
               onClick={() => onAnswerSelect(option.id)}
               disabled={submitting}
               className={`w-full rounded-lg border-2 p-4 text-left transition-all ${
@@ -60,7 +55,7 @@ export default function QuizQuestion({
                   {option.text}
                 </span>
               </div>
-            </motion.button>
+            </button>
           ))}
         </div>
       </div>

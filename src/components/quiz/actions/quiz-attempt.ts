@@ -254,6 +254,7 @@ export async function submitAnswerAction(
  */
 export async function completeQuizAttemptAction(
   attemptId: string,
+  isTimeUp: boolean = false,
 ): Promise<CompleteQuizResult> {
   try {
     const session = await getSession();
@@ -279,6 +280,7 @@ export async function completeQuizAttemptAction(
           select: {
             id: true,
             isAttempted: true,
+            timeLimit: true,
           },
         },
       },
@@ -299,6 +301,22 @@ export async function completeQuizAttemptAction(
     const accuracy =
       attempt.totalMarks > 0 ? (score / attempt.totalMarks) * 100 : 0;
 
+    // Calculate time taken in seconds
+    const completedAt = new Date();
+    const timeTakenInSeconds = Math.round(
+      (completedAt.getTime() - attempt.startedAt.getTime()) / 1000,
+    );
+
+    // Determine status - if time limit exists and we've exceeded it, mark as TIME_UP
+    let status: AttemptStatus = AttemptStatus.COMPLETED;
+    if (
+      isTimeUp ||
+      (attempt.quiz.timeLimit &&
+        timeTakenInSeconds >= attempt.quiz.timeLimit * 60)
+    ) {
+      status = AttemptStatus.TIME_UP;
+    }
+
     // Update attempt status
     const completedAttempt = await prisma.$transaction(async (tx) => {
       // Update the attempt
@@ -307,8 +325,9 @@ export async function completeQuizAttemptAction(
         data: {
           score,
           accuracy,
-          status: AttemptStatus.COMPLETED,
-          completedAt: new Date(),
+          timeTaken: timeTakenInSeconds,
+          status,
+          completedAt,
         },
       });
 

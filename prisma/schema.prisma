@@ -91,6 +91,9 @@ model User {
   premiumExpiryDate    DateTime?
   isPremiumActive      Boolean           @default(false)
 
+  // Quiz related
+  quizAttempts QuizAttempt[]
+
   @@map("user")
 }
 
@@ -362,4 +365,139 @@ model ReferralReward {
   @@index([referrerUserId])
   @@index([refereeUserId])
   @@index([purchaseId])
+}
+
+
+// QUIZ SYSTEM MODELS
+
+model Quiz {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  subject     String     // Subject as string for flexibility
+  
+  // Academic context
+  university  University
+  degree      Degree
+  year        Year
+  semester    Semester
+  
+  // Quiz settings
+  timeLimit   Int?       // Time limit in minutes
+  marksPerQuestion Int    @default(1) // Fixed marks per question
+  
+  // Quiz state
+  isActive    Boolean    @default(true)
+  isPublished Boolean    @default(false)
+  isAttempted Boolean    @default(false) // Marked true when first user completes
+  
+  // Premium access
+  isPremium   Boolean    @default(false)
+  requiredTier PremiumTier?
+  
+  questions   Question[]
+  attempts    QuizAttempt[]
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([university, degree, year, semester])
+  @@index([subject])
+  @@index([isActive, isPublished])
+  @@index([isPremium, requiredTier])
+  @@map("quiz")
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  quizId        String
+  quiz          Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  
+  question      String
+  explanation   String?      // Explanation for the correct answer
+  order         Int          // Base order for admin (will be randomized in attempts)
+  
+  options       QuestionOption[]
+  answers       QuizAnswer[]
+  
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([quizId, order])
+  @@map("question")
+}
+
+model QuestionOption {
+  id          String   @id @default(cuid())
+  questionId  String
+  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  text        String
+  isCorrect   Boolean  @default(false)
+  order       Int      // Base order (will be randomized in attempts)
+  
+  answers     QuizAnswer[]
+  
+  createdAt   DateTime @default(now())
+
+  @@index([questionId, order])
+  @@map("question_option")
+}
+
+model QuizAttempt {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId      String
+  quiz        Quiz       @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  
+  // Randomization seeds
+  questionSeed Int        // Seed for question order randomization
+  optionSeed   Int        // Seed for option order randomization
+  
+  // Score & Performance
+  score        Int        @default(0)    // Total score achieved
+  totalMarks   Int                       // Total possible marks
+  accuracy     Decimal    @default(0)    // Percentage accuracy
+  timeTaken    Int?       // Total time taken in seconds
+  
+  // Attempt state
+  status       AttemptStatus @default(IN_PROGRESS)
+  startedAt    DateTime   @default(now())
+  completedAt  DateTime?
+  
+  answers      QuizAnswer[]
+  
+  @@index([userId, quizId])
+  @@index([userId, completedAt])
+  @@index([status])
+  @@map("quiz_attempt")
+}
+
+model QuizAnswer {
+  id            String         @id @default(cuid())
+  attemptId     String
+  attempt       QuizAttempt    @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      Question       @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptionId String?
+  selectedOption   QuestionOption? @relation(fields: [selectedOptionId], references: [id])
+  
+  isCorrect     Boolean        @default(false)
+  marksAwarded  Int            @default(0)
+  timeTaken     Int?           // Time taken for this question in seconds
+  
+  createdAt     DateTime       @default(now())
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+  @@map("quiz_answer")
+}
+
+// QUIZ ENUMS
+enum AttemptStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+  TIME_UP
 }

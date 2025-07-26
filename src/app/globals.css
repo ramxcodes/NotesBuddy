@@ -150,6 +150,33 @@
   .neuro {
     @apply border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373];
   }
+  .neuro-sm {
+    @apply border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373];
+  }
+  .neuro-lg {
+    @apply border-2 border-black bg-white shadow-[6px_6px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[6px_6px_0px_0px_#757373];
+  }
+  .neuro-xl {
+    @apply border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[8px_8px_0px_0px_#757373];
+  }
+  .neuro-button {
+    @apply border-2 border-black bg-black px-6 py-3 font-black text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373];
+  }
+  .neuro-button-sm {
+    @apply border-2 border-black bg-white shadow-[1px_1px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:shadow-[1px_1px_0px_0px_#757373];
+  }
+  .neuro-success {
+    @apply border-2 border-green-600 bg-green-50 shadow-[2px_2px_0px_0px_#16a34a] dark:border-green-400 dark:bg-green-900/20 dark:shadow-[2px_2px_0px_0px_#16a34a];
+  }
+  .neuro-warning {
+    @apply border-2 border-orange-600 bg-orange-50 shadow-[2px_2px_0px_0px_#ea580c] dark:border-orange-400 dark:bg-orange-900/20 dark:shadow-[2px_2px_0px_0px_#ea580c];
+  }
+  .neuro-danger {
+    @apply border-2 border-red-600 bg-red-50 shadow-[2px_2px_0px_0px_#dc2626] dark:border-red-400 dark:bg-red-900/20 dark:shadow-[2px_2px_0px_0px_#dc2626];
+  }
+  .neuro-info {
+    @apply border-2 border-blue-600 bg-blue-50 shadow-[2px_2px_0px_0px_#2563eb] dark:border-blue-400 dark:bg-blue-900/20 dark:shadow-[2px_2px_0px_0px_#2563eb];
+  }
 }
 
 .text-secondary {

@@ -21,4 +21,19 @@ export const adminCacheConfig = {
     tags: ["coupon-details"],
     cacheKey: "coupon-details",
   } as CacheConfig,
+  getAdminQuizzes: {
+    cacheTime: 10, // 10 minutes
+    tags: ["admin-quizzes"],
+    cacheKey: "admin-quizzes",
+  } as CacheConfig,
+  getQuizDetails: {
+    cacheTime: 10, // 10 minutes
+    tags: ["quiz-details"],
+    cacheKey: "quiz-details",
+  } as CacheConfig,
+  getQuizAttempts: {
+    cacheTime: 10, // 10 minutes
+    tags: ["quiz-attempts"],
+    cacheKey: "quiz-attempts",
+  } as CacheConfig,
 };

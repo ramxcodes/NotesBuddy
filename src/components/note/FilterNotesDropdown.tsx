@@ -10,11 +10,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  getFilterOptions,
-  userProfileToFilterValues,
+  getUniversities,
+  getDegreesByUniversity,
+  getYearsByUniversityAndDegree,
+  getSemestersByUniversityDegreeAndYear,
+  prismaToSanityValue,
+  sanityToPrismaValue,
 } from "@/utils/academic-config";
 import { getAvailableSubjects } from "@/dal/note/helper";
 import { useDebounce } from "@/hooks/use-debounce";
+import { University, Degree, Year, Semester } from "@prisma/client";
 
 interface FilterNotesDropdownProps {
   userProfile?: {
@@ -28,10 +33,10 @@ interface FilterNotesDropdownProps {
 }
 
 interface FilterState {
-  university: string;
-  degree: string;
-  year: string;
-  semester: string;
+  university?: University;
+  degree?: Degree;
+  year?: Year;
+  semester?: Semester;
   subject: string;
 }
 
@@ -43,8 +48,8 @@ export default function FilterNotesDropdown({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Get filter options for dropdowns
-  const filterOptions = getFilterOptions();
+  // Get hierarchical filter options
+  const universities = getUniversities();
 
   // Initialize filter state based on user context
   const initializeFilters = useCallback((): FilterState => {
@@ -54,24 +59,52 @@ export default function FilterNotesDropdown({
     const urlSemester = searchParams.get("semester");
     const urlSubject = searchParams.get("subject");
 
+    // Convert URL params (sanity values) to Prisma values
+    const universityValue = urlUniversity
+      ? (sanityToPrismaValue("university", urlUniversity) as
+          | University
+          | undefined)
+      : undefined;
+    const degreeValue = urlDegree
+      ? (sanityToPrismaValue("degree", urlDegree) as Degree | undefined)
+      : undefined;
+    const yearValue = urlYear
+      ? (sanityToPrismaValue("year", urlYear) as Year | undefined)
+      : undefined;
+    const semesterValue = urlSemester
+      ? (sanityToPrismaValue("semester", urlSemester) as Semester | undefined)
+      : undefined;
+
     // If user is authenticated and onboarded, use their profile as default
     if (isAuthenticated && isOnboarded && userProfile) {
-      const profileFilters = userProfileToFilterValues(userProfile);
+      const profileUniversity = userProfile.university
+        ? (userProfile.university as University)
+        : undefined;
+      const profileDegree = userProfile.degree
+        ? (userProfile.degree as Degree)
+        : undefined;
+      const profileYear = userProfile.year
+        ? (userProfile.year as Year)
+        : undefined;
+      const profileSemester = userProfile.semester
+        ? (userProfile.semester as Semester)
+        : undefined;
+
       return {
-        university: urlUniversity || profileFilters.university || "all",
-        degree: urlDegree || profileFilters.degree || "all",
-        year: urlYear || profileFilters.year || "all",
-        semester: urlSemester || profileFilters.semester || "all",
-        subject: urlSubject || "all",
+        university: universityValue || profileUniversity,
+        degree: degreeValue || profileDegree,
+        year: yearValue || profileYear,
+        semester: semesterValue || profileSemester,
+        subject: urlSubject || "",
       };
     }
 
     return {
-      university: urlUniversity || "all",
-      degree: urlDegree || "all",
-      year: urlYear || "all",
-      semester: urlSemester || "all",
-      subject: urlSubject || "all",
+      university: universityValue,
+      degree: degreeValue,
+      year: yearValue,
+      semester: semesterValue,
+      subject: urlSubject || "",
     };
   }, [searchParams, isAuthenticated, isOnboarded, userProfile]);
 
@@ -85,6 +118,23 @@ export default function FilterNotesDropdown({
 
   const debouncedFilters = useDebounce(filters, 300);
 
+  // Get filtered options based on current selections
+  const degrees = filters.university
+    ? getDegreesByUniversity(filters.university)
+    : [];
+  const years =
+    filters.university && filters.degree
+      ? getYearsByUniversityAndDegree(filters.university, filters.degree)
+      : [];
+  const semesters =
+    filters.university && filters.degree && filters.year
+      ? getSemestersByUniversityDegreeAndYear(
+          filters.university,
+          filters.degree,
+          filters.year,
+        )
+      : [];
+
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -93,31 +143,53 @@ export default function FilterNotesDropdown({
       params.set("query", currentQuery);
     }
 
-    if (debouncedFilters.university && debouncedFilters.university !== "all") {
-      params.set("university", debouncedFilters.university);
+    // Convert Prisma values to Sanity values for URL
+    if (debouncedFilters.university) {
+      const sanityValue = prismaToSanityValue(
+        "university",
+        debouncedFilters.university,
+      );
+      if (sanityValue) {
+        params.set("university", sanityValue);
+      }
     } else {
       params.delete("university");
     }
 
-    if (debouncedFilters.degree && debouncedFilters.degree !== "all") {
-      params.set("degree", debouncedFilters.degree);
+    if (debouncedFilters.degree) {
+      const sanityValue = prismaToSanityValue(
+        "degree",
+        debouncedFilters.degree,
+      );
+      if (sanityValue) {
+        params.set("degree", sanityValue);
+      }
     } else {
       params.delete("degree");
     }
 
-    if (debouncedFilters.year && debouncedFilters.year !== "all") {
-      params.set("year", debouncedFilters.year);
+    if (debouncedFilters.year) {
+      const sanityValue = prismaToSanityValue("year", debouncedFilters.year);
+      if (sanityValue) {
+        params.set("year", sanityValue);
+      }
     } else {
       params.delete("year");
     }
 
-    if (debouncedFilters.semester && debouncedFilters.semester !== "all") {
-      params.set("semester", debouncedFilters.semester);
+    if (debouncedFilters.semester) {
+      const sanityValue = prismaToSanityValue(
+        "semester",
+        debouncedFilters.semester,
+      );
+      if (sanityValue) {
+        params.set("semester", sanityValue);
+      }
     } else {
       params.delete("semester");
     }
 
-    if (debouncedFilters.subject && debouncedFilters.subject !== "all") {
+    if (debouncedFilters.subject && debouncedFilters.subject !== "") {
       params.set("subject", debouncedFilters.subject);
     } else {
       params.delete("subject");
@@ -136,11 +208,11 @@ export default function FilterNotesDropdown({
 
     if (isSearching && !wasSearching) {
       setFilters({
-        university: "all",
-        degree: "all",
-        year: "all",
-        semester: "all",
-        subject: "all",
+        university: undefined,
+        degree: undefined,
+        year: undefined,
+        semester: undefined,
+        subject: "",
       });
     } else if (!isSearching && wasSearching) {
       setFilters(initializeFilters());
@@ -152,11 +224,18 @@ export default function FilterNotesDropdown({
       setIsLoadingSubjects(true);
       try {
         const subjectData = await getAvailableSubjects({
-          university:
-            filters.university === "all" ? undefined : filters.university,
-          degree: filters.degree === "all" ? undefined : filters.degree,
-          year: filters.year === "all" ? undefined : filters.year,
-          semester: filters.semester === "all" ? undefined : filters.semester,
+          university: filters.university
+            ? prismaToSanityValue("university", filters.university)
+            : undefined,
+          degree: filters.degree
+            ? prismaToSanityValue("degree", filters.degree)
+            : undefined,
+          year: filters.year
+            ? prismaToSanityValue("year", filters.year)
+            : undefined,
+          semester: filters.semester
+            ? prismaToSanityValue("semester", filters.semester)
+            : undefined,
         });
 
         const dataArray = Array.isArray(subjectData) ? subjectData : [];
@@ -181,24 +260,33 @@ export default function FilterNotesDropdown({
   }, [filters.university, filters.degree, filters.year, filters.semester]);
 
   const handleFilterChange = useCallback(
-    (filterType: keyof FilterState, value: string) => {
+    (
+      filterType: keyof FilterState,
+      value: University | Degree | Year | Semester | string | undefined,
+    ) => {
       setFilters((prev) => {
-        const updated = { ...prev, [filterType]: value };
+        const updated = { ...prev };
 
         if (filterType === "university") {
-          updated.degree = "all";
-          updated.year = "all";
-          updated.semester = "all";
-          updated.subject = "all";
+          updated.university = value as University | undefined;
+          updated.degree = undefined;
+          updated.year = undefined;
+          updated.semester = undefined;
+          updated.subject = "";
         } else if (filterType === "degree") {
-          updated.year = "all";
-          updated.semester = "all";
-          updated.subject = "all";
+          updated.degree = value as Degree | undefined;
+          updated.year = undefined;
+          updated.semester = undefined;
+          updated.subject = "";
         } else if (filterType === "year") {
-          updated.semester = "all";
-          updated.subject = "all";
+          updated.year = value as Year | undefined;
+          updated.semester = undefined;
+          updated.subject = "";
         } else if (filterType === "semester") {
-          updated.subject = "all";
+          updated.semester = value as Semester | undefined;
+          updated.subject = "";
+        } else if (filterType === "subject") {
+          updated.subject = value as string;
         }
 
         return updated;
@@ -224,20 +312,31 @@ export default function FilterNotesDropdown({
             University
           </label>
           <Select
-            value={filters.university}
-            onValueChange={(value) => handleFilterChange("university", value)}
+            value={filters.university || "all"}
+            onValueChange={(value) =>
+              handleFilterChange(
+                "university",
+                value === "all" ? undefined : (value as University),
+              )
+            }
           >
             <SelectTrigger className="w-[180px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select university" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
-              {filterOptions.universities.map((option) => (
+              <SelectItem
+                value="all"
+                className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+              >
+                All Universities
+              </SelectItem>
+              {universities.map((university) => (
                 <SelectItem
-                  key={option.value}
-                  value={option.value}
+                  key={university.value}
+                  value={university.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
-                  {option.label}
+                  {university.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -250,20 +349,32 @@ export default function FilterNotesDropdown({
             Degree
           </label>
           <Select
-            value={filters.degree}
-            onValueChange={(value) => handleFilterChange("degree", value)}
+            value={filters.degree || "all"}
+            onValueChange={(value) =>
+              handleFilterChange(
+                "degree",
+                value === "all" ? undefined : (value as Degree),
+              )
+            }
+            disabled={!filters.university}
           >
-            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select degree" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
-              {filterOptions.degrees.map((option) => (
+              <SelectItem
+                value="all"
+                className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+              >
+                All Degrees
+              </SelectItem>
+              {degrees.map((degree) => (
                 <SelectItem
-                  key={option.value}
-                  value={option.value}
+                  key={degree.value}
+                  value={degree.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
-                  {option.label}
+                  {degree.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -276,20 +387,32 @@ export default function FilterNotesDropdown({
             Year
           </label>
           <Select
-            value={filters.year}
-            onValueChange={(value) => handleFilterChange("year", value)}
+            value={filters.year || "all"}
+            onValueChange={(value) =>
+              handleFilterChange(
+                "year",
+                value === "all" ? undefined : (value as Year),
+              )
+            }
+            disabled={!filters.degree}
           >
-            <SelectTrigger className="w-[120px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-[120px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select year" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
-              {filterOptions.years.map((option) => (
+              <SelectItem
+                value="all"
+                className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+              >
+                All Years
+              </SelectItem>
+              {years.map((year) => (
                 <SelectItem
-                  key={option.value}
-                  value={option.value}
+                  key={year.value}
+                  value={year.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
-                  {option.label}
+                  {year.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -302,20 +425,32 @@ export default function FilterNotesDropdown({
             Semester
           </label>
           <Select
-            value={filters.semester}
-            onValueChange={(value) => handleFilterChange("semester", value)}
+            value={filters.semester || "all"}
+            onValueChange={(value) =>
+              handleFilterChange(
+                "semester",
+                value === "all" ? undefined : (value as Semester),
+              )
+            }
+            disabled={!filters.year}
           >
-            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Select semester" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
-              {filterOptions.semesters.map((option) => (
+              <SelectItem
+                value="all"
+                className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+              >
+                All Semesters
+              </SelectItem>
+              {semesters.map((semester) => (
                 <SelectItem
-                  key={option.value}
-                  value={option.value}
+                  key={semester.value}
+                  value={semester.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
                 >
-                  {option.label}
+                  {semester.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -328,8 +463,10 @@ export default function FilterNotesDropdown({
             Subject
           </label>
           <Select
-            value={filters.subject}
-            onValueChange={(value) => handleFilterChange("subject", value)}
+            value={filters.subject || "all"}
+            onValueChange={(value) =>
+              handleFilterChange("subject", value === "all" ? "" : value)
+            }
             disabled={isLoadingSubjects}
           >
             <SelectTrigger className="w-[160px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">

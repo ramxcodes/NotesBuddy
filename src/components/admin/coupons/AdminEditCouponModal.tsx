@@ -173,7 +173,7 @@ export function AdminEditCouponModal({
       <DialogContent className="max-w-2xl rounded-xl border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
         <DialogHeader>
           <DialogTitle className="font-excon flex items-center gap-3 text-2xl font-black text-black dark:text-white">
-            <PencilSimpleLineIcon type="duotone" className="h-6 w-6" />
+            <PencilSimpleLineIcon weight="duotone" className="h-6 w-6" />
             Edit Coupon
           </DialogTitle>
           <DialogDescription className="font-satoshi font-bold text-black/70 dark:text-white/70">
@@ -365,7 +365,7 @@ export function AdminEditCouponModal({
               </Label>
               <div className="relative">
                 <CalendarIcon
-                  type="duotone"
+                  weight="duotone"
                   className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-black/50 dark:text-white/50"
                 />
                 <Input

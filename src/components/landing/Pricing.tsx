@@ -39,7 +39,9 @@ function PricingCard({
   return (
     <motion.div
       className={`bg-card border-primary dark:border-secondary relative flex flex-col rounded-2xl border border-r-8 border-b-8 p-8 shadow-none transition-all duration-300 hover:shadow-lg ${
-        highlight ? "border-primary/60 ring-primary/40 z-10 scale-105 ring-2" : "border-border"
+        highlight
+          ? "border-primary/60 ring-primary/40 z-10 scale-105 ring-2"
+          : "border-border"
       }`}
     >
       {/* Tag */}
@@ -75,10 +77,10 @@ function PricingCard({
             {features[idx] ? (
               <CheckCircleIcon
                 className="h-5 w-5 text-green-500"
-                type="duotone"
+                weight="duotone"
               />
             ) : (
-              <XCircleIcon className="h-5 w-5 text-red-500" type="duotone" />
+              <XCircleIcon className="h-5 w-5 text-red-500" weight="duotone" />
             )}
             <span className={features[idx] ? "" : "line-through opacity-60"}>
               {feature}

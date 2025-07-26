@@ -94,6 +94,9 @@ model User {
   // Quiz related
   quizAttempts QuizAttempt[]
 
+  // Flashcard related
+  flashcardVisits FlashcardVisit[]
+
   @@map("user")
 }
 
@@ -500,4 +503,74 @@ enum AttemptStatus {
   COMPLETED
   ABANDONED
   TIME_UP
+}
+
+// FLASHCARD SYSTEM MODELS
+
+model FlashcardSet {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  subject     String   // Subject as string for flexibility
+  
+  // Academic context
+  university  University
+  degree      Degree
+  year        Year
+  semester    Semester
+  
+  // Set state
+  isActive    Boolean    @default(true)
+  isPublished Boolean    @default(false)
+  
+  // Premium access
+  isPremium   Boolean    @default(false)
+  requiredTier PremiumTier?
+  
+  cards       FlashcardItem[]
+  visits      FlashcardVisit[]
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([university, degree, year, semester])
+  @@index([subject])
+  @@index([isActive, isPublished])
+  @@index([isPremium, requiredTier])
+  @@map("flashcard_set")
+}
+
+model FlashcardItem {
+  id          String       @id @default(cuid())
+  setId       String
+  set         FlashcardSet @relation(fields: [setId], references: [id], onDelete: Cascade)
+  
+  // Card content
+  front       String
+  back        String
+  order       Int          // Order within the set
+  
+  visits      FlashcardVisit[]
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([setId, order])
+  @@map("flashcard_item")
+}
+
+model FlashcardVisit {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  setId       String
+  set         FlashcardSet  @relation(fields: [setId], references: [id], onDelete: Cascade)
+  cardId      String?       // Optional - for tracking individual card visits
+  card        FlashcardItem? @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  
+  visitedAt   DateTime      @default(now())
+
+  @@index([userId, setId])
+  @@index([userId, visitedAt])
+  @@map("flashcard_visit")
 }

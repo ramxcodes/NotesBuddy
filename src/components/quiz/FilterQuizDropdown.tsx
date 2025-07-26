@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   Select,
@@ -116,10 +116,6 @@ export default function FilterQuizDropdown({
   const [subjects, setSubjects] = useState<{ subject: string }[]>([]);
   const [isLoadingSubjects, setIsLoadingSubjects] = useState(false);
 
-  const hasActiveSearch = Boolean(searchParams.get("q")?.trim());
-
-  const prevSearchState = useRef(hasActiveSearch);
-
   const debouncedFilters = useDebounce(filters, 300);
 
   // Get filtered options based on current selections
@@ -203,27 +199,6 @@ export default function FilterQuizDropdown({
     router.push(`/quiz?${params.toString()}`);
   }, [debouncedFilters, router, searchParams]);
 
-  // Reset filters when search is toggled
-  useEffect(() => {
-    const isSearching = hasActiveSearch;
-    const wasSearching = prevSearchState.current;
-    prevSearchState.current = isSearching;
-
-    if (isSearching && !wasSearching) {
-      // Search started - reset filters but keep URL state
-      setFilters({
-        university: undefined,
-        degree: undefined,
-        year: undefined,
-        semester: undefined,
-        subject: "",
-        isPremium: "all",
-      });
-    } else if (!isSearching && wasSearching) {
-      setFilters(initializeFilters());
-    }
-  }, [hasActiveSearch, searchParams, initializeFilters]);
-
   useEffect(() => {
     const fetchSubjects = async () => {
       setIsLoadingSubjects(true);
@@ -291,14 +266,6 @@ export default function FilterQuizDropdown({
 
   return (
     <div className="my-6 rounded-xl border-4 border-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:border-white dark:shadow-[8px_8px_0px_0px_#757373]">
-      {hasActiveSearch && (
-        <div className="mb-4 w-full text-center">
-          <p className="text-sm font-bold tracking-wide text-black/70 uppercase dark:text-white/70">
-            Searching all quizzes. Use filters below to narrow down results.
-          </p>
-        </div>
-      )}
-
       <div className="flex flex-wrap items-end justify-center gap-4">
         {/* University Filter */}
         <div className="flex flex-col gap-2">

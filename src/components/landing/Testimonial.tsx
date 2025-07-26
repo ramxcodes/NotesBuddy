@@ -46,7 +46,7 @@ function TestimonialCard({
         <div className="relative z-10">
           {/* Quote Icon */}
           <div className="mb-4">
-            <QuotesIcon type="duotone" className="text-primary/60 h-8 w-8" />
+            <QuotesIcon weight="duotone" className="text-primary/60 h-8 w-8" />
           </div>
 
           {/* Rating */}

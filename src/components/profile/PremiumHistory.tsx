@@ -47,7 +47,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
           variant="secondary"
           className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
-          <CheckCircleIcon type="duotone" className="h-3 w-3" />
+          <CheckCircleIcon weight="duotone" className="h-3 w-3" />
           Active
         </Badge>
       );
@@ -57,7 +57,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
           variant="secondary"
           className="border-2 border-black bg-zinc-200 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
-          <CheckCircleIcon type="duotone" className="h-3 w-3" />
+          <CheckCircleIcon weight="duotone" className="h-3 w-3" />
           Expired
         </Badge>
       );
@@ -67,7 +67,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
           variant="destructive"
           className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
         >
-          <XCircleIcon type="duotone" className="h-3 w-3" />
+          <XCircleIcon weight="duotone" className="h-3 w-3" />
           Failed
         </Badge>
       );
@@ -77,7 +77,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
           variant="outline"
           className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
-          <ClockIcon type="duotone" className="h-3 w-3" />
+          <ClockIcon weight="duotone" className="h-3 w-3" />
           Pending
         </Badge>
       );
@@ -97,7 +97,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
             <ReceiptIcon
-              type="duotone"
+              weight="duotone"
               className="h-6 w-6 text-black dark:text-white"
             />
             Purchase History
@@ -106,7 +106,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
         <CardContent>
           <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
             <ReceiptIcon
-              type="duotone"
+              weight="duotone"
               className="mx-auto mb-4 h-12 w-12 text-black dark:text-white"
             />
             <h3 className="font-excon mb-2 text-lg font-black text-black dark:text-white">
@@ -126,7 +126,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       <CardHeader>
         <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
           <ReceiptIcon
-            type="duotone"
+            weight="duotone"
             className="h-6 w-6 text-black dark:text-white"
           />
           Purchase History

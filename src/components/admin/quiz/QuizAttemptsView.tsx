@@ -379,7 +379,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
         <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <TrophyIcon type="duotone" className="h-4 w-4" />
+              <TrophyIcon weight="duotone" className="h-4 w-4" />
               <span className="font-satoshi text-sm font-bold text-black/70 dark:text-white/70">
                 Subject
               </span>

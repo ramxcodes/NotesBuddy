@@ -193,7 +193,7 @@ export default function AdminCouponTable({
                       className="font-satoshi h-8 w-8 rounded-lg border-2 border-red-500 bg-white p-0 shadow-[2px_2px_0px_0px_#ef4444] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-red-400 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#ef4444]"
                     >
                       <TrashIcon
-                        type="duotone"
+                        weight="duotone"
                         className="h-3 w-3 text-red-500 dark:text-red-400"
                       />
                     </Button>

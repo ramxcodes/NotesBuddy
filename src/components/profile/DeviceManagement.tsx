@@ -39,14 +39,14 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
       if (screen && screen.width <= 768) {
         return (
           <DeviceMobileIcon
-            type="duotone"
+            weight="duotone"
             className="h-5 w-5 text-black dark:text-white"
           />
         );
       }
       return (
         <DeviceTabletIcon
-          type="duotone"
+          weight="duotone"
           className="h-5 w-5 text-black dark:text-white"
         />
       );
@@ -60,21 +60,21 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
     ) {
       return (
         <DeviceMobileIcon
-          type="duotone"
+          weight="duotone"
           className="h-5 w-5 text-black dark:text-white"
         />
       );
     } else if (ua.includes("tablet") || ua.includes("ipad")) {
       return (
         <DeviceTabletIcon
-          type="duotone"
+          weight="duotone"
           className="h-5 w-5 text-black dark:text-white"
         />
       );
     } else {
       return (
         <DesktopIcon
-          type="duotone"
+          weight="duotone"
           className="h-5 w-5 text-black dark:text-white"
         />
       );
@@ -149,7 +149,7 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
           <div className="flex items-center justify-between">
             <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
               <DeviceTabletIcon
-                type="duotone"
+                weight="duotone"
                 className="h-6 w-6 text-black dark:text-white"
               />
               Device Management
@@ -170,7 +170,7 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
         <CardContent>
           <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
             <DeviceTabletIcon
-              type="duotone"
+              weight="duotone"
               className="mx-auto mb-4 h-12 w-12 text-black dark:text-white"
             />
             <h3 className="font-excon mb-2 text-lg font-black text-black dark:text-white">
@@ -192,7 +192,7 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
         <div className="flex items-center justify-between">
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
             <DeviceTabletIcon
-              type="duotone"
+              weight="duotone"
               className="h-6 w-6 text-black dark:text-white"
             />
             Device Management
@@ -242,7 +242,7 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
                       variant="secondary"
                       className="gap-1 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                     >
-                      <GlobeIcon type="duotone" className="h-3 w-3" />
+                      <GlobeIcon weight="duotone" className="h-3 w-3" />
                       {device.isActive ? "Active" : "Inactive"}
                     </Badge>
                   </div>

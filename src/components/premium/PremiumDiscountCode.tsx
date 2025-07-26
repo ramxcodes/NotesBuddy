@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/card";
 import {
   CheckIcon,
+  CurrencyCircleDollarIcon,
   GiftIcon,
   PercentIcon,
   SpinnerIcon,
   XIcon,
 } from "@phosphor-icons/react";
 import { TagIcon } from "@phosphor-icons/react";
-import { DollarSignIcon } from "lucide-react";
 
 interface PremiumDiscountCodeProps {
   discountCode: string;
@@ -54,14 +54,17 @@ export function PremiumDiscountCode({
 
     if (validationMessage && !isValidCode) {
       return (
-        <XIcon type="duotone" className="h-4 w-4 text-black dark:text-white" />
+        <XIcon
+          weight="duotone"
+          className="h-4 w-4 text-black dark:text-white"
+        />
       );
     }
 
     if (isValidCode && appliedDiscount) {
       return (
         <CheckIcon
-          type="duotone"
+          weight="duotone"
           className="h-4 w-4 text-black dark:text-white"
         />
       );
@@ -139,7 +142,7 @@ export function PremiumDiscountCode({
             >
               <div className="mb-2 flex items-center gap-2">
                 <TagIcon
-                  type="duotone"
+                  weight="duotone"
                   className="h-4 w-4 text-black dark:text-white"
                 />
                 <span className="font-excon text-sm font-black text-black dark:text-white">
@@ -150,12 +153,12 @@ export function PremiumDiscountCode({
               <div className="flex items-center gap-2">
                 {appliedDiscount.type === "PERCENTAGE" ? (
                   <PercentIcon
-                    type="duotone"
+                    weight="duotone"
                     className="h-4 w-4 text-black dark:text-white"
                   />
                 ) : (
-                  <DollarSignIcon
-                    type="duotone"
+                  <CurrencyCircleDollarIcon
+                    weight="duotone"
                     className="h-4 w-4 text-black dark:text-white"
                   />
                 )}

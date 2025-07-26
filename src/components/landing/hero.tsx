@@ -68,7 +68,7 @@ export default function Hero() {
           <div>
             <Button variant="secondary" size="sm" className="gap-4">
               Now it is time to study{" "}
-              <ArrowRightIcon type="duotone" className="size-4" />
+              <ArrowRightIcon weight="duotone" className="size-4" />
             </Button>
           </div>
           <div className="flex flex-col gap-4">
@@ -113,15 +113,16 @@ export default function Hero() {
                 size="lg"
                 className="gap-4 border-2 border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:text-white hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
               >
-                Visit Notes <BookOpenIcon type="duotone" className="size-4" />
+                Visit Notes <BookOpenIcon weight="duotone" className="size-4" />
               </Button>
             </Link>
             <Link href="/premium">
               <Button
                 size="lg"
-                className="gap-4 border-2 border-black bg-black hover:bg-white hover:text-black text-white shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+                className="gap-4 border-2 border-black bg-black text-white shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:bg-white hover:text-black hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
               >
-                Purchase Premium <StarIcon type="duotone" className="size-4" />
+                Purchase Premium{" "}
+                <StarIcon weight="duotone" className="size-4" />
               </Button>
             </Link>
           </div>

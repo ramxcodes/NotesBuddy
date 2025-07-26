@@ -17,6 +17,7 @@ import {
 import type { UserQuizListItem } from "@/dal/quiz/user-query";
 import { getDisplayNameFromPrismaValue } from "@/utils/academic-config";
 import { formatDistanceToNow } from "date-fns";
+import { signIn } from "@/lib/auth/auth-client";
 
 interface QuizCardProps {
   quiz: UserQuizListItem;
@@ -80,8 +81,8 @@ export default function QuizCard({ quiz, isAuthenticated }: QuizCardProps) {
 
         {/* Premium Badge */}
         {isPremium && (
-          <Badge className="ml-2 border-2 border-yellow-500 bg-yellow-100 text-xs font-bold text-yellow-800 dark:border-yellow-400 dark:bg-yellow-900/30 dark:text-yellow-400">
-            <StarIcon className="mr-1 h-3 w-3" weight="fill" />
+          <Badge className="ml-2 border-2 text-xs font-bold">
+            <StarIcon className="h-3 w-3" weight="fill" />
             {requiredTier ? `Tier ${requiredTier.split("_")[1]}` : "Premium"}
           </Badge>
         )}
@@ -258,12 +259,13 @@ export default function QuizCard({ quiz, isAuthenticated }: QuizCardProps) {
             </Button>
           </Link>
         ) : (
-          <Link href="/auth/signin">
-            <Button className="neuro-button font-satoshi w-full font-bold transition-all">
-              <PlayIcon className="mr-2 h-4 w-4" weight="fill" />
-              Login to Take Quiz
-            </Button>
-          </Link>
+          <Button
+            className="neuro-button font-satoshi w-full font-bold transition-all"
+            onClick={signIn}
+          >
+            <PlayIcon className="mr-2 h-4 w-4" weight="fill" />
+            Login to Take Quiz
+          </Button>
         )}
       </div>
     </div>

@@ -25,6 +25,10 @@ const navItems = [
     href: "/quiz",
   },
   {
+    label: "Flashcards",
+    href: "/flashcards",
+  },
+  {
     label: "Pricing",
     href: "/premium?tier=TIER_3",
   },

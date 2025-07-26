@@ -11,7 +11,7 @@ export default function ReportButton() {
       className="flex cursor-pointer items-center gap-2 text-orange-600 hover:cursor-pointer"
       onClick={() => router.push("/report")}
     >
-      <WarningIcon type="duotone" className="h-4 w-4 text-orange-600" />
+      <WarningIcon weight="duotone" className="h-4 w-4 text-orange-600" />
       Report
     </div>
   );

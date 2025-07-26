@@ -66,7 +66,7 @@ export function ProfileInfo({
                 onClick={onEditClick}
                 className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
               >
-                <PencilIcon type="duotone" className="h-4 w-4" />
+                <PencilIcon weight="duotone" className="h-4 w-4" />
                 Edit Profile
               </Button>
             )}
@@ -99,7 +99,7 @@ export function ProfileInfo({
                       variant="secondary"
                       className="gap-1 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                     >
-                      <CheckCircleIcon type="duotone" className="h-3 w-3" />
+                      <CheckCircleIcon weight="duotone" className="h-3 w-3" />
                       Verified
                     </Badge>
                   )}

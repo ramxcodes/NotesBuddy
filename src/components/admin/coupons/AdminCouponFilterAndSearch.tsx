@@ -38,7 +38,7 @@ export default function AdminCouponFilterAndSearch({
       <div className="flex gap-2">
         <div className="relative flex-1">
           <MagnifyingGlassIcon
-            type="duotone"
+            weight="duotone"
             className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-black/50 dark:text-white/50"
           />
           <Input
@@ -54,7 +54,7 @@ export default function AdminCouponFilterAndSearch({
       <div className="flex gap-4">
         <div className="flex items-center gap-2">
           <FunnelSimpleIcon
-            type="duotone"
+            weight="duotone"
             className="h-4 w-4 text-black dark:text-white"
           />
           <Select value={filter} onValueChange={onFilterChange}>

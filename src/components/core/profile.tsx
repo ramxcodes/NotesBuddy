@@ -17,6 +17,7 @@ import { NotesbookIcon } from "../icons/NotebookIcon";
 import { SignOutIcon } from "../icons/SignOutIcon";
 import ReportButton from "../navbar/ReportButton";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
+import CardsIcon from "../icons/CardsIcon";
 
 export default async function Profile() {
   const session = await getSession();
@@ -61,6 +62,12 @@ export default async function Profile() {
           <DropdownMenuItem className="hover:cursor-pointer">
             <QuestionMarkIcon className="size-4" />
             Quiz
+          </DropdownMenuItem>
+        </Link>
+         <Link href="/flashcards">
+          <DropdownMenuItem className="hover:cursor-pointer">
+            <CardsIcon className="size-4" />
+            Flashcards
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />

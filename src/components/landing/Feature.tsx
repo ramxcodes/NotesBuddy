@@ -64,38 +64,43 @@ function FeatureCard({
 
 const features = [
   {
-    icon: <BookOpenIcon type="duotone" className="text-primary h-6 w-6" />,
+    icon: <BookOpenIcon weight="duotone" className="text-primary h-6 w-6" />,
     title: "Comprehensive Notes",
     description:
       "Concise, well-structured notes that simplify complex concepts for better understanding.",
   },
   {
-    icon: <LightningIcon type="duotone" className="h-6 w-6 text-yellow-500" />,
+    icon: (
+      <LightningIcon weight="duotone" className="h-6 w-6 text-yellow-500" />
+    ),
     title: "Quick One-Shots",
     description:
       "Rapid review materials for last-minute preparation and key concept reinforcement.",
   },
   {
-    icon: <BrainIcon type="duotone" className="h-6 w-6 text-purple-500" />,
+    icon: <BrainIcon weight="duotone" className="h-6 w-6 text-purple-500" />,
     title: "Interactive Flashcards",
     description:
       "Effective memory tools to master terminology and key concepts through active recall.",
   },
   {
-    icon: <ClockIcon type="duotone" className="h-6 w-6 text-green-500" />,
+    icon: <ClockIcon weight="duotone" className="h-6 w-6 text-green-500" />,
     title: "Practice Quizzes",
     description:
       "Self-assessment tools to test your knowledge and identify areas for improvement.",
   },
   {
-    icon: <MedalIcon type="duotone" className="h-6 w-6 text-red-500" />,
+    icon: <MedalIcon weight="duotone" className="h-6 w-6 text-red-500" />,
     title: "Topper Notes",
     description:
       "Access handwritten notes from top-performing students to understand winning strategies.",
   },
   {
     icon: (
-      <ChatCenteredDotsIcon type="duotone" className="h-6 w-6 text-cyan-500" />
+      <ChatCenteredDotsIcon
+        weight="duotone"
+        className="h-6 w-6 text-cyan-500"
+      />
     ),
     title: "AI Study Assistant",
     description:

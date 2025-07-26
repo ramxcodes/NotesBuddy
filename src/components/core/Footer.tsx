@@ -30,7 +30,7 @@ export default function Footer() {
   return (
     <footer className="mt-10 mb-5 flex w-full flex-col items-center justify-center gap-6">
       <Separator className="w-full max-w-6xl" />
-      <div className="container flex flex-wrap items-center justify-center max-w-4xl flex-row gap-4">
+      <div className="container flex max-w-4xl flex-row flex-wrap items-center justify-center gap-4">
         {footerItems.map((item) => (
           <Link
             href={item.href}
@@ -44,7 +44,7 @@ export default function Footer() {
       <div className="text-muted-foreground text-sm">
         © 2024 Notes Buddy. All rights reserved.
       </div>
-      <div className="font-excon text-9xl font-black tracking-tighter text-nowrap opacity-15">
+      <div className="font-excon text-xl font-black tracking-tighter text-nowrap opacity-15 md:text-5xl lg:text-9xl">
         Notes Buddy
       </div>
       <div className="group flex items-center gap-2">

@@ -39,7 +39,7 @@ export function SignInButton() {
               variant="outline"
               className="mt-4 flex w-full items-center justify-center gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
             >
-              <GoogleLogoIcon type="duotone" className="h-5 w-5" />
+              <GoogleLogoIcon weight="duotone" className="h-5 w-5" />
               Sign in with Google
             </Button>
           </DialogDescription>

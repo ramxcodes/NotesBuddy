@@ -125,19 +125,21 @@ function FeatureCard({
 export default function About() {
   const features = [
     {
-      icon: <CheckCircleIcon type="duotone" className="text-primary h-6 w-6" />,
+      icon: (
+        <CheckCircleIcon weight="duotone" className="text-primary h-6 w-6" />
+      ),
       title: "Clarity Over Complexity",
       description:
         "Simplifies concepts for deeper and better understanding. We break down complex topics into digestible chunks.",
     },
     {
-      icon: <BrainIcon type="duotone" className="text-primary h-6 w-6" />,
+      icon: <BrainIcon weight="duotone" className="text-primary h-6 w-6" />,
       title: "Answers at Your Fingertips",
       description:
         "Our AI answers your questions instantly, helping you learn faster. Get immediate support whenever you need clarification.",
     },
     {
-      icon: <LightningIcon type="duotone" className="text-primary h-6 w-6" />,
+      icon: <LightningIcon weight="duotone" className="text-primary h-6 w-6" />,
       title: "Fast and Efficient Learning",
       description:
         "Accelerates learning with quick, focused resources. Study smarter with optimized content and streamlined processes.",

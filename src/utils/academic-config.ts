@@ -553,3 +553,16 @@ export const normalizedTierValues = () => {
     TIER_3: "TIER 3",
   };
 };
+
+export const getTierDisplayName = (tier: string): string => {
+  switch (tier) {
+    case "TIER_1":
+      return "TIER 1";
+    case "TIER_2":
+      return "TIER 2";
+    case "TIER_3":
+      return "TIER 3";
+    default:
+      return "Unknown Tier";
+  }
+};

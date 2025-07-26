@@ -10,6 +10,7 @@ import {
 } from "@phosphor-icons/react";
 import { UserPremiumStatus, getTierConfig } from "@/dal/premium/types";
 import { Link } from "next-view-transitions";
+import { getTierDisplayName } from "@/utils/academic-config";
 
 interface PremiumStatusProps {
   premiumStatus: UserPremiumStatus;
@@ -90,7 +91,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h3 className="font-excon text-lg font-black text-black dark:text-white">
-                {tierConfig.title}
+                {tierConfig.title} | {getTierDisplayName(tierConfig.tier)} 
               </h3>
               <p className="font-satoshi font-bold text-black dark:text-white">
                 {tierConfig.description}

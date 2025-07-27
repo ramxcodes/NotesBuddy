@@ -6,11 +6,15 @@ import {
   getUserOnboardingStatus,
   getUserFullProfile,
 } from "@/dal/user/onboarding/query";
-import { getUserPremiumStatus } from "@/dal/premium/query";
+import {
+  getUserPremiumStatus,
+  getUserUpgradeContext,
+} from "@/dal/premium/query";
 import { getUserWalletBalance } from "@/dal/user/wallet";
 import { PremiumPurchaseFlowController } from "@/components/premium/PremiumPurchaseFlowController";
 import { PremiumHeader } from "@/components/premium/PremiumHeader";
 import { PremiumPurchasedUserDisplayMessage } from "@/components/premium/PremiumPurchasedUserDisplayMessage";
+import { PremiumUpgradeWrapper } from "@/components/premium/PremiumUpgradeWrapper";
 import { Link } from "next-view-transitions";
 import ShieldCheckIcon from "@/components/icons/ShieldCheckIcon";
 
@@ -63,9 +67,10 @@ export default async function PremiumPage() {
     );
   }
 
-  const [userProfile, premiumStatus] = await Promise.all([
+  const [userProfile, premiumStatus, upgradeContext] = await Promise.all([
     getUserFullProfile(session.user.id),
     getUserPremiumStatus(session.user.id),
+    getUserUpgradeContext(session.user.id),
     getUserWalletBalance(session.user.id),
   ]);
 
@@ -75,12 +80,17 @@ export default async function PremiumPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
         {/* Header */}
         <PremiumHeader isActive={premiumStatus.isActive} />
 
         {/* Premium Status (if active) */}
         <PremiumPurchasedUserDisplayMessage premiumStatus={premiumStatus} />
+
+        {/* Show upgrade options if user has active premium */}
+        {premiumStatus.isActive && upgradeContext && (
+          <PremiumUpgradeWrapper upgradeContext={upgradeContext} />
+        )}
 
         {!premiumStatus.isActive && (
           <PremiumPurchaseFlowController

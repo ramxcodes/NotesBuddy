@@ -33,6 +33,8 @@ interface PremiumPurchase {
   failureReason?: string | null;
   discountCode?: string | null;
   referralCode?: string | null;
+  isUpgrade?: boolean;
+  upgradedFromTier?: "TIER_1" | "TIER_2" | "TIER_3" | null;
 }
 
 interface PremiumHistoryProps {
@@ -164,9 +166,20 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                   >
                     <TableCell>
                       <div>
-                        <p className="font-satoshi font-black text-black dark:text-white">
-                          {tierConfig.title}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-satoshi font-black text-black dark:text-white">
+                            {tierConfig.title}
+                          </p>
+                          {purchase.isUpgrade && purchase.upgradedFromTier && (
+                            <Badge
+                              variant="outline"
+                              className="border-2 border-green-500 bg-green-50 font-bold text-green-800 shadow-[1px_1px_0px_0px_#22c55e] dark:border-green-400 dark:bg-green-900/20 dark:text-green-300 dark:shadow-[1px_1px_0px_0px_#4ade80]"
+                            >
+                              ↗ Upgraded from{" "}
+                              {getTierConfig(purchase.upgradedFromTier).title}
+                            </Badge>
+                          )}
+                        </div>
                         <p className="font-satoshi font-bold text-black dark:text-white">
                           {tierConfig.description}
                         </p>
@@ -253,7 +266,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
           <h4 className="font-excon mb-2 font-black text-black dark:text-white">
             Summary
           </h4>
-          <div className="font-satoshi grid grid-cols-2 gap-4 text-sm md:grid-cols-3">
+          <div className="font-satoshi grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
             <div>
               <p className="font-bold text-black dark:text-white">
                 Total Purchases
@@ -268,6 +281,18 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
               </p>
               <p className="font-black text-black dark:text-white">
                 {purchases.filter((p) => p.paymentStatus === "CAPTURED").length}
+              </p>
+            </div>
+            <div>
+              <p className="font-bold text-black dark:text-white">
+                Plan Upgrades
+              </p>
+              <p className="font-black text-black dark:text-white">
+                {
+                  purchases.filter(
+                    (p) => p.isUpgrade && p.paymentStatus === "CAPTURED",
+                  ).length
+                }
               </p>
             </div>
             <div>

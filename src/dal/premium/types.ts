@@ -167,3 +167,75 @@ export const calculateDaysRemaining = (expiryDate: Date | string): number => {
   const diffTime = expiry.getTime() - now.getTime();
   return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 };
+
+// Upgrade-related types and functions
+export interface UpgradeOption {
+  tier: PremiumTier;
+  title: string;
+  description: string;
+  features: string[];
+  price: number;
+  duration: number;
+  upgradePrice?: number; // Price after considering current plan credit
+  isUpgrade: boolean;
+  currentTier?: PremiumTier;
+}
+
+export interface UpgradeContext {
+  currentTier: PremiumTier;
+  university: string;
+  degree: string;
+  year: string;
+  semester: string;
+  expiryDate: Date;
+  daysRemaining: number;
+}
+
+// Get available upgrade options for a user
+export const getUpgradeOptions = (
+  currentTier: PremiumTier,
+): UpgradeOption[] => {
+  const allTiers = getAllTierConfigs();
+
+  // Only allow upgrades to higher tiers
+  const upgradeableTiers = allTiers.filter((tier) => {
+    if (currentTier === "TIER_1")
+      return tier.tier === "TIER_2" || tier.tier === "TIER_3";
+    if (currentTier === "TIER_2") return tier.tier === "TIER_3";
+    return false; // TIER_3 cannot upgrade
+  });
+
+  return upgradeableTiers.map((tier) => ({
+    ...tier,
+    isUpgrade: true,
+    currentTier,
+  }));
+};
+
+// Calculate upgrade price considering remaining days
+export const calculateUpgradePrice = (
+  currentTier: PremiumTier,
+  targetTier: PremiumTier,
+  daysRemaining: number,
+): number => {
+  const currentConfig = getTierConfig(currentTier);
+  const targetConfig = getTierConfig(targetTier);
+
+  // Calculate prorated credit from current plan
+  const dailyRate = currentConfig.price / currentConfig.duration;
+  const remainingCredit = dailyRate * daysRemaining;
+
+  // Calculate upgrade price (target price minus remaining credit)
+  const upgradePrice = Math.max(0, targetConfig.price - remainingCredit);
+
+  return Math.round(upgradePrice);
+};
+
+// Check if a tier is an upgrade from current tier
+export const isUpgradeTier = (
+  currentTier: PremiumTier,
+  targetTier: PremiumTier,
+): boolean => {
+  const tierHierarchy = { TIER_1: 1, TIER_2: 2, TIER_3: 3 };
+  return tierHierarchy[targetTier] > tierHierarchy[currentTier];
+};

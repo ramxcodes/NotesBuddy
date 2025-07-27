@@ -6,7 +6,7 @@ import {
 import { getUserDevices } from "@/dal/user/device/query";
 import {
   getUserPremiumStatus,
-  getUserPurchaseHistory,
+  getUserPremiumPurchaseHistory,
 } from "@/dal/premium/query";
 import { getUserReferralStatus } from "@/dal/referral/query";
 import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
@@ -46,7 +46,7 @@ export default async function Profile() {
     getUserFullProfile(session.user.id),
     getUserDevices(session.user.id),
     getUserPremiumStatus(session.user.id),
-    getUserPurchaseHistory(session.user.id),
+    getUserPremiumPurchaseHistory(session.user.id),
     getUserReferralStatus(session.user.id).catch((error) => {
       console.error("Failed to load referral status:", error);
       // Return a default referral status
@@ -111,7 +111,7 @@ export default async function Profile() {
                 }}
                 purchases={purchases.map((purchase) => ({
                   id: purchase.id,
-                  tier: purchase.tier,
+                  tier: purchase.tier as "TIER_1" | "TIER_2" | "TIER_3",
                   originalAmount: Number(purchase.originalAmount),
                   finalAmount: Number(purchase.finalAmount),
                   discountAmount: Number(purchase.discountAmount),
@@ -126,6 +126,8 @@ export default async function Profile() {
                   failureReason: purchase.failureReason,
                   discountCode: purchase.discountCode,
                   referralCode: purchase.referralCode,
+                  isUpgrade: purchase.isUpgrade,
+                  upgradedFromTier: purchase.upgradedFromTier,
                 }))}
                 devices={devices.map((device): Device => {
                   const fingerprint = device.fingerprint as Record<

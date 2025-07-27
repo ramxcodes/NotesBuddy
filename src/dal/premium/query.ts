@@ -728,3 +728,175 @@ export async function canUserAccessContent(
 
   return accessStatus.canAccess;
 }
+
+// Get user's current premium purchase details for upgrade context
+export async function getUserUpgradeContext(userId: string) {
+  const currentPurchase = await prisma.premiumPurchase.findFirst({
+    where: {
+      userId,
+      isActive: true,
+      paymentStatus: "CAPTURED",
+      expiryDate: { gt: new Date() },
+    },
+    orderBy: { createdAt: "desc" },
+    select: {
+      tier: true,
+      university: true,
+      degree: true,
+      year: true,
+      semester: true,
+      expiryDate: true,
+    },
+  });
+
+  if (!currentPurchase) {
+    return null;
+  }
+
+  const daysRemaining = calculateDaysRemaining(currentPurchase.expiryDate);
+
+  return {
+    currentTier: currentPurchase.tier,
+    university: currentPurchase.university,
+    degree: currentPurchase.degree,
+    year: currentPurchase.year,
+    semester: currentPurchase.semester,
+    expiryDate: currentPurchase.expiryDate,
+    daysRemaining,
+  };
+}
+
+// Get user's premium purchase history with upgrade context
+export const getUserPremiumPurchaseHistory = unstable_cache(
+  async (userId: string) => {
+    const purchases = await prisma.premiumPurchase.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        tier: true,
+        originalAmount: true,
+        finalAmount: true,
+        discountAmount: true,
+        currency: true,
+        paymentStatus: true,
+        isActive: true,
+        createdAt: true,
+        expiryDate: true,
+        razorpayOrderId: true,
+        razorpayPaymentId: true,
+        paymentMethod: true,
+        failureReason: true,
+        discountCode: true,
+        referralCode: true,
+        university: true,
+        degree: true,
+        year: true,
+        semester: true,
+      },
+    });
+
+    // Add upgrade context to each purchase
+    return purchases.map((purchase, index) => {
+      const previousPurchase = purchases[index + 1]; // Next in array (previous chronologically)
+      const isUpgrade =
+        previousPurchase &&
+        previousPurchase.paymentStatus === "CAPTURED" &&
+        isUpgradeTier(previousPurchase.tier, purchase.tier) &&
+        previousPurchase.university === purchase.university &&
+        previousPurchase.degree === purchase.degree &&
+        previousPurchase.year === purchase.year &&
+        previousPurchase.semester === purchase.semester;
+
+      return {
+        ...purchase,
+        isUpgrade,
+        upgradedFromTier: isUpgrade ? previousPurchase.tier : null,
+      };
+    });
+  },
+  [
+    premiumCacheConfig.getUserPurchaseHistory?.cacheKey ||
+      "user-premium-history",
+  ],
+  getCacheOptions(
+    premiumCacheConfig.getUserPurchaseHistory || {
+      duration: 300,
+      tags: ["premium-history"],
+    },
+  ),
+);
+
+// Calculate upgrade price with prorated credit
+export async function calculateUpgradePricing(
+  userId: string,
+  targetTier: PremiumTier,
+  discountCode?: string,
+  useWalletBalance?: boolean,
+  walletAmount?: number,
+): Promise<
+  PriceCalculation & {
+    upgradeDetails?: {
+      currentTier: PremiumTier;
+      targetTier: PremiumTier;
+      daysRemaining: number;
+      creditApplied: number;
+    };
+  }
+> {
+  const upgradeContext = await getUserUpgradeContext(userId);
+
+  if (!upgradeContext) {
+    // Not an upgrade, use regular pricing
+    return calculatePurchasePrice(
+      userId,
+      targetTier,
+      discountCode,
+      undefined,
+      useWalletBalance,
+      walletAmount,
+    );
+  }
+
+  const { currentTier, daysRemaining } = upgradeContext;
+
+  // Validate this is actually an upgrade
+  if (!isUpgradeTier(currentTier, targetTier)) {
+    throw new Error(`Cannot upgrade from ${currentTier} to ${targetTier}`);
+  }
+
+  // Calculate base upgrade price
+  const upgradePrice = calculateUpgradePrice(
+    currentTier,
+    targetTier,
+    daysRemaining,
+  );
+
+  // Now apply regular discount logic to the upgrade price
+  const pricing = await calculatePurchasePrice(
+    userId,
+    targetTier,
+    discountCode,
+    undefined,
+    useWalletBalance,
+    walletAmount,
+  );
+
+  // Override the original amount with upgrade price
+  const finalAmount = Math.max(0, upgradePrice - pricing.totalDiscount);
+
+  return {
+    ...pricing,
+    originalAmount: upgradePrice,
+    finalAmount,
+    upgradeDetails: {
+      currentTier,
+      targetTier,
+      daysRemaining,
+      creditApplied: getTierConfig(targetTier).price - upgradePrice,
+    },
+  };
+}
+
+// Import the functions we need from types
+import { calculateUpgradePrice, isUpgradeTier } from "./types";

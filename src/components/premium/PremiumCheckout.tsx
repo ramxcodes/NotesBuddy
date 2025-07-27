@@ -16,6 +16,7 @@ interface PremiumCheckoutProps {
   isProcessing: boolean;
   currentPremiumStatus: UserPremiumStatus;
   onInitiatePayment: () => void;
+  isUpgrade?: boolean;
 }
 
 export function PremiumCheckout({
@@ -23,15 +24,18 @@ export function PremiumCheckout({
   isProcessing,
   currentPremiumStatus,
   onInitiatePayment,
+  isUpgrade = false,
 }: PremiumCheckoutProps) {
   return (
     <motion.div className="text-center">
       <Button
         size="lg"
-        className="group rounded-xl border-2 border-black bg-white px-8 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-300 hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]"
+        className="group rounded-xl border-2 border-black bg-white px-8 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-300 hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] hover:text-white"
         onClick={onInitiatePayment}
         disabled={
-          !priceCalculation || isProcessing || currentPremiumStatus.isActive
+          !priceCalculation ||
+          isProcessing ||
+          (currentPremiumStatus.isActive && !isUpgrade)
         }
       >
         <div className="relative z-10 flex items-center gap-3">
@@ -40,7 +44,7 @@ export function PremiumCheckout({
               <SpinnerIcon className="h-5 w-5 animate-spin" />
               <span className="font-excon">Processing Payment...</span>
             </>
-          ) : currentPremiumStatus.isActive ? (
+          ) : currentPremiumStatus.isActive && !isUpgrade ? (
             <>
               <ShieldCheckIcon className="h-5 w-5" />
               <span className="font-excon">Premium Already Active</span>
@@ -49,7 +53,9 @@ export function PremiumCheckout({
             <>
               <CreditCardIcon className="h-5 w-5" />
               <span className="font-excon">
-                Pay ₹{priceCalculation?.finalAmount || 0} & Upgrade Now
+                {isUpgrade
+                  ? `Pay ₹${priceCalculation?.finalAmount || 0} & Upgrade Now`
+                  : `Pay ₹${priceCalculation?.finalAmount || 0} & Get Premium`}
               </span>
             </>
           )}

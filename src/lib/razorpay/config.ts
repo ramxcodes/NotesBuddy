@@ -9,17 +9,33 @@ export const razorpayConfig = {
   timeout: 10 * 60 * 1000, // 10 minutes
 };
 
-if (!razorpayConfig.keyId || !razorpayConfig.keySecret) {
-  throw new Error(
-    "Razorpay configuration is missing. Please check environment variables.",
+if (
+  !razorpayConfig.keyId ||
+  !razorpayConfig.keySecret ||
+  razorpayConfig.keyId.trim() === "" ||
+  razorpayConfig.keySecret.trim() === ""
+) {
+  console.warn(
+    "Razorpay configuration is missing. Please check environment variables. Some features may not work properly.",
   );
 }
 
 // Initialize Razorpay instance (server-side only)
-export const razorpayInstance = new Razorpay({
-  key_id: razorpayConfig.keyId,
-  key_secret: razorpayConfig.keySecret,
-});
+export const razorpayInstance = (() => {
+  if (
+    !razorpayConfig.keyId ||
+    !razorpayConfig.keySecret ||
+    razorpayConfig.keyId.trim() === "" ||
+    razorpayConfig.keySecret.trim() === ""
+  ) {
+    return null; // Return null if credentials are missing
+  }
+
+  return new Razorpay({
+    key_id: razorpayConfig.keyId,
+    key_secret: razorpayConfig.keySecret,
+  });
+})();
 
 // Types for Razorpay API responses
 export interface RazorpayOrder {
@@ -82,6 +98,21 @@ export async function createRazorpayOrder(
   options: CreateOrderOptions,
 ): Promise<RazorpayOrder> {
   try {
+    if (!razorpayInstance) {
+      throw new Error(
+        "Razorpay is not configured. Please check environment variables.",
+      );
+    }
+
+    // Validate required parameters
+    if (!options.amount || options.amount <= 0) {
+      throw new Error(`Invalid order amount: ${options.amount}`);
+    }
+
+    if (!options.receipt || options.receipt.trim() === "") {
+      throw new Error("Receipt ID is required");
+    }
+
     const order = await razorpayInstance.orders.create({
       amount: options.amount,
       currency: options.currency || razorpayConfig.currency,
@@ -93,9 +124,15 @@ export async function createRazorpayOrder(
     return order as RazorpayOrder;
   } catch (error: unknown) {
     console.error("Razorpay order creation failed:", error);
-    throw new Error(
-      `Failed to create Razorpay order: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
+
+    // Preserve the original error for better debugging
+    if (error instanceof Error) {
+      throw error;
+    } else {
+      throw new Error(
+        `Failed to create Razorpay order: ${JSON.stringify(error)}`,
+      );
+    }
   }
 }
 
@@ -104,6 +141,12 @@ export async function fetchRazorpayOrder(
   orderId: string,
 ): Promise<RazorpayOrder> {
   try {
+    if (!razorpayInstance) {
+      throw new Error(
+        "Razorpay is not configured. Please check environment variables.",
+      );
+    }
+
     const order = await razorpayInstance.orders.fetch(orderId);
     return order as RazorpayOrder;
   } catch (error: unknown) {
@@ -119,6 +162,12 @@ export async function fetchRazorpayPayment(
   paymentId: string,
 ): Promise<RazorpayPayment> {
   try {
+    if (!razorpayInstance) {
+      throw new Error(
+        "Razorpay is not configured. Please check environment variables.",
+      );
+    }
+
     const payment = await razorpayInstance.payments.fetch(paymentId);
     return payment as unknown as RazorpayPayment;
   } catch (error: unknown) {
@@ -168,11 +217,29 @@ export function verifyWebhookSignature(
   }
 }
 
-// Generate unique receipt ID
+// Generate unique receipt ID (max 40 characters for Razorpay)
 export function generateReceiptId(userId: string, tier: string): string {
-  const timestamp = Date.now();
-  const random = Math.random().toString(36).substring(2, 8);
-  return `${tier}_${userId.substring(0, 8)}_${timestamp}_${random}`;
+  const timestamp = Date.now().toString(36); // Base36 is more compact
+  const random = Math.random().toString(36).substring(2, 6); // 4 chars
+  const userIdShort = userId.substring(0, 8); // 8 chars
+
+  // Simplify tier names to be shorter
+  const tierMap: Record<string, string> = {
+    TIER_1: "T1",
+    TIER_2: "T2",
+    TIER_3: "T3",
+    upgrade_TIER_1: "UP1",
+    upgrade_TIER_2: "UP2",
+    upgrade_TIER_3: "UP3",
+  };
+
+  const tierShort = tierMap[tier] || tier.substring(0, 4);
+
+  // Format: tierShort_userIdShort_timestamp_random
+  const receiptId = `${tierShort}_${userIdShort}_${timestamp}_${random}`;
+
+  // Ensure it's under 40 characters (should be around 20-25 chars)
+  return receiptId.length > 40 ? receiptId.substring(0, 40) : receiptId;
 }
 
 // Convert amount to smallest currency unit (paise for INR)

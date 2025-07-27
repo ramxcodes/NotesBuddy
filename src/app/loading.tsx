@@ -6,7 +6,7 @@ export default function GlobalLoader() {
   const text = "NotesBuddy";
   return (
     <div className="flex min-h-screen min-w-full items-center justify-center">
-      <div className="font-sans font-bold [--shadow-color:var(--color-neutral-500)] dark:[--shadow-color:var(--color-neutral-100)]">
+      <div className="font-sans font-bold text-2xl [--shadow-color:var(--color-neutral-500)] dark:[--shadow-color:var(--color-neutral-100)]">
         {text.split("").map((char, i) => (
           <motion.span
             key={i}

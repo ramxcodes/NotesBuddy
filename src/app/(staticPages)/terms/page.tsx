@@ -19,7 +19,7 @@ export default function TermsPage() {
         Last updated: Jan 18, 2025
       </p>
       <div className="flex w-full max-w-2xl flex-col gap-8">
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-2xl font-bold">
             Welcome to Notes Buddy
           </h2>
@@ -30,7 +30,7 @@ export default function TermsPage() {
             the terms and conditions, please refrain from using our services.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">User Accounts</h2>
           <p className="font-satoshi text-base">
             To access certain features, you may need to create an account. You
@@ -39,7 +39,7 @@ export default function TermsPage() {
             is not liable for unauthorized account usage.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Content Ownership
           </h2>
@@ -50,7 +50,7 @@ export default function TermsPage() {
             and share your content with other users.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Prohibited Activities
           </h2>
@@ -60,7 +60,7 @@ export default function TermsPage() {
             <li>Using the platform for illegal or unethical purposes.</li>
           </ul>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Payments and Subscriptions
           </h2>
@@ -70,7 +70,7 @@ export default function TermsPage() {
             charges are non-refundable, except as required by applicable law.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Limitation of Liability
           </h2>
@@ -80,7 +80,7 @@ export default function TermsPage() {
             risk.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Termination of Use
           </h2>
@@ -90,7 +90,7 @@ export default function TermsPage() {
             platform ceases immediately.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">Governing Law</h2>
           <p className="font-satoshi text-base">
             These terms are governed by the laws of India. Any disputes will be

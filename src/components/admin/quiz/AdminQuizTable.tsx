@@ -51,7 +51,7 @@ export default function AdminQuizTable({
     <div className="neuro rounded-xl">
       <Table>
         <TableHeader>
-          <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white dark:hover:bg-zinc-700">
+          <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700">
             <TableHead className="font-excon font-black text-black dark:text-white">
               Quiz Details
             </TableHead>
@@ -84,7 +84,7 @@ export default function AdminQuizTable({
             return (
               <tr
                 key={quiz.id}
-                className="border-b border-black/20 hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700"
+                className="dark:border-white/20/20 border-b border-black/20 hover:bg-zinc-50 dark:hover:bg-zinc-700"
               >
                 {/* Quiz Details */}
                 <TableCell className="font-medium">

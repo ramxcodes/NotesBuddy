@@ -53,16 +53,14 @@ export default async function PremiumUpgradePage() {
   if (!premiumStatus.isActive) {
     return (
       <div className="min-h-screen">
-        <div className="container mx-auto px-4 py-8 max-w-5xl">
+        <div className="container mx-auto max-w-5xl px-4 py-8">
           <PremiumHeader isActive={false} />
 
           <div className="flex min-h-[50vh] items-center justify-center">
-            <Card className="w-full max-w-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+            <Card className="w-full max-w-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
               <CardHeader>
                 <CardTitle className="font-excon flex items-center gap-2 text-xl font-black text-black dark:text-white">
-                  <XCircleIcon
-                    className="h-6 w-6 text-red-500"
-                  />
+                  <XCircleIcon className="h-6 w-6 text-red-500" />
                   No Active Premium Plan
                 </CardTitle>
               </CardHeader>
@@ -72,7 +70,7 @@ export default async function PremiumUpgradePage() {
                   purchase a plan first.
                 </p>
                 <Link href="/premium">
-                  <button className="font-excon w-full rounded-md border-2 border-black bg-white px-6 py-3 text-lg font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]">
+                  <button className="font-excon w-full rounded-md border-2 border-black bg-white px-6 py-3 text-lg font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]">
                     Buy Premium Plan
                   </button>
                 </Link>
@@ -91,7 +89,7 @@ export default async function PremiumUpgradePage() {
 
   return (
     <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className="container mx-auto max-w-5xl px-4 py-8">
         {/* Header */}
         <PremiumHeader isActive={premiumStatus.isActive} />
 

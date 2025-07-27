@@ -108,7 +108,7 @@ export default function AdminFlashcardFilterAndSearch({
         </div>
 
         <Select value={sort} onValueChange={setSort}>
-          <SelectTrigger className="w-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:w-[180px] dark:border-white dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+          <SelectTrigger className="w-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:w-[180px] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent>
@@ -122,7 +122,7 @@ export default function AdminFlashcardFilterAndSearch({
         </Select>
 
         <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="w-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:w-[140px] dark:border-white dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+          <SelectTrigger className="w-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] sm:w-[140px] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
             <SelectValue placeholder="Filter" />
           </SelectTrigger>
           <SelectContent>

@@ -7,7 +7,7 @@ export default function QuizListSkeleton() {
       </div>
 
       {/* Filter Skeleton */}
-      <div className="my-6 rounded-xl border-4 border-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:border-white dark:shadow-[8px_8px_0px_0px_#757373]">
+      <div className="my-6 rounded-xl border-4 border-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#757373]">
         <div className="flex flex-wrap items-end justify-center gap-4">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="flex flex-col gap-2">
@@ -40,7 +40,7 @@ export default function QuizListSkeleton() {
             </div>
 
             {/* Stats Skeleton */}
-            <div className="mb-4 rounded-lg border-2 border-black/10 bg-black/5 p-3 dark:border-white/10 dark:bg-white/5">
+            <div className="dark:border-white/20/10 mb-4 rounded-lg border-2 border-black/10 bg-black/5 p-3 dark:bg-white/5">
               <div className="flex gap-4">
                 {[...Array(3)].map((_, j) => (
                   <div

@@ -27,7 +27,7 @@ export default function QuizAttemptHeader({
       </div>
 
       {timeRemaining && (
-        <div className="flex items-center gap-2 rounded-lg border-2 border-black bg-zinc-100 px-3 py-2 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
+        <div className="flex items-center gap-2 rounded-lg border-2 border-black bg-zinc-100 px-3 py-2 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
           <ClockIcon className="h-5 w-5 text-red-500" />
           <span
             className={`font-mono text-lg font-bold ${

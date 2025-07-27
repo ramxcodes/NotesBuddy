@@ -8,6 +8,7 @@ import {
   getUserFullProfile,
 } from "@/dal/user/onboarding/query";
 import { NotesInfiniteList } from "@/components/note/NotesInfiniteList";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Notes",
@@ -79,8 +80,16 @@ export default async function NotesPage({
 
   return (
     <div className="font-satoshi container mx-auto min-h-screen max-w-6xl">
-      <div className="mx-4">
-        <div className="mx-auto mt-6 flex max-w-6xl flex-col items-center justify-center gap-4 space-y-6 px-4 py-5 sm:mt-8 sm:space-y-8 sm:px-6 lg:mt-10 lg:space-y-10 lg:px-8">
+      <div className="relative mx-4">
+        <Image
+          src="/doodles/idea.svg"
+          alt="Hero"
+          width={50}
+          height={50}
+          className="absolute -top-20 left-0 size-28 md:top-20"
+        />
+
+        <div className="relative mx-auto mt-6 flex max-w-6xl flex-col items-center justify-center gap-4 space-y-6 px-4 py-5 sm:mt-8 sm:space-y-8 sm:px-6 lg:mt-10 lg:space-y-10 lg:px-8">
           <div className="flex flex-col items-center justify-center gap-3 text-center sm:gap-4">
             <h1 className="text-3xl font-bold sm:text-4xl lg:text-5xl">
               Welcome to Notes Buddy!
@@ -88,6 +97,13 @@ export default async function NotesPage({
             <p className="text-muted-foreground max-w-2xl text-base sm:text-lg">
               Find your notes by searching or filtering.
             </p>
+            <Image
+              src="/doodles/rular.svg"
+              alt="Hero"
+              width={50}
+              height={50}
+              className="absolute right-0 hidden md:block size-28"
+            />
           </div>
 
           {/* Search Component */}

@@ -124,7 +124,7 @@ export default function AdminUserTable() {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           variant="outline"
-          className="rounded-xl border-2 border-black bg-zinc-100 shadow-[2px_2px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+          className="rounded-xl border-2 border-black bg-zinc-100 shadow-[2px_2px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           Previous
         </Button>
@@ -134,7 +134,7 @@ export default function AdminUserTable() {
             key={page}
             onClick={() => handlePageChange(page)}
             variant={page === currentPage ? "default" : "outline"}
-            className={`rounded-xl border-2 border-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#757373] ${
+            className={`rounded-xl border-2 border-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] ${
               page === currentPage
                 ? "bg-black text-white dark:bg-white dark:text-black"
                 : "bg-zinc-100 dark:bg-zinc-900 dark:text-white"
@@ -148,7 +148,7 @@ export default function AdminUserTable() {
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === usersData.totalPages}
           variant="outline"
-          className="rounded-xl border-2 border-black bg-zinc-100 shadow-[2px_2px_0px_0px_#000] disabled:opacity-50 dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+          className="rounded-xl border-2 border-black bg-zinc-100 shadow-[2px_2px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           Next
         </Button>
@@ -171,7 +171,7 @@ export default function AdminUserTable() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, email, or phone..."
-            className="flex-1 rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]"
+            className="flex-1 rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]"
           />
         </div>
 
@@ -181,10 +181,10 @@ export default function AdminUserTable() {
             value={sort}
             onValueChange={(value: SortOption) => handleSortChange(value)}
           >
-            <SelectTrigger className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem value="A_TO_Z" className="rounded-lg">
                 A - Z
               </SelectItem>
@@ -204,10 +204,10 @@ export default function AdminUserTable() {
             value={filter}
             onValueChange={(value: FilterOption) => handleFilterChange(value)}
           >
-            <SelectTrigger className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue placeholder="Filter by..." />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem value="ALL" className="rounded-lg">
                 All Users
               </SelectItem>
@@ -233,10 +233,10 @@ export default function AdminUserTable() {
 
       {/* Table */}
       {!loading && usersData && (
-        <div className="rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+        <div className="rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
           <Table>
             <TableHeader>
-              <TableRow className="border-b-2 border-black dark:border-white">
+              <TableRow className="border-b-2 border-black dark:border-white/20">
                 <TableHead className="p-3 text-left font-black">No.</TableHead>
                 <TableHead className="p-3 text-left font-black">
                   Profile
@@ -273,7 +273,7 @@ export default function AdminUserTable() {
                       alt={user.name}
                       width={40}
                       height={40}
-                      className="rounded-xl border-2 border-black dark:border-white"
+                      className="rounded-xl border-2 border-black dark:border-white/20"
                     />
                   </TableCell>
                   <TableCell className="p-3">
@@ -324,14 +324,14 @@ export default function AdminUserTable() {
                   </TableCell>
                   <TableCell className="p-3">
                     <div className="flex items-center justify-center">
-                      <span className="rounded-lg border-2 border-black px-2 py-1 text-sm font-bold text-blue-800 dark:border-white dark:text-blue-200">
+                      <span className="rounded-lg border-2 border-black px-2 py-1 text-sm font-bold text-blue-800 dark:border-white/20 dark:text-blue-200">
                         {user.deviceCount}
                       </span>
                     </div>
                   </TableCell>
                   <TableCell className="p-3">
                     <span
-                      className={`rounded-lg border-2 border-black px-2 py-1 text-xs font-bold dark:border-white ${
+                      className={`rounded-lg border-2 border-black px-2 py-1 text-xs font-bold dark:border-white/20 ${
                         user.isPremiumActive
                           ? "bg-green-200 dark:bg-green-800"
                           : "bg-gray-200 dark:bg-gray-800"
@@ -345,7 +345,7 @@ export default function AdminUserTable() {
                       onClick={() => handleBlockUser(user.id)}
                       variant="outline"
                       size="sm"
-                      className={`rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#757373] ${
+                      className={`rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] ${
                         user.isBlocked
                           ? "bg-green-500 dark:bg-green-800"
                           : "bg-red-500 dark:bg-red-800"

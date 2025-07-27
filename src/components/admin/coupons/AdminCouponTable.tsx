@@ -37,10 +37,10 @@ export default function AdminCouponTable({
   onViewUsage,
 }: AdminCouponTableProps) {
   return (
-    <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
       <Table>
         <TableHeader>
-          <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white dark:hover:bg-zinc-700">
+          <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700">
             <TableHead className="font-excon font-black text-black dark:text-white">
               Code
             </TableHead>
@@ -74,7 +74,7 @@ export default function AdminCouponTable({
             return (
               <tr
                 key={coupon.id}
-                className="border-b border-black/20 hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700"
+                className="dark:border-white/20/20 border-b border-black/20 hover:bg-zinc-50 dark:hover:bg-zinc-700"
               >
                 <TableCell className="font-medium">
                   <div className="space-y-1">
@@ -140,13 +140,13 @@ export default function AdminCouponTable({
                     {coupon.applicableTiers.slice(0, 2).map((tier) => (
                       <Badge
                         key={tier}
-                        className="border border-black/20 bg-zinc-100 text-xs font-bold text-black dark:border-white/20 dark:bg-zinc-700 dark:text-white"
+                        className="dark:border-white/20/20 border border-black/20 bg-zinc-100 text-xs font-bold text-black dark:bg-zinc-700 dark:text-white"
                       >
                         {tier.replace("TIER_", "T")}
                       </Badge>
                     ))}
                     {coupon.applicableTiers.length > 2 && (
-                      <Badge className="border border-black/20 bg-zinc-100 text-xs font-bold text-black dark:border-white/20 dark:bg-zinc-700 dark:text-white">
+                      <Badge className="dark:border-white/20/20 border border-black/20 bg-zinc-100 text-xs font-bold text-black dark:bg-zinc-700 dark:text-white">
                         +{coupon.applicableTiers.length - 2}
                       </Badge>
                     )}
@@ -158,7 +158,7 @@ export default function AdminCouponTable({
                       variant="outline"
                       size="sm"
                       onClick={() => onViewUsage(coupon.id)}
-                      className="font-satoshi h-8 w-8 rounded-lg border-2 border-black bg-white p-0 shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
+                      className="font-satoshi h-8 w-8 rounded-lg border-2 border-black bg-white p-0 shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
                     >
                       <EyeIcon className="h-3 w-3 text-black dark:text-white" />
                     </Button>
@@ -168,7 +168,7 @@ export default function AdminCouponTable({
                       size="sm"
                       onClick={() => onToggleStatus(coupon.id)}
                       disabled={isExpired}
-                      className="font-satoshi h-8 w-8 rounded-lg border-2 border-black bg-white p-0 shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
+                      className="font-satoshi h-8 w-8 rounded-lg border-2 border-black bg-white p-0 shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
                     >
                       {isActive ? (
                         <ToggleRightIcon className="h-4 w-4 text-green-600" />
@@ -181,7 +181,7 @@ export default function AdminCouponTable({
                       variant="outline"
                       size="sm"
                       onClick={() => onEditCoupon(coupon.id)}
-                      className="font-satoshi h-8 w-8 rounded-lg border-2 border-black bg-white p-0 shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
+                      className="font-satoshi h-8 w-8 rounded-lg border-2 border-black bg-white p-0 shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
                     >
                       <PencilSimpleLineIcon className="h-4 w-4 text-black dark:text-white" />
                     </Button>

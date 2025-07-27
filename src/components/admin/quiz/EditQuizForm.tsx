@@ -704,7 +704,7 @@ export default function EditQuizForm({ quizId }: EditQuizFormProps) {
             {questions.map((question, questionIndex) => (
               <div
                 key={questionIndex}
-                className="rounded-lg border-2 border-black/10 p-4 dark:border-white/10"
+                className="dark:border-white/20/10 rounded-lg border-2 border-black/10 p-4"
               >
                 <div className="mb-3 flex items-center justify-between">
                   <h3 className="font-satoshi font-bold text-black dark:text-white">

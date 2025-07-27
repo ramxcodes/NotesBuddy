@@ -52,10 +52,10 @@ export default function AdminFlashcardTable({
   };
 
   return (
-    <div className="overflow-hidden rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] dark:border-white">
+    <div className="overflow-hidden rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
       <Table>
         <TableHeader>
-          <TableRow className="border-b-2 border-black dark:border-white">
+          <TableRow className="border-b-2 border-black dark:border-white/20">
             <TableHead className="font-bold">Title</TableHead>
             <TableHead className="font-bold">Academic Info</TableHead>
             <TableHead className="font-bold">Cards</TableHead>
@@ -69,10 +69,7 @@ export default function AdminFlashcardTable({
         </TableHeader>
         <TableBody>
           {flashcardSets.map((set) => (
-            <TableRow
-              key={set.id}
-              className="border-b border-gray-200"
-            >
+            <TableRow key={set.id} className="border-b border-gray-200">
               <TableCell>
                 <div className="space-y-1">
                   <div className="font-semibold">{set.title}</div>

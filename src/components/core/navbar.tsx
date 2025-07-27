@@ -20,18 +20,7 @@ const navItems = [
     label: "Notes",
     href: "/notes",
   },
-  {
-    label: "Quiz",
-    href: "/quiz",
-  },
-  {
-    label: "Flashcards",
-    href: "/flashcards",
-  },
-  {
-    label: "AI Chat",
-    href: "/ai",
-  },
+
   {
     label: "Pricing",
     href: "/premium?tier=TIER_3",
@@ -46,7 +35,9 @@ export default async function NavBar() {
       <div className="flex items-center gap-30">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.png" alt="Notes Buddy" width={40} height={40} />
-          <h3 className="font-excon text-2xl font-bold">NotesBuddy</h3>
+          <h3 className="font-excon text-xl md:text-2xl font-bold">
+            NotesBuddy
+          </h3>
         </Link>
         <div className="mt-2 hidden items-center gap-4 md:flex">
           {navItems.map((items) => {
@@ -67,9 +58,10 @@ export default async function NavBar() {
           <Link href="/admin">
             <Button
               size="lg"
-              className="gap-2 border-2 border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:text-white hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              className="gap-2 border-2 border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:text-white hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
             >
-              <AdminIcon className="size-4" /> <span className="hidden md:block">Admin Panel</span> 
+              <AdminIcon className="size-4" />{" "}
+              <span className="hidden md:block">Admin Panel</span>
             </Button>
           </Link>
         )}
@@ -83,8 +75,7 @@ export default async function NavBar() {
             <TooltipTrigger>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="22"
-                height="22"
+                className="size-8"
                 viewBox="0 0 22 22"
               >
                 <g

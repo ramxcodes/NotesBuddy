@@ -125,7 +125,7 @@ export default function NotesFontControl() {
               key={font.name}
               variant={selectedFont.name === font.name ? "default" : "outline"}
               onClick={() => handleFontChange(font)}
-              className={`${font.class} h-12 border-2 border-black font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
+              className={`${font.class} h-12 border-2 border-black font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
                 selectedFont.name === font.name
                   ? "bg-black text-white dark:bg-white dark:text-black"
                   : "bg-white text-black dark:bg-zinc-900 dark:text-white"
@@ -149,7 +149,7 @@ export default function NotesFontControl() {
             onClick={decreaseFontSize}
             disabled={fontSize === minFontSize}
             title="Decrease font size"
-            className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:disabled:hover:shadow-[2px_2px_0px_0px_#757373]"
+            className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:disabled:hover:shadow-[2px_2px_0px_0px_#757373]"
           >
             <MinusCircleIcon size={20} weight="duotone" />
           </Button>
@@ -169,7 +169,7 @@ export default function NotesFontControl() {
             onClick={increaseFontSize}
             disabled={fontSize === maxFontSize}
             title="Increase font size"
-            className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:disabled:hover:shadow-[2px_2px_0px_0px_#757373]"
+            className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:disabled:hover:shadow-[2px_2px_0px_0px_#757373]"
           >
             <PlusCircleIcon size={20} weight="duotone" />
           </Button>
@@ -182,13 +182,13 @@ export default function NotesFontControl() {
     <>
       {/* Desktop  */}
       <div className="fixed top-1/2 right-8 z-50 hidden -translate-y-1/2 lg:block">
-        <div className="flex flex-col gap-2 rounded-lg border-2 border-black bg-zinc-100 p-2 shadow-[4px_4px_0px_0px_#000] backdrop-blur-sm dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+        <div className="flex flex-col gap-2 rounded-lg border-2 border-black bg-zinc-100 p-2 shadow-[4px_4px_0px_0px_#000] backdrop-blur-sm dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+                className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
               >
                 <TextAaIcon size={16} weight="duotone" />
                 <span className="ml-1 text-xs">{selectedFont.label}</span>
@@ -196,7 +196,7 @@ export default function NotesFontControl() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
-              className="w-48 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]"
+              className="w-48 border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]"
             >
               {FONT_OPTIONS.map((font) => (
                 <DropdownMenuItem
@@ -214,7 +214,7 @@ export default function NotesFontControl() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenuSeparator className="border-black dark:border-white" />
+          <DropdownMenuSeparator className="border-black dark:border-white/20" />
 
           {/* Font Size Controls */}
           <div className="flex flex-col gap-1">
@@ -223,7 +223,7 @@ export default function NotesFontControl() {
               size="sm"
               onClick={increaseFontSize}
               disabled={fontSize === maxFontSize}
-              className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:disabled:hover:shadow-[2px_2px_0px_0px_#757373]"
+              className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:disabled:hover:shadow-[2px_2px_0px_0px_#757373]"
               title="Increase font size"
             >
               <PlusCircleIcon size={16} weight="duotone" />
@@ -240,7 +240,7 @@ export default function NotesFontControl() {
               size="sm"
               onClick={decreaseFontSize}
               disabled={fontSize === minFontSize}
-              className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:disabled:hover:shadow-[2px_2px_0px_0px_#757373]"
+              className="w-full border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] dark:disabled:hover:shadow-[2px_2px_0px_0px_#757373]"
               title="Decrease font size"
             >
               <MinusCircleIcon size={16} weight="duotone" />
@@ -256,12 +256,12 @@ export default function NotesFontControl() {
             <Button
               variant="outline"
               size="lg"
-              className="rounded-full border-2 border-black bg-zinc-100 font-bold text-black shadow-[4px_4px_0px_0px_#000] backdrop-blur-sm transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[6px_6px_0px_0px_#757373]"
+              className="rounded-full border-2 border-black bg-zinc-100 font-bold text-black shadow-[4px_4px_0px_0px_#000] backdrop-blur-sm transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[6px_6px_0px_0px_#757373]"
             >
               <GearSixIcon size={24} weight="duotone" />
             </Button>
           </DrawerTrigger>
-          <DrawerContent className="border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <DrawerContent className="border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
             <DrawerHeader className="text-center">
               <DrawerTitle className="text-2xl font-bold text-black dark:text-white">
                 Reading Preferences

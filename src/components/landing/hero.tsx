@@ -6,6 +6,9 @@ import { ArrowRightIcon, BookOpenIcon, StarIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
+import HandDrawnArrow from "../svgs/HandDrawnArrow";
+import Science from "../svgs/Science";
+import Cap from "../svgs/Cap";
 
 interface Testimonial {
   name: string;
@@ -46,7 +49,7 @@ const testimonials: Testimonial[] = [
 export default function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(
-    () => ["smart", "fast", "efficient", "comprehensive", "effective"],
+    () => ["smart", "fast", "efficient", "quick", "effective"],
     [],
   );
 
@@ -64,7 +67,9 @@ export default function Hero() {
   return (
     <div className="w-full">
       <div className="container mx-auto">
-        <div className="flex flex-col items-center justify-center gap-8 py-20 lg:py-40">
+        <div className="flex flex-col items-center justify-center gap-8 py-20 lg:py-40 relative">
+          <Science className="size-24 md:size-64 absolute left-4 top-4" />
+          <Cap className="size-24 md:size-64 absolute bottom-0 md:bottom-10 right-10" />
           <div>
             <Button variant="secondary" size="sm" className="gap-4">
               Now it is time to study{" "}
@@ -73,9 +78,11 @@ export default function Hero() {
           </div>
           <div className="flex flex-col gap-4">
             <h1 className="font-regular max-w-2xl text-center text-5xl tracking-tighter md:text-7xl">
-              <span className="font-excon font-black">
+              <span className="font-excon relative font-black">
                 Your all-in-one learning platform
+                <HandDrawnArrow className="absolute right-2 mx-auto mt-4 size-8 md:-right-8 md:size-12" />
               </span>
+
               <span className="font-ranade relative flex w-full justify-center overflow-hidden text-center md:pt-1 md:pb-4">
                 &nbsp;
                 {titles.map((title, index) => (
@@ -111,7 +118,7 @@ export default function Hero() {
             <Link href="/notes">
               <Button
                 size="lg"
-                className="gap-4 border-2 border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:text-white hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+                className="gap-4 border-2 border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:text-white hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
               >
                 Visit Notes <BookOpenIcon weight="duotone" className="size-4" />
               </Button>
@@ -119,7 +126,7 @@ export default function Hero() {
             <Link href="/premium">
               <Button
                 size="lg"
-                className="gap-4 border-2 border-black bg-black text-white shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:bg-white hover:text-black hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+                className="gap-4 border-2 border-black bg-black text-white shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:bg-white hover:text-black hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
               >
                 Purchase Premium{" "}
                 <StarIcon weight="duotone" className="size-4" />

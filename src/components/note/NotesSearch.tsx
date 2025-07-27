@@ -69,7 +69,7 @@ export default function Search({ query }: { query: string }) {
 
   return (
     <div className="relative w-full rounded-xl">
-      <div className="relative rounded-xl border-4 border-black shadow-[8px_8px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[8px_8px_0px_0px_#757373] dark:hover:shadow-[4px_4px_0px_0px_#757373]">
+      <div className="relative rounded-xl border-4 border-black shadow-[8px_8px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#757373] dark:hover:shadow-[4px_4px_0px_0px_#757373]">
         <SearchIcon className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-black dark:text-white" />
         <Input
           ref={inputRef}
@@ -83,12 +83,12 @@ export default function Search({ query }: { query: string }) {
         />
         {!isSearchOpen && !search && (
           <div className="absolute top-1/2 right-3 flex -translate-y-1/2 transform gap-1">
-            <kbd className="border-2 border-black bg-black px-2 py-1 text-xs font-black text-white uppercase shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]">
+            <kbd className="border-2 border-black bg-black px-2 py-1 text-xs font-black text-white uppercase shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]">
               {navigator.platform.toUpperCase().includes("MAC")
                 ? "CMD"
                 : "CTRL"}
             </kbd>
-            <kbd className="border-2 border-black bg-black px-2 py-1 text-xs font-black text-white uppercase shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]">
+            <kbd className="border-2 border-black bg-black px-2 py-1 text-xs font-black text-white uppercase shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]">
               K
             </kbd>
           </div>
@@ -103,7 +103,7 @@ export default function Search({ query }: { query: string }) {
         )}
       </div>
       {search.length > 0 && search.length < 2 && (
-        <p className="mt-2 border-2 border-black bg-gray-200 px-3 py-1 text-sm font-bold tracking-wide text-black uppercase shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-gray-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <p className="mt-2 border-2 border-black bg-gray-200 px-3 py-1 text-sm font-bold tracking-wide text-black uppercase shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-gray-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           Type at least 2 characters to search
         </p>
       )}

@@ -18,7 +18,7 @@ export default async function AIPage() {
   const session = await getSession();
 
   if (!session?.user) {
-    redirect("/auth/signin");
+    redirect("/");
   }
 
   const [userChats, userProfile, onboardingStatus] = await Promise.all([

@@ -23,7 +23,7 @@ export default function QuizQuestion({
   onAnswerSelect,
 }: QuizQuestionProps) {
   return (
-    <div className="mb-6 rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="mb-6 rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <div className="p-8">
         <h2 className="font-excon mb-6 text-xl font-black text-black dark:text-white">
           {question.question}
@@ -38,7 +38,7 @@ export default function QuizQuestion({
               className={`w-full rounded-lg border-2 p-4 text-left transition-all ${
                 answers[question.id] === option.id
                   ? "border-blue-600 bg-blue-100 shadow-[2px_2px_0px_0px_#000] dark:bg-blue-900/30"
-                  : "border-black bg-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-800"
+                  : "border-black bg-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-800"
               } ${submitting ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
             >
               <div className="flex items-center gap-3">
@@ -46,7 +46,7 @@ export default function QuizQuestion({
                   className={`flex h-8 w-8 items-center justify-center rounded-full border-2 font-bold ${
                     answers[question.id] === option.id
                       ? "border-blue-600 bg-blue-600 text-white"
-                      : "border-black bg-white text-black dark:border-white dark:bg-zinc-900 dark:text-white"
+                      : "border-black bg-white text-black dark:border-white/20 dark:bg-zinc-900 dark:text-white"
                   }`}
                 >
                   {String.fromCharCode(65 + index)}

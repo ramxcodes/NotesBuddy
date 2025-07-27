@@ -610,10 +610,10 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
 
         {paginatedAttempts.length > 0 ? (
           <>
-            <div className="overflow-hidden rounded-lg border-2 border-black/10 dark:border-white/10">
+            <div className="dark:border-white/20/10 overflow-hidden rounded-lg border-2 border-black/10">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b-2 border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5">
+                  <TableRow className="dark:border-white/20/10 border-b-2 border-black/10 bg-black/5 dark:bg-white/5">
                     <TableHead className="font-excon font-black text-black dark:text-white">
                       User
                     </TableHead>
@@ -641,7 +641,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
                   {paginatedAttempts.map((attempt) => (
                     <TableRow
                       key={attempt.id}
-                      className="border-b border-black/10 hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5"
+                      className="dark:border-white/20/10 border-b border-black/10 hover:bg-black/5 dark:hover:bg-white/5"
                     >
                       <TableCell>
                         <div className="space-y-1">

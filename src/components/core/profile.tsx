@@ -18,6 +18,7 @@ import { SignOutIcon } from "../icons/SignOutIcon";
 import ReportButton from "../navbar/ReportButton";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
 import CardsIcon from "../icons/CardsIcon";
+import AiIcon from "../icons/AiIcon";
 
 export default async function Profile() {
   const session = await getSession();
@@ -41,7 +42,7 @@ export default async function Profile() {
           <AvatarFallback>{session.user.name?.charAt(0)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mt-2 mr-4 md:mr-10">
+      <DropdownMenuContent className="mt-4 mr-4 md:mr-10 w-44 ">
         <DropdownMenuLabel>
           <p className="font-excon text-sm">Hi, {userFirstName}!</p>
         </DropdownMenuLabel>
@@ -58,18 +59,25 @@ export default async function Profile() {
             Notes
           </DropdownMenuItem>
         </Link>
-         <Link href="/quiz">
+        <Link href="/quiz">
           <DropdownMenuItem className="hover:cursor-pointer">
             <QuestionMarkIcon className="size-4" />
             Quiz
           </DropdownMenuItem>
         </Link>
-         <Link href="/flashcards">
+        <Link href="/flashcards">
           <DropdownMenuItem className="hover:cursor-pointer">
             <CardsIcon className="size-4" />
             Flashcards
           </DropdownMenuItem>
         </Link>
+        <Link href="/ai">
+          <DropdownMenuItem className="hover:cursor-pointer">
+            <AiIcon className="size-4" />
+            AI Assistant
+          </DropdownMenuItem>
+        </Link>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex items-center justify-center">
           <ThemeToggle />

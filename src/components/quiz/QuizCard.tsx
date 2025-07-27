@@ -93,35 +93,35 @@ export default function QuizCard({ quiz, isAuthenticated }: QuizCardProps) {
       <div className="my-4 flex flex-wrap items-center justify-start gap-2">
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
         >
           <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
           {getDisplayNameFromPrismaValue("university", university)}
         </Badge>
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
         >
           <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
           {getDisplayNameFromPrismaValue("degree", degree)}
         </Badge>
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
         >
           <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
           {getDisplayNameFromPrismaValue("year", year)}
         </Badge>
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
         >
           <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
           {getDisplayNameFromPrismaValue("semester", semester)}
         </Badge>
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+          className="border-2 border-black bg-white px-3 py-1 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
         >
           <GraduationCapIcon className="mr-1.5 h-3.5 w-3.5" />
           {subject || "Notes Buddy Quiz"}
@@ -129,7 +129,7 @@ export default function QuizCard({ quiz, isAuthenticated }: QuizCardProps) {
       </div>
 
       {/* Quiz Stats */}
-      <div className="mb-4 flex items-center gap-4 rounded-lg border-2 border-black/10 bg-black/5 p-3 dark:border-white/10 dark:bg-white/5">
+      <div className="dark:border-white/20/10 mb-4 flex items-center gap-4 rounded-lg border-2 border-black/10 bg-black/5 p-3 dark:bg-white/5">
         <div className="flex items-center gap-1">
           <QuestionIcon className="h-4 w-4 text-black/60 dark:text-white/60" />
           <span className="font-satoshi text-sm font-bold text-black dark:text-white">
@@ -171,7 +171,7 @@ export default function QuizCard({ quiz, isAuthenticated }: QuizCardProps) {
 
               {/* Best Performance */}
               {bestScore !== null && bestAccuracy !== null && (
-                <div className="neuro rounded-lg border-2 border-black bg-green-100 p-3 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-green-900/30 dark:shadow-[4px_4px_0px_0px_#757373]">
+                <div className="neuro rounded-lg border-2 border-black bg-green-100 p-3 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-green-900/30 dark:shadow-[4px_4px_0px_0px_#757373]">
                   <h4 className="font-satoshi mb-2 text-sm font-bold text-green-800 dark:text-green-400">
                     Best Performance
                   </h4>
@@ -205,7 +205,7 @@ export default function QuizCard({ quiz, isAuthenticated }: QuizCardProps) {
 
               {/* Last Attempt */}
               {lastAttempt && (
-                <div className="neuro dark:border-whitedark:shadow-[4px_4px_0px_0px_#757373] rounded-lg border-2 border-black p-3 shadow-[4px_4px_0px_0px_#000]">
+                <div className="neuro dark:border-white/20dark:shadow-[4px_4px_0px_0px_#757373] rounded-lg border-2 border-black p-3 shadow-[4px_4px_0px_0px_#000]">
                   <h4 className="font-satoshi mb-2 text-sm font-bold">
                     Last Attempt
                   </h4>

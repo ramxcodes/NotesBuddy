@@ -30,7 +30,7 @@ export default function CouponsLoading() {
       </div>
 
       {/* Table Skeleton */}
-      <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
         <div className="p-6">
           {/* Table Header */}
           <div className="mb-4 flex gap-4">
@@ -45,7 +45,7 @@ export default function CouponsLoading() {
 
           {/* Table Rows */}
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="mb-4 flex gap-4 items-center">
+            <div key={i} className="mb-4 flex items-center gap-4">
               <div className="space-y-2">
                 <Skeleton className="h-5 w-24" />
                 <Skeleton className="h-4 w-32" />

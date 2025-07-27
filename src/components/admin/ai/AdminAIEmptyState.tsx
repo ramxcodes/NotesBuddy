@@ -14,7 +14,7 @@ export default function AdminAIEmptyState({
   onClearFilters,
 }: AdminAIEmptyStateProps) {
   return (
-    <div className="neuro rounded-lg border-2 border-black p-12 text-center shadow-[8px_8px_0px_0px_#000] dark:border-white dark:shadow-[8px_8px_0px_0px_#fff]">
+    <div className="neuro rounded-lg border-2 border-black p-12 text-center shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#fff]">
       <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
         {hasFilters ? (
           <MagnifyingGlass

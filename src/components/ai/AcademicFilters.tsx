@@ -184,7 +184,7 @@ export default function AcademicFilters({
 
   return (
     <div className="w-full max-w-2xl">
-      <div className="rounded-xl border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_#000] dark:border-white dark:bg-gray-800 dark:shadow-[8px_8px_0px_0px_#757373]">
+      <div className="rounded-xl border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-gray-800 dark:shadow-[8px_8px_0px_0px_#757373]">
         <div className="mb-8 text-center">
           <h2 className="mb-4 text-3xl font-black text-gray-900 dark:text-white">
             Start a New Chat
@@ -207,10 +207,10 @@ export default function AcademicFilters({
                 handleFilterChange("university", value as University)
               }
             >
-              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
                 <SelectValue placeholder="Select university" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
                 {universities.map((university) => (
                   <SelectItem
                     key={university.value}
@@ -236,10 +236,10 @@ export default function AcademicFilters({
               }
               disabled={!filters.university}
             >
-              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
                 <SelectValue placeholder="Select degree" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
                 {degrees.map((degree) => (
                   <SelectItem
                     key={degree.value}
@@ -265,10 +265,10 @@ export default function AcademicFilters({
               }
               disabled={!filters.degree}
             >
-              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
                 <SelectValue placeholder="Select year" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
                 {years.map((year) => (
                   <SelectItem
                     key={year.value}
@@ -294,10 +294,10 @@ export default function AcademicFilters({
               }
               disabled={!filters.year}
             >
-              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
                 <SelectValue placeholder="Select semester" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
                 {semesters.map((semester) => (
                   <SelectItem
                     key={semester.value}
@@ -321,14 +321,14 @@ export default function AcademicFilters({
               onValueChange={(value) => handleFilterChange("subject", value)}
               disabled={isLoadingSubjects || !filters.semester}
             >
-              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectTrigger className="w-full rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
                 <SelectValue
                   placeholder={
                     isLoadingSubjects ? "Loading..." : "Select subject"
                   }
                 />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+              <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
                 {subjects.map((subject, index) => (
                   <SelectItem
                     key={index}
@@ -346,7 +346,7 @@ export default function AcademicFilters({
             <Button
               onClick={handleStartChat}
               disabled={!isComplete}
-              className="w-full border-2 border-black py-3 text-lg font-bold shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              className="w-full border-2 border-black py-3 text-lg font-bold shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
             >
               Start AI Chat
             </Button>

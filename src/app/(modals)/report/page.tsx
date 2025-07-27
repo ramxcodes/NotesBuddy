@@ -41,7 +41,7 @@ export default function ReportModal() {
 
   return (
     <Dialog open onOpenChange={() => router.back()}>
-      <DialogContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <DialogContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <DialogHeader>
           <DialogTitle className="font-excon text-xl font-black text-black dark:text-white">
             Report Issue
@@ -52,7 +52,7 @@ export default function ReportModal() {
             <label className="font-satoshi mb-2 block text-sm font-bold text-black dark:text-white">
               Current URL:
             </label>
-            <div className="rounded-md border-2 border-black bg-gray-100 p-3 font-mono text-sm text-black dark:border-white dark:bg-zinc-800 dark:text-white">
+            <div className="rounded-md border-2 border-black bg-gray-100 p-3 font-mono text-sm text-black dark:border-white/20 dark:bg-zinc-800 dark:text-white">
               {typeof window !== "undefined" ? window.location.href : ""}
             </div>
           </div>
@@ -63,7 +63,7 @@ export default function ReportModal() {
             <textarea
               value={reportText}
               onChange={(e) => setReportText(e.target.value)}
-              className="font-satoshi min-h-[100px] w-full rounded-md border-2 border-black bg-white p-3 text-black placeholder-gray-500 focus:ring-0 focus:outline-none dark:border-white dark:bg-zinc-800 dark:text-white dark:placeholder-gray-400"
+              className="font-satoshi min-h-[100px] w-full rounded-md border-2 border-black bg-white p-3 text-black placeholder-gray-500 focus:ring-0 focus:outline-none dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:placeholder-gray-400"
               placeholder="Describe the issue you're experiencing..."
               required
             />
@@ -74,7 +74,7 @@ export default function ReportModal() {
           <Button
             type="submit"
             disabled={loading}
-            className="font-excon w-full border-2 border-black bg-black text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
+            className="font-excon w-full border-2 border-black bg-black text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
           >
             {loading ? "Submitting..." : "Submit Report"}
           </Button>

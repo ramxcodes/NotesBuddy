@@ -30,7 +30,7 @@ export function PremiumWalletSection({
       transition={{ duration: 0.6, delay: 0.3 }}
       viewport={{ once: true }}
     >
-      <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="flex items-center gap-3">
             <CreditCardIcon className="h-5 w-5 text-black dark:text-white" />
@@ -44,7 +44,7 @@ export function PremiumWalletSection({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="flex items-center justify-between rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
+            <div className="flex items-center justify-between rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black dark:bg-white">
                   <span className="font-excon text-sm font-black text-white dark:text-black">
@@ -76,7 +76,7 @@ export function PremiumWalletSection({
                 />
                 <label
                   htmlFor="useWalletBalance"
-                  className={`relative flex h-6 w-11 rounded-full border-2 border-black transition-colors dark:border-white ${
+                  className={`relative flex h-6 w-11 rounded-full border-2 border-black transition-colors dark:border-white/20 ${
                     walletBalance <= 0
                       ? "cursor-not-allowed opacity-50"
                       : "cursor-pointer"
@@ -87,7 +87,7 @@ export function PremiumWalletSection({
                   }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full border-2 border-black bg-white transition-transform dark:border-white dark:bg-zinc-900 ${
+                    className={`inline-block h-4 w-4 transform rounded-full border-2 border-black bg-white transition-transform dark:border-white/20 dark:bg-zinc-900 ${
                       useWalletBalance ? "translate-x-5" : "translate-x-0"
                     }`}
                   />
@@ -100,7 +100,7 @@ export function PremiumWalletSection({
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
               >
                 <div className="flex items-center gap-2">
                   <CheckCircleIcon className="h-4 w-4 text-black dark:text-white" />

@@ -35,7 +35,10 @@ interface AdminCouponUsageViewProps {
   onClose: () => void;
 }
 
-export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageViewProps) {
+export function AdminCouponUsageView({
+  couponId,
+  onClose,
+}: AdminCouponUsageViewProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [couponData, setCouponData] = useState<CouponDetailsResponse | null>(
@@ -148,15 +151,12 @@ export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageView
   return (
     <div className="mx-auto w-full space-y-6">
       {/* Header */}
-      <div
-        
-        className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
-      >
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-4">
           <Button
             onClick={onClose}
             variant="outline"
-            className="font-satoshi flex items-center gap-2 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+            className="font-satoshi flex items-center gap-2 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
           >
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Coupons
@@ -175,12 +175,10 @@ export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageView
       </div>
 
       {/* Coupon Overview */}
-      <div
-        className="rounded-xl border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]"
-      >
+      <div className="rounded-xl border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
         <div className="grid gap-6 md:grid-cols-4">
           {/* Discount Value */}
-          <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-zinc-50 p-4 dark:border-white dark:bg-zinc-700">
+          <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-zinc-50 p-4 dark:border-white/20 dark:bg-zinc-700">
             {couponData.discountType === DiscountType.PERCENTAGE ? (
               <PercentIcon className="h-6 w-6 text-green-600" />
             ) : (
@@ -199,7 +197,7 @@ export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageView
           </div>
 
           {/* Total Usage */}
-          <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-blue-50 p-4 dark:border-white dark:bg-blue-900/20">
+          <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-blue-50 p-4 dark:border-white/20 dark:bg-blue-900/20">
             <UsersIcon className="h-6 w-6 text-blue-600" />
             <div>
               <div className="font-excon text-2xl font-black text-blue-600">
@@ -212,7 +210,7 @@ export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageView
           </div>
 
           {/* Total Discount Given */}
-          <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-orange-50 p-4 dark:border-white dark:bg-orange-900/20">
+          <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-orange-50 p-4 dark:border-white/20 dark:bg-orange-900/20">
             <TrendingUpIcon className="h-6 w-6 text-orange-600" />
             <div>
               <div className="font-excon text-xl font-black text-orange-600">
@@ -225,7 +223,7 @@ export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageView
           </div>
 
           {/* Validity */}
-          <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-purple-50 p-4 dark:border-white dark:bg-purple-900/20">
+          <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-purple-50 p-4 dark:border-white/20 dark:bg-purple-900/20">
             <CalendarIcon className="h-6 w-6 text-purple-600" />
             <div>
               <div className="font-excon text-sm font-black text-purple-600">
@@ -297,17 +295,14 @@ export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageView
 
       {/* Users Who Used This Coupon */}
       {couponData.usageStats.recentUsages.length > 0 && (
-        <div
-        
-          className="space-y-4"
-        >
+        <div className="space-y-4">
           <h3 className="font-excon text-xl font-black text-black dark:text-white">
             Users Who Used This Coupon
           </h3>
-          <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             <Table>
               <TableHeader>
-                <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white dark:hover:bg-zinc-700">
+                <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700">
                   <TableHead className="font-excon font-black text-black dark:text-white">
                     User
                   </TableHead>
@@ -326,11 +321,11 @@ export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageView
                 {couponData.usageStats.recentUsages.map((usage) => (
                   <tr
                     key={`${usage.userId}-${usage.usedAt}`}
-                    className="border-b border-black/20 hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700"
+                    className="dark:border-white/20/20 border-b border-black/20 hover:bg-zinc-50 dark:hover:bg-zinc-700"
                   >
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-black bg-zinc-100 dark:border-white dark:bg-zinc-700">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-black bg-zinc-100 dark:border-white/20 dark:bg-zinc-700">
                           <UserIcon className="h-4 w-4 text-black dark:text-white" />
                         </div>
                         <div className="font-satoshi font-bold text-black dark:text-white">
@@ -372,10 +367,7 @@ export function AdminCouponUsageView({ couponId, onClose }: AdminCouponUsageView
 
       {/* No Usage */}
       {couponData.usageStats.recentUsages.length === 0 && (
-        <div
-          
-          className="rounded-xl border-2 border-black bg-zinc-100 p-8 text-center shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]"
-        >
+        <div className="rounded-xl border-2 border-black bg-zinc-100 p-8 text-center shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
           <div className="font-excon text-xl font-black text-black dark:text-white">
             No usage yet
           </div>

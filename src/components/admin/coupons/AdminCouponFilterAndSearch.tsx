@@ -45,7 +45,7 @@ export default function AdminCouponFilterAndSearch({
             placeholder="Search coupons by code or description..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="font-satoshi rounded-xl border-2 border-black bg-white pl-10 font-bold text-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]"
+            className="font-satoshi rounded-xl border-2 border-black bg-white pl-10 font-bold text-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]"
           />
         </div>
       </div>
@@ -58,10 +58,10 @@ export default function AdminCouponFilterAndSearch({
             className="h-4 w-4 text-black dark:text-white"
           />
           <Select value={filter} onValueChange={onFilterChange}>
-            <SelectTrigger className="font-satoshi w-48 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger className="font-satoshi w-48 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem value="ALL">All Coupons</SelectItem>
               <SelectItem value="ACTIVE">Active</SelectItem>
               <SelectItem value="INACTIVE">Inactive</SelectItem>
@@ -74,10 +74,10 @@ export default function AdminCouponFilterAndSearch({
 
         {/* Sort */}
         <Select value={sort} onValueChange={onSortChange}>
-          <SelectTrigger className="font-satoshi w-48 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+          <SelectTrigger className="font-satoshi w-48 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             <SelectItem value="NEWEST">Newest First</SelectItem>
             <SelectItem value="OLDEST">Oldest First</SelectItem>
             <SelectItem value="MOST_USED">Most Used</SelectItem>

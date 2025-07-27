@@ -47,7 +47,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#757373]"
+          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           <CheckCircleIcon weight="duotone" className="h-3 w-3" />
           Active
@@ -57,7 +57,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="secondary"
-          className="border-2 border-black bg-zinc-200 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+          className="border-2 border-black bg-zinc-200 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-700 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           <CheckCircleIcon weight="duotone" className="h-3 w-3" />
           Expired
@@ -67,7 +67,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="destructive"
-          className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
+          className="border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           <XCircleIcon weight="duotone" className="h-3 w-3" />
           Failed
@@ -77,7 +77,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
       return (
         <Badge
           variant="outline"
-          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+          className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           <ClockIcon weight="duotone" className="h-3 w-3" />
           Pending
@@ -95,7 +95,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
 
   if (purchases.length === 0) {
     return (
-      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
             <ReceiptIcon
@@ -106,7 +106,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+          <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
             <ReceiptIcon
               weight="duotone"
               className="mx-auto mb-4 h-12 w-12 text-black dark:text-white"
@@ -124,7 +124,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
   }
 
   return (
-    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <CardHeader>
         <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
           <ReceiptIcon
@@ -135,10 +135,10 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+        <div className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
           <Table>
             <TableHeader>
-              <TableRow className="border-b-2 border-black dark:border-white">
+              <TableRow className="border-b-2 border-black dark:border-white/20">
                 <TableHead className="font-excon font-black text-black dark:text-white">
                   Plan
                 </TableHead>
@@ -162,7 +162,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                 return (
                   <TableRow
                     key={purchase.id}
-                    className="border-b border-black dark:border-white"
+                    className="border-b border-black dark:border-white/20"
                   >
                     <TableCell>
                       <div>
@@ -186,7 +186,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                         {purchase.discountCode && (
                           <Badge
                             variant="outline"
-                            className="mt-1 border-2 border-black bg-white font-bold text-black shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[1px_1px_0px_0px_#757373]"
+                            className="mt-1 border-2 border-black bg-white font-bold text-black shadow-[1px_1px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[1px_1px_0px_0px_#757373]"
                           >
                             Code: {purchase.discountCode}
                           </Badge>
@@ -262,7 +262,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
         </div>
 
         {/* Summary */}
-        <div className="mt-6 rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+        <div className="mt-6 rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
           <h4 className="font-excon mb-2 font-black text-black dark:text-white">
             Summary
           </h4>

@@ -48,10 +48,10 @@ export default function GreetUser({
   const readingTime = calculateReadingTime(content || []);
 
   return (
-    <div className="mb-8 flex flex-col gap-3 rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[6px_6px_0px_0px_#757373]">
+    <div className="mb-8 flex flex-col gap-3 rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[6px_6px_0px_0px_#757373]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Avatar className="size-10 border-2 border-black dark:border-white">
+          <Avatar className="size-10 border-2 border-black dark:border-white/20">
             <AvatarImage src={image || ""} />
             <AvatarFallback className="bg-zinc-800 font-bold text-white dark:bg-zinc-200 dark:text-black">
               {name?.charAt(0)}

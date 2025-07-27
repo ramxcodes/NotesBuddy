@@ -178,9 +178,9 @@ export default function AdminChatDetailView({
             ) : (
               chat.messages.map((message) => (
                 <div
-                data-lenis-prevent
+                  data-lenis-prevent
                   key={message.id}
-                  className={`flex gap-3  ${
+                  className={`flex gap-3 ${
                     message.role === "USER" ? "justify-end" : "justify-start"
                   }`}
                 >
@@ -209,7 +209,7 @@ export default function AdminChatDetailView({
                       className={`rounded-lg p-3 ${
                         message.role === "USER"
                           ? "bg-blue-500 text-white"
-                          : "neuro border-2 border-black bg-white dark:border-white dark:bg-gray-900"
+                          : "neuro border-2 border-black bg-white dark:border-white/20 dark:bg-gray-900"
                       }`}
                     >
                       <div className="space-y-2">

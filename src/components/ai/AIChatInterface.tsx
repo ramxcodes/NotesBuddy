@@ -254,10 +254,7 @@ export default function AIChatInterface({
             </div>
           </ResizablePanel>
 
-          <ResizableHandle
-            withHandle
-            className="border-2"
-          />
+          <ResizableHandle withHandle className="border-2" />
 
           {/* Desktop Main Content */}
           <ResizablePanel defaultSize={75}>
@@ -341,7 +338,7 @@ export default function AIChatInterface({
                 placeholder="AIza..."
                 value={tempApiKey}
                 onChange={(e) => setTempApiKey(e.target.value)}
-                className="border-4 border-black text-sm font-bold shadow-[4px_4px_0px_0px_#fff] placeholder:text-gray-400 sm:text-base dark:border-white"
+                className="border-4 border-black text-sm font-bold shadow-[4px_4px_0px_0px_#fff] placeholder:text-gray-400 sm:text-base dark:border-white/20"
               />
               <p className="text-xs font-bold tracking-wide text-gray-300 uppercase sm:text-sm">
                 GET YOUR API KEY FROM{" "}

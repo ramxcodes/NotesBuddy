@@ -30,7 +30,7 @@ export function PremiumCheckout({
     <motion.div className="text-center">
       <Button
         size="lg"
-        className="group rounded-xl border-2 border-black bg-white px-8 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-300 hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] hover:text-white"
+        className="group rounded-xl border-2 border-black bg-white px-8 py-4 text-lg font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-300 hover:translate-x-[4px] hover:translate-y-[4px] hover:text-white hover:shadow-none dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]"
         onClick={onInitiatePayment}
         disabled={
           !priceCalculation ||

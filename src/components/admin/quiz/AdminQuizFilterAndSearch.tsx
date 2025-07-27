@@ -150,7 +150,7 @@ export default function AdminQuizFilterAndSearch({
         </div>
 
         {/* Academic Filters */}
-        <div className="border-t-2 border-black/10 pt-4 dark:border-white/10">
+        <div className="dark:border-white/20/10 border-t-2 border-black/10 pt-4">
           <div className="mb-3 flex items-center gap-2">
             <FunnelIcon className="h-4 w-4 text-black/70 dark:text-white/70" />
             <span className="font-satoshi text-sm font-bold text-black/70 dark:text-white/70">

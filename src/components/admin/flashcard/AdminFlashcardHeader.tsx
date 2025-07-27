@@ -3,7 +3,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlusIcon, StackIcon, EyeIcon, ChartBarIcon, TrendUpIcon } from "@phosphor-icons/react";
+import {
+  PlusIcon,
+  StackIcon,
+  EyeIcon,
+  ChartBarIcon,
+  TrendUpIcon,
+} from "@phosphor-icons/react";
 import type { FlashcardSetStats } from "@/dal/flashcard/types";
 
 interface AdminFlashcardHeaderProps {
@@ -43,7 +49,7 @@ export default function AdminFlashcardHeader({
       {/* Stats Cards */}
       {stats && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
-          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Sets</CardTitle>
               <StackIcon className="text-muted-foreground h-4 w-4" />
@@ -55,10 +61,10 @@ export default function AdminFlashcardHeader({
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Sets</CardTitle>
-              <TrendUpIcon className="h-4 w-4 text-muted-foreground" />
+              <TrendUpIcon className="text-muted-foreground h-4 w-4" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
@@ -73,10 +79,10 @@ export default function AdminFlashcardHeader({
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Published</CardTitle>
-              <EyeIcon className="h-4 w-4 text-muted-foreground" />
+              <EyeIcon className="text-muted-foreground h-4 w-4" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
@@ -91,10 +97,10 @@ export default function AdminFlashcardHeader({
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Cards</CardTitle>
-              <ChartBarIcon className="h-4 w-4 text-muted-foreground" />
+              <ChartBarIcon className="text-muted-foreground h-4 w-4" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
@@ -104,12 +110,12 @@ export default function AdminFlashcardHeader({
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Total Visits
               </CardTitle>
-              <EyeIcon className="h-4 w-4 text-muted-foreground" />
+              <EyeIcon className="text-muted-foreground h-4 w-4" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">

@@ -18,7 +18,7 @@ export default function ScoreHeader({
       <Button
         variant="outline"
         onClick={() => router.push("/quiz")}
-        className="mb-4 rounded-xl border-2 border-black bg-zinc-100 font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+        className="mb-4 rounded-xl border-2 border-black bg-zinc-100 font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
       >
         <ArrowLeftIcon className="mr-2 h-4 w-4" />
         Back to Quizzes

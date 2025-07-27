@@ -19,7 +19,7 @@ interface PremiumStatusProps {
 export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
   if (!premiumStatus.isActive) {
     return (
-      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
             <StarIcon
@@ -31,7 +31,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4 text-center">
-            <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+            <div className="rounded-md border-2 border-black bg-white p-8 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
               <StarIcon
                 weight="duotone"
                 className="mx-auto mb-4 h-12 w-12 text-black dark:text-white"
@@ -44,7 +44,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
                 exclusive content.
               </p>
               <Link href="/premium">
-                <Button className="gap-2 border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]">
+                <Button className="gap-2 border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]">
                   <CrownIcon weight="duotone" className="h-4 w-4" />
                   Upgrade to Premium
                 </Button>
@@ -76,10 +76,10 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
   };
 
   return (
-    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <CardHeader>
         <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
-          <div className="rounded-md border-2 border-black bg-white p-2 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+          <div className="rounded-md border-2 border-black bg-white p-2 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
             {getTierIcon(premiumStatus.tier!)}
           </div>
           Premium Status
@@ -87,11 +87,11 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Active Premium Info */}
-        <div className="rounded-md border-2 border-black bg-white p-6 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+        <div className="rounded-md border-2 border-black bg-white p-6 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h3 className="font-excon text-lg font-black text-black dark:text-white">
-                {tierConfig.title} | {getTierDisplayName(tierConfig.tier)} 
+                {tierConfig.title} | {getTierDisplayName(tierConfig.tier)}
               </h3>
               <p className="font-satoshi font-bold text-black dark:text-white">
                 {tierConfig.description}
@@ -99,7 +99,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
             </div>
             <Badge
               variant="secondary"
-              className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+              className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
             >
               Active
             </Badge>
@@ -118,7 +118,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
             </div>
             <Progress
               value={progressPercentage}
-              className="h-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
+              className="h-3 border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]"
             />
             <p className="text-center text-xs font-bold text-black dark:text-white">
               Expires on{" "}
@@ -143,7 +143,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
                 key={index}
                 className="font-satoshi flex items-center gap-2 text-sm font-bold text-black dark:text-white"
               >
-                <div className="h-3 w-3 rounded-full border-2 border-black bg-black dark:border-white dark:bg-white" />
+                <div className="h-3 w-3 rounded-full border-2 border-black bg-black dark:border-white/20 dark:bg-white" />
                 {feature}
               </div>
             ))}

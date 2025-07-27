@@ -10,6 +10,7 @@ import {
 } from "@phosphor-icons/react";
 import { motion } from "motion/react";
 import React from "react";
+import Image from "next/image";
 
 interface FeatureCardProps {
   icon: React.ReactNode;
@@ -129,8 +130,15 @@ export default function Features() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <h2 className="font-regular font-excon mx-auto mb-6 max-w-4xl text-center text-4xl leading-tight font-black tracking-tighter md:text-5xl lg:text-6xl">
+          <h2 className="font-regular font-excon mx-auto mb-6 max-w-4xl text-center text-4xl leading-tight font-black tracking-tighter md:text-5xl lg:text-6xl relative">
             Features of Notes Buddy
+            <Image
+              width={50}
+              height={50}
+              src="/doodles/quiz.svg"
+              alt="Notes Buddy"
+              className="size-16 md:size-28 absolute -top-16 md:-top-20 left-0"
+            />
           </h2>
           <p className="text-secondary font-satoshi mx-auto max-w-3xl text-center text-lg leading-relaxed tracking-tight md:text-xl">
             Everything you need to excel in your studies, all in one place

@@ -45,10 +45,10 @@ export default function AdminAITable({
   };
 
   return (
-    <div className="neuro rounded-lg border-2 border-black shadow-[8px_8px_0px_0px_#000] dark:border-white dark:shadow-[8px_8px_0px_0px_#fff]">
+    <div className="neuro rounded-lg border-2 border-black shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#fff]">
       <Table>
         <TableHeader>
-          <TableRow className="border-b-2 border-black dark:border-white">
+          <TableRow className="border-b-2 border-black dark:border-white/20">
             <TableHead className="font-satoshi font-bold">Chat Info</TableHead>
             <TableHead className="font-satoshi font-bold">User</TableHead>
             <TableHead className="font-satoshi font-bold">

@@ -84,7 +84,7 @@ export default function AdminQuizPagination({
               onClick={() => onPageChange(pageNumber)}
               className={`font-satoshi h-10 w-10 rounded-xl font-bold ${
                 isActive
-                  ? "border-2 border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+                  ? "border-2 border-black bg-black text-white dark:border-white/20 dark:bg-white dark:text-black"
                   : "neuro-button"
               }`}
             >

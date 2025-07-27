@@ -266,7 +266,7 @@ export default function FilterFlashcardDropdown({
   );
 
   return (
-    <div className="my-6 rounded-xl border-4 border-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:border-white dark:shadow-[8px_8px_0px_0px_#757373]">
+    <div className="my-6 rounded-xl border-4 border-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#757373]">
       <div className="flex flex-wrap items-end justify-center gap-4">
         {/* University Filter */}
         <div className="flex flex-col gap-2">
@@ -285,7 +285,7 @@ export default function FilterFlashcardDropdown({
             <SelectTrigger className="neuro-sm font-satoshi w-48 font-bold">
               <SelectValue placeholder="Select University" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
@@ -323,7 +323,7 @@ export default function FilterFlashcardDropdown({
             <SelectTrigger className="neuro-sm font-satoshi w-40 font-bold">
               <SelectValue placeholder="Select Degree" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
@@ -361,7 +361,7 @@ export default function FilterFlashcardDropdown({
             <SelectTrigger className="neuro-sm font-satoshi w-32 font-bold">
               <SelectValue placeholder="Select Year" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
@@ -399,7 +399,7 @@ export default function FilterFlashcardDropdown({
             <SelectTrigger className="neuro-sm font-satoshi w-36 font-bold">
               <SelectValue placeholder="Select Semester" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
@@ -434,7 +434,7 @@ export default function FilterFlashcardDropdown({
             <SelectTrigger className="neuro-sm font-satoshi w-40 font-bold">
               <SelectValue placeholder="Select Subject" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
@@ -466,7 +466,7 @@ export default function FilterFlashcardDropdown({
             <SelectTrigger className="neuro-sm font-satoshi w-32 font-bold">
               <SelectValue placeholder="Select Type" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"

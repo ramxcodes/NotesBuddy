@@ -23,7 +23,10 @@ import {
   calculateUpgradePrice,
   type UpgradeContext,
 } from "@/dal/premium/types";
-import { getDisplayNameFromPrismaValue, getTierDisplayName } from "@/utils/academic-config";
+import {
+  getDisplayNameFromPrismaValue,
+  getTierDisplayName,
+} from "@/utils/academic-config";
 
 interface PremiumUpgradeProps {
   upgradeContext: UpgradeContext;
@@ -44,7 +47,7 @@ export function PremiumUpgrade({
   if (upgradeOptions.length === 0) {
     // User is on highest tier
     return (
-      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
             <TrophyIcon weight="duotone" className="h-6 w-6 text-yellow-500" />
@@ -52,7 +55,7 @@ export function PremiumUpgrade({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border-2 border-black bg-white p-6 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+          <div className="rounded-md border-2 border-black bg-white p-6 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
             <p className="font-satoshi font-bold text-black dark:text-white">
               You&apos;re already enjoying all the premium features with{" "}
               {currentTierConfig.title}. Keep up the great studying!
@@ -71,15 +74,16 @@ export function PremiumUpgrade({
       viewport={{ once: true }}
       className="flex justify-center"
     >
-      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="font-excon flex items-center gap-2 text-2xl font-black text-black dark:text-white">
             <ArrowUpIcon weight="duotone" className="h-6 w-6 text-green-500" />
             Upgrade Your Plan
           </CardTitle>
           <div className="flex flex-col gap-2">
-            <Badge className="w-fit border-2 border-black bg-white font-bold text-black shadow-[1px_1px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[1px_1px_0px_0px_#757373]">
-              Current: {currentTierConfig.title} - {getTierDisplayName(currentTierConfig.tier)}
+            <Badge className="w-fit border-2 border-black bg-white font-bold text-black shadow-[1px_1px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[1px_1px_0px_0px_#757373]">
+              Current: {currentTierConfig.title} -{" "}
+              {getTierDisplayName(currentTierConfig.tier)}
             </Badge>
             <p className="font-satoshi font-bold text-black dark:text-white">
               Get more features and extend your access within the same academic
@@ -89,7 +93,7 @@ export function PremiumUpgrade({
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Current Plan Summary */}
-          <div className="rounded-md border-2 border-black bg-zinc-50 p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+          <div className="rounded-md border-2 border-black bg-zinc-50 p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
             <h3 className="font-excon mb-2 font-black text-black dark:text-white">
               Current Plan Details
             </h3>
@@ -99,7 +103,8 @@ export function PremiumUpgrade({
                   Plan
                 </p>
                 <p className="font-satoshi font-black text-black dark:text-white">
-                  {currentTierConfig.title} - {getTierDisplayName(currentTierConfig.tier)}
+                  {currentTierConfig.title} -{" "}
+                  {getTierDisplayName(currentTierConfig.tier)}
                 </p>
               </div>
               <div>
@@ -124,10 +129,10 @@ export function PremiumUpgrade({
               onValueChange={(value) => onUpgradeSelect(value as PremiumTier)}
               disabled={isLoading}
             >
-              <SelectTrigger className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectTrigger className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                 <SelectValue placeholder="Select upgrade plan" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                 {upgradeOptions.map((option) => {
                   const upgradePrice = calculateUpgradePrice(
                     upgradeContext.currentTier,
@@ -147,7 +152,9 @@ export function PremiumUpgrade({
                             weight="duotone"
                             className="h-4 w-4 text-yellow-500"
                           />
-                          <span>{option.title} - {getTierDisplayName(option.tier)}</span>
+                          <span>
+                            {option.title} - {getTierDisplayName(option.tier)}
+                          </span>
                         </div>
                         <Badge className="ml-2 border-2 border-green-500 bg-green-50 font-bold text-green-800 shadow-[1px_1px_0px_0px_#22c55e] dark:border-green-400 dark:bg-green-900/20 dark:text-green-300 dark:shadow-[1px_1px_0px_0px_#4ade80]">
                           ₹{upgradePrice}

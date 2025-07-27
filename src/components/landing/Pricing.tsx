@@ -7,6 +7,7 @@ import { TIER_CONFIG, getAllTierConfigs } from "@/dal/premium/types";
 import { PremiumTier } from "@prisma/client";
 import { Button } from "../ui/button";
 import { Link } from "next-view-transitions";
+import Image from "next/image";
 
 const originalPrice = [
   {
@@ -107,6 +108,20 @@ export default function Pricing() {
   return (
     <section className="relative overflow-hidden py-20 lg:py-32">
       <div className="relative z-10 container mx-auto">
+        <Image
+          src="/doodles/idea.svg"
+          alt="Hero"
+          width={50}
+          height={50}
+          className="absolute -top-16 md:-top-20 left-0 size-16 md:size-28"
+        />
+         <Image
+          src="/doodles/exmark.svg"
+          alt="Hero"
+          width={50}
+          height={50}
+          className="absolute -top-14 md:-top-16 right-0 size-16 md:size-28"
+        />
         <div className="mb-16 text-center md:mb-20">
           <h2 className="font-regular font-excon mx-auto mb-6 max-w-4xl text-center text-4xl leading-tight font-black tracking-tighter md:text-5xl lg:text-6xl">
             Why Study the Hard Way?

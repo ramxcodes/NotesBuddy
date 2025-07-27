@@ -7,6 +7,12 @@ import {
   getUserFullProfile,
   getUserOnboardingStatus,
 } from "@/dal/user/onboarding/query";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "AI Chat",
+  description: "Chat with AI for study assistance",
+};
 
 export default async function AIPage() {
   const session = await getSession();

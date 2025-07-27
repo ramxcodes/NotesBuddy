@@ -69,7 +69,7 @@ export default async function NavBar() {
               size="lg"
               className="gap-2 border-2 border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:text-white hover:shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
             >
-              <AdminIcon className="size-4" /> Admin Panel
+              <AdminIcon className="size-4" /> <span className="hidden md:block">Admin Panel</span> 
             </Button>
           </Link>
         )}

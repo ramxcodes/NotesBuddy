@@ -59,77 +59,79 @@ export default function ChatSidebar({
   }
 
   return (
-    <ScrollArea className="flex-1">
-      <div className="max-w-sm space-y-2 p-2 sm:space-y-3 sm:p-4">
-        {chats.map((chat) => {
-          const lastMessage = chat.messages[0];
-          const isSelected = selectedChat === chat.id;
+    <div className="flex-1 overflow-hidden" data-lenis-prevent>
+      <ScrollArea className="h-full">
+        <div className="max-w-sm space-y-2 p-2 sm:space-y-3 sm:p-4">
+          {chats.map((chat) => {
+            const lastMessage = chat.messages[0];
+            const isSelected = selectedChat === chat.id;
 
-          return (
-            <Button
-              key={chat.id}
-              variant={isSelected ? "default" : "ghost"}
-              className={`neuro flex h-auto w-full flex-col items-start border-2 p-3 text-left sm:p-4 ${
-                isSelected
-                  ? "bg-gray-200 hover:bg-gray-300 dark:bg-black/70"
-                  : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600"
-              }`}
-              onClick={() => onSelectChat(chat.id)}
-            >
-              <div className="w-full">
-                <div className="mb-2 flex items-start justify-between">
-                  <h3 className="flex-1 truncate text-xs font-bold text-gray-900 sm:text-sm dark:text-white">
-                    {chat.name}
-                  </h3>
-                  <span className="ml-2 flex-shrink-0 text-xs text-gray-500 dark:text-gray-400">
-                    {formatDistanceToNow(new Date(chat.updatedAt), {
-                      addSuffix: true,
-                    })}
-                  </span>
-                </div>
+            return (
+              <Button
+                key={chat.id}
+                variant={isSelected ? "default" : "ghost"}
+                className={`neuro flex h-auto w-full flex-col items-start border-2 p-3 text-left sm:p-4 ${
+                  isSelected
+                    ? "bg-gray-200 hover:bg-gray-300 dark:bg-black/70"
+                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600"
+                }`}
+                onClick={() => onSelectChat(chat.id)}
+              >
+                <div className="w-full">
+                  <div className="mb-2 flex items-start justify-between">
+                    <h3 className="flex-1 truncate text-xs font-bold text-gray-900 sm:text-sm dark:text-white">
+                      {chat.name}
+                    </h3>
+                    <span className="ml-2 flex-shrink-0 text-xs text-gray-500 dark:text-gray-400">
+                      {formatDistanceToNow(new Date(chat.updatedAt), {
+                        addSuffix: true,
+                      })}
+                    </span>
+                  </div>
 
-                <div className="mb-2 flex flex-wrap gap-1">
-                  <Badge
-                    variant="secondary"
-                    className="border border-gray-300 text-xs font-medium dark:border-gray-600"
-                  >
-                    {chat.subject}
-                  </Badge>
-                </div>
-
-                {lastMessage && (
-                  <p className="line-clamp-2 text-xs text-gray-600 dark:text-gray-300">
-                    {lastMessage.role === "USER" ? "👤 " : "🤖 "}
-                    {lastMessage.content}
-                  </p>
-                )}
-
-                <div className="mt-2 flex flex-wrap items-center justify-between gap-1">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {chat._count.messages} message
-                    {chat._count.messages !== 1 ? "s" : ""}
-                  </span>
-
-                  <div className="flex flex-wrap gap-1">
-                    <Badge variant="outline" className="text-xs">
-                      {getDisplayNameFromSanityValue(
-                        "university",
-                        chat.university.toLowerCase(),
-                      )}
-                    </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {getDisplayNameFromSanityValue(
-                        "degree",
-                        chat.degree.toLowerCase().replace("_", "-"),
-                      )}
+                  <div className="mb-2 flex flex-wrap gap-1">
+                    <Badge
+                      variant="secondary"
+                      className="border border-gray-300 text-xs font-medium dark:border-gray-600"
+                    >
+                      {chat.subject}
                     </Badge>
                   </div>
+
+                  {lastMessage && (
+                    <p className="line-clamp-2 text-xs text-gray-600 dark:text-gray-300">
+                      {lastMessage.role === "USER" ? "👤 " : "🤖 "}
+                      {lastMessage.content}
+                    </p>
+                  )}
+
+                  <div className="mt-2 flex flex-wrap items-center justify-between gap-1">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {chat._count.messages} message
+                      {chat._count.messages !== 1 ? "s" : ""}
+                    </span>
+
+                    <div className="flex flex-wrap gap-1">
+                      <Badge variant="outline" className="text-xs">
+                        {getDisplayNameFromSanityValue(
+                          "university",
+                          chat.university.toLowerCase(),
+                        )}
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        {getDisplayNameFromSanityValue(
+                          "degree",
+                          chat.degree.toLowerCase().replace("_", "-"),
+                        )}
+                      </Badge>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </Button>
-          );
-        })}
-      </div>
-    </ScrollArea>
+              </Button>
+            );
+          })}
+        </div>
+      </ScrollArea>
+    </div>
   );
 }

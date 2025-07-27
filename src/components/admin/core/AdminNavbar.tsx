@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
@@ -23,6 +23,10 @@ const adminNavbarItems: AdminNavbarProps[] = [
     href: "/admin/flashcards",
   },
   {
+    title: "AI Chats",
+    href: "/admin/ai",
+  },
+  {
     title: "Coupons",
     href: "/admin/coupons",
   },
@@ -32,17 +36,17 @@ export default function AdminNavbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center gap-1 border-b-4 border-black dark:border-white pb-2">
+    <nav className="flex items-center gap-1 border-b-4 border-black pb-2 dark:border-white">
       {adminNavbarItems.map((item) => {
         const isActive = pathname === item.href;
-        
+
         return (
-          <Link 
-            href={item.href} 
+          <Link
+            href={item.href}
             key={item.title}
             className={`px-4 py-2 text-sm font-black uppercase transition-all ${
-              isActive 
-                ? "border-b-4 border-black bg-black text-white dark:border-white dark:bg-white dark:text-black" 
+              isActive
+                ? "border-b-4 border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
                 : "border-b-4 border-transparent hover:border-black hover:bg-black hover:text-white dark:hover:border-white dark:hover:bg-white dark:hover:text-black"
             }`}
           >

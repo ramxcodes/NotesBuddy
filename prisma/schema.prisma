@@ -97,6 +97,9 @@ model User {
   // Flashcard related
   flashcardVisits FlashcardVisit[]
 
+    // AI Chatbot related
+  chats         Chat[]
+
   @@map("user")
 }
 
@@ -573,4 +576,53 @@ model FlashcardVisit {
   @@index([userId, setId])
   @@index([userId, visitedAt])
   @@map("flashcard_visit")
+}
+
+
+// AI CHATBOT MODELS
+
+model Chat {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Academic context
+  university  University
+  degree      Degree
+  year        Year
+  semester    Semester
+  subject     String   // Subject as string for flexibility
+  
+  // Chat metadata
+  name        String   @default("Untitled Chat") // AI-generated chat name (e.g., "CSE 3rd Sem AI Chat" or AI generated name based on context)
+
+  messages    ChatMessage[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([university, degree, year, semester])
+  @@map("chat")
+}
+
+model ChatMessage {
+  id       String @id @default(cuid())
+  chatId   String
+  chat     Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  
+  // Message content
+  role     MessageRole // USER or ASSISTANT
+  content  String      // The actual message content
+  model    String?     // AI model used (e.g., "gemini-2.0-flash", "gemini-2.5-pro")
+  
+  createdAt DateTime @default(now())
+
+  @@index([chatId, createdAt])
+  @@map("chat_message")
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
 }

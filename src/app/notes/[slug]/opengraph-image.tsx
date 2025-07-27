@@ -20,19 +20,23 @@ const getDisplayNameBySanityValue = (
     | typeof UNIVERSITY_OPTIONS
     | typeof DEGREE_OPTIONS
     | typeof YEAR_OPTIONS
-    | typeof SEMESTER_OPTIONS
+    | typeof SEMESTER_OPTIONS,
 ) => {
   if (!sanityValue) return "";
 
   const option = Object.values(optionsObject).find(
-    (option) => option.sanityValue === sanityValue
+    (option) => option.sanityValue === sanityValue,
   );
   return option?.title || sanityValue;
 };
 
 // Image generation
-export default async function Image({ params }: { params: { slug: string } }) {
-  const slug = (await params).slug;
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   const note = await getNoteBySlug(slug);
 
   return new ImageResponse(
@@ -130,7 +134,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
               >
                 {getDisplayNameBySanityValue(
                   note?.university,
-                  UNIVERSITY_OPTIONS
+                  UNIVERSITY_OPTIONS,
                 ) || "University"}
               </div>
               <div
@@ -197,7 +201,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
               >
                 {getDisplayNameBySanityValue(
                   note?.semester,
-                  SEMESTER_OPTIONS
+                  SEMESTER_OPTIONS,
                 ) || "Semester"}
               </div>
             </div>
@@ -318,6 +322,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
     ),
     {
       ...size,
-    }
+    },
   );
 }

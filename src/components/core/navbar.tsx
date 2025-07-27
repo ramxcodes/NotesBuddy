@@ -29,6 +29,10 @@ const navItems = [
     href: "/flashcards",
   },
   {
+    label: "AI Chat",
+    href: "/ai",
+  },
+  {
     label: "Pricing",
     href: "/premium?tier=TIER_3",
   },

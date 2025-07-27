@@ -178,8 +178,9 @@ export default function AdminChatDetailView({
             ) : (
               chat.messages.map((message) => (
                 <div
+                data-lenis-prevent
                   key={message.id}
-                  className={`flex gap-3 ${
+                  className={`flex gap-3  ${
                     message.role === "USER" ? "justify-end" : "justify-start"
                   }`}
                 >

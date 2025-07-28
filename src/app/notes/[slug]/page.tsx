@@ -24,9 +24,86 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = (await params).slug;
   const note = await getNoteBySlug(slug);
 
+  if (!note) {
+    return {
+      title: "Note Not Found",
+      description: "The requested note could not be found.",
+    };
+  }
+
+  const title = note.title || "Study Note";
+  const description =
+    note.syllabus ||
+    `Comprehensive study notes for ${note.subject || "your studies"}. Access detailed content and enhance your learning experience with Notes Buddy.`;
+  const baseUrl = "https://notesbuddy.in";
+
+  // Filter out null values for keywords and tags
+  const keywordsList = [
+    note.subject,
+    note.university,
+    note.degree,
+    note.year,
+    note.semester,
+    "study notes",
+    "education",
+    "learning",
+  ].filter((item): item is string => Boolean(item));
+
+  const tagsList = [
+    note.subject,
+    note.university,
+    note.degree,
+    note.year,
+    note.semester,
+  ].filter((item): item is string => Boolean(item));
+
   return {
-    title: note?.title || "Note",
-    description: note?.syllabus || "Note",
+    title,
+    description,
+    keywords: keywordsList,
+    openGraph: {
+      title,
+      description,
+      url: `${baseUrl}/notes/${slug}`,
+      siteName: "Notes Buddy",
+      locale: "en_US",
+      type: "article",
+      authors: ["Notes Buddy Team"],
+      section: note.subject || "Education",
+      tags: tagsList,
+      images: [
+        {
+          url: `${baseUrl}/notes/${slug}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      site: "@notesbuddy",
+      creator: "@notesbuddy",
+      images: [`${baseUrl}/notes/${slug}/opengraph-image`],
+    },
+    alternates: {
+      canonical: `${baseUrl}/notes/${slug}`,
+    },
+    robots: {
+      index: true,
+      follow: true,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
   };
 }
 

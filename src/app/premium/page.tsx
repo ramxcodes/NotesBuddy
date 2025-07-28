@@ -19,9 +19,52 @@ import { Link } from "next-view-transitions";
 import ShieldCheckIcon from "@/components/icons/ShieldCheckIcon";
 
 export const metadata: Metadata = {
-  title: "Premium | NotesBuddy",
+  title: "Premium Membership - Unlock Advanced Learning Features",
   description:
-    "Unlock exclusive study materials and get ahead in your academic journey",
+    "Upgrade to Premium and unlock exclusive study materials, advanced AI features, unlimited quiz attempts, and premium flashcard sets. Take your academic performance to the next level.",
+  keywords: [
+    "premium",
+    "subscription",
+    "upgrade",
+    "exclusive content",
+    "advanced features",
+    "study materials",
+    "academic success",
+  ],
+  openGraph: {
+    title:
+      "Premium Membership - Unlock Advanced Learning Features | Notes Buddy",
+    description:
+      "Upgrade to Premium and unlock exclusive study materials, advanced AI features, unlimited quiz attempts, and premium flashcard sets.",
+    url: "https://notesbuddy.in/premium",
+    siteName: "Notes Buddy",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Premium Membership - Unlock Advanced Learning Features",
+    description:
+      "Upgrade to Premium and unlock exclusive study materials, advanced AI features, unlimited quiz attempts, and premium flashcard sets.",
+    site: "@notesbuddy",
+    creator: "@notesbuddy",
+  },
+  alternates: {
+    canonical: "https://notesbuddy.in/premium",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default async function PremiumPage() {

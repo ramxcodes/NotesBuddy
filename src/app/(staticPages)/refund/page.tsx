@@ -2,9 +2,24 @@ import React from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Refund | Notes Buddy",
+  title: "Refund Policy - Money Back Guarantee",
   description:
-    "Learn about our refund policy and how to request a refund for your purchase.",
+    "Learn about our refund policy and how to request a refund for your premium subscription. We offer flexible refund options to ensure customer satisfaction.",
+  keywords: [
+    "refund policy",
+    "money back guarantee",
+    "refund request",
+    "customer satisfaction",
+    "subscription refund",
+  ],
+  alternates: {
+    canonical: "https://notesbuddy.in/refund",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
 };
 
 // Force static generation

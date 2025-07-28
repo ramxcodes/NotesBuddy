@@ -11,8 +11,51 @@ import { Metadata } from "next";
 import StackIcon from "@/components/icons/StackIcon";
 
 export const metadata: Metadata = {
-  title: "Flashcards - Notes Buddy",
-  description: "Study with interactive flashcards to boost your learning",
+  title: "Interactive Flashcards - Master Your Studies",
+  description:
+    "Enhance your learning with interactive flashcards designed for effective memorization and retention. Create custom flashcard sets and practice with spaced repetition techniques.",
+  keywords: [
+    "flashcards",
+    "memorization",
+    "spaced repetition",
+    "study cards",
+    "learning tools",
+    "memory training",
+    "academic study",
+  ],
+  openGraph: {
+    title: "Interactive Flashcards - Master Your Studies | Notes Buddy",
+    description:
+      "Enhance your learning with interactive flashcards designed for effective memorization and retention.",
+    url: "https://notesbuddy.in/flashcards",
+    siteName: "Notes Buddy",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Interactive Flashcards - Master Your Studies",
+    description:
+      "Enhance your learning with interactive flashcards designed for effective memorization and retention.",
+    site: "@notesbuddy",
+    creator: "@notesbuddy",
+  },
+  alternates: {
+    canonical: "https://notesbuddy.in/flashcards",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 interface FlashcardsPageProps {

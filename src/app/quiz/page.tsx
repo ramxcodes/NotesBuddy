@@ -10,8 +10,52 @@ import { sanityToPrismaValue } from "@/utils/academic-config";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Quiz - Notes Buddy",
-  description: "Test your knowledge with our comprehensive quizzes",
+  title: "Interactive Quizzes - Test Your Knowledge",
+  description:
+    "Challenge yourself with interactive quizzes designed to test your understanding and reinforce learning. Track your progress and improve your academic performance with our comprehensive quiz platform.",
+  keywords: [
+    "quiz",
+    "test",
+    "assessment",
+    "learning",
+    "education",
+    "knowledge test",
+    "academic quiz",
+    "practice test",
+  ],
+  openGraph: {
+    title: "Interactive Quizzes - Test Your Knowledge | Notes Buddy",
+    description:
+      "Challenge yourself with interactive quizzes designed to test your understanding and reinforce learning.",
+    url: "https://notesbuddy.in/quiz",
+    siteName: "Notes Buddy",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Interactive Quizzes - Test Your Knowledge",
+    description:
+      "Challenge yourself with interactive quizzes designed to test your understanding and reinforce learning.",
+    site: "@notesbuddy",
+    creator: "@notesbuddy",
+  },
+  alternates: {
+    canonical: "https://notesbuddy.in/quiz",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 interface QuizPageProps {
@@ -83,7 +127,7 @@ async function QuizList({ searchParams }: QuizPageProps) {
   }
 
   return (
-    <div className="space-y-6 mx-4">
+    <div className="mx-4 space-y-6">
       <div className="space-y-6">
         <FilterQuizDropdown
           userProfile={userContext.userProfile}

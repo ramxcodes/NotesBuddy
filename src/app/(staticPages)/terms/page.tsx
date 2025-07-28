@@ -2,8 +2,24 @@ import React from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms | Notes Buddy",
-  description: "Learn about the terms and conditions for using Notes Buddy.",
+  title: "Terms and Conditions - Service Agreement",
+  description:
+    "Read our terms and conditions that govern the use of Notes Buddy platform and services. Understanding your rights and responsibilities as a user.",
+  keywords: [
+    "terms and conditions",
+    "service agreement",
+    "user agreement",
+    "legal terms",
+    "platform rules",
+  ],
+  alternates: {
+    canonical: "https://notesbuddy.in/terms",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
 };
 
 // Force static generation

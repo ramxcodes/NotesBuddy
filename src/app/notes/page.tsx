@@ -11,8 +11,51 @@ import { NotesInfiniteList } from "@/components/note/NotesInfiniteList";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Notes",
-  description: "Notes page",
+  title: "Study Notes - Comprehensive Academic Resources",
+  description:
+    "Browse through thousands of comprehensive study notes across different universities, degrees, and subjects. Find the perfect notes to boost your academic performance and exam preparation.",
+  keywords: [
+    "study notes",
+    "academic notes",
+    "university notes",
+    "exam preparation",
+    "student resources",
+    "learning materials",
+    "education",
+  ],
+  openGraph: {
+    title: "Study Notes - Comprehensive Academic Resources | Notes Buddy",
+    description:
+      "Browse through thousands of comprehensive study notes across different universities, degrees, and subjects. Find the perfect notes to boost your academic performance.",
+    url: "https://notesbuddy.in/notes",
+    siteName: "Notes Buddy",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Study Notes - Comprehensive Academic Resources",
+    description:
+      "Browse through thousands of comprehensive study notes across different universities, degrees, and subjects.",
+    site: "@notesbuddy",
+    creator: "@notesbuddy",
+  },
+  alternates: {
+    canonical: "https://notesbuddy.in/notes",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 interface SearchParams {
@@ -102,7 +145,7 @@ export default async function NotesPage({
               alt="Hero"
               width={50}
               height={50}
-              className="absolute right-0 hidden md:block size-28"
+              className="absolute right-0 hidden size-28 md:block"
             />
           </div>
 

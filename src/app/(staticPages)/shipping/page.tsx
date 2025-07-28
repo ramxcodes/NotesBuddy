@@ -2,8 +2,24 @@ import React from "react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Shipping | Notes Buddy",
-  description: "Learn about our shipping policy and how to track your order.",
+  title: "Shipping Policy - Delivery Information",
+  description:
+    "Learn about our shipping policy, delivery times, and how to track your order. Get information about shipping costs and delivery options.",
+  keywords: [
+    "shipping policy",
+    "delivery information",
+    "order tracking",
+    "shipping costs",
+    "delivery times",
+  ],
+  alternates: {
+    canonical: "https://notesbuddy.in/shipping",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
 };
 
 // Force static generation

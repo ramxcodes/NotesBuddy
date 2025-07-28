@@ -5,8 +5,14 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Sign In",
-  description: "Sign in page",
+  title: "Sign In - Access Your Study Dashboard",
+  description:
+    "Sign in to your Notes Buddy account to access personalized study notes, AI-powered learning tools, and track your academic progress.",
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+  },
 };
 
 export default async function SignIn() {

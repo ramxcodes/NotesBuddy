@@ -1,9 +1,24 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy | Notes Buddy",
+  title: "Privacy Policy - How We Protect Your Data",
   description:
-    "Learn about how we collect, use, and protect your personal information.",
+    "Learn about how Notes Buddy collects, uses, and protects your personal information. Our commitment to your privacy and data security.",
+  keywords: [
+    "privacy policy",
+    "data protection",
+    "user privacy",
+    "data security",
+    "personal information",
+  ],
+  alternates: {
+    canonical: "https://notesbuddy.in/privacy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
 };
 
 // Force static generation

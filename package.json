@@ -9,7 +9,8 @@
     "lint": "next lint",
     "predev": "bun run typegen",
     "prebuild": "bun run typegen",
-    "typegen": "sanity schema extract --path=./src/sanity/extract.json && sanity typegen generate"
+    "typegen": "sanity schema extract --path=./src/sanity/extract.json && sanity typegen generate",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -98,6 +99,7 @@
     "@types/ua-parser-js": "^0.7.39",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.13",
     "tailwindcss": "^4",

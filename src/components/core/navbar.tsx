@@ -1,15 +1,10 @@
-import Image from "next/image";
 import { Link } from "next-view-transitions";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import Profile from "./profile";
 import { adminStatus } from "@/lib/db/user";
 import AdminIcon from "../icons/AdminIcon";
 import { Button } from "../ui/button";
+import Logo from "./Logo";
+import WhatsappIcon from "../icons/WhatsappIcon";
 
 const navItems = [
   {
@@ -33,14 +28,8 @@ export default async function NavBar() {
   return (
     <nav className="dark:from-background dark:via-background dark:to-background/20 sticky top-0 z-50 flex items-center justify-between bg-gradient-to-b from-white via-white to-white/20 px-10 py-8 hover:cursor-pointer">
       <div className="flex items-center gap-30">
-        <Link href="/" className="flex items-center gap-2">
-          <Image
-            data-umami-event="nav-logo-click"
-            src="/logo.png"
-            alt="Notes Buddy"
-            width={40}
-            height={40}
-          />
+        <Link href="/" className="flex items-center">
+          <Logo className="size-10 md:size-12 lg:size-16" />
           <h3
             data-umami-event="nav-brand-text-click"
             className="font-excon text-xl font-bold md:text-2xl"
@@ -63,7 +52,7 @@ export default async function NavBar() {
           })}
         </div>
       </div>
-      <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-2 md:gap-4">
         {isAdmin && (
           <Link href="/admin">
             <Button
@@ -76,37 +65,7 @@ export default async function NavBar() {
             </Button>
           </Link>
         )}
-
-        <Link
-          data-umami-event="nav-whatsapp-community-click"
-          className="mt-1 hover:cursor-pointer"
-          target="_blank"
-          href="https://chat.whatsapp.com/EcretA1N7eCFQeHecm1uWO"
-        >
-          <Tooltip>
-            <TooltipTrigger>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-8"
-                viewBox="0 0 22 22"
-              >
-                <g
-                  fill="none"
-                  stroke="#00a81c"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                >
-                  <path d="m3 21l1.65-3.8a9 9 0 1 1 3.4 2.9z" />
-                  <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0za5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
-                </g>
-              </svg>
-            </TooltipTrigger>
-            <TooltipContent className="font-excon">
-              <p>Join our community</p>
-            </TooltipContent>
-          </Tooltip>
-        </Link>
+        <WhatsappIcon />
         <Profile />
       </div>
     </nav>

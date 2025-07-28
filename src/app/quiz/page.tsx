@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import FilterQuizDropdown from "@/components/quiz/FilterQuizDropdown";
 import QuizCard from "@/components/quiz/QuizCard";
 import QuizListSkeleton from "@/components/quiz/QuizListSkeleton";

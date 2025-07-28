@@ -19,13 +19,14 @@ import ReportButton from "../navbar/ReportButton";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
 import CardsIcon from "../icons/CardsIcon";
 import AiIcon from "../icons/AiIcon";
+import WhatsappDuoIcon from "../icons/WhatsappDuoIcon";
 
 export default async function Profile() {
   const session = await getSession();
 
   if (!session) {
     return (
-      <div className="flex items-center justify-center gap-4">
+      <div className="ml-4 flex items-center justify-center gap-2 md:ml-0 md:gap-4">
         <ThemeToggle />
         <SignInButton />
       </div>
@@ -92,7 +93,15 @@ export default async function Profile() {
             AI Assistant
           </DropdownMenuItem>
         </Link>
-
+        <Link href="/ai">
+          <DropdownMenuItem
+            data-umami-event="profile-dropdown-Whatsapp-click"
+            className="hover:cursor-pointer"
+          >
+            <WhatsappDuoIcon className="size-4" />
+            Join Whatsapp!
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex items-center justify-center">
           <div data-umami-event="profile-dropdown-theme-toggle-click">

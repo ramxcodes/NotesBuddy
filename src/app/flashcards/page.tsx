@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import FilterFlashcardDropdown from "@/components/flashcard/FilterFlashcardDropdown";
 import FlashcardCard from "@/components/flashcard/FlashcardCard";
 import FlashcardListSkeleton from "@/components/flashcard/FlashcardListSkeleton";

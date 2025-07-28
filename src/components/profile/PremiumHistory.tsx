@@ -191,7 +191,7 @@ export function PremiumHistory({ purchases }: PremiumHistoryProps) {
                             Code: {purchase.discountCode}
                           </Badge>
                         )}
-                        {purchase.referralCode && (
+                        {purchase.referralCode && !purchase.discountCode && (
                           <Badge
                             variant="outline"
                             className="mt-1 border-2 border-green-500 bg-green-50 font-bold text-green-800 shadow-[1px_1px_0px_0px_#22c55e] dark:border-green-400 dark:bg-green-900/20 dark:text-green-300 dark:shadow-[1px_1px_0px_0px_#4ade80]"

@@ -62,7 +62,9 @@ export async function deleteFlashcardSetAction(id: string) {
   }
 }
 
-export async function getFlashcardSetsAction(filters: FlashcardSetFilters = {}) {
+export async function getFlashcardSetsAction(
+  filters: FlashcardSetFilters = {},
+) {
   try {
     const flashcardSets = await getFlashcardSets(filters);
     return { success: true, data: flashcardSets };
@@ -82,7 +84,10 @@ export async function getFlashcardSetByIdAction(id: string) {
   }
 }
 
-export async function toggleFlashcardSetStatusAction(id: string, isActive: boolean) {
+export async function toggleFlashcardSetStatusAction(
+  id: string,
+  isActive: boolean,
+) {
   try {
     await toggleFlashcardSetStatus(id, isActive);
     revalidatePath("/admin/flashcards");
@@ -93,14 +98,20 @@ export async function toggleFlashcardSetStatusAction(id: string, isActive: boole
   }
 }
 
-export async function toggleFlashcardSetPublishedAction(id: string, isPublished: boolean) {
+export async function toggleFlashcardSetPublishedAction(
+  id: string,
+  isPublished: boolean,
+) {
   try {
     await toggleFlashcardSetPublished(id, isPublished);
     revalidatePath("/admin/flashcards");
     return { success: true };
   } catch (error) {
     console.error("Error toggling flashcard set published status:", error);
-    return { success: false, error: "Failed to toggle flashcard set published status" };
+    return {
+      success: false,
+      error: "Failed to toggle flashcard set published status",
+    };
   }
 }
 
@@ -120,12 +131,17 @@ export async function getFlashcardAcademicOptionsAction() {
     return { success: true, data: options };
   } catch (error) {
     console.error("Error fetching flashcard academic options:", error);
-    return { success: false, error: "Failed to fetch flashcard academic options" };
+    return {
+      success: false,
+      error: "Failed to fetch flashcard academic options",
+    };
   }
 }
 
 // User Actions
-export async function getPublishedFlashcardSetsAction(filters: FlashcardSetFilters = {}) {
+export async function getPublishedFlashcardSetsAction(
+  filters: FlashcardSetFilters = {},
+) {
   try {
     const session = await getSession();
     let userProfile = undefined;
@@ -176,7 +192,10 @@ export async function getUserFlashcardActivityAction() {
   }
 }
 
-export async function trackFlashcardSetVisitAction(setId: string, cardId?: string) {
+export async function trackFlashcardSetVisitAction(
+  setId: string,
+  cardId?: string,
+) {
   try {
     const session = await getSession();
     if (!session?.user?.id) {
@@ -195,9 +214,10 @@ export async function getFlashcardSetsBySubjectAction(subject: string) {
   try {
     const session = await getSession();
     let userProfile = undefined;
+    const userId = session?.user?.id;
 
-    if (session?.user?.id) {
-      const profile = await getUserFullProfile(session.user.id);
+    if (userId) {
+      const profile = await getUserFullProfile(userId);
       if (profile) {
         userProfile = {
           university: profile.university,
@@ -208,7 +228,11 @@ export async function getFlashcardSetsBySubjectAction(subject: string) {
       }
     }
 
-    const flashcardSets = await getFlashcardSetsBySubject(subject, userProfile);
+    const flashcardSets = await getFlashcardSetsBySubject(
+      subject,
+      userProfile,
+      userId,
+    );
     return { success: true, data: flashcardSets };
   } catch (error) {
     console.error("Error fetching flashcard sets by subject:", error);

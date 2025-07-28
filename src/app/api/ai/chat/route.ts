@@ -83,14 +83,11 @@ function checkRateLimit(clientIP: string): {
 }
 
 export async function POST(request: NextRequest) {
-  
-
   try {
     const clientIP = getClientIP(request);
     const rateLimit = checkRateLimit(clientIP);
 
     if (!rateLimit.allowed) {
-     
       return NextResponse.json(
         {
           error: "Too many requests. Please try again later.",
@@ -108,7 +105,6 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-   
 
     const validatedData = chatSchema.parse(body);
 

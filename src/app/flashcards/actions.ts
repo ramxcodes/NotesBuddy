@@ -35,6 +35,7 @@ export interface UserFlashcardSetsResponse {
 const getCachedFlashcardSets = unstable_cache(
   async (
     params: GetUserFlashcardSetsParams,
+    userId?: string,
   ): Promise<UserFlashcardSetsResponse> => {
     const filters: FlashcardSetFilters = {
       search: params.search,
@@ -48,7 +49,11 @@ const getCachedFlashcardSets = unstable_cache(
       isPublished: true,
     };
 
-    const flashcardSets = await getUserFlashcardSets(filters);
+    const flashcardSets = await getUserFlashcardSets(
+      filters,
+      undefined,
+      userId,
+    );
 
     return {
       flashcardSets,
@@ -66,7 +71,10 @@ export async function loadUserFlashcardSetsAction(
   params: GetUserFlashcardSetsParams,
 ): Promise<UserFlashcardSetsResponse | null> {
   try {
-    const result = await getCachedFlashcardSets(params);
+    const session = await getSession();
+    const userId = session?.user?.id;
+
+    const result = await getCachedFlashcardSets(params, userId);
 
     return result;
   } catch (error) {

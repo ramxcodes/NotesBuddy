@@ -145,9 +145,10 @@ export async function getPublishedFlashcardSetsAction(
   try {
     const session = await getSession();
     let userProfile = undefined;
+    const userId = session?.user?.id;
 
-    if (session?.user?.id) {
-      const profile = await getUserFullProfile(session.user.id);
+    if (userId) {
+      const profile = await getUserFullProfile(userId);
       if (profile) {
         userProfile = {
           university: profile.university,
@@ -158,7 +159,11 @@ export async function getPublishedFlashcardSetsAction(
       }
     }
 
-    const flashcardSets = await getPublishedFlashcardSets(filters, userProfile);
+    const flashcardSets = await getPublishedFlashcardSets(
+      filters,
+      userProfile,
+      userId,
+    );
     return { success: true, data: flashcardSets };
   } catch (error) {
     console.error("Error fetching published flashcard sets:", error);
@@ -214,9 +219,10 @@ export async function getFlashcardSetsBySubjectAction(subject: string) {
   try {
     const session = await getSession();
     let userProfile = undefined;
+    const userId = session?.user?.id;
 
-    if (session?.user?.id) {
-      const profile = await getUserFullProfile(session.user.id);
+    if (userId) {
+      const profile = await getUserFullProfile(userId);
       if (profile) {
         userProfile = {
           university: profile.university,
@@ -227,7 +233,11 @@ export async function getFlashcardSetsBySubjectAction(subject: string) {
       }
     }
 
-    const flashcardSets = await getFlashcardSetsBySubject(subject, userProfile);
+    const flashcardSets = await getFlashcardSetsBySubject(
+      subject,
+      userProfile,
+      userId,
+    );
     return { success: true, data: flashcardSets };
   } catch (error) {
     console.error("Error fetching flashcard sets by subject:", error);

@@ -61,7 +61,7 @@ function FAQItem({
     >
       <button
         onClick={onToggle}
-        className="hover:bg-muted/50 flex w-full items-center justify-between p-6 text-left transition-colors"
+        className="hover:bg-muted/50 flex w-full items-center justify-between p-6 text-left transition-colors hover:cursor-pointer"
       >
         <h3 className="text-foreground font-excon text-lg font-semibold">
           {question}

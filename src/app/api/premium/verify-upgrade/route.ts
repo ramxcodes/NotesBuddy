@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth/auth";
 import { verifyRazorpaySignature } from "@/lib/razorpay/config";
 import prisma from "@/lib/db/prisma";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: NextRequest) {
   try {
@@ -122,6 +123,13 @@ export async function POST(request: NextRequest) {
         });
       }
     }
+
+    // Revalidate premium-related caches to ensure UI reflects the upgrade
+    revalidateTag("user-premium-status");
+    revalidateTag("user-purchase-history");
+    revalidateTag("user-referral-status");
+    revalidateTag("user-wallet-balance");
+    revalidateTag("user-wallet-history");
 
     return NextResponse.json({ success: true });
   } catch (error) {

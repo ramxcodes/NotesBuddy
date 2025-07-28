@@ -70,6 +70,9 @@ export interface FlashcardSetListItem {
   visitCount: number;
   createdAt: Date;
   updatedAt: Date;
+  // User-specific fields
+  userHasVisited?: boolean;
+  userLastVisitedAt?: Date | null;
 }
 
 export interface FlashcardSetSummary {

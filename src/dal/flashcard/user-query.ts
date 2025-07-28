@@ -16,6 +16,7 @@ export async function getPublishedFlashcardSets(
     year: Year;
     semester: Semester;
   },
+  userId?: string,
 ) {
   const where: Record<string, unknown> = {
     isActive: true,
@@ -51,31 +52,48 @@ export async function getPublishedFlashcardSets(
           visits: true,
         },
       },
+      ...(userId && {
+        visits: {
+          where: { userId },
+          select: {
+            visitedAt: true,
+          },
+          orderBy: {
+            visitedAt: "desc",
+          },
+          take: 1,
+        },
+      }),
     },
     orderBy: [{ updatedAt: "desc" }],
   });
 
-  return sets.map(
-    (set) =>
-      ({
-        id: set.id,
-        title: set.title,
-        description: set.description,
-        subject: set.subject,
-        university: set.university,
-        degree: set.degree,
-        year: set.year,
-        semester: set.semester,
-        isActive: set.isActive,
-        isPublished: set.isPublished,
-        isPremium: set.isPremium,
-        requiredTier: set.requiredTier,
-        cardCount: set._count.cards,
-        visitCount: set._count.visits,
-        createdAt: set.createdAt,
-        updatedAt: set.updatedAt,
-      }) satisfies FlashcardSetListItem,
-  );
+  return sets.map((set) => {
+    const userVisits = userId && "visits" in set ? set.visits : [];
+    const userHasVisited = userVisits.length > 0;
+    const userLastVisitedAt = userHasVisited ? userVisits[0].visitedAt : null;
+
+    return {
+      id: set.id,
+      title: set.title,
+      description: set.description,
+      subject: set.subject,
+      university: set.university,
+      degree: set.degree,
+      year: set.year,
+      semester: set.semester,
+      isActive: set.isActive,
+      isPublished: set.isPublished,
+      isPremium: set.isPremium,
+      requiredTier: set.requiredTier,
+      cardCount: set._count.cards,
+      visitCount: set._count.visits,
+      createdAt: set.createdAt,
+      updatedAt: set.updatedAt,
+      userHasVisited,
+      userLastVisitedAt,
+    } satisfies FlashcardSetListItem;
+  });
 }
 
 export async function getFlashcardSetForUser(
@@ -221,6 +239,7 @@ export async function getFlashcardSetsBySubject(
     year: Year;
     semester: Semester;
   },
+  userId?: string,
 ) {
   const where: Record<string, unknown> = {
     isActive: true,
@@ -245,31 +264,48 @@ export async function getFlashcardSetsBySubject(
           visits: true,
         },
       },
+      ...(userId && {
+        visits: {
+          where: { userId },
+          select: {
+            visitedAt: true,
+          },
+          orderBy: {
+            visitedAt: "desc",
+          },
+          take: 1,
+        },
+      }),
     },
     orderBy: [{ title: "asc" }],
   });
 
-  return sets.map(
-    (set) =>
-      ({
-        id: set.id,
-        title: set.title,
-        description: set.description,
-        subject: set.subject,
-        university: set.university,
-        degree: set.degree,
-        year: set.year,
-        semester: set.semester,
-        isActive: set.isActive,
-        isPublished: set.isPublished,
-        isPremium: set.isPremium,
-        requiredTier: set.requiredTier,
-        cardCount: set._count.cards,
-        visitCount: set._count.visits,
-        createdAt: set.createdAt,
-        updatedAt: set.updatedAt,
-      }) satisfies FlashcardSetListItem,
-  );
+  return sets.map((set) => {
+    const userVisits = userId && "visits" in set ? set.visits : [];
+    const userHasVisited = userVisits.length > 0;
+    const userLastVisitedAt = userHasVisited ? userVisits[0].visitedAt : null;
+
+    return {
+      id: set.id,
+      title: set.title,
+      description: set.description,
+      subject: set.subject,
+      university: set.university,
+      degree: set.degree,
+      year: set.year,
+      semester: set.semester,
+      isActive: set.isActive,
+      isPublished: set.isPublished,
+      isPremium: set.isPremium,
+      requiredTier: set.requiredTier,
+      cardCount: set._count.cards,
+      visitCount: set._count.visits,
+      createdAt: set.createdAt,
+      updatedAt: set.updatedAt,
+      userHasVisited,
+      userLastVisitedAt,
+    } satisfies FlashcardSetListItem;
+  });
 }
 
 // Alias for getUserFlashcardSets

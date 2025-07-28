@@ -67,7 +67,7 @@ function PricingCard({
         {config.description}
       </div>
       <div className="text-muted-foreground mb-4 text-xs">
-        Valid for <span className="font-bold">{config.duration} Months</span>{" "}
+        Valid for <span className="font-bold">{config.duration} Days</span>{" "}
         for <span className="font-bold">1 Semester</span> from the day you
         purchase.
       </div>

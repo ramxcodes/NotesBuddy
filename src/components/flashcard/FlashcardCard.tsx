@@ -42,6 +42,8 @@ export default function FlashcardCard({
     cardCount,
     visitCount,
     createdAt,
+    userHasVisited,
+    userLastVisitedAt,
   } = flashcardSet;
 
   return (
@@ -107,13 +109,19 @@ export default function FlashcardCard({
       </div>
 
       {/* Stats */}
-      <div className="mb-6 flex items-center justify-between text-sm">
+      <div className="mb-6 flex flex-wrap items-center justify-center text-sm gap-2">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1 text-black/60 dark:text-white/60">
             <CardsIcon weight="duotone" className="h-4 w-4" />
             <span>{cardCount} cards</span>
           </div>
-          {visitCount > 0 && (
+          {isAuthenticated && userHasVisited && (
+            <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
+              <EyeIcon weight="duotone" className="h-4 w-4" />
+              <span>Studied</span>
+            </div>
+          )}
+          {!isAuthenticated && visitCount > 0 && (
             <div className="flex items-center gap-1 text-black/60 dark:text-white/60">
               <EyeIcon weight="duotone" className="h-4 w-4" />
               <span>{visitCount} studies</span>
@@ -123,9 +131,18 @@ export default function FlashcardCard({
         <div className="flex items-center gap-1 text-xs text-black/50 dark:text-white/50">
           <ClockIcon weight="duotone" className="h-3 w-3" />
           <span>
-            {formatDistanceToNow(new Date(createdAt), {
-              addSuffix: true,
-            })}
+            {isAuthenticated && userLastVisitedAt
+              ? // Show user's last visit time if they have studied it
+                `Last studied ${formatDistanceToNow(
+                  new Date(userLastVisitedAt),
+                  {
+                    addSuffix: true,
+                  },
+                )}`
+              : // Show creation time if user hasn't studied it or not authenticated
+                formatDistanceToNow(new Date(createdAt), {
+                  addSuffix: true,
+                })}
           </span>
         </div>
       </div>
@@ -138,7 +155,7 @@ export default function FlashcardCard({
               className="neuro hover:translate-y-0.5hover:shadow-[4px_4px_0px_0px_#000] w-full transition-all duration-200 hover:translate-x-0.5 dark:hover:shadow-[4px_4px_0px_0px_#757373]"
               size="lg"
             >
-              {visitCount > 0 ? (
+              {userHasVisited ? (
                 <>
                   <ArrowCounterClockwiseIcon
                     weight="duotone"

@@ -12,6 +12,7 @@ import {
   convertToSmallestUnit,
 } from "@/lib/razorpay/config";
 import prisma from "@/lib/db/prisma";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: NextRequest) {
   try {
@@ -140,6 +141,13 @@ export async function POST(request: NextRequest) {
           isPremiumActive: true,
         },
       });
+
+      // Revalidate premium-related caches for immediate upgrades
+      revalidateTag("user-premium-status");
+      revalidateTag("user-purchase-history");
+      revalidateTag("user-referral-status");
+      revalidateTag("user-wallet-balance");
+      revalidateTag("user-wallet-history");
     }
 
     return NextResponse.json({

@@ -44,7 +44,7 @@ export function PremiumStatus({ premiumStatus }: PremiumStatusProps) {
                 exclusive content.
               </p>
               <Link href="/premium">
-                <Button 
+                <Button
                   className="gap-2 border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
                   data-umami-event="profile-premium-status-upgrade-button-click"
                 >

@@ -222,7 +222,7 @@ export default function EmbeddedAcademicFilters({
             )
           }
         >
-          <SelectTrigger 
+          <SelectTrigger
             className="h-8 w-full border border-gray-300 text-xs sm:w-[140px] dark:border-gray-600"
             data-umami-event="ai-filter-university-trigger"
           >
@@ -258,7 +258,7 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.university}
         >
-          <SelectTrigger 
+          <SelectTrigger
             className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[120px] dark:border-gray-600"
             data-umami-event="ai-filter-degree-trigger"
           >
@@ -294,7 +294,7 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.degree}
         >
-          <SelectTrigger 
+          <SelectTrigger
             className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[100px] dark:border-gray-600"
             data-umami-event="ai-filter-year-trigger"
           >
@@ -330,7 +330,7 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.year}
         >
-          <SelectTrigger 
+          <SelectTrigger
             className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[120px] dark:border-gray-600"
             data-umami-event="ai-filter-semester-trigger"
           >
@@ -361,7 +361,7 @@ export default function EmbeddedAcademicFilters({
           onValueChange={(value) => handleFilterChange("subject", value)}
           disabled={isLoadingSubjects || !filters.semester}
         >
-          <SelectTrigger 
+          <SelectTrigger
             className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[140px] dark:border-gray-600"
             data-umami-event="ai-filter-subject-trigger"
           >
@@ -375,7 +375,7 @@ export default function EmbeddedAcademicFilters({
                 key={index}
                 value={subject.subject}
                 className="text-xs"
-                data-umami-event={`ai-filter-subject-${subject.subject.toLowerCase().replace(/\s+/g, '-')}`}
+                data-umami-event={`ai-filter-subject-${subject.subject.toLowerCase().replace(/\s+/g, "-")}`}
               >
                 {subject.subject}
               </SelectItem>

@@ -303,9 +303,10 @@ export function OnboardingForm() {
                           value={field.value || ""}
                         >
                           <FormControl>
-                            <SelectTrigger 
+                            <SelectTrigger
                               data-umami-event="onboarding-university-select-trigger"
-                              className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
+                              className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
+                            >
                               <SelectValue placeholder="Select university" />
                             </SelectTrigger>
                           </FormControl>
@@ -343,9 +344,10 @@ export function OnboardingForm() {
                           }
                         >
                           <FormControl>
-                            <SelectTrigger 
+                            <SelectTrigger
                               data-umami-event="onboarding-degree-select-trigger"
-                              className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
+                              className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
+                            >
                               <SelectValue
                                 placeholder={
                                   !watchedUniversity
@@ -395,9 +397,10 @@ export function OnboardingForm() {
                           }
                         >
                           <FormControl>
-                            <SelectTrigger 
+                            <SelectTrigger
                               data-umami-event="onboarding-year-select-trigger"
-                              className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
+                              className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
+                            >
                               <SelectValue
                                 placeholder={
                                   !watchedUniversity
@@ -448,9 +451,10 @@ export function OnboardingForm() {
                           }
                         >
                           <FormControl>
-                            <SelectTrigger 
+                            <SelectTrigger
                               data-umami-event="onboarding-semester-select-trigger"
-                              className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
+                              className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
+                            >
                               <SelectValue
                                 placeholder={
                                   !watchedUniversity

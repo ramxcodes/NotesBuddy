@@ -244,9 +244,11 @@ export default function QuizCard({ quiz, isAuthenticated }: QuizCardProps) {
       <div className="mt-4">
         {isAuthenticated ? (
           <Link href={`/quiz/${id}/attempt`}>
-            <Button 
+            <Button
               className="neuro-button font-satoshi w-full font-bold transition-all"
-              data-umami-event={hasAttempted ? `quiz-retake-${id}` : `quiz-start-${id}`}
+              data-umami-event={
+                hasAttempted ? `quiz-retake-${id}` : `quiz-start-${id}`
+              }
             >
               {hasAttempted ? (
                 <>

@@ -129,7 +129,7 @@ export function PremiumUpgrade({
               onValueChange={(value) => onUpgradeSelect(value as PremiumTier)}
               disabled={isLoading}
             >
-              <SelectTrigger 
+              <SelectTrigger
                 className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
                 data-umami-event="premium-upgrade-tier-selector-click"
               >

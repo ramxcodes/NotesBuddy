@@ -67,9 +67,8 @@ function PricingCard({
         {config.description}
       </div>
       <div className="text-muted-foreground mb-4 text-xs">
-        Valid for <span className="font-bold">{config.duration} Days</span>{" "}
-        for <span className="font-bold">1 Semester</span> from the day you
-        purchase.
+        Valid for <span className="font-bold">{config.duration} Days</span> for{" "}
+        <span className="font-bold">1 Semester</span> from the day you purchase.
       </div>
       {/* Features */}
       <ul className="mb-6 flex flex-col gap-2">
@@ -114,14 +113,14 @@ export default function Pricing() {
           alt="Hero"
           width={50}
           height={50}
-          className="absolute -top-16 md:-top-20 left-0 size-16 md:size-28"
+          className="absolute -top-16 left-0 size-16 md:-top-20 md:size-28"
         />
-         <Image
+        <Image
           src="/doodles/exmark.svg"
           alt="Hero"
           width={50}
           height={50}
-          className="absolute -top-14 md:-top-16 right-0 size-16 md:size-28"
+          className="absolute -top-14 right-0 size-16 md:-top-16 md:size-28"
         />
         <div className="mb-16 text-center md:mb-20">
           <h2 className="font-regular font-excon mx-auto mb-6 max-w-4xl text-center text-4xl leading-tight font-black tracking-tighter md:text-5xl lg:text-6xl">

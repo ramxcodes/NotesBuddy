@@ -113,7 +113,7 @@ export function PremiumDiscountCode({
               onClick={onApplyCode}
               disabled={isCalculating}
               className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
-              data-umami-event={`premium-discount-code-apply-${discountCode ? 'with-code' : 'empty'}`}
+              data-umami-event={`premium-discount-code-apply-${discountCode ? "with-code" : "empty"}`}
             >
               {isCalculating ? (
                 <SpinnerIcon className="h-4 w-4 animate-spin text-black dark:text-white" />

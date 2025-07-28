@@ -1,1 +1,20 @@
-bun run build
+#!/bin/bash
+
+# Create logs directory if it doesn't exist
+
+mkdir -p .husky/logs
+
+# Run build with logging - show output in terminal AND save to file
+
+echo "🔨 Running build..."
+bun run build 2>&1 | tee .husky/logs/build.log
+
+# Check if build succeeded (using PIPESTATUS for bash)
+
+if [ ${PIPESTATUS[0]} -ne 0 ]; then
+echo "❌ Build failed! Check .husky/logs/build.log for details."
+echo "Commit blocked."
+exit 1
+fi
+
+echo "✅ Build successful! Proceeding with commit..."

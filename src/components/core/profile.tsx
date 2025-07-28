@@ -42,37 +42,52 @@ export default async function Profile() {
           <AvatarFallback>{session.user.name?.charAt(0)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mt-4 mr-4 md:mr-10 w-44 ">
+      <DropdownMenuContent className="mt-4 mr-4 w-44 md:mr-10">
         <DropdownMenuLabel>
           <p className="font-excon text-sm">Hi, {userFirstName}!</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <Link href="/profile">
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            data-umami-event="profile-dropdown-profile-click"
+            className="hover:cursor-pointer"
+          >
             <UserIcon />
             Profile
           </DropdownMenuItem>
         </Link>
         <Link href="/notes">
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            data-umami-event="profile-dropdown-notes-click"
+            className="hover:cursor-pointer"
+          >
             <NotesbookIcon />
             Notes
           </DropdownMenuItem>
         </Link>
         <Link href="/quiz">
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            data-umami-event="profile-dropdown-quiz-click"
+            className="hover:cursor-pointer"
+          >
             <QuestionMarkIcon className="size-4" />
             Quiz
           </DropdownMenuItem>
         </Link>
         <Link href="/flashcards">
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            data-umami-event="profile-dropdown-flashcards-click"
+            className="hover:cursor-pointer"
+          >
             <CardsIcon className="size-4" />
             Flashcards
           </DropdownMenuItem>
         </Link>
         <Link href="/ai">
-          <DropdownMenuItem className="hover:cursor-pointer">
+          <DropdownMenuItem
+            data-umami-event="profile-dropdown-ai-assistant-click"
+            className="hover:cursor-pointer"
+          >
             <AiIcon className="size-4" />
             AI Assistant
           </DropdownMenuItem>
@@ -80,16 +95,22 @@ export default async function Profile() {
 
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex items-center justify-center">
-          <ThemeToggle />
+          <div data-umami-event="profile-dropdown-theme-toggle-click">
+            <ThemeToggle />
+          </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <ReportButton />
+          <div data-umami-event="profile-dropdown-report-click">
+            <ReportButton />
+          </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <SignOutIcon className="text-red-500" />
-          <LogOutButton />
+          <div data-umami-event="profile-dropdown-logout-click">
+            <LogOutButton />
+          </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

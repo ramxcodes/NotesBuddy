@@ -68,6 +68,7 @@ export default function ChatSidebar({
 
             return (
               <Button
+                data-umami-event={`ai-chat-select-${chat.id}`}
                 key={chat.id}
                 variant={isSelected ? "default" : "ghost"}
                 className={`neuro flex h-auto w-full flex-col items-start border-2 p-3 text-left sm:p-4 ${

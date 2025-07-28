@@ -75,6 +75,7 @@ export default function ReportModal() {
             type="submit"
             disabled={loading}
             className="font-excon w-full border-2 border-black bg-black text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
+            data-umami-event="report-modal-submit-button-click"
           >
             {loading ? "Submitting..." : "Submit Report"}
           </Button>

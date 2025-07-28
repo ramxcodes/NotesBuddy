@@ -16,7 +16,7 @@ export default function LogOutButton() {
 
   return (
     <button
-      data-umami-event="Logout button clicked"
+      data-umami-event="auth-logout-button-click"
       onClick={handleSignOut}
       className="font-excon cursor-pointer text-red-500"
       type="button"

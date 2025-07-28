@@ -434,6 +434,7 @@ export default function ChatWindow({
           {!shouldAutoScroll && messages.length > 0 && (
             <div className="pointer-events-none absolute bottom-0 left-0 flex w-full justify-end pr-2 pb-2 sm:pr-4 sm:pb-4">
               <Button
+                data-umami-event="ai-scroll-to-bottom-click"
                 onClick={scrollToBottom}
                 className="animate-in fade-in-0 slide-in-from-bottom-1 pointer-events-auto h-8 w-8 rounded-full ease-in-out"
                 size="icon"
@@ -468,6 +469,7 @@ export default function ChatWindow({
                   `What topics should I focus on for exams?`,
                 ].map((suggestion, i) => (
                   <button
+                    data-umami-event={`ai-suggestion-click-${i}`}
                     key={i}
                     onClick={() =>
                       append({ role: "user", content: suggestion })

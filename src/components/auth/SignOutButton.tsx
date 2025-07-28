@@ -17,7 +17,7 @@ export default function SignOutButton() {
 
   return (
     <Button
-      data-umami-event="SignOut button"
+      data-umami-event="auth-signout-button-click"
       variant={"destructive"}
       onClick={handleSignOut}
       className="font-excon"

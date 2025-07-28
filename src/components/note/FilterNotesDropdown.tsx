@@ -320,13 +320,17 @@ export default function FilterNotesDropdown({
               )
             }
           >
-            <SelectTrigger className="w-[180px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger
+              className="w-[180px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="notes-filter-university-trigger"
+            >
               <SelectValue placeholder="Select university" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="notes-filter-university-all"
               >
                 All Universities
               </SelectItem>
@@ -335,6 +339,7 @@ export default function FilterNotesDropdown({
                   key={university.value}
                   value={university.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`notes-filter-university-${university.value}`}
                 >
                   {university.label}
                 </SelectItem>
@@ -358,13 +363,17 @@ export default function FilterNotesDropdown({
             }
             disabled={!filters.university}
           >
-            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger
+              className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="notes-filter-degree-trigger"
+            >
               <SelectValue placeholder="Select degree" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="notes-filter-degree-all"
               >
                 All Degrees
               </SelectItem>
@@ -373,6 +382,7 @@ export default function FilterNotesDropdown({
                   key={degree.value}
                   value={degree.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`notes-filter-degree-${degree.value}`}
                 >
                   {degree.label}
                 </SelectItem>
@@ -396,13 +406,17 @@ export default function FilterNotesDropdown({
             }
             disabled={!filters.degree}
           >
-            <SelectTrigger className="w-[120px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger
+              className="w-[120px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="notes-filter-year-trigger"
+            >
               <SelectValue placeholder="Select year" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="notes-filter-year-all"
               >
                 All Years
               </SelectItem>
@@ -411,6 +425,7 @@ export default function FilterNotesDropdown({
                   key={year.value}
                   value={year.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`notes-filter-year-${year.value}`}
                 >
                   {year.label}
                 </SelectItem>
@@ -434,13 +449,17 @@ export default function FilterNotesDropdown({
             }
             disabled={!filters.year}
           >
-            <SelectTrigger className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger
+              className="w-[140px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="notes-filter-semester-trigger"
+            >
               <SelectValue placeholder="Select semester" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="notes-filter-semester-all"
               >
                 All Semesters
               </SelectItem>
@@ -449,6 +468,7 @@ export default function FilterNotesDropdown({
                   key={semester.value}
                   value={semester.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`notes-filter-semester-${semester.value}`}
                 >
                   {semester.label}
                 </SelectItem>
@@ -469,7 +489,10 @@ export default function FilterNotesDropdown({
             }
             disabled={isLoadingSubjects}
           >
-            <SelectTrigger className="w-[160px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger
+              className="w-[160px] rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="notes-filter-subject-trigger"
+            >
               <SelectValue
                 placeholder={isLoadingSubjects ? "Loading..." : "All subjects"}
               />
@@ -478,6 +501,7 @@ export default function FilterNotesDropdown({
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="notes-filter-subject-all"
               >
                 All subjects
               </SelectItem>
@@ -486,6 +510,7 @@ export default function FilterNotesDropdown({
                   key={index}
                   value={subject.subject}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`notes-filter-subject-${subject.subject.toLowerCase().replace(/\s+/g, "-")}`}
                 >
                   {subject.subject}
                 </SelectItem>

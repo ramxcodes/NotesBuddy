@@ -8,6 +8,7 @@ export default function ReportButton() {
 
   return (
     <div
+      data-umami-event="report-button-click"
       className="flex cursor-pointer items-center gap-2 text-orange-600 hover:cursor-pointer"
       onClick={() => router.push("/report")}
     >

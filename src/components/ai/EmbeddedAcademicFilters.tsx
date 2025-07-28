@@ -222,7 +222,10 @@ export default function EmbeddedAcademicFilters({
             )
           }
         >
-          <SelectTrigger className="h-8 w-full border border-gray-300 text-xs sm:w-[140px] dark:border-gray-600">
+          <SelectTrigger 
+            className="h-8 w-full border border-gray-300 text-xs sm:w-[140px] dark:border-gray-600"
+            data-umami-event="ai-filter-university-trigger"
+          >
             <SelectValue placeholder="Select university" />
           </SelectTrigger>
           <SelectContent>
@@ -231,6 +234,7 @@ export default function EmbeddedAcademicFilters({
                 key={university.value}
                 value={university.prismaValue}
                 className="text-xs"
+                data-umami-event={`ai-filter-university-${university.value}`}
               >
                 {university.label}
               </SelectItem>
@@ -254,7 +258,10 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.university}
         >
-          <SelectTrigger className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[120px] dark:border-gray-600">
+          <SelectTrigger 
+            className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[120px] dark:border-gray-600"
+            data-umami-event="ai-filter-degree-trigger"
+          >
             <SelectValue placeholder="Select degree" />
           </SelectTrigger>
           <SelectContent>
@@ -263,6 +270,7 @@ export default function EmbeddedAcademicFilters({
                 key={degree.value}
                 value={degree.prismaValue}
                 className="text-xs"
+                data-umami-event={`ai-filter-degree-${degree.value}`}
               >
                 {degree.label}
               </SelectItem>
@@ -286,7 +294,10 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.degree}
         >
-          <SelectTrigger className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[100px] dark:border-gray-600">
+          <SelectTrigger 
+            className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[100px] dark:border-gray-600"
+            data-umami-event="ai-filter-year-trigger"
+          >
             <SelectValue placeholder="Select year" />
           </SelectTrigger>
           <SelectContent>
@@ -295,6 +306,7 @@ export default function EmbeddedAcademicFilters({
                 key={year.value}
                 value={year.prismaValue}
                 className="text-xs"
+                data-umami-event={`ai-filter-year-${year.value}`}
               >
                 {year.label}
               </SelectItem>
@@ -318,7 +330,10 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.year}
         >
-          <SelectTrigger className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[120px] dark:border-gray-600">
+          <SelectTrigger 
+            className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[120px] dark:border-gray-600"
+            data-umami-event="ai-filter-semester-trigger"
+          >
             <SelectValue placeholder="Select semester" />
           </SelectTrigger>
           <SelectContent>
@@ -327,6 +342,7 @@ export default function EmbeddedAcademicFilters({
                 key={semester.value}
                 value={semester.prismaValue}
                 className="text-xs"
+                data-umami-event={`ai-filter-semester-${semester.value}`}
               >
                 {semester.label}
               </SelectItem>
@@ -345,7 +361,10 @@ export default function EmbeddedAcademicFilters({
           onValueChange={(value) => handleFilterChange("subject", value)}
           disabled={isLoadingSubjects || !filters.semester}
         >
-          <SelectTrigger className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[140px] dark:border-gray-600">
+          <SelectTrigger 
+            className="h-8 w-full border border-gray-300 text-xs disabled:opacity-50 sm:w-[140px] dark:border-gray-600"
+            data-umami-event="ai-filter-subject-trigger"
+          >
             <SelectValue
               placeholder={isLoadingSubjects ? "Loading..." : "Select subject"}
             />
@@ -356,6 +375,7 @@ export default function EmbeddedAcademicFilters({
                 key={index}
                 value={subject.subject}
                 className="text-xs"
+                data-umami-event={`ai-filter-subject-${subject.subject.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 {subject.subject}
               </SelectItem>

@@ -129,7 +129,10 @@ export function PremiumUpgrade({
               onValueChange={(value) => onUpgradeSelect(value as PremiumTier)}
               disabled={isLoading}
             >
-              <SelectTrigger className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectTrigger 
+                className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
+                data-umami-event="premium-upgrade-tier-selector-click"
+              >
                 <SelectValue placeholder="Select upgrade plan" />
               </SelectTrigger>
               <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
@@ -145,6 +148,7 @@ export function PremiumUpgrade({
                       key={option.tier}
                       value={option.tier}
                       className="font-satoshi font-bold text-black dark:text-white"
+                      data-umami-event={`premium-upgrade-tier-select-${option.tier.toLowerCase()}`}
                     >
                       <div className="flex w-full items-center justify-between">
                         <div className="flex items-center gap-2">

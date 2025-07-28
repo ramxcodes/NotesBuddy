@@ -386,6 +386,7 @@ export function AdminCreateCouponModal({
               variant="outline"
               onClick={onClose}
               className="font-satoshi flex-1 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="admin-create-coupon-cancel-click"
             >
               Cancel
             </Button>
@@ -393,6 +394,7 @@ export function AdminCreateCouponModal({
               type="submit"
               disabled={loading || !formData.applicableTiers?.length}
               className="font-excon flex-1 rounded-xl border-2 border-black bg-black font-black text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="admin-create-coupon-submit-click"
             >
               {loading ? (
                 <>

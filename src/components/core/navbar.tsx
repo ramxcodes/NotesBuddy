@@ -34,8 +34,17 @@ export default async function NavBar() {
     <nav className="dark:from-background dark:via-background dark:to-background/20 sticky top-0 z-50 flex items-center justify-between bg-gradient-to-b from-white via-white to-white/20 px-10 py-8 hover:cursor-pointer">
       <div className="flex items-center gap-30">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.png" alt="Notes Buddy" width={40} height={40} />
-          <h3 className="font-excon text-xl md:text-2xl font-bold">
+          <Image
+            data-umami-event="nav-logo-click"
+            src="/logo.png"
+            alt="Notes Buddy"
+            width={40}
+            height={40}
+          />
+          <h3
+            data-umami-event="nav-brand-text-click"
+            className="font-excon text-xl font-bold md:text-2xl"
+          >
             NotesBuddy
           </h3>
         </Link>
@@ -43,6 +52,7 @@ export default async function NavBar() {
           {navItems.map((items) => {
             return (
               <Link
+                data-umami-event={`nav-link-${items.label.toLowerCase()}`}
                 className="font-excon underline-offset-4 hover:cursor-pointer hover:underline"
                 href={items.href}
                 key={items.label}
@@ -57,6 +67,7 @@ export default async function NavBar() {
         {isAdmin && (
           <Link href="/admin">
             <Button
+              data-umami-event="nav-admin-panel-click"
               size="lg"
               className="gap-2 border-2 border-black bg-white text-black shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:text-white hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
             >
@@ -67,6 +78,7 @@ export default async function NavBar() {
         )}
 
         <Link
+          data-umami-event="nav-whatsapp-community-click"
           className="mt-1 hover:cursor-pointer"
           target="_blank"
           href="https://chat.whatsapp.com/EcretA1N7eCFQeHecm1uWO"

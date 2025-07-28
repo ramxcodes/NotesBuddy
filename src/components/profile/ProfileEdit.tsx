@@ -100,6 +100,7 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
             size="sm"
             onClick={onCancel}
             className="gap-2 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+            data-umami-event="profile-edit-cancel-button-click"
           >
             <XCircleIcon className="size-4" />
             Cancel
@@ -328,6 +329,7 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                 type="submit"
                 disabled={isSubmitting}
                 className="flex-1 border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+                data-umami-event="profile-edit-save-button-click"
               >
                 {isSubmitting ? "Saving..." : "Save Changes"}
               </Button>
@@ -337,6 +339,7 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
                 onClick={onCancel}
                 disabled={isSubmitting}
                 className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+                data-umami-event="profile-edit-cancel-bottom-button-click"
               >
                 Cancel
               </Button>

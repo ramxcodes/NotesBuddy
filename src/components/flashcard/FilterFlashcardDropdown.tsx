@@ -282,13 +282,17 @@ export default function FilterFlashcardDropdown({
               )
             }
           >
-            <SelectTrigger className="neuro-sm font-satoshi w-48 font-bold">
+            <SelectTrigger
+              className="neuro-sm font-satoshi w-48 font-bold"
+              data-umami-event="flashcard-filter-university-trigger"
+            >
               <SelectValue placeholder="Select University" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="flashcard-filter-university-all"
               >
                 All Universities
               </SelectItem>
@@ -297,6 +301,7 @@ export default function FilterFlashcardDropdown({
                   key={university.value}
                   value={university.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`flashcard-filter-university-${university.value}`}
                 >
                   {university.label}
                 </SelectItem>
@@ -320,13 +325,17 @@ export default function FilterFlashcardDropdown({
             }
             disabled={!filters.university}
           >
-            <SelectTrigger className="neuro-sm font-satoshi w-40 font-bold">
+            <SelectTrigger
+              className="neuro-sm font-satoshi w-40 font-bold"
+              data-umami-event="flashcard-filter-degree-trigger"
+            >
               <SelectValue placeholder="Select Degree" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="flashcard-filter-degree-all"
               >
                 All Degrees
               </SelectItem>
@@ -335,6 +344,7 @@ export default function FilterFlashcardDropdown({
                   key={degree.value}
                   value={degree.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`flashcard-filter-degree-${degree.value}`}
                 >
                   {degree.label}
                 </SelectItem>
@@ -358,13 +368,17 @@ export default function FilterFlashcardDropdown({
             }
             disabled={!filters.degree}
           >
-            <SelectTrigger className="neuro-sm font-satoshi w-32 font-bold">
+            <SelectTrigger
+              className="neuro-sm font-satoshi w-32 font-bold"
+              data-umami-event="flashcard-filter-year-trigger"
+            >
               <SelectValue placeholder="Select Year" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="flashcard-filter-year-all"
               >
                 All Years
               </SelectItem>
@@ -373,6 +387,7 @@ export default function FilterFlashcardDropdown({
                   key={year.value}
                   value={year.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`flashcard-filter-year-${year.value}`}
                 >
                   {year.label}
                 </SelectItem>
@@ -396,13 +411,17 @@ export default function FilterFlashcardDropdown({
             }
             disabled={!filters.year}
           >
-            <SelectTrigger className="neuro-sm font-satoshi w-36 font-bold">
+            <SelectTrigger
+              className="neuro-sm font-satoshi w-36 font-bold"
+              data-umami-event="flashcard-filter-semester-trigger"
+            >
               <SelectValue placeholder="Select Semester" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="flashcard-filter-semester-all"
               >
                 All Semesters
               </SelectItem>
@@ -411,6 +430,7 @@ export default function FilterFlashcardDropdown({
                   key={semester.value}
                   value={semester.prismaValue}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`flashcard-filter-semester-${semester.value}`}
                 >
                   {semester.label}
                 </SelectItem>
@@ -431,13 +451,17 @@ export default function FilterFlashcardDropdown({
             }
             disabled={isLoadingSubjects}
           >
-            <SelectTrigger className="neuro-sm font-satoshi w-40 font-bold">
+            <SelectTrigger
+              className="neuro-sm font-satoshi w-40 font-bold"
+              data-umami-event="flashcard-filter-subject-trigger"
+            >
               <SelectValue placeholder="Select Subject" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="flashcard-filter-subject-all"
               >
                 All Subjects
               </SelectItem>
@@ -446,6 +470,7 @@ export default function FilterFlashcardDropdown({
                   key={subjectItem.subject}
                   value={subjectItem.subject}
                   className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                  data-umami-event={`flashcard-filter-subject-${subjectItem.subject.toLowerCase().replace(/\s+/g, "-")}`}
                 >
                   {subjectItem.subject}
                 </SelectItem>
@@ -463,25 +488,31 @@ export default function FilterFlashcardDropdown({
             value={filters.isPremium}
             onValueChange={(value) => handleFilterChange("isPremium", value)}
           >
-            <SelectTrigger className="neuro-sm font-satoshi w-32 font-bold">
+            <SelectTrigger
+              className="neuro-sm font-satoshi w-32 font-bold"
+              data-umami-event="flashcard-filter-type-trigger"
+            >
               <SelectValue placeholder="Select Type" />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="all"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="flashcard-filter-type-all"
               >
                 All Types
               </SelectItem>
               <SelectItem
                 value="false"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="flashcard-filter-type-free"
               >
                 Free
               </SelectItem>
               <SelectItem
                 value="true"
                 className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
+                data-umami-event="flashcard-filter-type-premium"
               >
                 Premium
               </SelectItem>

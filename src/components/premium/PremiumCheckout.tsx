@@ -37,6 +37,11 @@ export function PremiumCheckout({
           isProcessing ||
           (currentPremiumStatus.isActive && !isUpgrade)
         }
+        data-umami-event={
+          isUpgrade
+            ? `premium-upgrade-payment-initiate-${priceCalculation?.tier || "unknown"}`
+            : `premium-purchase-payment-initiate-${priceCalculation?.tier || "unknown"}`
+        }
       >
         <div className="relative z-10 flex items-center gap-3">
           {isProcessing ? (

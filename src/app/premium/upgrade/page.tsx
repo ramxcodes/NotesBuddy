@@ -70,7 +70,10 @@ export default async function PremiumUpgradePage() {
                   purchase a plan first.
                 </p>
                 <Link href="/premium">
-                  <button className="font-excon w-full rounded-md border-2 border-black bg-white px-6 py-3 text-lg font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]">
+                  <button 
+                    className="font-excon w-full rounded-md border-2 border-black bg-white px-6 py-3 text-lg font-black text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                    data-umami-event="premium-upgrade-page-buy-premium-button-click"
+                  >
                     Buy Premium Plan
                   </button>
                 </Link>

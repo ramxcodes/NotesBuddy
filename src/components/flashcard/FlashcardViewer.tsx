@@ -121,6 +121,7 @@ export default function FlashcardViewer({
             size="sm"
             onClick={handleReset}
             className="border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            data-umami-event={`flashcard-viewer-reset-${flashcardSet.id}`}
           >
             <ArrowsClockwiseIcon weight="duotone" className="mr-2 h-4 w-4" />
             Reset
@@ -211,6 +212,7 @@ export default function FlashcardViewer({
         {/* Controls */}
         <div className="flex items-center justify-center gap-4">
           <Button
+            data-umami-event={`flashcard-previous-card-${currentCardIndex}`}
             variant="outline"
             size="lg"
             onClick={handlePrevCard}
@@ -222,6 +224,7 @@ export default function FlashcardViewer({
           </Button>
 
           <Button
+            data-umami-event={`flashcard-flip-card-${currentCardIndex}`}
             variant="default"
             size="lg"
             onClick={handleFlipCard}
@@ -241,6 +244,7 @@ export default function FlashcardViewer({
           </Button>
 
           <Button
+            data-umami-event={`flashcard-next-card-${currentCardIndex}`}
             variant="outline"
             size="lg"
             onClick={handleNextCard}
@@ -262,12 +266,13 @@ export default function FlashcardViewer({
                   className="mx-auto mb-4 h-12 w-12 text-green-600"
                 />
                 <h3 className="mb-2 text-xl font-bold">Congratulations!</h3>
-                <p className="mb-6 text-secondary">
+                <p className="text-secondary mb-6">
                   You&apos;ve completed all {flashcardSet.cards.length} cards in
                   this set.
                 </p>
                 <div className="flex justify-center gap-4">
                   <Button
+                    data-umami-event={`flashcard-study-again-${flashcardSet.id}`}
                     onClick={handleReset}
                     variant="outline"
                     className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
@@ -279,8 +284,9 @@ export default function FlashcardViewer({
                     Study Again
                   </Button>
                   <Button
+                    data-umami-event={`flashcard-view-results-${flashcardSet.id}`}
                     onClick={handleGoToComplete}
-                    className="border-2 border-black bg-green-600 dark:bg-green-400 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                    className="border-2 border-black bg-green-600 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:bg-green-400"
                   >
                     <CheckCircleIcon
                       weight="duotone"

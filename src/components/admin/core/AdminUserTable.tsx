@@ -172,6 +172,7 @@ export default function AdminUserTable() {
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, email, or phone..."
             className="flex-1 rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]"
+            data-umami-event="admin-user-search-input"
           />
         </div>
 
@@ -181,20 +182,39 @@ export default function AdminUserTable() {
             value={sort}
             onValueChange={(value: SortOption) => handleSortChange(value)}
           >
-            <SelectTrigger className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger 
+              className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="admin-user-sort-trigger"
+            >
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
-              <SelectItem value="A_TO_Z" className="rounded-lg">
+              <SelectItem 
+                value="A_TO_Z" 
+                className="rounded-lg"
+                data-umami-event="admin-user-sort-a-to-z"
+              >
                 A - Z
               </SelectItem>
-              <SelectItem value="Z_TO_A" className="rounded-lg">
+              <SelectItem 
+                value="Z_TO_A" 
+                className="rounded-lg"
+                data-umami-event="admin-user-sort-z-to-a"
+              >
                 Z - A
               </SelectItem>
-              <SelectItem value="NEW_USERS" className="rounded-lg">
+              <SelectItem 
+                value="NEW_USERS" 
+                className="rounded-lg"
+                data-umami-event="admin-user-sort-new-users"
+              >
                 New Users
               </SelectItem>
-              <SelectItem value="OLD_USERS" className="rounded-lg">
+              <SelectItem 
+                value="OLD_USERS" 
+                className="rounded-lg"
+                data-umami-event="admin-user-sort-old-users"
+              >
                 Old Users
               </SelectItem>
             </SelectContent>
@@ -204,20 +224,39 @@ export default function AdminUserTable() {
             value={filter}
             onValueChange={(value: FilterOption) => handleFilterChange(value)}
           >
-            <SelectTrigger className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+            <SelectTrigger 
+              className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              data-umami-event="admin-user-filter-trigger"
+            >
               <SelectValue placeholder="Filter by..." />
             </SelectTrigger>
             <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
-              <SelectItem value="ALL" className="rounded-lg">
+              <SelectItem 
+                value="ALL" 
+                className="rounded-lg"
+                data-umami-event="admin-user-filter-all"
+              >
                 All Users
               </SelectItem>
-              <SelectItem value="PREMIUM" className="rounded-lg">
+              <SelectItem 
+                value="PREMIUM" 
+                className="rounded-lg"
+                data-umami-event="admin-user-filter-premium"
+              >
                 Premium Users
               </SelectItem>
-              <SelectItem value="FREE" className="rounded-lg">
+              <SelectItem 
+                value="FREE" 
+                className="rounded-lg"
+                data-umami-event="admin-user-filter-free"
+              >
                 Free Users
               </SelectItem>
-              <SelectItem value="BLOCKED" className="rounded-lg">
+              <SelectItem 
+                value="BLOCKED" 
+                className="rounded-lg"
+                data-umami-event="admin-user-filter-blocked"
+              >
                 Blocked Users
               </SelectItem>
             </SelectContent>

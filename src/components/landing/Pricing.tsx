@@ -96,6 +96,7 @@ function PricingCard({
               ? "bg-primary/70 border-primary hover:bg-primary dark:bg-primary/30 dark:hover:bg-primary text-white dark:hover:text-black"
               : "bg-background text-foreground border-border hover:bg-muted"
           }`}
+          data-umami-event={`landing-pricing-card-buy-${tier.toLowerCase()}`}
         >
           Buy Now
         </Button>

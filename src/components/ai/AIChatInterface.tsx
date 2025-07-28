@@ -151,6 +151,7 @@ export default function AIChatInterface({
               </h2>
               <div className="flex gap-2">
                 <Button
+                  data-umami-event="ai-new-chat-mobile-click"
                   variant="outline"
                   size="sm"
                   onClick={handleNewChatClick}
@@ -160,6 +161,7 @@ export default function AIChatInterface({
                   NEW
                 </Button>
                 <Button
+                  data-umami-event="ai-api-key-mobile-click"
                   variant="outline"
                   size="sm"
                   onClick={() => setShowApiKeyDialog(true)}
@@ -177,6 +179,7 @@ export default function AIChatInterface({
               <div className="flex flex-1 items-center justify-center p-4">
                 <div className="text-center">
                   <Button
+                    data-umami-event="ai-add-api-key-mobile-cta-click"
                     onClick={() => setShowApiKeyDialog(true)}
                     className="border-4 border-white text-sm font-black tracking-wide uppercase shadow-[8px_8px_0px_0px_#fff] hover:bg-white hover:text-black"
                   >
@@ -226,6 +229,7 @@ export default function AIChatInterface({
                   </h2>
                   <div className="flex gap-2">
                     <Button
+                      data-umami-event="ai-new-chat-button-click"
                       variant="outline"
                       size="sm"
                       onClick={handleNewChatClick}
@@ -235,6 +239,7 @@ export default function AIChatInterface({
                       NEW CHAT
                     </Button>
                     <Button
+                      data-umami-event="ai-api-key-button-click"
                       variant="outline"
                       size="sm"
                       onClick={() => setShowApiKeyDialog(true)}
@@ -263,6 +268,7 @@ export default function AIChatInterface({
                 <div className="flex flex-1 items-center justify-center p-8">
                   <div className="text-center">
                     <Button
+                      data-umami-event="ai-add-api-key-desktop-cta-click"
                       onClick={() => setShowApiKeyDialog(true)}
                       className="border-4 border-white font-black tracking-wide uppercase shadow-[8px_8px_0px_0px_#fff] hover:bg-white hover:text-black"
                     >
@@ -357,6 +363,7 @@ export default function AIChatInterface({
           <DialogFooter className="flex-col gap-2 sm:flex-row">
             {apiKey && (
               <Button
+                data-umami-event="ai-remove-api-key-click"
                 variant="destructive"
                 onClick={handleRemoveApiKey}
                 className="neuro-button w-full sm:w-auto"
@@ -365,6 +372,7 @@ export default function AIChatInterface({
               </Button>
             )}
             <Button
+              data-umami-event="ai-save-api-key-click"
               onClick={handleSaveApiKey}
               disabled={!tempApiKey.trim()}
               className="neuro-button w-full disabled:opacity-50 sm:w-auto"

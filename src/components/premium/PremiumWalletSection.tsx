@@ -73,6 +73,7 @@ export function PremiumWalletSection({
                   onChange={(e) => onUseWalletBalanceChange(e.target.checked)}
                   disabled={walletBalance <= 0}
                   className="sr-only"
+                  data-umami-event={`premium-wallet-toggle-${useWalletBalance ? 'off' : 'on'}`}
                 />
                 <label
                   htmlFor="useWalletBalance"

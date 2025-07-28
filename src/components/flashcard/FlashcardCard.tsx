@@ -109,7 +109,7 @@ export default function FlashcardCard({
       </div>
 
       {/* Stats */}
-      <div className="mb-6 flex flex-wrap items-center justify-center text-sm gap-2">
+      <div className="mb-6 flex flex-wrap items-center justify-center gap-2 text-sm">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1 text-black/60 dark:text-white/60">
             <CardsIcon weight="duotone" className="h-4 w-4" />
@@ -152,6 +152,7 @@ export default function FlashcardCard({
         {isAuthenticated ? (
           <Link href={`/flashcards/${id}`} className="block">
             <Button
+              data-umami-event={`flashcard-start-study-${id}`}
               className="neuro hover:translate-y-0.5hover:shadow-[4px_4px_0px_0px_#000] w-full transition-all duration-200 hover:translate-x-0.5 dark:hover:shadow-[4px_4px_0px_0px_#757373]"
               size="lg"
             >
@@ -173,6 +174,7 @@ export default function FlashcardCard({
           </Link>
         ) : (
           <Button
+            data-umami-event={`flashcard-login-to-study-${id}`}
             className="neuro hover:translate-y-0.5hover:shadow-[4px_4px_0px_0px_#000] w-full transition-all duration-200 hover:translate-x-0.5 dark:hover:shadow-[4px_4px_0px_0px_#757373]"
             size="lg"
             onClick={() => signIn()}

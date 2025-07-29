@@ -167,7 +167,7 @@ export function ReferralSection({
                 />
                 <div>
                   <p className="text-sm font-black text-black dark:text-white">
-                    Total Earnings
+                    Available Balance
                   </p>
                   <p className="font-excon text-2xl font-black text-black dark:text-white">
                     ₹{referralStatus.totalEarnings}
@@ -221,6 +221,13 @@ export function ReferralSection({
                 <p className="font-satoshi font-bold text-black dark:text-white">
                   Both you and your friend get ₹10 discount when they make a
                   purchase
+                </p>
+              </div>
+              <div className="flex items-start gap-2">
+                <div className="mt-1 h-2 w-2 rounded-full bg-black dark:bg-white"></div>
+                <p className="font-satoshi font-bold text-black dark:text-white">
+                  Your earnings go to your wallet and can be used for future
+                  purchases
                 </p>
               </div>
               <div className="flex items-start gap-2">

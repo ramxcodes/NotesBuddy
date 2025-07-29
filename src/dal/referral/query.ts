@@ -67,16 +67,12 @@ export const getUserReferralStatus = unstable_cache(
       throw new Error("User not found");
     }
 
-
     return {
       hasReferralCode: Boolean(user.referralCode),
       referralCode: user.referralCode,
       walletBalance: user.walletBalance.toNumber(),
       totalReferrals: user.referrerRewards.length,
-      totalEarnings: user.referrerRewards.reduce(
-        (sum, reward) => sum + reward.rewardAmount.toNumber(),
-        0,
-      ),
+      totalEarnings: user.walletBalance.toNumber(),
       referrals: user.referrerRewards.map((reward) => ({
         id: reward.id,
         refereeUserId: reward.refereeUserId,

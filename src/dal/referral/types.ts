@@ -3,9 +3,9 @@ import { DiscountType } from "@prisma/client";
 
 // Referral configuration
 export const REFERRAL_CONFIG = {
-  REWARD_AMOUNT: 10, // ₹10 for both referrer and referee
+  REWARD_AMOUNT: 10,
   DISCOUNT_TYPE: "FIXED_AMOUNT" as const,
-  CODE_LENGTH: 6, // 6 random characters after name
+  CODE_LENGTH: 6,
 } as const;
 
 // Referral validation schemas

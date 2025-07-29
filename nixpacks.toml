@@ -17,7 +17,7 @@ aptPkgs = ['curl', 'wget', 'ca-certificates']
 [phases.install]
 dependsOn = ['setup']
 cmds = [
-  'bun install --frozen-lockfile'
+  'bun install'
 ]
 cacheDirectories = ['/root/.bun']
 paths = ['/app/node_modules/.bin']

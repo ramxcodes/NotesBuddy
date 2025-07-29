@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/api/send",
-        destination: process.env.NEXT_PUBLIC_UMAMI_SRC || "",
+        destination: "https://analytics.notesbuddy.in/api/send",
       },
     ];
   },

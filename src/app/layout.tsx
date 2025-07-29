@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Umami from "@/components/auth/Umami";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import NavBar from "@/components/core/NavBar";
 import { AutoDeviceFingerprint } from "@/components/auth/AutoDeviceFingerprint";
 import { ViewTransitions } from "next-view-transitions";
 import Footer from "@/components/core/Footer";
 import { Poppins, Lexend, Montserrat, Roboto, Inter } from "next/font/google";
 import { ReactLenis } from "@/utils/lenis";
 import { Toaster } from "@/components/ui/sonner";
+import MainNav from "@/components/core/MainNav";
 
 export const poppins = Poppins({
   subsets: ["latin"],
@@ -132,7 +132,7 @@ export default function RootLayout({
           >
             <AutoDeviceFingerprint />
             <ThemeProvider defaultTheme="light" storageKey="notes-buddy-theme">
-              <NavBar />
+              <MainNav />
               {children}
               <Toaster />
               <Footer />

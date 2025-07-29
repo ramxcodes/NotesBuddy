@@ -22,7 +22,7 @@ const navItems = [
   },
 ];
 
-export default async function NavBar() {
+export default async function MainNav() {
   const isAdmin = await adminStatus();
 
   return (

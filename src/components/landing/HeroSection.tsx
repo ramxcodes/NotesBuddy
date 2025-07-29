@@ -46,7 +46,7 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-export default function Hero() {
+export default function HeroSection() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(
     () => ["smart", "fast", "efficient", "quick", "effective"],

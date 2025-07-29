@@ -1,4 +1,6 @@
-import { getSession } from "@/lib/db/user";
+"use client";
+
+import { useSession } from "@/lib/auth/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,8 +23,18 @@ import CardsIcon from "../icons/CardsIcon";
 import AiIcon from "../icons/AiIcon";
 import WhatsappDuoIcon from "../icons/WhatsappDuoIcon";
 
-export default async function Profile() {
-  const session = await getSession();
+export default function Profile() {
+  const { data: session, isPending } = useSession();
+
+  // Show loading state while session is being fetched
+  if (isPending) {
+    return (
+      <div className="ml-4 flex items-center justify-center gap-2 md:ml-0 md:gap-4">
+        <ThemeToggle />
+        <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700" />
+      </div>
+    );
+  }
 
   if (!session) {
     return (

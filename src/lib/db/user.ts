@@ -17,7 +17,7 @@ export const checkUserBlockedStatus = cache(async (userId: string) => {
   return user?.isBlocked || false;
 });
 
-export const adminStatus = async () => {
+export const adminStatus = cache(async () => {
   const session = await getSession();
   if (!session?.user?.id) return false;
   const user = await prisma.user.findUnique({
@@ -25,4 +25,4 @@ export const adminStatus = async () => {
     select: { role: true },
   });
   return user?.role === "ADMIN";
-};
+});

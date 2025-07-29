@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Umami from "@/components/auth/Umami";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import NavBar from "@/components/core/Navbar";
+import NavBar from "@/components/core/NavBar";
 import { AutoDeviceFingerprint } from "@/components/auth/AutoDeviceFingerprint";
 import { ViewTransitions } from "next-view-transitions";
 import Footer from "@/components/core/Footer";

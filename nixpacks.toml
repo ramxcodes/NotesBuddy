@@ -1,0 +1,41 @@
+[variables]
+CI = 'true'
+NODE_ENV = 'production'
+NPM_CONFIG_PRODUCTION = 'false'
+NIXPACKS_METADATA = 'node'
+
+[phases.setup]
+nixPkgs = [
+  'nodejs_20',
+  'bun',
+  'openssl',
+  'pkg-config'
+]
+nixOverlays = ['https://github.com/railwayapp/nix-npm-overlay/archive/main.tar.gz']
+aptPkgs = ['curl', 'wget', 'ca-certificates']
+
+[phases.install]
+dependsOn = ['setup']
+cmds = [
+  'bun install --frozen-lockfile --production=false'
+]
+cacheDirectories = ['/root/.bun']
+paths = ['/app/node_modules/.bin']
+
+[phases.build]
+dependsOn = ['install']
+cmds = [
+  'bun run build'
+]
+cacheDirectories = [
+  '.next/cache',
+  'node_modules/.cache'
+]
+
+[start]
+cmd = 'bun run start'
+
+[staticAssets]
+# Next.js static files
+"public" = "/"
+".next/static" = "/_next/static"

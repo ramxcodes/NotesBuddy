@@ -30,7 +30,7 @@ export default function Footer() {
   return (
     <footer className="mt-10 mb-5 flex w-full flex-col items-center justify-center gap-6">
       <Separator className="w-full max-w-6xl" />
-      <div className="container flex max-w-4xl flex-row flex-wrap items-center justify-center gap-4">
+      <div className="container flex max-w-4xl flex-row flex-wrap items-center justify-center gap-4 mx-4 md:mx-2">
         {footerItems.map((item) => (
           <Link
             href={item.href}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,14 +8,25 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { submitReport } from "./actions";
 
 export default function ReportModal() {
   const [reportText, setReportText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reportUrl, setReportUrl] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const urlFromParams = searchParams.get("url");
+    if (urlFromParams) {
+      setReportUrl(decodeURIComponent(urlFromParams));
+    } else {
+      setReportUrl(window.location.href);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +35,7 @@ export default function ReportModal() {
     try {
       const formData = new FormData();
       formData.append("report", reportText);
-      formData.append("url", window.location.href);
+      formData.append("url", reportUrl);
       const result = await submitReport(formData);
       if (result.success) {
         setReportText("");
@@ -53,7 +64,7 @@ export default function ReportModal() {
               Current URL:
             </label>
             <div className="rounded-md border-2 border-black bg-gray-100 p-3 font-mono text-sm text-black dark:border-white/20 dark:bg-zinc-800 dark:text-white">
-              {typeof window !== "undefined" ? window.location.href : ""}
+              {reportUrl || "Loading..."}
             </div>
           </div>
           <div>

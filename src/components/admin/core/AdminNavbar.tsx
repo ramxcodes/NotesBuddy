@@ -30,6 +30,10 @@ const adminNavbarItems: AdminNavbarProps[] = [
     title: "Coupons",
     href: "/admin/coupons",
   },
+  {
+    title: "Reports",
+    href: "/admin/reports",
+  },
 ];
 
 export default function AdminNavbar() {

@@ -162,17 +162,84 @@ export async function POST(request: NextRequest) {
       const errorText = await response.text();
       console.error("Gemini API error:", response.status, errorText);
 
+      // Parse error response if possible
+      let errorDetails;
+      try {
+        errorDetails = JSON.parse(errorText);
+      } catch {
+        errorDetails = { error: { message: errorText } };
+      }
+
+      // Handle specific error cases
       if (response.status === 400) {
         return NextResponse.json(
           {
             error:
               "Invalid API key or request. Please check your Gemini API key.",
+            details: errorDetails,
           },
           { status: 400 },
         );
       }
 
-      throw new Error(`Gemini API error: ${response.status}`);
+      if (response.status === 403) {
+        return NextResponse.json(
+          {
+            error:
+              "API key access denied. Please check your API key permissions.",
+            details: errorDetails,
+          },
+          { status: 403 },
+        );
+      }
+
+      if (response.status === 429) {
+        return NextResponse.json(
+          {
+            error:
+              "Rate limit exceeded. Please wait a moment before trying again.",
+            details: errorDetails,
+          },
+          { status: 429 },
+        );
+      }
+
+      if (response.status === 503) {
+        const errorMessage =
+          errorDetails?.error?.message || "Service unavailable";
+
+        if (errorMessage.includes("overloaded")) {
+          return NextResponse.json(
+            {
+              error:
+                "The AI model is currently overloaded. Please try again in a few moments or consider switching to a different model.",
+              details: errorDetails,
+              retryable: true,
+            },
+            { status: 503 },
+          );
+        }
+
+        return NextResponse.json(
+          {
+            error:
+              "The AI service is temporarily unavailable. Please try again later.",
+            details: errorDetails,
+            retryable: true,
+          },
+          { status: 503 },
+        );
+      }
+
+      // Generic error for other status codes
+      return NextResponse.json(
+        {
+          error: `AI service error (${response.status}). Please try again.`,
+          details: errorDetails,
+          retryable: response.status >= 500,
+        },
+        { status: response.status },
+      );
     }
 
     const encoder = new TextEncoder();
@@ -223,7 +290,12 @@ export async function POST(request: NextRequest) {
           controller.close();
         } catch (error) {
           console.error("Streaming error:", error);
-          const errorData = `data: ${JSON.stringify({ error: "Stream error occurred" })}\n\n`;
+          const errorMessage =
+            error instanceof Error ? error.message : "Stream error occurred";
+          const errorData = `data: ${JSON.stringify({
+            error: errorMessage,
+            retryable: true,
+          })}\n\n`;
           controller.enqueue(encoder.encode(errorData));
           controller.close();
         }
@@ -254,8 +326,46 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Handle specific error messages
+    if (error instanceof Error) {
+      if (error.message.includes("API key")) {
+        return NextResponse.json(
+          {
+            error:
+              "Invalid API key. Please check your Gemini API key and try again.",
+            retryable: false,
+          },
+          { status: 401 },
+        );
+      }
+
+      if (error.message.includes("rate limit")) {
+        return NextResponse.json(
+          {
+            error: "Rate limit exceeded. Please wait before trying again.",
+            retryable: true,
+          },
+          { status: 429 },
+        );
+      }
+
+      if (error.message.includes("overloaded")) {
+        return NextResponse.json(
+          {
+            error:
+              "The AI model is currently overloaded. Please try again in a few moments or switch to a different model.",
+            retryable: true,
+          },
+          { status: 503 },
+        );
+      }
+    }
+
     return NextResponse.json(
-      { error: "Internal server error" },
+      {
+        error: "Internal server error. Please try again.",
+        retryable: true,
+      },
       { status: 500 },
     );
   }

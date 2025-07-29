@@ -17,7 +17,7 @@ import { SignInButton } from "../auth/SignInButton";
 import { UserIcon } from "../icons/UserIcon";
 import { NotesbookIcon } from "../icons/NotebookIcon";
 import { SignOutIcon } from "../icons/SignOutIcon";
-import ReportButton from "../navbar/ReportButton";
+import ReportButton from "./ReportButton";
 import QuestionMarkIcon from "../icons/QuestionMarkIcon";
 import CardsIcon from "../icons/CardsIcon";
 import AiIcon from "../icons/AiIcon";
@@ -26,7 +26,6 @@ import WhatsappDuoIcon from "../icons/WhatsappDuoIcon";
 export default function Profile() {
   const { data: session, isPending } = useSession();
 
-  // Show loading state while session is being fetched
   if (isPending) {
     return (
       <div className="ml-4 flex items-center justify-center gap-2 md:ml-0 md:gap-4">

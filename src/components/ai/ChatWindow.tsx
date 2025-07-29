@@ -65,6 +65,21 @@ const GEMINI_MODELS = [
   { value: "gemini-2.0-flash", label: "Gemini 2.0 Flash (Stable)" },
 ];
 
+// Helper function to suggest alternative models when current model is overloaded
+const getAlternativeModel = (currentModel: string): string => {
+  if (currentModel === "gemini-2.5-pro") {
+    return "gemini-2.5-flash";
+  }
+  if (currentModel === "gemini-2.5-flash") {
+    return "gemini-2.5-flash-lite";
+  }
+  if (currentModel === "gemini-2.5-flash-lite") {
+    return "gemini-2.0-flash";
+  }
+
+  return "gemini-2.0-flash";
+};
+
 export default function ChatWindow({
   chatId,
   academicContext,
@@ -207,7 +222,63 @@ export default function ChatWindow({
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        let errorMessage = "Failed to send message. Please try again.";
+        let shouldShowRetryHint = false;
+
+        try {
+          const errorData = await response.json();
+          if (errorData.error) {
+            errorMessage = errorData.error;
+            shouldShowRetryHint = errorData.retryable === true;
+
+            // Enhance overload error messages
+            if (
+              errorMessage.includes("overloaded") ||
+              response.status === 503
+            ) {
+              const alternativeModel = getAlternativeModel(selectedModel);
+              const alternativeModelLabel =
+                GEMINI_MODELS.find((m) => m.value === alternativeModel)
+                  ?.label || alternativeModel;
+              errorMessage = `The ${GEMINI_MODELS.find((m) => m.value === selectedModel)?.label || selectedModel} model is currently overloaded. Try switching to ${alternativeModelLabel} in the model selector above.`;
+            }
+          }
+        } catch {
+          switch (response.status) {
+            case 400:
+            case 401:
+              errorMessage =
+                "Invalid API key. Please check your Gemini API key.";
+              break;
+            case 403:
+              errorMessage =
+                "API key access denied. Please check your API key permissions.";
+              break;
+            case 429:
+              errorMessage =
+                "Rate limit exceeded. Please wait before trying again.";
+              shouldShowRetryHint = true;
+              break;
+            case 503:
+              const alternativeModel = getAlternativeModel(selectedModel);
+              const alternativeModelLabel =
+                GEMINI_MODELS.find((m) => m.value === alternativeModel)
+                  ?.label || alternativeModel;
+              errorMessage = `The ${GEMINI_MODELS.find((m) => m.value === selectedModel)?.label || selectedModel} model is currently overloaded. Try switching to ${alternativeModelLabel} in the model selector above.`;
+              shouldShowRetryHint = true;
+              break;
+            default:
+              errorMessage = `HTTP error ${response.status}. Please try again.`;
+              shouldShowRetryHint = response.status >= 500;
+          }
+        }
+
+        throw new Error(
+          errorMessage +
+            (shouldShowRetryHint && !errorMessage.includes("overloaded")
+              ? " You can also try switching to a different model."
+              : ""),
+        );
       }
 
       if (!response.body) {
@@ -268,7 +339,22 @@ export default function ChatWindow({
                 });
                 return;
               } else if (data.error) {
-                throw new Error(data.error);
+                let errorMessage = data.error;
+                const isRetryable = data.retryable === true;
+
+                // Enhance error message for overloaded models
+                if (errorMessage.includes("overloaded")) {
+                  const alternativeModel = getAlternativeModel(selectedModel);
+                  const alternativeModelLabel =
+                    GEMINI_MODELS.find((m) => m.value === alternativeModel)
+                      ?.label || alternativeModel;
+                  errorMessage = `The ${GEMINI_MODELS.find((m) => m.value === selectedModel)?.label || selectedModel} model is currently overloaded. Try switching to ${alternativeModelLabel} in the model selector above.`;
+                } else if (isRetryable) {
+                  errorMessage +=
+                    " You can also try switching to a different model.";
+                }
+
+                throw new Error(errorMessage);
               }
             } catch (parseError) {
               console.error("Parse error:", parseError);
@@ -278,9 +364,44 @@ export default function ChatWindow({
       }
     } catch (error: unknown) {
       console.error("Error sending message:", error);
-      toast.error(
-        "Failed to send message. Please check your API key and try again.",
-      );
+
+      let errorMessage = "Failed to send message. Please try again.";
+      let showModelSuggestion = false;
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+
+        // Check if it's a model overload error and provide specific suggestion
+        if (
+          errorMessage.includes("overloaded") ||
+          errorMessage.includes("503")
+        ) {
+          const alternativeModel = getAlternativeModel(selectedModel);
+          const alternativeModelLabel =
+            GEMINI_MODELS.find((m) => m.value === alternativeModel)?.label ||
+            alternativeModel;
+
+          errorMessage = `The ${GEMINI_MODELS.find((m) => m.value === selectedModel)?.label || selectedModel} model is currently overloaded. Try switching to ${alternativeModelLabel} in the model selector above.`;
+          showModelSuggestion = true;
+        } else if (errorMessage.includes("rate limit")) {
+          errorMessage =
+            "Rate limit exceeded. Please wait a moment before trying again, or try a different model.";
+          showModelSuggestion = true;
+        }
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+
+      toast.error(errorMessage, {
+        duration: showModelSuggestion ? 8000 : 6000,
+        action: {
+          label: "Dismiss",
+          onClick: () => {},
+        },
+        style: {
+          maxWidth: "500px",
+        },
+      });
 
       // Remove the failed messages
       setMessages((prev) => prev.slice(0, -2));

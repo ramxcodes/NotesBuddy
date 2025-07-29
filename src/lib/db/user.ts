@@ -3,11 +3,11 @@ import { auth } from "../auth/auth";
 import prisma from "./prisma";
 import { cache } from "react";
 
-export const getSession = cache(async () => {
+export const getSession = async () => {
   return await auth.api.getSession({
     headers: await headers(),
   });
-});
+};
 
 export const checkUserBlockedStatus = cache(async (userId: string) => {
   const user = await prisma.user.findUnique({
@@ -17,7 +17,7 @@ export const checkUserBlockedStatus = cache(async (userId: string) => {
   return user?.isBlocked || false;
 });
 
-export const adminStatus = cache(async () => {
+export const adminStatus = async () => {
   const session = await getSession();
   if (!session?.user?.id) return false;
   const user = await prisma.user.findUnique({
@@ -25,4 +25,4 @@ export const adminStatus = cache(async () => {
     select: { role: true },
   });
   return user?.role === "ADMIN";
-});
+};

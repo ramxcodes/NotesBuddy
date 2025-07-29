@@ -104,7 +104,10 @@ export default function Profile() {
             AI Assistant
           </DropdownMenuItem>
         </Link>
-        <Link href="/ai">
+        <Link
+          target="_blank"
+          href="https://chat.whatsapp.com/EcretA1N7eCFQeHecm1uWO"
+        >
           <DropdownMenuItem
             data-umami-event="profile-dropdown-Whatsapp-click"
             className="hover:cursor-pointer"

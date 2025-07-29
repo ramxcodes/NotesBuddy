@@ -93,7 +93,8 @@ export default function ChatWindow({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<string>("gemini-2.5-pro");
+  const [selectedModel, setSelectedModel] =
+    useState<string>("gemini-2.0-flash");
   const [currentChatId, setCurrentChatId] = useState<string | null>(chatId);
 
   // Load existing chat messages

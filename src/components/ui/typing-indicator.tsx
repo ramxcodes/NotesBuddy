@@ -1,15 +1,28 @@
-import { Dot } from "lucide-react"
+import AIResponseLoader, {
+  AITypingLoader,
+  AIBrainLoader,
+} from "@/components/ai/AIResponseLoader";
 
-export function TypingIndicator() {
+interface TypingIndicatorProps {
+  text?: string;
+  variant?: "default" | "typing" | "brain";
+}
+
+export function TypingIndicator({
+  text,
+  variant = "default",
+}: TypingIndicatorProps) {
+  const LoaderComponent = {
+    default: AIResponseLoader,
+    typing: AITypingLoader,
+    brain: AIBrainLoader,
+  }[variant];
+
   return (
     <div className="justify-left flex space-x-1">
-      <div className="rounded-lg bg-muted p-3">
-        <div className="flex -space-x-2.5">
-          <Dot className="h-5 w-5 animate-typing-dot-bounce" />
-          <Dot className="h-5 w-5 animate-typing-dot-bounce [animation-delay:90ms]" />
-          <Dot className="h-5 w-5 animate-typing-dot-bounce [animation-delay:180ms]" />
-        </div>
+      <div className="bg-muted rounded-lg p-3">
+        <LoaderComponent text={text} />
       </div>
     </div>
-  )
+  );
 }

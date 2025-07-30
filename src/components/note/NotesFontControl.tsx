@@ -7,6 +7,8 @@ import {
   MinusCircleIcon,
   PlusCircleIcon,
   TextAaIcon,
+  FrameCornersIcon,
+  CornersOutIcon,
 } from "@phosphor-icons/react";
 import {
   DropdownMenu,
@@ -48,6 +50,7 @@ export default function NotesFontControl() {
   const [selectedFont, setSelectedFont] = useState(FONT_OPTIONS[0]);
   const [fontSize, setFontSize] = useState("medium");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isZenMode, setIsZenMode] = useState(false);
 
   // Load preferences from localStorage on component mount
   useEffect(() => {
@@ -81,6 +84,50 @@ export default function NotesFontControl() {
     }
   }, [selectedFont, fontSize]);
 
+  // Zen mode detection and management
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const docWithFullscreen = document as Document & {
+        webkitFullscreenElement?: Element;
+        mozFullScreenElement?: Element;
+        msFullscreenElement?: Element;
+      };
+
+      const isCurrentlyFullscreen = Boolean(
+        document.fullscreenElement ||
+          docWithFullscreen.webkitFullscreenElement ||
+          docWithFullscreen.mozFullScreenElement ||
+          docWithFullscreen.msFullscreenElement,
+      );
+      setIsZenMode(isCurrentlyFullscreen);
+    };
+
+    // Listen for fullscreen changes
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("mozfullscreenchange", handleFullscreenChange);
+    document.addEventListener("MSFullscreenChange", handleFullscreenChange);
+
+    // Check initial state
+    handleFullscreenChange();
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        handleFullscreenChange,
+      );
+      document.removeEventListener(
+        "mozfullscreenchange",
+        handleFullscreenChange,
+      );
+      document.removeEventListener(
+        "MSFullscreenChange",
+        handleFullscreenChange,
+      );
+    };
+  }, []);
+
   const handleFontChange = (font: (typeof FONT_OPTIONS)[0]) => {
     setSelectedFont(font);
     localStorage.setItem("notes-font-family", font.name);
@@ -104,6 +151,46 @@ export default function NotesFontControl() {
       setFontSize(newSize);
       localStorage.setItem("notes-font-size", newSize);
     }
+  };
+
+  const toggleZenMode = async () => {
+    try {
+      if (!isZenMode) {
+        // Enter fullscreen
+        const docWithFullscreen = document.documentElement as HTMLElement & {
+          webkitRequestFullscreen?: () => Promise<void>;
+          mozRequestFullScreen?: () => Promise<void>;
+          msRequestFullscreen?: () => Promise<void>;
+        };
+
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        } else if (docWithFullscreen.webkitRequestFullscreen) {
+          await docWithFullscreen.webkitRequestFullscreen();
+        } else if (docWithFullscreen.mozRequestFullScreen) {
+          await docWithFullscreen.mozRequestFullScreen();
+        } else if (docWithFullscreen.msRequestFullscreen) {
+          await docWithFullscreen.msRequestFullscreen();
+        }
+      } else {
+        // Exit fullscreen
+        const docWithFullscreen = document as Document & {
+          webkitExitFullscreen?: () => Promise<void>;
+          mozCancelFullScreen?: () => Promise<void>;
+          msExitFullscreen?: () => Promise<void>;
+        };
+
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (docWithFullscreen.webkitExitFullscreen) {
+          await docWithFullscreen.webkitExitFullscreen();
+        } else if (docWithFullscreen.mozCancelFullScreen) {
+          await docWithFullscreen.mozCancelFullScreen();
+        } else if (docWithFullscreen.msExitFullscreen) {
+          await docWithFullscreen.msExitFullscreen();
+        }
+      }
+    } catch {}
   };
 
   // Get the first and last font size keys for comparison
@@ -174,6 +261,30 @@ export default function NotesFontControl() {
             <PlusCircleIcon size={20} weight="duotone" />
           </Button>
         </div>
+      </div>
+
+      {/* Zen Mode Section */}
+      <div>
+        <h3 className="mb-3 text-lg font-bold text-black dark:text-white">
+          Zen Mode
+        </h3>
+        <Button
+          variant={isZenMode ? "default" : "outline"}
+          size="lg"
+          onClick={toggleZenMode}
+          className={`h-12 w-full border-2 border-black font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
+            isZenMode
+              ? "bg-black text-white dark:bg-white dark:text-black"
+              : "bg-white text-black dark:bg-zinc-900 dark:text-white"
+          }`}
+        >
+          {isZenMode ? (
+            <CornersOutIcon size={20} weight="duotone" className="mr-2" />
+          ) : (
+            <FrameCornersIcon size={20} weight="duotone" className="mr-2" />
+          )}
+          {isZenMode ? "Exit Fullscreen" : "Enter Fullscreen"}
+        </Button>
       </div>
     </div>
   );
@@ -246,6 +357,27 @@ export default function NotesFontControl() {
               <MinusCircleIcon size={16} weight="duotone" />
             </Button>
           </div>
+
+          <DropdownMenuSeparator className="border-black dark:border-white/20" />
+
+          {/* Zen Mode Toggle */}
+          <Button
+            variant={isZenMode ? "default" : "outline"}
+            size="sm"
+            onClick={toggleZenMode}
+            className={`w-full border-2 border-black font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
+              isZenMode
+                ? "bg-black text-white dark:bg-white dark:text-black"
+                : "bg-white text-black dark:bg-zinc-900 dark:text-white"
+            }`}
+            title={isZenMode ? "Exit fullscreen" : "Enter fullscreen"}
+          >
+            {isZenMode ? (
+              <CornersOutIcon size={16} weight="duotone" />
+            ) : (
+              <FrameCornersIcon size={16} weight="duotone" />
+            )}
+          </Button>
         </div>
       </div>
 

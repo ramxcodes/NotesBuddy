@@ -42,11 +42,14 @@ function TestimonialCard({
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
     >
-      <div className="bg-card border-primary dark:border-secondary relative rounded-2xl border border-r-8 border-b-8 p-8 shadow-none backdrop-blur-sm transition-all duration-300">
+      <div className="relative rounded-md border-4 border-black p-8 shadow-[8px_8px_0px_0px_#000] transition-all duration-300 hover:translate-x-[-4px] hover:translate-y-[-4px] hover:shadow-[12px_12px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#fff] dark:hover:shadow-[12px_12px_0px_0px_#fff]">
         <div className="relative z-10">
           {/* Quote Icon */}
           <div className="mb-4">
-            <QuotesIcon weight="duotone" className="text-primary/60 h-8 w-8" />
+            <QuotesIcon
+              weight="fill"
+              className="h-8 w-8 text-black dark:text-white"
+            />
           </div>
 
           {/* Rating */}
@@ -54,16 +57,18 @@ function TestimonialCard({
             {Array.from({ length: 5 }).map((_, index) => (
               <StarIcon
                 key={index}
-                type={index < rating ? "fill" : "regular"}
+                weight={index < rating ? "fill" : "regular"}
                 className={`h-4 w-4 ${
-                  index < rating ? "text-yellow-400" : "text-muted-foreground"
+                  index < rating
+                    ? "text-black dark:text-white"
+                    : "text-gray-400 dark:text-gray-600"
                 }`}
               />
             ))}
           </div>
 
           {/* Content */}
-          <p className="text-muted-foreground font-satoshi mb-6 leading-relaxed">
+          <p className="font-satoshi mb-6 leading-relaxed font-medium text-black dark:text-white">
             &quot;{content}&quot;
           </p>
 
@@ -74,13 +79,15 @@ function TestimonialCard({
               alt={name}
               width={48}
               height={48}
-              className="border-border h-12 w-12 rounded-full border-2"
+              className="h-12 w-12 rounded-md border-4 border-black dark:border-white"
             />
             <div>
-              <h4 className="text-foreground font-excon font-semibold">
+              <h4 className="font-excon font-bold text-black dark:text-white">
                 {name}
               </h4>
-              <p className="text-muted-foreground text-sm">{role}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                {role}
+              </p>
             </div>
           </div>
         </div>
@@ -189,7 +196,7 @@ export default function Testimonial() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12"
+          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 mx-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

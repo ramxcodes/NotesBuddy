@@ -101,20 +101,20 @@ function FeatureCard({
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
     >
-      <div className="bg-card dark:bg-card hover:shadow-primary/5 hover:border-primary/20 border-primary dark:border-secondary relative rounded-2xl border border-r-8 border-b-8 p-8 shadow-none backdrop-blur-sm transition-all duration-300 hover:border-r-1 hover:border-b-1 hover:shadow-lg">
+      <div className="bg-card dark:bg-card border-primary dark:border-secondary relative rounded-2xl border p-8 shadow-[8px_8px_0px_0px] shadow-primary dark:shadow-secondary backdrop-blur-sm transition-all duration-300 hover:shadow-[4px_4px_0px_0px] hover:shadow-primary/60 dark:hover:shadow-secondary/60">
         <div className="from-primary/5 dark:from-primary/10 absolute inset-0 rounded-2xl bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
         <div className="relative z-10">
           <div className="bg-primary/10 dark:bg-primary/20 group-hover:bg-primary/20 dark:group-hover:bg-primary/30 mb-6 flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-300">
-            {icon}
+        {icon}
           </div>
 
           <h3 className="text-foreground dark:text-foreground font-excon mb-3 text-xl font-semibold">
-            {title}
+        {title}
           </h3>
 
           <p className="text-muted-foreground dark:text-muted-foreground font-satoshi mt-4 text-lg leading-relaxed">
-            {description}
+        {description}
           </p>
         </div>
       </div>
@@ -206,7 +206,7 @@ export default function About() {
         </motion.div>
 
         <motion.div
-          className="line-clamp-3 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12"
+          className="line-clamp-3 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 p-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

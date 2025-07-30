@@ -15,6 +15,7 @@ import NotesFontControl from "@/components/note/NotesFontControl";
 import NotesScrollProcess from "@/components/note/NotesScrollProcess";
 import ScrollToTop from "@/components/core/ScrollToTop";
 import NextContent from "@/components/note/NextContent";
+import PiracyProtection from "@/components/core/PiracyProtection";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -152,6 +153,8 @@ export default async function NotePage({
 
   return (
     <div className="relative w-full">
+      <PiracyProtection isPremium={note.isPremium || false} />
+
       <ScrollToTop />
       {/* Font Control - Fixed position on the left */}
       <NotesFontControl />

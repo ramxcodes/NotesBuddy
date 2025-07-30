@@ -141,7 +141,7 @@ export default async function NotePage({
       note.year,
       note.semester,
     );
-    // If user cannot access content, show access denied page
+
     if (!accessStatus.canAccess) {
       return (
         <Container>

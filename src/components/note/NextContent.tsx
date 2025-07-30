@@ -18,7 +18,7 @@ import {
   getNextContentAction,
   getSubjectQuizzesAction,
   getSubjectFlashcardsAction,
-} from "@/app/actions/next-content-actions";
+} from "@/app/(user)/notes/[slug]/next-content-actions";
 
 interface NextContentProps {
   university: string;
@@ -313,7 +313,7 @@ export default function NextContent({
               <Button
                 onClick={fetchQuizzes}
                 variant="outline"
-                className="flex h-auto w-full flex-col items-center gap-3 rounded-md border-2 border-black  px-6 py-4 font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 dark:border-white/20  dark:text-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+                className="flex h-auto w-full flex-col items-center gap-3 rounded-md border-2 border-black px-6 py-4 font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
               >
                 <BrainIcon className="h-6 w-6" weight="duotone" />
                 <div className="text-center">
@@ -333,7 +333,7 @@ export default function NextContent({
               <Button
                 onClick={fetchFlashcards}
                 variant="outline"
-                className="flex h-auto w-full flex-col items-center gap-3 rounded-md border-2 border-black  px-6 py-4 font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 dark:border-white/20  dark:text-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
+                className="flex h-auto w-full flex-col items-center gap-3 rounded-md border-2 border-black px-6 py-4 font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]"
               >
                 <LightningIcon className="h-6 w-6" weight="duotone" />
                 <div className="text-center">
@@ -351,7 +351,7 @@ export default function NextContent({
 
         {/* Quiz List */}
         {showQuizzes && quizzes.length > 0 && (
-          <Card className="rounded-md border-2 border-black  shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20  dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <Card className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
             <CardHeader className="border-b-2 border-black dark:border-white/20">
               <CardTitle className="flex items-center gap-2">
                 <BrainIcon className="h-5 w-5" weight="duotone" />
@@ -367,7 +367,7 @@ export default function NextContent({
                   href={`/quiz/${quiz.id}`}
                   className="group block rounded-md"
                 >
-                  <div className="rounded-md border-2 border-black  p-3 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-white/20  dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+                  <div className="rounded-md border-2 border-black p-3 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="font-bold text-black dark:text-white">
@@ -415,7 +415,7 @@ export default function NextContent({
 
         {/* Flashcard List */}
         {showFlashcards && flashcards.length > 0 && (
-          <Card className="rounded-md border-2 border-black  shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20  dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <Card className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
             <CardHeader className="border-b-2 border-black dark:border-white/20">
               <CardTitle className="flex items-center gap-2">
                 <LightningIcon className="h-5 w-5" weight="duotone" />
@@ -431,7 +431,7 @@ export default function NextContent({
                   href={`/flashcards/${flashcardSet.id}`}
                   className="group block rounded-md"
                 >
-                  <div className="rounded-md border-2 border-black  p-3 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-white/20  dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
+                  <div className="rounded-md border-2 border-black p-3 transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="font-bold text-black dark:text-white">

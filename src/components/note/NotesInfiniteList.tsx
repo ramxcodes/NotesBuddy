@@ -4,7 +4,7 @@ import { useState, useTransition, useEffect } from "react";
 import { NOTES_QUERYResult } from "@/sanity/types";
 import NotesCard from "./NotesCard";
 import { Button } from "@/components/ui/button";
-import { loadMoreNotesAction } from "@/app/notes/actions";
+import { loadMoreNotesAction } from "@/app/(user)/notes/actions";
 import {
   searchOptimizer,
   measureSearchPerformance,

@@ -17,7 +17,7 @@ import {
   prismaToSanityValue,
   sanityToPrismaValue,
 } from "@/utils/academic-config";
-import { getUserQuizSubjectsAction } from "@/app/quiz/actions";
+import { getUserQuizSubjectsAction } from "@/app/(user)/quiz/actions";
 import { useDebounce } from "@/hooks/use-debounce";
 import { University, Degree, Year, Semester } from "@prisma/client";
 

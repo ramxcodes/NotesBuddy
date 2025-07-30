@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import FlashcardCompletePage from "@/components/flashcard/FlashcardCompletePage";
-import { getFlashcardSetByIdAction } from "@/app/flashcards/actions";
+import { getFlashcardSetByIdAction } from "../../actions";
 
 interface PageProps {
   params: Promise<{ id: string }>;

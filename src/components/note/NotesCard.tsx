@@ -16,11 +16,16 @@ import { GraduationCapIcon } from "../icons/GraduationCapIcon";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 import { getDisplayNameFromSanityValue } from "@/utils/helpers";
 
+import { useSession } from "@/lib/auth/auth-client";
+import PropSignInButton from "../auth/PropSignInButton";
+
 export default function NotesCard({
   note,
 }: {
   note: NOTES_QUERYResult[number];
 }) {
+  const { data: session } = useSession();
+
   return (
     <Card className="relative h-[350px] border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
       <CardHeader className="pb-4">
@@ -81,15 +86,19 @@ export default function NotesCard({
       </CardContent>
 
       <CardFooter className="absolute right-0 bottom-6 left-0 pt-4">
-        <Link href={`/notes/${note?.slug?.current}`} className="w-full">
-          <Button
-            variant="default"
-            className="border-primary/50 dark:border-secondary/50 w-full border-r-4 border-b-4 font-medium transition-all duration-200 hover:translate-x-0.5 hover:-translate-y-0.5 hover:cursor-pointer hover:border-r-1 hover:border-b-1"
-          >
-            View Notes
-            <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </Link>
+        {session?.user ? (
+          <Link href={`/notes/${note?.slug?.current}`} className="w-full">
+            <Button
+              variant="default"
+              className="border-primary/50 dark:border-secondary/50 w-full border-r-4 border-b-4 font-medium transition-all duration-200 hover:translate-x-0.5 hover:-translate-y-0.5 hover:cursor-pointer hover:border-r-1 hover:border-b-1"
+            >
+              View Notes
+              <ArrowRightIcon className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+        ) : (
+          <PropSignInButton text="Sign In to View Notes" />
+        )}
       </CardFooter>
     </Card>
   );

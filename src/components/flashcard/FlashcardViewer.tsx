@@ -15,7 +15,7 @@ import {
   CaretLeftIcon,
 } from "@phosphor-icons/react";
 import type { FlashcardSetDetail } from "@/dal/flashcard/types";
-import { trackFlashcardSetVisitAction } from "@/app/flashcards/actions";
+import { trackFlashcardSetVisitAction } from "../admin/actions/admin-flashcards";
 
 interface FlashcardViewerProps {
   flashcardSet: FlashcardSetDetail;

@@ -18,7 +18,7 @@ const navItems = [
 
   {
     label: "Pricing",
-    href: "/premium?tier=TIER_3",
+    href: "/premium",
   },
 ];
 

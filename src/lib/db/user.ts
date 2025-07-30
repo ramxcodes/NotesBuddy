@@ -40,3 +40,12 @@ export const adminStatus = async () => {
   const userRole = await getCachedUserRole(session.user.id);
   return userRole === "ADMIN";
 };
+
+export const isAdmin = async ({ userId }: { userId: string }) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
+
+  return user?.role === "ADMIN";
+};

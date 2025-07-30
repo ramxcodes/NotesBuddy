@@ -17,9 +17,9 @@ import {
   prismaToSanityValue,
   sanityToPrismaValue,
 } from "@/utils/academic-config";
-import { getUserFlashcardSubjectsAction } from "@/app/flashcards/actions";
 import { useDebounce } from "@/hooks/use-debounce";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { getUserFlashcardSubjectsAction } from "@/app/(user)/flashcards/actions";
 
 interface FilterFlashcardDropdownProps {
   userProfile?: {

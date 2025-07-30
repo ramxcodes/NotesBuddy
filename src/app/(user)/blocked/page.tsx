@@ -1,21 +1,21 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
+import BlockedSignOutButton from "@/components/blocked/BlockedSignOutButton";
 import { APP_CONFIG } from "@/utils/config";
-import { signOut } from "@/lib/auth/auth-client";
-import { useRouter } from "next/navigation";
 
-export default function BlockedPage() {
-  const router = useRouter();
+import { checkUserBlockedStatus, getSession } from "@/lib/db/user";
+import { redirect } from "next/navigation";
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      router.push("/");
-    } catch {
-      router.push("/");
-    }
-  };
+export default async function BlockedPage() {
+  const session = await getSession();
+
+  if (!session?.user?.id) {
+    redirect("/");
+  }
+
+  const isBlocked = await checkUserBlockedStatus(session.user.id);
+  if (!isBlocked) {
+    redirect("/");
+  }
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-100 p-8 dark:bg-zinc-900">
       <div className="max-w-md rounded-xl border-4 border-black bg-white p-8 text-center shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
@@ -31,13 +31,7 @@ export default function BlockedPage() {
           Please contact support if you believe this is an error or if you need
           to manage your active devices.
         </p>
-        <Button
-          data-umami-event="SignOut button"
-          onClick={handleSignOut}
-          className="border-2 border-black bg-zinc-100 px-6 py-3 font-black text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none dark:border-white/20 dark:bg-zinc-700 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]"
-        >
-          Try Again
-        </Button>
+        <BlockedSignOutButton />
       </div>
     </div>
   );

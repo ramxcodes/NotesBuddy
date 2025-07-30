@@ -14,6 +14,7 @@ import GreetUser from "@/components/note/GreetUser";
 import NotesFontControl from "@/components/note/NotesFontControl";
 import NotesScrollProcess from "@/components/note/NotesScrollProcess";
 import ScrollToTop from "@/components/core/ScrollToTop";
+import NextContent from "@/components/note/NextContent";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -181,6 +182,23 @@ export default async function NotePage({
                 No content available
               </p>
             )}
+
+            {/* Next Content Section */}
+            {note.university &&
+              note.degree &&
+              note.year &&
+              note.semester &&
+              note.subject &&
+              note.slug?.current && (
+                <NextContent
+                  university={note.university}
+                  degree={note.degree}
+                  year={note.year}
+                  semester={note.semester}
+                  subject={note.subject}
+                  currentSlug={note.slug.current}
+                />
+              )}
           </div>
         </div>
       </div>

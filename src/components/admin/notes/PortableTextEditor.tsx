@@ -293,7 +293,7 @@ export default function PortableTextEditor({
     editorProps: {
       attributes: {
         class:
-          "prose dark:prose-invert prose-lg max-w-none focus:outline-none min-h-[400px] p-4 [&_table]:border-collapse [&_table]:border-2 [&_table]:border-gray-300 [&_table]:dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 [&_td]:dark:border-gray-600 [&_td]:p-2 [&_td]:min-w-[100px] [&_th]:border [&_th]:border-gray-300 [&_th]:dark:border-gray-600 [&_th]:p-2 [&_th]:bg-gray-100 [&_th]:font-bold",
+          "prose dark:prose-invert prose-lg max-w-none focus:outline-none min-h-[400px] p-4 [&_table]:border-collapse [&_table]:border-2 [&_table]:border-gray-300 [&_table]:dark:border-gray-600 [&_td]:border [&_td]:border-gray-300 [&_td]:dark:border-gray-600 [&_td]:p-2 [&_td]:min-w-[100px] [&_th]:border [&_th]:border-gray-300 [&_th]:dark:border-gray-600 [&_th]:p-2 [&_th]:bg-gray-100 [&_th]:dark:bg-black/20  [&_th]:font-bold",
         placeholder: "Type '/' for commands...",
       },
       handleKeyDown: (view, event) => {
@@ -419,12 +419,12 @@ export default function PortableTextEditor({
       data-lenis-prevent
     >
       {/* Toolbar */}
-      <div className="flex flex-wrap gap-1 border-b border-gray-200 p-2 dark:border-gray-700 ">
+      <div className="flex flex-wrap gap-1 border-b border-gray-200 p-2 dark:border-gray-700">
         {/* Text formatting */}
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
             editor.isActive("bold") ? "" : ""
           }`}
           title="Bold"
@@ -434,7 +434,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
             editor.isActive("italic") ? "" : ""
           }`}
           title="Italic"
@@ -444,7 +444,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
             editor.isActive("strike") ? "" : ""
           }`}
           title="Strikethrough"
@@ -454,7 +454,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().toggleCode().run()}
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
             editor.isActive("code") ? "" : ""
           }`}
           title="Inline Code"
@@ -470,10 +470,8 @@ export default function PortableTextEditor({
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
-            editor.isActive("heading", { level: 1 })
-              ? ""
-              : ""
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
+            editor.isActive("heading", { level: 1 }) ? "" : ""
           }`}
           title="Heading 1"
         >
@@ -484,10 +482,8 @@ export default function PortableTextEditor({
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
-            editor.isActive("heading", { level: 2 })
-              ? ""
-              : ""
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
+            editor.isActive("heading", { level: 2 }) ? "" : ""
           }`}
           title="Heading 2"
         >
@@ -498,10 +494,8 @@ export default function PortableTextEditor({
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
-            editor.isActive("heading", { level: 3 })
-              ? ""
-              : ""
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
+            editor.isActive("heading", { level: 3 }) ? "" : ""
           }`}
           title="Heading 3"
         >
@@ -514,7 +508,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
             editor.isActive("bulletList") ? "" : ""
           }`}
           title="Bullet List"
@@ -524,7 +518,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
             editor.isActive("orderedList") ? "" : ""
           }`}
           title="Numbered List"
@@ -534,7 +528,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
             editor.isActive("blockquote") ? "" : ""
           }`}
           title="Quote"
@@ -548,7 +542,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           disabled={disabled}
-          className={`rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700 ${
+          className={`rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700 ${
             editor.isActive("codeBlock") ? "" : ""
           }`}
           title="Code Block"
@@ -566,7 +560,7 @@ export default function PortableTextEditor({
               .run()
           }
           disabled={disabled}
-          className="rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+          className="rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700"
           title="Insert Table"
         >
           <TableIcon weight="duotone" className="h-4 w-4" />
@@ -577,7 +571,7 @@ export default function PortableTextEditor({
             <button
               onClick={() => editor.chain().focus().addColumnAfter().run()}
               disabled={disabled}
-              className="flex items-center gap-1 rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+              className="flex items-center gap-1 rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700"
               title="Add Column"
             >
               <Plus weight="duotone" className="h-3 w-3" />
@@ -586,7 +580,7 @@ export default function PortableTextEditor({
             <button
               onClick={() => editor.chain().focus().deleteColumn().run()}
               disabled={disabled}
-              className="flex items-center gap-1 rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+              className="flex items-center gap-1 rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700"
               title="Delete Column"
             >
               <Minus weight="duotone" className="h-3 w-3" />
@@ -595,7 +589,7 @@ export default function PortableTextEditor({
             <button
               onClick={() => editor.chain().focus().addRowAfter().run()}
               disabled={disabled}
-              className="flex items-center gap-1 rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+              className="flex items-center gap-1 rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700"
               title="Add Row"
             >
               <Plus weight="duotone" className="h-3 w-3" />
@@ -604,7 +598,7 @@ export default function PortableTextEditor({
             <button
               onClick={() => editor.chain().focus().deleteRow().run()}
               disabled={disabled}
-              className="flex items-center gap-1 rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+              className="flex items-center gap-1 rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700"
               title="Delete Row"
             >
               <Minus weight="duotone" className="h-3 w-3" />
@@ -632,7 +626,7 @@ export default function PortableTextEditor({
             }
           }}
           disabled={disabled}
-          className="rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+          className="rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700"
           title="Insert Image"
         >
           <ImageIcon weight="duotone" className="h-4 w-4" />
@@ -642,7 +636,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => setShowLatexModal(true)}
           disabled={disabled}
-          className="rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+          className="rounded-md p-2 disabled:opacity-50"
           title="Insert LaTeX"
         >
           <Calculator weight="duotone" className="h-4 w-4" />
@@ -654,7 +648,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo() || disabled}
-          className="rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+          className="rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700"
           title="Undo"
         >
           <ArrowCounterClockwise weight="duotone" className="h-4 w-4" />
@@ -662,7 +656,7 @@ export default function PortableTextEditor({
         <button
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().redo() || disabled}
-          className="rounded-md p-2  disabled:opacity-50 dark:hover:bg-gray-700"
+          className="rounded-md p-2 disabled:opacity-50 dark:hover:bg-gray-700"
           title="Redo"
         >
           <ArrowClockwise weight="duotone" className="h-4 w-4" />
@@ -676,7 +670,7 @@ export default function PortableTextEditor({
         {/* Slash Command Menu */}
         {showSlashMenu && !disabled && (
           <div
-            className="absolute z-50 max-h-64 w-64 overflow-y-auto rounded-md border border-gray-200  shadow-lg dark:border-gray-700 "
+            className="absolute z-50 max-h-64 w-64 overflow-y-auto rounded-md border border-gray-200 shadow-lg dark:border-gray-700"
             style={{
               left: slashMenuPosition.x,
               top: slashMenuPosition.y,
@@ -729,7 +723,7 @@ export default function PortableTextEditor({
       {/* LaTeX Modal */}
       {showLatexModal && (
         <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-          <div className="dark:border-white-20dark:bg-black mx-4 w-full max-w-md rounded-md border-4 border-black  p-6">
+          <div className="dark:border-white-20  bg-white dark:bg-background mx-4 w-full max-w-md rounded-md border-4 border-black p-6">
             <h3 className="mb-4 text-lg font-black uppercase">
               Insert LaTeX Formula
             </h3>
@@ -741,7 +735,7 @@ export default function PortableTextEditor({
                 value={latexFormula}
                 onChange={(e) => setLatexFormula(e.target.value)}
                 placeholder="Enter LaTeX formula (e.g., E = mc^2, \sum_{i=1}^{n} x_i)"
-                className="dark:border-white-20dark:bg-black w-full rounded-md border-2 border-black  px-3 py-2 font-mono text-sm focus:ring-2 focus:ring-black focus:outline-none dark:text-white dark:focus:ring-white"
+                className="dark:border-white-20 bg-white dark:bg-background w-full rounded-md border-2 border-black px-3 py-2 font-mono text-sm focus:ring-2 focus:ring-black focus:outline-none dark:text-white dark:focus:ring-white"
                 rows={4}
                 autoFocus
               />
@@ -755,7 +749,7 @@ export default function PortableTextEditor({
                 <label className="mb-2 block text-sm font-bold uppercase">
                   Preview
                 </label>
-                <div className="rounded-md border-2 border-gray-300 bg-gray-50 p-3 text-center dark:border-gray-600 ">
+                <div className="rounded-md border-2 border-gray-300 bg-gray-50 p-3 text-center dark:border-gray-600">
                   <code className="text-sm">$${latexFormula}$$</code>
                 </div>
               </div>
@@ -763,14 +757,14 @@ export default function PortableTextEditor({
             <div className="flex gap-2">
               <button
                 onClick={handleLatexCancel}
-                className="dark:border-white-20dark:bg-black flex-1 rounded-md border-2 border-black  px-4 py-2 text-sm font-bold uppercase hover:bg-gray-100 dark:text-white dark:hover:bg-gray-900"
+                className="dark:border-white-20 bg-white dark:bg-background flex-1 rounded-md border-2 border-black px-4 py-2 text-sm font-bold uppercase hover:bg-gray-100 dark:text-white dark:hover:bg-gray-900"
               >
                 Cancel
               </button>
               <button
                 onClick={handleLatexInsert}
                 disabled={!latexFormula.trim()}
-                className="flex-1 rounded-md bg-black px-4 py-2 text-sm font-bold text-white uppercase hover:bg-gray-800 disabled:opacity-50 dark: dark:text-black dark:"
+                className="dark: dark: flex-1 rounded-md bg-black px-4 py-2 text-sm font-bold text-white uppercase disabled:opacity-50 dark:text-white"
               >
                 Insert
               </button>

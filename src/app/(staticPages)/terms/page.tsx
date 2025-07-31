@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "platform rules",
   ],
   alternates: {
-    canonical:`${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/terms`,
+    canonical: `${process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in"}/terms`,
   },
   robots: {
     index: true,

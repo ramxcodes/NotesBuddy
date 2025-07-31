@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "delivery times",
   ],
   alternates: {
-    canonical: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/shipping`,
+    canonical: `${process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in"}/shipping`,
   },
   robots: {
     index: true,

@@ -37,7 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     note.syllabus ||
     `Comprehensive study notes for ${note.subject || "your studies"}. Access detailed content and enhance your learning experience with Notes Buddy.`;
-  const baseUrl = process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in";
 
   // Filter out null values for keywords and tags
   const keywordsList = [

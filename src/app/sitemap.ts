@@ -26,7 +26,8 @@ async function getAllNotesForSitemap() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in";
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "subscription refund",
   ],
   alternates: {
-    canonical: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/refund`,
+    canonical: `${process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in"}/refund`,
   },
   robots: {
     index: true,

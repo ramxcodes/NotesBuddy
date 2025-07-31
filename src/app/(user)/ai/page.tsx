@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "AI Study Assistant - Personalized Learning Support | Notes Buddy",
     description:
       "Get instant help with your studies using our AI-powered chat assistant. Ask questions, get explanations, and receive personalized study guidance.",
-    url: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/ai`,
+    url: `${process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in"}/ai`,
     siteName: "Notes Buddy",
     locale: "en_US",
     type: "website",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     creator: "@notesbuddy",
   },
   alternates: {
-    canonical: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/ai`,
+    canonical: `${process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in"}/ai`,
   },
   robots: {
     index: true,

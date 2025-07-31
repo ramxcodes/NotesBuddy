@@ -47,7 +47,7 @@ export const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in",
+    process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in",
   ),
   title: {
     default: "Notes Buddy - Study Smarter with AI-Powered Learning",

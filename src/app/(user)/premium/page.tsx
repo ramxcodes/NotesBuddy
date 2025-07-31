@@ -36,7 +36,7 @@ export const metadata: Metadata = {
       "Premium Membership - Unlock Advanced Learning Features | Notes Buddy",
     description:
       "Upgrade to Premium and unlock exclusive study materials, advanced AI features, unlimited quiz attempts, and premium flashcard sets.",
-    url: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/premium`,
+    url: `${process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in"}/premium`,
     siteName: "Notes Buddy",
     locale: "en_US",
     type: "website",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     creator: "@notesbuddy",
   },
   alternates: {
-    canonical: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/premium`,
+    canonical: `${process.env.NEXT_PUBLIC_WEBSITE_URL || "http://stag.notesbuddy.in"}/premium`,
   },
   robots: {
     index: true,

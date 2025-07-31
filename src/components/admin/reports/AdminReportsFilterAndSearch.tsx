@@ -55,7 +55,7 @@ export default function AdminReportsFilterAndSearch({
   };
 
   return (
-    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-black dark:shadow-[4px_4px_0px_0px_#FFF]">
+    <Card className="dark:border-white-20dark:bg-black border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg font-bold">
           <MagnifyingGlass className="h-5 w-5" />
@@ -70,7 +70,7 @@ export default function AdminReportsFilterAndSearch({
             placeholder="Search reports, users, or URLs..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="border-2 border-black pl-10 focus:border-black focus:ring-0 dark:border-white dark:focus:border-white"
+            className="dark:border-white-20dark:focus:border-white border-2 border-black pl-10 focus:border-black focus:ring-0"
           />
         </div>
 
@@ -147,7 +147,7 @@ export default function AdminReportsFilterAndSearch({
               variant="outline"
               onClick={clearAllFilters}
               disabled={!hasActiveFilters}
-              className="w-full border-2 border-black bg-white text-black hover:bg-gray-100 disabled:opacity-50 dark:border-white dark:bg-black dark:text-white dark:hover:bg-gray-900"
+              className="dark:border-white-20dark:bg-black w-full border-2 border-black bg-white text-black hover:bg-gray-100 disabled:opacity-50 dark:text-white dark:hover:bg-gray-900"
             >
               <X className="mr-2 h-4 w-4" />
               Clear Filters
@@ -162,7 +162,7 @@ export default function AdminReportsFilterAndSearch({
             {search && (
               <Badge
                 variant="secondary"
-                className="border-2 border-black bg-yellow-100 text-black dark:border-white dark:bg-yellow-900 dark:text-white"
+                className="dark:border-white-20dark:bg-yellow-900 border-2 border-black bg-yellow-100 text-black dark:text-white"
               >
                 Search: &ldquo;{search}&rdquo;
                 <button
@@ -176,7 +176,7 @@ export default function AdminReportsFilterAndSearch({
             {filter !== "ALL" && (
               <Badge
                 variant="secondary"
-                className="border-2 border-black bg-blue-100 text-black dark:border-white dark:bg-blue-900 dark:text-white"
+                className="dark:border-white-20dark:bg-blue-900 border-2 border-black bg-blue-100 text-black dark:text-white"
               >
                 Date: {filter.replace("_", " ")}
                 <button
@@ -190,7 +190,7 @@ export default function AdminReportsFilterAndSearch({
             {selectedDomain && (
               <Badge
                 variant="secondary"
-                className="border-2 border-black bg-green-100 text-black dark:border-white dark:bg-green-900 dark:text-white"
+                className="dark:border-white-20dark:bg-green-900 border-2 border-black bg-green-100 text-black dark:text-white"
               >
                 Domain: {selectedDomain}
                 <button

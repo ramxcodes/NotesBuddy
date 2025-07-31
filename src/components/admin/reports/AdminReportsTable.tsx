@@ -59,7 +59,7 @@ export default function AdminReportsTable({
   };
 
   return (
-    <Card className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white dark:bg-black dark:shadow-[4px_4px_0px_0px_#FFF]">
+    <Card className="dark:border-white-20dark:bg-black border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg font-bold">
           <Warning className="h-5 w-5" />
@@ -178,7 +178,6 @@ export default function AdminReportsTable({
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
-                         
                           <Button
                             variant="outline"
                             size="sm"

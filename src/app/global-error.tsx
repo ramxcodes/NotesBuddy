@@ -137,7 +137,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 onClick={() => (window.location.href = "/")}
                 variant="outline"
                 size="lg"
-                className="neuro w-full border-2 border-black bg-white font-bold transition-all duration-300 hover:scale-105 hover:bg-gray-100 sm:w-auto dark:border-white dark:bg-gray-800"
+                className="neuro dark:border-white-20dark:bg-gray-800 w-full border-2 border-black bg-white font-bold transition-all duration-300 hover:scale-105 hover:bg-gray-100 sm:w-auto"
               >
                 <HouseIcon size={20} />
                 Go Home

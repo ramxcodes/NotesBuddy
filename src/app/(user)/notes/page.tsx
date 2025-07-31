@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Study Notes - Comprehensive Academic Resources | Notes Buddy",
     description:
       "Browse through thousands of comprehensive study notes across different universities, degrees, and subjects. Find the perfect notes to boost your academic performance.",
-    url: "https://notesbuddy.in/notes",
+    url: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/notes` ,
     siteName: "Notes Buddy",
     locale: "en_US",
     type: "website",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     creator: "@notesbuddy",
   },
   alternates: {
-    canonical: "https://notesbuddy.in/notes",
+    canonical: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/notes`,
   },
   robots: {
     index: true,

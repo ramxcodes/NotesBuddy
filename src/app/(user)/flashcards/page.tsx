@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Interactive Flashcards - Master Your Studies | Notes Buddy",
     description:
       "Enhance your learning with interactive flashcards designed for effective memorization and retention.",
-    url: "https://notesbuddy.in/flashcards",
+    url: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/flashcards`,
     siteName: "Notes Buddy",
     locale: "en_US",
     type: "website",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     creator: "@notesbuddy",
   },
   alternates: {
-    canonical: "https://notesbuddy.in/flashcards",
+    canonical: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/flashcards`,
   },
   robots: {
     index: true,

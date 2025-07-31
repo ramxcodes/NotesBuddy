@@ -21,13 +21,13 @@ export default function PiracyProtection({ isPremium }: PiracyProtectionProps) {
   const [showPremiumDialog, setShowPremiumDialog] = useState(false);
 
   useEffect(() => {
-    // Initialize disable-devtool with valid options
     DisableDevtool({
-      disableMenu: true, // Disable right-click/context menu
-      disableCopy: true, // Disable copy
-      disableCut: true, // Disable cut
-      disablePaste: true, // Disable paste
-      disableSelect: true, // Disable text selection
+      disableMenu: true,
+      disableCopy: true,
+      disableCut: true,
+      disablePaste: true,
+      disableSelect: true,
+      url: "/anti-piracy",
     });
 
     // Additional custom protections

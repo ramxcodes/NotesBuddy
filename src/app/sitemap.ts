@@ -26,7 +26,7 @@ async function getAllNotesForSitemap() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://notesbuddy.in";
+  const baseUrl = process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in";
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -96,15 +96,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Get all notes for dynamic routes
     const notes = await getAllNotesForSitemap();
     const noteRoutes: MetadataRoute.Sitemap = notes
-      .filter((note: { slug: string | null; _updatedAt: string }) => note.slug !== null)
-      .map(
-        (note: { slug: string | null; _updatedAt: string }) => ({
-          url: `${baseUrl}/notes/${note.slug!}`,
-          lastModified: note._updatedAt ? new Date(note._updatedAt) : new Date(),
-          changeFrequency: "monthly" as const,
-          priority: 0.7,
-        }),
-      );
+      .filter(
+        (note: { slug: string | null; _updatedAt: string }) =>
+          note.slug !== null,
+      )
+      .map((note: { slug: string | null; _updatedAt: string }) => ({
+        url: `${baseUrl}/notes/${note.slug!}`,
+        lastModified: note._updatedAt ? new Date(note._updatedAt) : new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      }));
 
     return [...staticRoutes, ...noteRoutes];
   } catch (error) {

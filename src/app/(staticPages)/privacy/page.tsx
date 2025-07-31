@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "personal information",
   ],
   alternates: {
-    canonical: "https://notesbuddy.in/privacy",
+    canonical: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/privacy`,
   },
   robots: {
     index: true,

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "Notes Buddy - Study Smarter with AI-Powered Learning",
     description:
       "Transform your learning experience with Notes Buddy - Access comprehensive study notes, interactive flashcards, AI-powered quizzes, and personalized study assistance.",
-    url: "https://notesbuddy.in",
+    url: process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in",
     siteName: "Notes Buddy",
     locale: "en_US",
     type: "website",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     creator: "@notesbuddy",
   },
   alternates: {
-    canonical: "https://notesbuddy.in",
+    canonical:process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in",
   },
   robots: {
     index: true,

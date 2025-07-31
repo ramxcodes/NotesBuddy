@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Interactive Quizzes - Test Your Knowledge | Notes Buddy",
     description:
       "Challenge yourself with interactive quizzes designed to test your understanding and reinforce learning.",
-    url: "https://notesbuddy.in/quiz",
+    url: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/quiz`,
     siteName: "Notes Buddy",
     locale: "en_US",
     type: "website",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     creator: "@notesbuddy",
   },
   alternates: {
-    canonical: "https://notesbuddy.in/quiz",
+    canonical: `${process.env.NEXT_WEBSITE_URL || "http://stag.notesbuddy.in"}/quiz`,
   },
   robots: {
     index: true,

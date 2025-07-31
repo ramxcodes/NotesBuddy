@@ -5,20 +5,22 @@ import {
   NOTES_COUNT_QUERY,
   SUBJECTS_QUERY,
 } from "@/sanity/lib/queries";
-import { cache } from "react";
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 import { getCacheOptions, getNextOptions } from "@/cache/cache";
 import { notesCacheConfig } from "@/cache/notes";
 
-export const getNoteBySlug = cache(async (slug: string) => {
-  return await client.fetch(
-    NOTE_BY_SLUG_QUERY,
-    { slug },
-    {
-      next: { revalidate: 3600 },
-    },
-  );
-});
+export const getNoteBySlug = unstable_cache(
+  async (slug: string) => {
+    return await client.fetch(
+      NOTE_BY_SLUG_QUERY,
+      { slug },
+      getNextOptions(notesCacheConfig.getNoteBySlug),
+    );
+  },
+  [notesCacheConfig.getNoteBySlug.cacheKey!],
+  getCacheOptions(notesCacheConfig.getNoteBySlug),
+);
 
 // Get all available subjects based on filters
 export const getAvailableSubjects = cache(

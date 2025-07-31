@@ -287,6 +287,23 @@ export default function PiracyProtection({ isPremium }: PiracyProtectionProps) {
 
   return (
     <>
+      {showPremiumDialog && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            zIndex: 50,
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            background: "rgba(255,255,255,0.2)",
+            pointerEvents: "auto",
+            transition: "backdrop-filter 0.3s",
+          }}
+        />
+      )}
       <AlertDialog open={showPremiumDialog} onOpenChange={setShowPremiumDialog}>
         <AlertDialogContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
           <AlertDialogHeader>

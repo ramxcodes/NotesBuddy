@@ -117,6 +117,30 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   category: "education",
+  openGraph: {
+    title: "Notes Buddy - Study Smarter with AI-Powered Learning",
+    description:
+      "Transform your learning experience with Notes Buddy - Access comprehensive study notes, interactive flashcards, AI-powered quizzes, and personalized study assistance. Join thousands of students achieving academic excellence.",
+    url: "/",
+    siteName: "Notes Buddy",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Notes Buddy - Study Smarter with AI-Powered Learning",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Notes Buddy - Study Smarter with AI-Powered Learning",
+    description:
+      "Transform your learning experience with Notes Buddy - Access comprehensive study notes, interactive flashcards, AI-powered quizzes, and personalized study assistance.",
+    images: ["/opengraph-image.png"],
+  },
 };
 
 export default function RootLayout({

@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getNoteBySlug } from "@/dal/note/helper";
 
+export const alt = "Notes Buddy - Study Note";
 export const size = {
   width: 1200,
   height: 630,

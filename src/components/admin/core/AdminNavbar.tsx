@@ -15,6 +15,10 @@ const adminNavbarItems: AdminNavbarProps[] = [
     href: "/admin",
   },
   {
+    title: "Analytics",
+    href: "/admin/analytics",
+  },
+  {
     title: "Notes",
     href: "/admin/notes",
   },

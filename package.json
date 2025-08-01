@@ -57,6 +57,7 @@
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/react-katex": "^3.0.4",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@umami/api-client": "^0.80.0",
     "better-auth": "^1.2.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

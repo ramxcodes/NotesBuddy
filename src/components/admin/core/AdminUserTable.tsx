@@ -43,11 +43,10 @@ export default function AdminUserTable() {
   const [sort, setSort] = useState<SortOption>("NEW_USERS");
   const [filter, setFilter] = useState<FilterOption>("ALL");
 
-  // Debounce search to avoid too many API calls
   const debouncedSearch = useDebounce(search, 500);
 
   const fetchUsers = useCallback(
-    async (page: number = currentPage) => {
+    async (page: number) => {
       setLoading(true);
       try {
         const result = await getAdminUsersAction({
@@ -63,7 +62,7 @@ export default function AdminUserTable() {
         setLoading(false);
       }
     },
-    [currentPage, debouncedSearch, sort, filter],
+    [debouncedSearch, sort, filter],
   );
 
   const handleSortChange = (newSort: SortOption) => {
@@ -78,28 +77,21 @@ export default function AdminUserTable() {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    fetchUsers(page);
   };
 
   const handleBlockUser = async (userId: string) => {
     const result = await toggleUserBlockAction(userId);
     if (result.success) {
-      // Refresh the current page
       fetchUsers(currentPage);
     }
   };
 
-  // Fetch users when sort, filter, or debounced search changes
   useEffect(() => {
-    fetchUsers(1);
-  }, [sort, filter, debouncedSearch, fetchUsers]);
-
-  // Reset to page 1 when search changes
+    fetchUsers(currentPage);
+  }, [fetchUsers, currentPage]);
   useEffect(() => {
-    if (debouncedSearch !== search) {
-      setCurrentPage(1);
-    }
-  }, [debouncedSearch, search]);
+    setCurrentPage(1);
+  }, [debouncedSearch, sort, filter]);
 
   const getPremiumStatus = (user: AdminUser) => {
     if (!user.isPremiumActive) return "Free";

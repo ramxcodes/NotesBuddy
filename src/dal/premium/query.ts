@@ -708,28 +708,7 @@ export async function checkUserAccessToContent(
   };
 }
 
-// Keep the original function for backward compatibility but mark it as deprecated
-export async function canUserAccessContent(
-  userId: string,
-  requiredTier: PremiumTier,
-  requiredUniversity: string,
-  requiredDegree: string,
-  requiredYear: string,
-  requiredSemester: string,
-): Promise<boolean> {
-  const accessStatus = await checkUserAccessToContent(
-    userId,
-    requiredTier,
-    requiredUniversity,
-    requiredDegree,
-    requiredYear,
-    requiredSemester,
-  );
 
-  return accessStatus.canAccess;
-}
-
-// Get user's current premium purchase details for upgrade context
 export async function getUserUpgradeContext(userId: string) {
   const currentPurchase = await prisma.premiumPurchase.findFirst({
     where: {
@@ -898,5 +877,4 @@ export async function calculateUpgradePricing(
   };
 }
 
-// Import the functions we need from types
 import { calculateUpgradePrice, isUpgradeTier } from "./types";

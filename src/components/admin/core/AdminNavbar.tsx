@@ -39,6 +39,10 @@ const adminNavbarItems: AdminNavbarProps[] = [
     href: "/admin/coupons",
   },
   {
+    title: "Premium",
+    href: "/admin/premium",
+  },
+  {
     title: "Reports",
     href: "/admin/reports",
   },

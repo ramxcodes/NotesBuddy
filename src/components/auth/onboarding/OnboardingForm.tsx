@@ -214,7 +214,7 @@ export function OnboardingForm() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Raj"
+                            placeholder="First Name"
                             {...field}
                             className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                           />
@@ -234,7 +234,7 @@ export function OnboardingForm() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Kumar"
+                            placeholder="Last Name"
                             {...field}
                             className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                           />
@@ -255,7 +255,7 @@ export function OnboardingForm() {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="9876543210"
+                          placeholder="Your phone number (e.g., +91 2345678900)"
                           {...field}
                           className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                           type="tel"

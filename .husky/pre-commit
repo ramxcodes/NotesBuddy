@@ -3,33 +3,68 @@
 # Create logs directory if it doesn't exist
 mkdir -p .husky/logs
 
-# Check Prettier formatting
-echo "💄 Checking code formatting with Prettier..."
-bun run format:check
-if [ $? -ne 0 ]; then
-    echo "❌ Code formatting issues found! Running formatter..."
+# Color codes for better output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}🚀 Starting pre-commit checks...${NC}"
+
+# 1. Check Prettier formatting
+echo -e "\n${YELLOW}💄 Checking code formatting with Prettier...${NC}"
+if ! bun run format:check > /dev/null 2>&1; then
+    echo -e "${YELLOW}📝 Formatting issues found! Auto-fixing...${NC}"
     bun run format
-    echo "✅ Code formatted! Please review changes and commit again."
+    
+    # Auto-stage the formatted files
+    echo -e "${BLUE}📦 Auto-staging formatted files...${NC}"
+    git add .
+    
+    echo -e "${GREEN}✅ Code formatted and staged automatically!${NC}"
+else
+    echo -e "${GREEN}✅ Code formatting looks good!${NC}"
+fi
+
+# 2. Run ESLint with auto-fix
+echo -e "\n${YELLOW}🔍 Running ESLint with auto-fix...${NC}"
+if ! bun run lint:fix > /dev/null 2>&1; then
+    echo -e "\n${YELLOW}🔧 Some ESLint issues were auto-fixed. Checking for remaining issues...${NC}"
+    
+    # Auto-stage any auto-fixed files
+    git add .
+    
+    # Check if there are still unfixable issues
+    if ! bun run lint > /dev/null 2>&1; then
+        echo -e "${RED}❌ ESLint found issues that require manual fixing:${NC}"
+        bun run lint
+        echo -e "\n${RED}Please fix the above ESLint issues before committing.${NC}"
+        exit 1
+    else
+        echo -e "${GREEN}✅ All ESLint issues were auto-fixed and staged!${NC}"
+    fi
+else
+    echo -e "${GREEN}✅ No ESLint issues found!${NC}"
+fi
+
+# 3. TypeScript type checking
+echo -e "\n${YELLOW}📝 Running TypeScript type checking...${NC}"
+if ! bunx tsc --noEmit > .husky/logs/typecheck.log 2>&1; then
+    echo -e "${RED}❌ TypeScript type errors found:${NC}"
+    cat .husky/logs/typecheck.log
+    echo -e "\n${RED}Please fix the above type errors before committing.${NC}"
+    exit 1
+else
+    echo -e "${GREEN}✅ TypeScript type checking passed!${NC}"
+fi
+
+# 4. Run build with logging - show output in terminal AND save to file
+echo -e "\n${YELLOW}🔨 Running build (final validation)...${NC}"
+if ! bun run build 2>&1 | tee .husky/logs/build.log; then
+    echo -e "\n${RED}❌ Build failed! Check .husky/logs/build.log for details.${NC}"
+    echo -e "${RED}Commit blocked due to build failure.${NC}"
     exit 1
 fi
 
-# Run ESLint
-echo "🔍 Running ESLint..."
-bun run lint
-if [ $? -ne 0 ]; then
-    echo "❌ ESLint issues found! Please fix them before committing."
-    exit 1
-fi
-
-# Run build with logging - show output in terminal AND save to file
-echo "🔨 Running build..."
-bun run build 2>&1 | tee .husky/logs/build.log
-
-# Check if build succeeded (using PIPESTATUS for bash)
-if [ ${PIPESTATUS[0]} -ne 0 ]; then
-echo "❌ Build failed! Check .husky/logs/build.log for details."
-echo "Commit blocked."
-exit 1
-fi
-
-echo "✅ All checks passed! Proceeding with commit..."
+echo -e "\n${GREEN}🎉 All checks passed! Proceeding with commit...${NC}"

@@ -25,6 +25,7 @@ export interface GetUserFlashcardSetsParams {
   semester?: Semester;
   subject?: string;
   isPremium?: boolean;
+  sort?: string;
 }
 
 interface LoadMoreFlashcardSetsParams {
@@ -35,6 +36,7 @@ interface LoadMoreFlashcardSetsParams {
   semester?: Semester;
   subject?: string;
   isPremium?: boolean;
+  sort?: string;
   lastTitle?: string;
   lastId?: string;
 }
@@ -59,6 +61,7 @@ export async function loadMoreFlashcardSetsAction(
       semester: params.semester,
       subject: params.subject,
       isPremium: params.isPremium,
+      sort: params.sort,
       isActive: true,
       isPublished: true,
     };
@@ -100,6 +103,7 @@ const getCachedFlashcardSets = unstable_cache(
       semester: params.semester,
       subject: params.subject,
       isPremium: params.isPremium,
+      sort: params.sort,
       isActive: true,
       isPublished: true,
     };

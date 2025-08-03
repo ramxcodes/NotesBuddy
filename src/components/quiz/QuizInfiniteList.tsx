@@ -15,6 +15,7 @@ interface SearchParams {
   semester?: Semester;
   subject?: string;
   isPremium?: boolean;
+  sort?: string;
 }
 
 interface QuizInfiniteListProps {
@@ -44,6 +45,7 @@ export function QuizInfiniteList({
     searchParams.semester,
     searchParams.subject,
     searchParams.isPremium,
+    searchParams.sort,
   ]);
 
   const loadMoreQuizzes = async () => {
@@ -61,6 +63,7 @@ export function QuizInfiniteList({
           semester: searchParams.semester,
           subject: searchParams.subject,
           isPremium: searchParams.isPremium,
+          sort: searchParams.sort,
           lastTitle: lastQuiz?.title || undefined,
           lastId: lastQuiz?.id || undefined,
         });

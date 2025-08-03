@@ -3,6 +3,7 @@ import { Link } from "next-view-transitions";
 import FilterQuizDropdown from "@/components/quiz/FilterQuizDropdown";
 import { QuizInfiniteList } from "@/components/quiz/QuizInfiniteList";
 import QuizListSkeleton from "@/components/quiz/QuizListSkeleton";
+import SortDropdown from "@/components/common/SortDropdown";
 import { loadUserQuizzesAction, getUserContextAction } from "./actions";
 import type { University, Degree, Year, Semester } from "@prisma/client";
 import { GraduationCapIcon } from "@/components/icons/GraduationCapIcon";
@@ -67,6 +68,7 @@ interface QuizPageProps {
     semester?: string;
     subject?: string;
     isPremium?: string;
+    sort?: string;
   }>;
 }
 
@@ -110,6 +112,7 @@ async function QuizList({ searchParams }: QuizPageProps) {
           : resolvedSearchParams?.isPremium === "false"
             ? false
             : undefined,
+      sort: resolvedSearchParams?.sort,
     }),
     getUserContextAction(),
   ]);
@@ -128,12 +131,13 @@ async function QuizList({ searchParams }: QuizPageProps) {
 
   return (
     <div className="mx-4 space-y-6">
-      <div className="space-y-6">
+      <div className="flex flex-col gap-4">
         <FilterQuizDropdown
           userProfile={userContext.userProfile}
           isOnboarded={userContext.isOnboarded}
           isAuthenticated={userContext.isAuthenticated}
         />
+        <SortDropdown />
       </div>
 
       {quizzes.quizzes.length === 0 ? (
@@ -164,6 +168,7 @@ async function QuizList({ searchParams }: QuizPageProps) {
                 : resolvedSearchParams?.isPremium === "false"
                   ? false
                   : undefined,
+            sort: resolvedSearchParams?.sort,
           }}
           isAuthenticated={userContext.isAuthenticated}
         />

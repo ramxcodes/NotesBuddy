@@ -25,6 +25,7 @@ interface LoadMoreQuizzesParams {
   semester?: Semester;
   subject?: string;
   isPremium?: boolean;
+  sort?: string;
   lastTitle?: string;
   lastId?: string;
 }
@@ -49,6 +50,7 @@ export async function loadMoreQuizzesAction(
       semester: params.semester,
       subject: params.subject,
       isPremium: params.isPremium,
+      sort: params.sort,
       userId,
       lastId: params.lastId,
       limit: 6,

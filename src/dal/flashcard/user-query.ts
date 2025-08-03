@@ -50,8 +50,13 @@ export async function getPublishedFlashcardSets(
     }
   }
 
-  // Apply user's academic context if available
-  if (userProfile) {
+  if (
+    userProfile &&
+    !filters.university &&
+    !filters.degree &&
+    !filters.year &&
+    !filters.semester
+  ) {
     where.university = userProfile.university;
     where.degree = userProfile.degree;
     where.year = userProfile.year;
@@ -78,6 +83,21 @@ export async function getPublishedFlashcardSets(
     }
   }
 
+  // Generate orderBy based on sort parameter
+  const getFlashcardOrderBy = (sortValue?: string) => {
+    switch (sortValue) {
+      case "oldest":
+        return [{ updatedAt: "asc" as const }, { title: "asc" as const }];
+      case "title-asc":
+        return [{ title: "asc" as const }, { updatedAt: "desc" as const }];
+      case "title-desc":
+        return [{ title: "desc" as const }, { updatedAt: "desc" as const }];
+      case "newest":
+      default:
+        return [{ updatedAt: "desc" as const }, { title: "asc" as const }];
+    }
+  };
+
   const sets = await prisma.flashcardSet.findMany({
     where,
     include: {
@@ -100,7 +120,7 @@ export async function getPublishedFlashcardSets(
         },
       }),
     },
-    orderBy: [{ updatedAt: "desc" }, { title: "asc" }],
+    orderBy: getFlashcardOrderBy(filters.sort),
     take: limit,
   });
 
@@ -468,9 +488,24 @@ export async function loadMoreUserFlashcardSets(
         },
       }),
     },
-    orderBy: [{ updatedAt: "desc" }, { title: "asc" }],
+    orderBy: getFlashcardOrderBy(filters.sort),
     take: limit,
   });
+
+  // Generate orderBy based on sort parameter for loadMore function
+  function getFlashcardOrderBy(sortValue?: string) {
+    switch (sortValue) {
+      case "oldest":
+        return [{ updatedAt: "asc" as const }, { title: "asc" as const }];
+      case "title-asc":
+        return [{ title: "asc" as const }, { updatedAt: "desc" as const }];
+      case "title-desc":
+        return [{ title: "desc" as const }, { updatedAt: "desc" as const }];
+      case "newest":
+      default:
+        return [{ updatedAt: "desc" as const }, { title: "asc" as const }];
+    }
+  }
 
   return sets.map((set) => {
     const userVisits = userId && "visits" in set ? set.visits : [];

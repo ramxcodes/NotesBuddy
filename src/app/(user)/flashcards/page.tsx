@@ -3,6 +3,7 @@ import { Link } from "next-view-transitions";
 import FilterFlashcardDropdown from "@/components/flashcard/FilterFlashcardDropdown";
 import { FlashcardInfiniteList } from "@/components/flashcard/FlashcardInfiniteList";
 import FlashcardListSkeleton from "@/components/flashcard/FlashcardListSkeleton";
+import SortDropdown from "@/components/common/SortDropdown";
 import { loadUserFlashcardSetsAction, getUserContextAction } from "./actions";
 import type { University, Degree, Year, Semester } from "@prisma/client";
 
@@ -67,6 +68,7 @@ interface FlashcardsPageProps {
     semester?: string;
     subject?: string;
     isPremium?: string;
+    sort?: string;
   }>;
 }
 
@@ -110,6 +112,7 @@ async function FlashcardList({ searchParams }: FlashcardsPageProps) {
           : resolvedSearchParams?.isPremium === "false"
             ? false
             : undefined,
+      sort: resolvedSearchParams?.sort,
     }),
     getUserContextAction(),
   ]);
@@ -128,12 +131,13 @@ async function FlashcardList({ searchParams }: FlashcardsPageProps) {
 
   return (
     <div className="mx-4 space-y-6">
-      <div className="space-y-6">
+      <div className="flex flex-col gap-4">
         <FilterFlashcardDropdown
           userProfile={userContext.userProfile}
           isOnboarded={userContext.isOnboarded}
           isAuthenticated={userContext.isAuthenticated}
         />
+        <SortDropdown />
       </div>
 
       {flashcardSets.flashcardSets.length === 0 ? (
@@ -164,6 +168,7 @@ async function FlashcardList({ searchParams }: FlashcardsPageProps) {
                 : resolvedSearchParams?.isPremium === "false"
                   ? false
                   : undefined,
+            sort: resolvedSearchParams?.sort,
           }}
           isAuthenticated={userContext.isAuthenticated}
         />

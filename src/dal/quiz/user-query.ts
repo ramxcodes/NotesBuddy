@@ -73,6 +73,7 @@ export interface GetUserQuizzesParams {
   userId?: string;
   lastTitle?: string;
   lastId?: string;
+  sort?: string;
 }
 
 // Cache config for user quiz operations
@@ -104,6 +105,7 @@ async function getUserQuizzesInternal({
   userId,
   lastTitle,
   lastId,
+  sort = "newest",
 }: GetUserQuizzesParams): Promise<UserQuizzesResponse> {
   const offset = (page - 1) * limit;
 
@@ -174,11 +176,28 @@ async function getUserQuizzesInternal({
   // Add premium filter
   if (isPremium !== undefined) where.isPremium = isPremium;
 
+  // Generate orderBy based on sort parameter
+  const getOrderBy = (
+    sortValue: string,
+  ): Prisma.QuizOrderByWithRelationInput[] => {
+    switch (sortValue) {
+      case "oldest":
+        return [{ createdAt: "asc" }, { title: "asc" }];
+      case "title-asc":
+        return [{ title: "asc" }, { createdAt: "desc" }];
+      case "title-desc":
+        return [{ title: "desc" }, { createdAt: "desc" }];
+      case "newest":
+      default:
+        return [{ createdAt: "desc" }, { title: "asc" }];
+    }
+  };
+
   // Get quizzes and total count
   const [quizzes, total] = await Promise.all([
     prisma.quiz.findMany({
       where,
-      orderBy: [{ createdAt: "desc" }, { title: "asc" }],
+      orderBy: getOrderBy(sort),
 
       ...(lastTitle && lastId
         ? { take: limit }
@@ -401,6 +420,7 @@ async function loadMoreUserQuizzesInternal({
   userId,
   lastId,
   limit = 6,
+  sort = "newest",
 }: Omit<GetUserQuizzesParams, "page" | "lastTitle"> & {
   lastId: string;
 }): Promise<UserQuizListItem[]> {
@@ -462,10 +482,27 @@ async function loadMoreUserQuizzesInternal({
   // Add premium filter
   if (isPremium !== undefined) where.isPremium = isPremium;
 
+  // Generate orderBy based on sort parameter
+  const getOrderBy = (
+    sortValue: string,
+  ): Prisma.QuizOrderByWithRelationInput[] => {
+    switch (sortValue) {
+      case "oldest":
+        return [{ createdAt: "asc" }, { title: "asc" }];
+      case "title-asc":
+        return [{ title: "asc" }, { createdAt: "desc" }];
+      case "title-desc":
+        return [{ title: "desc" }, { createdAt: "desc" }];
+      case "newest":
+      default:
+        return [{ createdAt: "desc" }, { title: "asc" }];
+    }
+  };
+
   // Get quizzes
   const quizzes = await prisma.quiz.findMany({
     where,
-    orderBy: [{ createdAt: "desc" }, { title: "asc" }],
+    orderBy: getOrderBy(sort),
     take: limit,
     include: {
       _count: {

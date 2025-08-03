@@ -15,6 +15,7 @@ interface SearchParams {
   semester?: Semester;
   subject?: string;
   isPremium?: boolean;
+  sort?: string;
 }
 
 interface FlashcardInfiniteListProps {
@@ -46,6 +47,7 @@ export function FlashcardInfiniteList({
     searchParams.semester,
     searchParams.subject,
     searchParams.isPremium,
+    searchParams.sort,
   ]);
 
   const loadMoreFlashcardSets = async () => {
@@ -63,6 +65,7 @@ export function FlashcardInfiniteList({
           semester: searchParams.semester,
           subject: searchParams.subject,
           isPremium: searchParams.isPremium,
+          sort: searchParams.sort,
           lastTitle: lastFlashcardSet?.title || undefined,
           lastId: lastFlashcardSet?.id || undefined,
         });

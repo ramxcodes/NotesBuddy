@@ -136,6 +136,7 @@ export interface FlashcardSetFilters {
   search?: string;
   page?: number;
   limit?: number;
+  sort?: string;
 }
 
 export interface FlashcardSetsListResponse {

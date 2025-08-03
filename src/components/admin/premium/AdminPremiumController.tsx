@@ -111,15 +111,9 @@ export default function AdminPremiumController() {
         className="space-y-6"
       >
         <TabsList className="neuro flex items-center justify-between gap-6">
-          <TabsTrigger value="overview">
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="users">
-            Premium Users
-          </TabsTrigger>
-          <TabsTrigger value="grant">
-            Grant Premium
-          </TabsTrigger>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="users">Premium Users</TabsTrigger>
+          <TabsTrigger value="grant">Grant Premium</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">

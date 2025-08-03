@@ -191,7 +191,7 @@ export default function TableOfContent({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => toggleH2Section(h2Id)}
-                      className="mr-1 flex-shrink-0 rounded-md border-2 border-black bg-white p-1 font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]  hover:cursor-pointer"
+                      className="mr-1 flex-shrink-0 rounded-md border-2 border-black bg-white p-1 font-bold shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:cursor-pointer hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
                       aria-label={
                         isActiveH2 ? "Collapse section" : "Expand section"
                       }
@@ -204,7 +204,7 @@ export default function TableOfContent({
                     </button>
                     <button
                       onClick={() => handleClick(h2Text)}
-                      className={`flex-1 rounded-md border-2 border-black px-3 py-2 text-left text-sm font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:hover:shadow-[3px_3px_0px_0px_#757373]  hover:cursor-pointer ${
+                      className={`flex-1 rounded-md border-2 border-black px-3 py-2 text-left text-sm font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:cursor-pointer hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
                         isCurrentH2
                           ? "bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
                           : "bg-white text-black shadow-[2px_2px_0px_0px_#000] dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
@@ -226,7 +226,7 @@ export default function TableOfContent({
                           <li className="border-l-4 pl-2" key={h3._key}>
                             <button
                               onClick={() => handleClick(h3Text)}
-                              className={`block w-full rounded-md border-2 border-black px-3 py-2 text-left text-xs font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:hover:shadow-[3px_3px_0px_0px_#757373]  hover:cursor-pointer ${
+                              className={`block w-full rounded-md border-2 border-black px-3 py-2 text-left text-xs font-bold transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:cursor-pointer hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:hover:shadow-[3px_3px_0px_0px_#757373] ${
                                 isActiveH3
                                   ? "bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
                                   : "bg-white text-black shadow-[2px_2px_0px_0px_#000] dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"

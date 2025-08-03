@@ -10,7 +10,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 const ScrollProgress = () => {
   const { scrollProgress } = useScrollProgress();
   const [scrollDirection, setScrollDirection] = useState<"up" | "down" | null>(
-    null
+    null,
   );
   const [lastScrollY, setLastScrollY] = useState(0);
   const showNavigateButton = scrollProgress > 2;
@@ -59,7 +59,7 @@ const ScrollProgress = () => {
     <div>
       <Progress
         value={scrollProgress}
-        className="w-full h-1 z-50 fixed top-0"
+        className="fixed top-0 z-50 h-1 w-full"
       />
       {showNavigateButton && (
         <Tooltip>
@@ -67,7 +67,7 @@ const ScrollProgress = () => {
             <Button
               variant="outline"
               size="icon"
-              className="cursor-pointer hover:bg-accent transition-all duration-300 fixed bottom-6 right-10"
+              className="hover:bg-accent fixed right-10 bottom-6 cursor-pointer transition-all duration-300"
               onClick={handleScrollAction}
             >
               {scrollDirection === "down" ? (
@@ -84,7 +84,9 @@ const ScrollProgress = () => {
           </TooltipTrigger>
           <TooltipContent>
             <p>
-              {scrollDirection === "down" ? "Scroll to Bottom" : "Scroll to Top"}
+              {scrollDirection === "down"
+                ? "Scroll to Bottom"
+                : "Scroll to Top"}
             </p>
           </TooltipContent>
         </Tooltip>

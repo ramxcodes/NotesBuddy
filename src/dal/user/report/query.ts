@@ -1,4 +1,3 @@
-
 import prisma from "@/lib/db/prisma";
 import type { CreateReportInput, Report } from "./types";
 

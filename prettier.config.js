@@ -4,8 +4,16 @@ module.exports = {
   trailingComma: "all",
   singleQuote: true,
   semi: true,
-  importOrder: ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+  importOrder: [
+    "^(react/(.*)$)|^(react$)",
+    "^(next/(.*)$)|^(next$)",
+    "^@/(.*)$",
+    "^[./]",
+  ],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
-  plugins: ["@trivago/prettier-plugin-sort-imports"],
+  plugins: [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss",
+  ],
 };

@@ -16,7 +16,7 @@ export default function ProfileLoading() {
           {/* Main Content */}
           <div className="mx-auto max-w-6xl">
             {/* Tabs Skeleton */}
-            <div className="grid h-auto w-full grid-cols-2 rounded-lg border p-1 md:grid-cols-4 lg:grid-cols-5 gap-2">
+            <div className="grid h-auto w-full grid-cols-2 gap-2 rounded-lg border p-1 md:grid-cols-4 lg:grid-cols-5">
               <Skeleton className="h-10 rounded-md" />
               <Skeleton className="h-10 rounded-md" />
               <Skeleton className="h-10 rounded-md" />

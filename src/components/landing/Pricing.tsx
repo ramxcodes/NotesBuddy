@@ -45,7 +45,7 @@ function PricingCard({
     >
       {/* Tag */}
       <div
-        className={`absolute top-6 right-6 rounded-md border-2 border-black bg-white dark:bg-black px-3 py-1 text-xs font-bold`}
+        className={`absolute top-6 right-6 rounded-md border-2 border-black bg-white px-3 py-1 text-xs font-bold dark:bg-black`}
       >
         {tag}
       </div>

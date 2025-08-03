@@ -196,7 +196,7 @@ export default function Testimonial() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 mx-4"
+          className="mx-4 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

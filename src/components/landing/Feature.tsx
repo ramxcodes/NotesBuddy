@@ -45,16 +45,16 @@ function FeatureCard({
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
     >
-      <div className="bg-card relative rounded-2xl border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1">
+      <div className="bg-card relative rounded-2xl border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="relative z-10">
-          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border-2 border-black bg-white dark:bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        {icon}
+          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:bg-black">
+            {icon}
           </div>
           <h3 className="text-foreground font-excon mb-3 text-xl font-semibold">
-        {title}
+            {title}
           </h3>
           <p className="text-muted-foreground font-satoshi leading-relaxed">
-        {description}
+            {description}
           </p>
         </div>
       </div>
@@ -94,12 +94,7 @@ const features = [
       "Access handwritten notes from top-performing students to understand winning strategies.",
   },
   {
-    icon: (
-      <ChatCenteredDotsIcon
-        weight="duotone"
-        className="h-6 w-6"
-      />
-    ),
+    icon: <ChatCenteredDotsIcon weight="duotone" className="h-6 w-6" />,
     title: "AI Study Assistant",
     description:
       "Get instant answers to your questions with our intelligent AI chatbot (coming soon).",
@@ -142,7 +137,7 @@ export default function Features() {
           </p>
         </motion.div>
         <motion.div
-          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 mx-4"
+          className="mx-4 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-12"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

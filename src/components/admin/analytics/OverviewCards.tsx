@@ -56,7 +56,7 @@ function StatCard({
           {icon}
         </div>
       </div>
-      <div className="space-y-2 mt-2">
+      <div className="mt-2 space-y-2">
         <h3 className="text-lg font-bold text-black dark:text-white">
           {title}
         </h3>

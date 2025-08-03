@@ -6,7 +6,7 @@ export default function WhatsappIcon() {
   return (
     <Link
       data-umami-event="nav-whatsapp-community-click"
-      className="mt-1 hover:cursor-pointer hidden md:block"
+      className="mt-1 hidden hover:cursor-pointer md:block"
       target="_blank"
       href="https://chat.whatsapp.com/EcretA1N7eCFQeHecm1uWO"
     >

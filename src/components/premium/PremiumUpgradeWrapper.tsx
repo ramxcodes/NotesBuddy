@@ -9,7 +9,9 @@ interface PremiumUpgradeWrapperProps {
   upgradeContext: UpgradeContext;
 }
 
-export function PremiumUpgradeWrapper({ upgradeContext }: PremiumUpgradeWrapperProps) {
+export function PremiumUpgradeWrapper({
+  upgradeContext,
+}: PremiumUpgradeWrapperProps) {
   const router = useRouter();
 
   const handleUpgradeSelect = (tier: PremiumTier) => {

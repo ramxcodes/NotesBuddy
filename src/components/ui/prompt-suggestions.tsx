@@ -1,7 +1,7 @@
 interface PromptSuggestionsProps {
-  label: string
-  append: (message: { role: "user"; content: string }) => void
-  suggestions: string[]
+  label: string;
+  append: (message: { role: "user"; content: string }) => void;
+  suggestions: string[];
 }
 
 export function PromptSuggestions({
@@ -17,12 +17,12 @@ export function PromptSuggestions({
           <button
             key={suggestion}
             onClick={() => append({ role: "user", content: suggestion })}
-            className="h-max flex-1 rounded-xl border bg-background p-4 hover:bg-muted"
+            className="bg-background hover:bg-muted h-max flex-1 rounded-xl border p-4"
           >
             <p>{suggestion}</p>
           </button>
         ))}
       </div>
     </div>
-  )
+  );
 }

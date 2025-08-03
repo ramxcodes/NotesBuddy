@@ -32,7 +32,6 @@ export default function FlashcardCompletePage({
     router.push("/flashcards");
   };
 
-
   return (
     <div className="min-h-screen p-4">
       <div className="mx-auto max-w-4xl">
@@ -45,12 +44,10 @@ export default function FlashcardCompletePage({
             />
           </div>
           <h1 className="mb-4 text-4xl font-bold">Congratulations!</h1>
-          <p className="text-xl text-secondary">
+          <p className="text-secondary text-xl">
             You&apos;ve successfully completed studying
           </p>
-          <h2 className="mt-2 text-2xl font-bold">
-            {flashcardSet.title}
-          </h2>
+          <h2 className="mt-2 text-2xl font-bold">{flashcardSet.title}</h2>
         </div>
 
         {/* Study Stats */}
@@ -64,7 +61,9 @@ export default function FlashcardCompletePage({
               <h3 className="mb-2 text-2xl font-bold text-green-600">
                 {flashcardSet.cards.length}
               </h3>
-              <p className="text-sm font-medium text-secondary">Cards Studied</p>
+              <p className="text-secondary text-sm font-medium">
+                Cards Studied
+              </p>
             </CardContent>
           </Card>
 
@@ -77,7 +76,7 @@ export default function FlashcardCompletePage({
               <h3 className="mb-2 text-lg font-bold text-blue-600">
                 {flashcardSet.subject}
               </h3>
-              <p className="text-sm font-medium text-secondary">Subject</p>
+              <p className="text-secondary text-sm font-medium">Subject</p>
             </CardContent>
           </Card>
 
@@ -90,7 +89,9 @@ export default function FlashcardCompletePage({
               <h3 className="mb-2 text-lg font-bold text-purple-600">
                 Complete
               </h3>
-              <p className="text-sm font-medium text-secondary">Study Session</p>
+              <p className="text-secondary text-sm font-medium">
+                Study Session
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -101,25 +102,23 @@ export default function FlashcardCompletePage({
             <h3 className="mb-4 text-xl font-bold">Study Set Details</h3>
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <h4 className="mb-2 font-semibold">
-                  Academic Info
-                </h4>
-                <p className="text-sm text-secondary">
+                <h4 className="mb-2 font-semibold">Academic Info</h4>
+                <p className="text-secondary text-sm">
                   <strong>University:</strong>{" "}
                   {getDisplayNameFromPrismaValue(
                     "university",
                     flashcardSet.university,
                   )}
                 </p>
-                <p className="text-sm text-secondary">
+                <p className="text-secondary text-sm">
                   <strong>Degree:</strong>{" "}
                   {getDisplayNameFromPrismaValue("degree", flashcardSet.degree)}
                 </p>
-                <p className="text-sm text-secondary">
+                <p className="text-secondary text-sm">
                   <strong>Year:</strong>{" "}
                   {getDisplayNameFromPrismaValue("year", flashcardSet.year)}
                 </p>
-                <p className="text-sm text-secondary">
+                <p className="text-secondary text-sm">
                   <strong>Semester:</strong>{" "}
                   {getDisplayNameFromPrismaValue(
                     "semester",
@@ -128,10 +127,8 @@ export default function FlashcardCompletePage({
                 </p>
               </div>
               <div>
-                <h4 className="mb-2 font-semibold">
-                  Description
-                </h4>
-                <p className="text-sm text-secondary">
+                <h4 className="mb-2 font-semibold">Description</h4>
+                <p className="text-secondary text-sm">
                   {flashcardSet.description || "No description provided."}
                 </p>
               </div>
@@ -149,7 +146,6 @@ export default function FlashcardCompletePage({
             <ArrowsClockwiseIcon weight="duotone" className="mr-2 h-5 w-5" />
             Study Again
           </Button>
-
 
           <Button
             onClick={handleBackToFlashcards}

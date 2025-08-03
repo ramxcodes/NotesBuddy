@@ -1,20 +1,35 @@
 #!/bin/bash
 
 # Create logs directory if it doesn't exist
-
 mkdir -p .husky/logs
 
-# Run build with logging - show output in terminal AND save to file
+# Check Prettier formatting
+echo "💄 Checking code formatting with Prettier..."
+bun run format:check
+if [ $? -ne 0 ]; then
+    echo "❌ Code formatting issues found! Running formatter..."
+    bun run format
+    echo "✅ Code formatted! Please review changes and commit again."
+    exit 1
+fi
 
+# Run ESLint
+echo "🔍 Running ESLint..."
+bun run lint
+if [ $? -ne 0 ]; then
+    echo "❌ ESLint issues found! Please fix them before committing."
+    exit 1
+fi
+
+# Run build with logging - show output in terminal AND save to file
 echo "🔨 Running build..."
 bun run build 2>&1 | tee .husky/logs/build.log
 
 # Check if build succeeded (using PIPESTATUS for bash)
-
 if [ ${PIPESTATUS[0]} -ne 0 ]; then
 echo "❌ Build failed! Check .husky/logs/build.log for details."
 echo "Commit blocked."
 exit 1
 fi
 
-echo "✅ Build successful! Proceeding with commit..."
+echo "✅ All checks passed! Proceeding with commit..."

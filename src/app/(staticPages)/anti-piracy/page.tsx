@@ -1,5 +1,5 @@
 import { LockIcon } from "@/components/icons/LockIcon";
-import {Link} from "next-view-transitions";
+import { Link } from "next-view-transitions";
 
 export default function AntiPiracyPage() {
   return (
@@ -9,7 +9,7 @@ export default function AntiPiracyPage() {
         <div className="rounded-md border-2 border-black p-8 shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#757373]">
           {/* Header Section */}
           <div className="mb-8 text-center">
-            <LockIcon className="mx-auto mb-4 h-16 w-16" />  
+            <LockIcon className="mx-auto mb-4 h-16 w-16" />
             <h1 className="font-excon mb-4 text-4xl font-black text-black dark:text-white">
               PIRACY DETECTED
             </h1>
@@ -30,8 +30,6 @@ export default function AntiPiracyPage() {
                 to copy content, or other piracy-related activities.
               </p>
             </div>
-
-          
           </div>
 
           {/* Action Buttons */}

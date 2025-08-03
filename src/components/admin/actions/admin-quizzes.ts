@@ -284,9 +284,11 @@ export async function getQuizAttemptDetailsAction(
 }
 
 // Get all attempts for a quiz
-export async function getQuizAttemptsAction(
-  quizId: string,
-): Promise<{ success: boolean; data?: import("@/dal/quiz/types").QuizAttemptWithUser[]; error?: string }> {
+export async function getQuizAttemptsAction(quizId: string): Promise<{
+  success: boolean;
+  data?: import("@/dal/quiz/types").QuizAttemptWithUser[];
+  error?: string;
+}> {
   const isAdmin = await adminStatus();
 
   if (!isAdmin) {

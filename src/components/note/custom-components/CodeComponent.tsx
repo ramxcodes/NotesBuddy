@@ -3,7 +3,11 @@
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useState } from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CodeBlockProps {
   _type: "code";
@@ -38,7 +42,7 @@ export const CodeComponent = ({ value }: { value: CodeBlockProps }) => {
           <TooltipTrigger asChild>
             <button
               onClick={handleCopy}
-              className="absolute top-3 right-3 z-10 rounded bg-gray-700 px-3 py-1 text-sm text-white transition-colors duration-200 hover:bg-gray-600 cursor-pointer"
+              className="absolute top-3 right-3 z-10 cursor-pointer rounded bg-gray-700 px-3 py-1 text-sm text-white transition-colors duration-200 hover:bg-gray-600"
             >
               {copied ? "Copied!" : "Copy"}
             </button>

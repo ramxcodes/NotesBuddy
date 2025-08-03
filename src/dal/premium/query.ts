@@ -708,7 +708,6 @@ export async function checkUserAccessToContent(
   };
 }
 
-
 export async function getUserUpgradeContext(userId: string) {
   const currentPurchase = await prisma.premiumPurchase.findFirst({
     where: {

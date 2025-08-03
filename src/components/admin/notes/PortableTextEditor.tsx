@@ -723,7 +723,7 @@ export default function PortableTextEditor({
       {/* LaTeX Modal */}
       {showLatexModal && (
         <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
-          <div className="dark:border-white-20  bg-white dark:bg-background mx-4 w-full max-w-md rounded-md border-4 border-black p-6">
+          <div className="dark:border-white-20 dark:bg-background mx-4 w-full max-w-md rounded-md border-4 border-black bg-white p-6">
             <h3 className="mb-4 text-lg font-black uppercase">
               Insert LaTeX Formula
             </h3>
@@ -735,7 +735,7 @@ export default function PortableTextEditor({
                 value={latexFormula}
                 onChange={(e) => setLatexFormula(e.target.value)}
                 placeholder="Enter LaTeX formula (e.g., E = mc^2, \sum_{i=1}^{n} x_i)"
-                className="dark:border-white-20 bg-white dark:bg-background w-full rounded-md border-2 border-black px-3 py-2 font-mono text-sm focus:ring-2 focus:ring-black focus:outline-none dark:text-white dark:focus:ring-white"
+                className="dark:border-white-20 dark:bg-background w-full rounded-md border-2 border-black bg-white px-3 py-2 font-mono text-sm focus:ring-2 focus:ring-black focus:outline-none dark:text-white dark:focus:ring-white"
                 rows={4}
                 autoFocus
               />
@@ -757,7 +757,7 @@ export default function PortableTextEditor({
             <div className="flex gap-2">
               <button
                 onClick={handleLatexCancel}
-                className="dark:border-white-20 bg-white dark:bg-background flex-1 rounded-md border-2 border-black px-4 py-2 text-sm font-bold uppercase hover:bg-gray-100 dark:text-white dark:hover:bg-gray-900"
+                className="dark:border-white-20 dark:bg-background flex-1 rounded-md border-2 border-black bg-white px-4 py-2 text-sm font-bold uppercase hover:bg-gray-100 dark:text-white dark:hover:bg-gray-900"
               >
                 Cancel
               </button>

@@ -1,4 +1,3 @@
-
 import { CacheConfig } from "./cache";
 
 export const notesCacheConfig = {
@@ -31,4 +30,3 @@ export const notesCacheConfig = {
     cacheKey: "note-by-slug",
   } as CacheConfig,
 };
-

@@ -23,7 +23,13 @@ const navItems = [
 ];
 
 export default async function MainNav() {
-  const isAdmin = await adminStatus();
+  let isAdmin = false;
+
+  try {
+    isAdmin = await adminStatus();
+  } catch {
+    isAdmin = false;
+  }
 
   return (
     <nav className="dark:from-background dark:via-background dark:to-background/20 sticky top-0 z-50 flex items-center justify-between bg-gradient-to-b from-white via-white to-white/20 px-10 py-8 hover:cursor-pointer">

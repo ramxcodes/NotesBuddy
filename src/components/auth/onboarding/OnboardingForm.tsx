@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -39,11 +40,13 @@ import {
 } from "@/utils/academic-config";
 import { handleOnboarding } from "@/app/(auth)/onboarding/actions";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { UserIcon } from "@/components/icons/UserIcon";
 import { GraduationCapIcon } from "@/components/icons/GraduationCapIcon";
 import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
 
 export function OnboardingForm() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [availableDegrees, setAvailableDegrees] = useState<AcademicOption[]>(
@@ -148,15 +151,25 @@ export function OnboardingForm() {
                 type: "server",
                 message: errors[0],
               });
+              if (field === "phoneNumber") {
+                toast.error(errors[0]);
+              }
             }
           });
         }
 
         if (result.error) {
           setSubmitError(result.error);
+          toast.error(result.error);
         }
+      } else {
+        if (result.profileExists) {
+          toast.success(result.message || "Profile updated successfully!");
+        } else {
+          toast.success("Profile created successfully!");
+        }
+        router.push("/profile");
       }
-      // If successful, the action will redirect automatically
     } catch {
       setSubmitError("An unexpected error occurred. Please try again.");
     } finally {

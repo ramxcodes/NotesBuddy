@@ -1,11 +1,11 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
 import { getSession } from "@/lib/db/user";
 import {
   createUserProfile,
   updateUserOnboardingStatus,
+  getUserFullProfile,
 } from "@/dal/user/onboarding/query";
 import { onboardingFormSchema } from "@/dal/user/onboarding/types";
 
@@ -41,14 +41,35 @@ export async function handleOnboarding(formData: FormData) {
   const validData = validationResult.data;
 
   try {
+    const existingProfile = await getUserFullProfile(session.user.id);
+
+    if (existingProfile) {
+      await createUserProfile(session.user.id, validData);
+      await updateUserOnboardingStatus(session.user.id, true);
+
+      revalidateTag("user-onboarding");
+      revalidateTag("user-full-profile");
+
+      return {
+        success: true,
+        profileExists: true,
+        message: "Profile updated successfully!",
+      };
+    }
+
+    // Create new profile if it doesn't exist
     await createUserProfile(session.user.id, validData);
 
     await updateUserOnboardingStatus(session.user.id, true);
 
     revalidateTag("user-onboarding");
     revalidateTag("user-full-profile");
+
+    return {
+      success: true,
+      profileExists: false,
+    };
   } catch (error: unknown) {
-    // Check if the error is due to unique constraint violation for phone number
     if (
       error &&
       typeof error === "object" &&
@@ -58,25 +79,53 @@ export async function handleOnboarding(formData: FormData) {
       error.meta &&
       typeof error.meta === "object" &&
       "target" in error.meta &&
-      Array.isArray(error.meta.target) &&
-      error.meta.target.includes("phoneNumber")
+      Array.isArray(error.meta.target)
     ) {
-      return {
-        success: false,
-        error: "Phone number is already in use",
-        fieldErrors: {
-          phoneNumber: [
-            "This phone number is already registered with another account",
-          ],
-        },
-      };
+      // Handle phoneNumber unique constraint
+      if (error.meta.target.includes("phoneNumber")) {
+        // Check if the phone number belongs to the current user
+        const existingProfile = await getUserFullProfile(session.user.id);
+        if (
+          existingProfile &&
+          existingProfile.phoneNumber === validData.phoneNumber
+        ) {
+          // Same user, same phone number - this is an update, continue
+          await updateUserOnboardingStatus(session.user.id, true);
+          revalidateTag("user-onboarding");
+          revalidateTag("user-full-profile");
+
+          return {
+            success: true,
+            profileExists: true,
+            message: "Profile updated successfully!",
+          };
+        }
+
+        // Different user with same phone number
+        return {
+          success: false,
+          error: "Phone number is already in use",
+          fieldErrors: {
+            phoneNumber: [
+              "This phone number is already registered with another account",
+            ],
+          },
+        };
+      }
+
+      // Handle userId unique constraint (though this should be rare with upsert)
+      if (error.meta.target.includes("userId")) {
+        return {
+          success: false,
+          error: "User profile already exists. Please try refreshing the page.",
+        };
+      }
     }
 
+    console.error("Onboarding error:", error);
     return {
       success: false,
       error: "Failed to complete onboarding. Please try again.",
     };
   }
-
-  redirect("/profile");
 }

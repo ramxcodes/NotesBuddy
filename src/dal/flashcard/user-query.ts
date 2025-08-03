@@ -17,11 +17,38 @@ export async function getPublishedFlashcardSets(
     semester: Semester;
   },
   userId?: string,
+  limit: number = 6,
+  lastTitle?: string,
+  lastId?: string,
 ) {
   const where: Record<string, unknown> = {
     isActive: true,
     isPublished: true,
   };
+
+  // Add cursor-based pagination
+  if (lastTitle && lastId) {
+    const lastFlashcardSet = await prisma.flashcardSet.findUnique({
+      where: { id: lastId },
+      select: { updatedAt: true, title: true },
+    });
+
+    if (lastFlashcardSet) {
+      where.OR = [
+        {
+          updatedAt: {
+            lt: lastFlashcardSet.updatedAt,
+          },
+        },
+        {
+          updatedAt: lastFlashcardSet.updatedAt,
+          title: {
+            gt: lastFlashcardSet.title,
+          },
+        },
+      ];
+    }
+  }
 
   // Apply user's academic context if available
   if (userProfile) {
@@ -36,11 +63,19 @@ export async function getPublishedFlashcardSets(
     where.subject = { contains: filters.subject, mode: "insensitive" };
   if (filters.isPremium !== undefined) where.isPremium = filters.isPremium;
   if (filters.search) {
-    where.OR = [
+    const searchFilter = [
       { title: { contains: filters.search, mode: "insensitive" } },
       { description: { contains: filters.search, mode: "insensitive" } },
       { subject: { contains: filters.search, mode: "insensitive" } },
     ];
+
+    if (where.OR) {
+      // Combine cursor and search filters
+      where.AND = [{ OR: where.OR }, { OR: searchFilter }];
+      delete where.OR;
+    } else {
+      where.OR = searchFilter;
+    }
   }
 
   const sets = await prisma.flashcardSet.findMany({
@@ -65,7 +100,8 @@ export async function getPublishedFlashcardSets(
         },
       }),
     },
-    orderBy: [{ updatedAt: "desc" }],
+    orderBy: [{ updatedAt: "desc" }, { title: "asc" }],
+    take: limit,
   });
 
   return sets.map((set) => {
@@ -340,4 +376,126 @@ export async function getUserFlashcardSubjects(filters: {
   });
 
   return sets.map((set) => set.subject);
+}
+
+// Load more flashcard sets with cursor-based pagination - specifically for infinite scroll
+export async function loadMoreUserFlashcardSets(
+  lastId: string,
+  filters: FlashcardSetFilters = {},
+  userProfile?: {
+    university: University;
+    degree: Degree;
+    year: Year;
+    semester: Semester;
+  },
+  userId?: string,
+  limit: number = 6,
+): Promise<FlashcardSetListItem[]> {
+  const where: Record<string, unknown> = {
+    isActive: true,
+    isPublished: true,
+  };
+
+  // Add cursor-based pagination
+  const lastFlashcardSet = await prisma.flashcardSet.findUnique({
+    where: { id: lastId },
+    select: { updatedAt: true, title: true },
+  });
+
+  if (lastFlashcardSet) {
+    where.OR = [
+      {
+        updatedAt: {
+          lt: lastFlashcardSet.updatedAt,
+        },
+      },
+      {
+        updatedAt: lastFlashcardSet.updatedAt,
+        title: {
+          gt: lastFlashcardSet.title,
+        },
+      },
+    ];
+  }
+
+  // Apply user's academic context if available
+  if (userProfile) {
+    where.university = userProfile.university;
+    where.degree = userProfile.degree;
+    where.year = userProfile.year;
+    where.semester = userProfile.semester;
+  }
+
+  // Apply additional filters
+  if (filters.subject)
+    where.subject = { contains: filters.subject, mode: "insensitive" };
+  if (filters.isPremium !== undefined) where.isPremium = filters.isPremium;
+  if (filters.search) {
+    const searchFilter = [
+      { title: { contains: filters.search, mode: "insensitive" } },
+      { description: { contains: filters.search, mode: "insensitive" } },
+      { subject: { contains: filters.search, mode: "insensitive" } },
+    ];
+
+    if (where.OR) {
+      // Combine cursor and search filters
+      where.AND = [{ OR: where.OR }, { OR: searchFilter }];
+      delete where.OR;
+    } else {
+      where.OR = searchFilter;
+    }
+  }
+
+  const sets = await prisma.flashcardSet.findMany({
+    where,
+    include: {
+      _count: {
+        select: {
+          cards: true,
+          visits: true,
+        },
+      },
+      ...(userId && {
+        visits: {
+          where: { userId },
+          select: {
+            visitedAt: true,
+          },
+          orderBy: {
+            visitedAt: "desc",
+          },
+          take: 1,
+        },
+      }),
+    },
+    orderBy: [{ updatedAt: "desc" }, { title: "asc" }],
+    take: limit,
+  });
+
+  return sets.map((set) => {
+    const userVisits = userId && "visits" in set ? set.visits : [];
+    const userHasVisited = userVisits.length > 0;
+    const userLastVisitedAt = userHasVisited ? userVisits[0].visitedAt : null;
+
+    return {
+      id: set.id,
+      title: set.title,
+      description: set.description,
+      subject: set.subject,
+      university: set.university,
+      degree: set.degree,
+      year: set.year,
+      semester: set.semester,
+      isActive: set.isActive,
+      isPublished: set.isPublished,
+      isPremium: set.isPremium,
+      requiredTier: set.requiredTier,
+      cardCount: set._count.cards,
+      visitCount: set._count.visits,
+      createdAt: set.createdAt,
+      updatedAt: set.updatedAt,
+      userHasVisited,
+      userLastVisitedAt,
+    } satisfies FlashcardSetListItem;
+  });
 }

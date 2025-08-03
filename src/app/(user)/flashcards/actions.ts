@@ -3,6 +3,7 @@
 import {
   getUserFlashcardSets,
   getUserFlashcardSubjects,
+  loadMoreUserFlashcardSets,
 } from "@/dal/flashcard/user-query";
 import type {
   FlashcardSetFilters,
@@ -24,6 +25,60 @@ export interface GetUserFlashcardSetsParams {
   semester?: Semester;
   subject?: string;
   isPremium?: boolean;
+}
+
+interface LoadMoreFlashcardSetsParams {
+  search?: string;
+  university?: University;
+  degree?: Degree;
+  year?: Year;
+  semester?: Semester;
+  subject?: string;
+  isPremium?: boolean;
+  lastTitle?: string;
+  lastId?: string;
+}
+
+export async function loadMoreFlashcardSetsAction(
+  params: LoadMoreFlashcardSetsParams,
+): Promise<FlashcardSetListItem[]> {
+  try {
+    // Get user session for user-specific data
+    const session = await getSession();
+    const userId = session?.user?.id;
+
+    if (!params.lastId) {
+      return [];
+    }
+
+    const filters: FlashcardSetFilters = {
+      search: params.search,
+      university: params.university,
+      degree: params.degree,
+      year: params.year,
+      semester: params.semester,
+      subject: params.subject,
+      isPremium: params.isPremium,
+      isActive: true,
+      isPublished: true,
+    };
+
+    // Get user profile for academic context
+    const userProfile = userId ? await getUserFullProfile(userId) : undefined;
+
+    const result = await loadMoreUserFlashcardSets(
+      params.lastId,
+      filters,
+      userProfile || undefined,
+      userId,
+      6,
+    );
+
+    return result;
+  } catch (error) {
+    console.error("Error loading more flashcard sets:", error);
+    return [];
+  }
 }
 
 export interface UserFlashcardSetsResponse {
@@ -53,6 +108,7 @@ const getCachedFlashcardSets = unstable_cache(
       filters,
       undefined,
       userId,
+      6, // Load 6 items initially for consistency with infinite scroll
     );
 
     return {

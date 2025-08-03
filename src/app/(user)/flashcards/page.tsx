@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Link } from "next-view-transitions";
 import FilterFlashcardDropdown from "@/components/flashcard/FilterFlashcardDropdown";
-import FlashcardCard from "@/components/flashcard/FlashcardCard";
+import { FlashcardInfiniteList } from "@/components/flashcard/FlashcardInfiniteList";
 import FlashcardListSkeleton from "@/components/flashcard/FlashcardListSkeleton";
 import { loadUserFlashcardSetsAction, getUserContextAction } from "./actions";
 import type { University, Degree, Year, Semester } from "@prisma/client";
@@ -149,15 +149,24 @@ async function FlashcardList({ searchParams }: FlashcardsPageProps) {
           </p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {flashcardSets.flashcardSets.map((flashcardSet) => (
-            <FlashcardCard
-              key={flashcardSet.id}
-              flashcardSet={flashcardSet}
-              isAuthenticated={userContext.isAuthenticated}
-            />
-          ))}
-        </div>
+        <FlashcardInfiniteList
+          initialFlashcardSets={flashcardSets.flashcardSets}
+          searchParams={{
+            q: resolvedSearchParams?.q,
+            university,
+            degree,
+            year,
+            semester,
+            subject: resolvedSearchParams?.subject,
+            isPremium:
+              resolvedSearchParams?.isPremium === "true"
+                ? true
+                : resolvedSearchParams?.isPremium === "false"
+                  ? false
+                  : undefined,
+          }}
+          isAuthenticated={userContext.isAuthenticated}
+        />
       )}
     </div>
   );

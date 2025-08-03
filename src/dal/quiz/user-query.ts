@@ -70,7 +70,9 @@ export interface GetUserQuizzesParams {
   subject?: string;
   isPremium?: boolean;
   hasAttempted?: boolean;
-  userId?: string; // For user-specific data
+  userId?: string;
+  lastTitle?: string;
+  lastId?: string;
 }
 
 // Cache config for user quiz operations
@@ -100,6 +102,8 @@ async function getUserQuizzesInternal({
   isPremium,
   hasAttempted,
   userId,
+  lastTitle,
+  lastId,
 }: GetUserQuizzesParams): Promise<UserQuizzesResponse> {
   const offset = (page - 1) * limit;
 
@@ -109,13 +113,55 @@ async function getUserQuizzesInternal({
     isPublished: true,
   };
 
-  // Add search filter
-  if (search) {
+  if (lastTitle && lastId) {
     where.OR = [
+      {
+        createdAt: {
+          lt: new Date(
+            await prisma.quiz
+              .findUnique({
+                where: { id: lastId },
+                select: { createdAt: true },
+              })
+              .then((quiz) => quiz?.createdAt || new Date()),
+          ),
+        },
+      },
+      {
+        createdAt: {
+          lte: new Date(
+            await prisma.quiz
+              .findUnique({
+                where: { id: lastId },
+                select: { createdAt: true },
+              })
+              .then((quiz) => quiz?.createdAt || new Date()),
+          ),
+        },
+        title: {
+          lt: lastTitle,
+        },
+      },
+    ];
+  }
+
+  if (search) {
+    const searchFilter = [
       { title: { contains: search, mode: "insensitive" } },
       { description: { contains: search, mode: "insensitive" } },
       { subject: { contains: search, mode: "insensitive" } },
     ];
+
+    if (where.OR) {
+      // Combine cursor and search filters
+      where.AND = [
+        { OR: where.OR },
+        { OR: searchFilter as Prisma.QuizWhereInput[] },
+      ];
+      delete where.OR;
+    } else {
+      where.OR = searchFilter as Prisma.QuizWhereInput[];
+    }
   }
 
   // Add academic filters
@@ -132,9 +178,11 @@ async function getUserQuizzesInternal({
   const [quizzes, total] = await Promise.all([
     prisma.quiz.findMany({
       where,
-      orderBy: { createdAt: "desc" },
-      skip: offset,
-      take: limit,
+      orderBy: [{ createdAt: "desc" }, { title: "asc" }],
+
+      ...(lastTitle && lastId
+        ? { take: limit }
+        : { skip: offset, take: limit }),
       include: {
         _count: {
           select: {
@@ -159,7 +207,8 @@ async function getUserQuizzesInternal({
           : false,
       },
     }),
-    prisma.quiz.count({ where }),
+    // Only count total when doing initial load (not cursor-based)
+    !lastTitle && !lastId ? prisma.quiz.count({ where }) : Promise.resolve(0),
   ]);
 
   // Transform to user quiz format
@@ -338,3 +387,184 @@ export async function getUserQuizAttemptStatus(
     lastAttempt: userAttempts.length > 0 ? userAttempts[0] : null,
   };
 }
+
+// Load more quizzes with cursor-based pagination - specifically for infinite scroll
+async function loadMoreUserQuizzesInternal({
+  search,
+  university,
+  degree,
+  year,
+  semester,
+  subject,
+  isPremium,
+  hasAttempted,
+  userId,
+  lastId,
+  limit = 6,
+}: Omit<GetUserQuizzesParams, "page" | "lastTitle"> & {
+  lastId: string;
+}): Promise<UserQuizListItem[]> {
+  // Build where clause for published and active quizzes only
+  const where: Prisma.QuizWhereInput = {
+    isActive: true,
+    isPublished: true,
+  };
+
+  // Add cursor-based pagination
+  const lastQuiz = await prisma.quiz.findUnique({
+    where: { id: lastId },
+    select: { createdAt: true, title: true },
+  });
+
+  if (lastQuiz) {
+    where.OR = [
+      {
+        createdAt: {
+          lt: lastQuiz.createdAt,
+        },
+      },
+      {
+        createdAt: lastQuiz.createdAt,
+        title: {
+          gt: lastQuiz.title,
+        },
+      },
+    ];
+  }
+
+  // Add search filter
+  if (search) {
+    const searchFilter = [
+      { title: { contains: search, mode: "insensitive" } },
+      { description: { contains: search, mode: "insensitive" } },
+      { subject: { contains: search, mode: "insensitive" } },
+    ];
+
+    if (where.OR) {
+      // Combine cursor and search filters
+      where.AND = [
+        { OR: where.OR },
+        { OR: searchFilter as Prisma.QuizWhereInput[] },
+      ];
+      delete where.OR;
+    } else {
+      where.OR = searchFilter as Prisma.QuizWhereInput[];
+    }
+  }
+
+  // Add academic filters
+  if (university) where.university = university;
+  if (degree) where.degree = degree;
+  if (year) where.year = year;
+  if (semester) where.semester = semester;
+  if (subject) where.subject = { contains: subject, mode: "insensitive" };
+
+  // Add premium filter
+  if (isPremium !== undefined) where.isPremium = isPremium;
+
+  // Get quizzes
+  const quizzes = await prisma.quiz.findMany({
+    where,
+    orderBy: [{ createdAt: "desc" }, { title: "asc" }],
+    take: limit,
+    include: {
+      _count: {
+        select: {
+          questions: true,
+        },
+      },
+      attempts: userId
+        ? {
+            where: { userId },
+            select: {
+              id: true,
+              score: true,
+              totalMarks: true,
+              accuracy: true,
+              timeTaken: true,
+              status: true,
+              startedAt: true,
+              completedAt: true,
+            },
+            orderBy: { completedAt: "desc" },
+          }
+        : false,
+    },
+  });
+
+  // Transform to user quiz format
+  const userQuizzes: UserQuizListItem[] = quizzes.map((quiz) => {
+    const attempts = quiz.attempts || [];
+    const userAttempts: UserQuizAttempt[] = attempts.map((attempt) => ({
+      id: attempt.id,
+      score: attempt.score,
+      totalMarks: attempt.totalMarks,
+      accuracy:
+        typeof attempt.accuracy === "number"
+          ? attempt.accuracy
+          : attempt.accuracy.toNumber(),
+      timeTaken: attempt.timeTaken,
+      status: attempt.status,
+      startedAt: attempt.startedAt,
+      completedAt: attempt.completedAt,
+    }));
+
+    const completedAttempts = userAttempts.filter(
+      (attempt) => attempt.status === AttemptStatus.COMPLETED,
+    );
+
+    const hasAttempted = userAttempts.length > 0;
+    const bestScore =
+      completedAttempts.length > 0
+        ? Math.max(...completedAttempts.map((a) => a.score))
+        : null;
+    const bestAccuracy =
+      completedAttempts.length > 0
+        ? Math.max(...completedAttempts.map((a) => a.accuracy))
+        : null;
+    const lastAttemptDate =
+      userAttempts.length > 0
+        ? userAttempts[0].completedAt || userAttempts[0].startedAt
+        : null;
+
+    return {
+      id: quiz.id,
+      title: quiz.title,
+      description: quiz.description,
+      subject: quiz.subject,
+      university: quiz.university,
+      degree: quiz.degree,
+      year: quiz.year,
+      semester: quiz.semester,
+      timeLimit: quiz.timeLimit,
+      marksPerQuestion: quiz.marksPerQuestion,
+      isPremium: quiz.isPremium,
+      requiredTier: quiz.requiredTier,
+      questionCount: quiz._count.questions,
+      createdAt: quiz.createdAt,
+      userAttempts,
+      hasAttempted,
+      bestScore,
+      bestAccuracy,
+      lastAttemptDate,
+      totalAttempts: userAttempts.length,
+    };
+  });
+
+  // Apply hasAttempted filter after data transformation
+  let filteredQuizzes = userQuizzes;
+  if (hasAttempted !== undefined) {
+    filteredQuizzes = userQuizzes.filter(
+      (quiz) => quiz.hasAttempted === hasAttempted,
+    );
+  }
+
+  return filteredQuizzes;
+}
+
+// Cached wrapper for loadMoreUserQuizzes
+export const loadMoreUserQuizzes = unstable_cache(
+  loadMoreUserQuizzesInternal,
+  ["load-more-user-quizzes"],
+  getCacheOptions(userQuizCacheConfig.getUserQuizzes),
+);

@@ -25,13 +25,23 @@ export const getUserOnboardingStatus = unstable_cache(
   getCacheOptions(userCacheConfig.getUserOnboardingStatus),
 );
 
-// Create the detailed user profile
+// Create or update the detailed user profile
 export async function createUserProfile(
   userId: string,
   data: OnboardingFormData,
 ) {
-  const profile = await prisma.userProfile.create({
-    data: {
+  const profile = await prisma.userProfile.upsert({
+    where: { userId },
+    update: {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phoneNumber: data.phoneNumber,
+      university: data.university as University,
+      degree: data.degree as Degree,
+      year: data.year as Year,
+      semester: data.semester as Semester,
+    },
+    create: {
       userId,
       firstName: data.firstName,
       lastName: data.lastName,

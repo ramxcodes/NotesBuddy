@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Link } from "next-view-transitions";
 import FilterQuizDropdown from "@/components/quiz/FilterQuizDropdown";
-import QuizCard from "@/components/quiz/QuizCard";
+import { QuizInfiniteList } from "@/components/quiz/QuizInfiniteList";
 import QuizListSkeleton from "@/components/quiz/QuizListSkeleton";
 import { loadUserQuizzesAction, getUserContextAction } from "./actions";
 import type { University, Degree, Year, Semester } from "@prisma/client";
@@ -149,15 +149,24 @@ async function QuizList({ searchParams }: QuizPageProps) {
           </p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {quizzes.quizzes.map((quiz) => (
-            <QuizCard
-              key={quiz.id}
-              quiz={quiz}
-              isAuthenticated={userContext.isAuthenticated}
-            />
-          ))}
-        </div>
+        <QuizInfiniteList
+          initialQuizzes={quizzes.quizzes}
+          searchParams={{
+            q: resolvedSearchParams?.q,
+            university,
+            degree,
+            year,
+            semester,
+            subject: resolvedSearchParams?.subject,
+            isPremium:
+              resolvedSearchParams?.isPremium === "true"
+                ? true
+                : resolvedSearchParams?.isPremium === "false"
+                  ? false
+                  : undefined,
+          }}
+          isAuthenticated={userContext.isAuthenticated}
+        />
       )}
     </div>
   );

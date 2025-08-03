@@ -60,8 +60,7 @@ export default function AdminNotesController() {
 
         const result = await getNotesAction(params);
         setNotesData(result);
-      } catch (error) {
-        console.error("Error fetching notes:", error);
+      } catch {
       } finally {
         setIsLoading(false);
       }
@@ -85,9 +84,7 @@ export default function AdminNotesController() {
       if (result) {
         setFilterOptions(result);
       }
-    } catch (error) {
-      console.error("Error fetching filter options:", error);
-    }
+    } catch {}
   }, []);
 
   const handleSortChange = (

@@ -5,8 +5,47 @@ import { generateSystemPrompt } from "@/utils/ai-system-prompt";
 
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX_REQUESTS = 30; // 30 requests per minute
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 30;
+
+function sanitizeInput(input: string): string {
+  const injectionPatterns = [
+    /ignore previous instructions/gi,
+    /system prompt/gi,
+    /you are now/gi,
+    /act as/gi,
+    /pretend to be/gi,
+    /ignore all previous/gi,
+    /forget everything/gi,
+    /new instructions/gi,
+    /override/gi,
+    /bypass/gi,
+    /hack/gi,
+    /exploit/gi,
+    /inject/gi,
+    /prompt injection/gi,
+    /system message/gi,
+    /role play/gi,
+    /character/gi,
+    /persona/gi,
+    /behave as/gi,
+    /respond as/gi,
+  ];
+
+  let sanitized = input;
+
+  injectionPatterns.forEach((pattern) => {
+    sanitized = sanitized.replace(pattern, "[REDACTED]");
+  });
+
+  sanitized = sanitized.trim().replace(/\s+/g, " ");
+
+  if (sanitized.length > 2000) {
+    sanitized = sanitized.substring(0, 2000);
+  }
+
+  return sanitized;
+}
 
 const chatSchema = z.object({
   message: z.string().min(1).max(2000),
@@ -28,7 +67,6 @@ const chatSchema = z.object({
     ])
     .default("gemini-2.0-flash"),
   apiKey: z.string().min(1),
-  // Academic context for system prompt
   university: z.string(),
   degree: z.string(),
   year: z.string(),
@@ -108,16 +146,18 @@ export async function POST(request: NextRequest) {
 
     const validatedData = chatSchema.parse(body);
 
-    // Generate system prompt based on academic context
-    const systemPrompt = await generateSystemPrompt({
-      university: validatedData.university,
-      degree: validatedData.degree,
-      year: validatedData.year,
-      semester: validatedData.semester,
-      subject: validatedData.subject,
-    });
+    const sanitizedMessage = sanitizeInput(validatedData.message);
 
-    // Prepare the request body for Gemini REST API
+    const sanitizedParams = {
+      university: sanitizeInput(validatedData.university),
+      degree: sanitizeInput(validatedData.degree),
+      year: sanitizeInput(validatedData.year),
+      semester: sanitizeInput(validatedData.semester),
+      subject: sanitizeInput(validatedData.subject),
+    };
+
+    const systemPrompt = await generateSystemPrompt(sanitizedParams);
+
     const requestBody = {
       contents: [
         {
@@ -132,11 +172,15 @@ export async function POST(request: NextRequest) {
           ],
           role: "model",
         },
-        // Add conversation history
-        ...validatedData.history,
-        // Add current message
+        ...validatedData.history.map((msg) => ({
+          ...msg,
+          parts: msg.parts.map((part) => ({
+            ...part,
+            text: msg.role === "user" ? sanitizeInput(part.text) : part.text,
+          })),
+        })),
         {
-          parts: [{ text: validatedData.message }],
+          parts: [{ text: sanitizedMessage }],
           role: "user",
         },
       ],
@@ -162,7 +206,6 @@ export async function POST(request: NextRequest) {
       const errorText = await response.text();
       console.error("Gemini API error:", response.status, errorText);
 
-      // Parse error response if possible
       let errorDetails;
       try {
         errorDetails = JSON.parse(errorText);
@@ -170,7 +213,6 @@ export async function POST(request: NextRequest) {
         errorDetails = { error: { message: errorText } };
       }
 
-      // Handle specific error cases
       if (response.status === 400) {
         return NextResponse.json(
           {
@@ -231,7 +273,6 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Generic error for other status codes
       return NextResponse.json(
         {
           error: `AI service error (${response.status}). Please try again.`,
@@ -261,7 +302,6 @@ export async function POST(request: NextRequest) {
                 const data = JSON.parse(event.data);
                 const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
                 if (text) {
-                  // Send as Server-Sent Event format
                   const sseData = `data: ${JSON.stringify({ text })}\n\n`;
                   controller.enqueue(encoder.encode(sseData));
                 }
@@ -285,7 +325,6 @@ export async function POST(request: NextRequest) {
             parser.feed(decoder.decode(value));
           }
 
-          // Send completion signal
           controller.enqueue(encoder.encode('data: {"done": true}\n\n'));
           controller.close();
         } catch (error) {
@@ -326,7 +365,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Handle specific error messages
     if (error instanceof Error) {
       if (error.message.includes("API key")) {
         return NextResponse.json(

@@ -1,5 +1,10 @@
 import prisma from "@/lib/db/prisma";
-import { PremiumTier, PaymentStatus, PaymentMethod } from "@prisma/client";
+import {
+  PremiumTier,
+  PaymentStatus,
+  PaymentMethod,
+  Role,
+} from "@prisma/client";
 import { paymentMethodMapping } from "@/lib/razorpay/config";
 import {
   getTierConfig,
@@ -420,9 +425,6 @@ async function processReferralReward(
 
     // Auto-create referral program if it doesn't exist
     if (!referralProgram) {
-      console.log(
-        "No active referral program found, creating default program...",
-      );
       referralProgram = await prisma.referralProgram.create({
         data: {
           name: "Default Referral Program",
@@ -437,12 +439,10 @@ async function processReferralReward(
           validUntil: null, // No expiry
         },
       });
-      console.log("Created referral program:", referralProgram.id);
     }
 
     if (referralProgram) {
-      // Create referral reward for the referrer
-      const reward = await prisma.referralReward.create({
+      await prisma.referralReward.create({
         data: {
           referrerUserId,
           refereeUserId,
@@ -463,25 +463,12 @@ async function processReferralReward(
         },
       });
 
-      console.log(
-        "Referral reward created:",
-        reward.id,
-        "for purchase:",
-        purchaseId,
-      );
-      console.log(
-        "Added ₹",
-        referralProgram.referrerDiscountValue.toString(),
-        "to referrer's wallet",
-      );
-
       // Invalidate referral cache to show new reward
       revalidateTag("user-referral-status");
       revalidateTag("user-wallet-balance");
       revalidateTag("user-wallet-history");
     }
-  } catch (error) {
-    console.error("Error processing referral reward:", error);
+  } catch {
     // Don't throw error to avoid breaking the payment flow
   }
 }
@@ -512,6 +499,36 @@ export async function checkUserAccessToContent(
   requiredYear?: string | null,
   requiredSemester?: string | null,
 ): Promise<UserAccessStatus> {
+  // First check if user is an admin - admins get access to everything
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
+
+  if (user?.role === Role.ADMIN) {
+    return {
+      canAccess: true,
+      userStatus: {
+        hasPremium: true,
+        tier: "TIER_3",
+        university: null,
+        degree: null,
+        year: null,
+        semester: null,
+        expiryDate: null,
+        daysRemaining: null,
+      },
+      noteRequirements: {
+        tier: requiredTier,
+        university: requiredUniversity ?? null,
+        degree: requiredDegree ?? null,
+        year: requiredYear ?? null,
+        semester: requiredSemester ?? null,
+      },
+      mismatches: [],
+    };
+  }
+
   const premiumStatus = await getUserPremiumStatus(userId);
 
   // Get user's active purchase for academic details

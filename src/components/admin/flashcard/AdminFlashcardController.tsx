@@ -134,8 +134,7 @@ export default function AdminFlashcardController() {
 
         setFlashcardSets(sortedSets);
       }
-    } catch (error) {
-      console.error("Error fetching flashcard sets:", error);
+    } catch {
     } finally {
       setLoading(false);
     }
@@ -156,9 +155,7 @@ export default function AdminFlashcardController() {
       if (result.success && result.data) {
         setStats(result.data);
       }
-    } catch (error) {
-      console.error("Error fetching flashcard stats:", error);
-    }
+    } catch {}
   }, []);
 
   const fetchAcademicOptions = useCallback(async () => {
@@ -167,9 +164,7 @@ export default function AdminFlashcardController() {
       if (result.success && result.data) {
         setSubjects(result.data.subjects);
       }
-    } catch (error) {
-      console.error("Error fetching academic options:", error);
-    }
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -188,9 +183,7 @@ export default function AdminFlashcardController() {
         await fetchFlashcardSets();
         await fetchStats();
       }
-    } catch (error) {
-      console.error("Error toggling flashcard set status:", error);
-    }
+    } catch {}
   };
 
   const handleTogglePublished = async (id: string, isPublished: boolean) => {
@@ -200,9 +193,7 @@ export default function AdminFlashcardController() {
         await fetchFlashcardSets();
         await fetchStats();
       }
-    } catch (error) {
-      console.error("Error toggling flashcard set published status:", error);
-    }
+    } catch {}
   };
 
   const handleDelete = async (id: string) => {
@@ -220,9 +211,7 @@ export default function AdminFlashcardController() {
         await fetchFlashcardSets();
         await fetchStats();
       }
-    } catch (error) {
-      console.error("Error deleting flashcard set:", error);
-    }
+    } catch {}
   };
 
   const handleEdit = (id: string) => {

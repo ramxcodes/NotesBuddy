@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import { getFlashcardSetForUser } from "@/dal/flashcard/user-query";
-import { checkFlashcardSetAccessAction } from "@/components/flashcard/actions/flashcard-access";
+import { checkUserAccesstoFlashcard } from "@/components/flashcard/actions/flashcard-access";
 import FlashcardViewer from "@/components/flashcard/FlashcardViewer";
 import FlashcardAccessDenied from "@/components/flashcard/FlashcardAccessDenied";
 
@@ -34,7 +34,7 @@ export default async function FlashcardViewPage({
   const { id } = await params;
 
   // Check access using the action
-  const accessResult = await checkFlashcardSetAccessAction(id);
+  const accessResult = await checkUserAccesstoFlashcard(id);
 
   if (accessResult.reason === "NOT_AUTHENTICATED") {
     redirect("/auth/signin");

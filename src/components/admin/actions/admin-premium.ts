@@ -179,9 +179,6 @@ export interface CreatePremiumPurchaseParams {
   // Webhook & Processing
   webhookProcessed?: boolean;
   failureReason?: string;
-
-  // Admin notes
-  adminNotes?: string;
 }
 
 export interface UpdatePremiumPurchaseParams
@@ -199,9 +196,18 @@ export async function createFullPremiumPurchaseAction(
     const purchase = await prisma.premiumPurchase.create({
       data: {
         userId: params.userId,
-        razorpayOrderId: params.razorpayOrderId,
-        razorpayPaymentId: params.razorpayPaymentId,
-        razorpaySignature: params.razorpaySignature,
+        razorpayOrderId:
+          params.razorpayOrderId && params.razorpayOrderId.trim() !== ""
+            ? params.razorpayOrderId
+            : undefined,
+        razorpayPaymentId:
+          params.razorpayPaymentId && params.razorpayPaymentId.trim() !== ""
+            ? params.razorpayPaymentId
+            : undefined,
+        razorpaySignature:
+          params.razorpaySignature && params.razorpaySignature.trim() !== ""
+            ? params.razorpaySignature
+            : undefined,
         tier: params.tier,
         duration: params.duration,
         originalAmount: params.originalAmount,
@@ -210,11 +216,26 @@ export async function createFullPremiumPurchaseAction(
         currency: params.currency || "INR",
         paymentStatus: params.paymentStatus,
         paymentMethod: params.paymentMethod,
-        razorpayFee: params.razorpayFee,
-        razorpayTax: params.razorpayTax,
-        discountCode: params.discountCode,
-        referralCode: params.referralCode,
-        referredByUserId: params.referredByUserId,
+        razorpayFee:
+          params.razorpayFee && params.razorpayFee.trim() !== ""
+            ? params.razorpayFee
+            : undefined,
+        razorpayTax:
+          params.razorpayTax && params.razorpayTax.trim() !== ""
+            ? params.razorpayTax
+            : undefined,
+        discountCode:
+          params.discountCode && params.discountCode.trim() !== ""
+            ? params.discountCode
+            : undefined,
+        referralCode:
+          params.referralCode && params.referralCode.trim() !== ""
+            ? params.referralCode
+            : undefined,
+        referredByUserId:
+          params.referredByUserId && params.referredByUserId.trim() !== ""
+            ? params.referredByUserId
+            : undefined,
         university: params.university,
         degree: params.degree,
         year: params.year,
@@ -223,7 +244,10 @@ export async function createFullPremiumPurchaseAction(
         expiryDate: params.expiryDate,
         isActive: params.isActive ?? true,
         webhookProcessed: params.webhookProcessed ?? true,
-        failureReason: params.failureReason,
+        failureReason:
+          params.failureReason && params.failureReason.trim() !== ""
+            ? params.failureReason
+            : undefined,
       },
     });
 
@@ -245,8 +269,7 @@ export async function createFullPremiumPurchaseAction(
     revalidateTag("admin-user-details");
 
     return { success: true, purchaseId: purchase.id };
-  } catch (error) {
-    console.error("Failed to create premium purchase:", error);
+  } catch {
     return { success: false, error: "Failed to create premium purchase" };
   }
 }
@@ -272,11 +295,26 @@ export async function updatePremiumPurchaseAction(
         currency: params.currency || "INR",
         paymentStatus: params.paymentStatus,
         paymentMethod: params.paymentMethod,
-        razorpayFee: params.razorpayFee,
-        razorpayTax: params.razorpayTax,
-        discountCode: params.discountCode,
-        referralCode: params.referralCode,
-        referredByUserId: params.referredByUserId,
+        razorpayFee:
+          params.razorpayFee && params.razorpayFee.trim() !== ""
+            ? params.razorpayFee
+            : undefined,
+        razorpayTax:
+          params.razorpayTax && params.razorpayTax.trim() !== ""
+            ? params.razorpayTax
+            : undefined,
+        discountCode:
+          params.discountCode && params.discountCode.trim() !== ""
+            ? params.discountCode
+            : undefined,
+        referralCode:
+          params.referralCode && params.referralCode.trim() !== ""
+            ? params.referralCode
+            : undefined,
+        referredByUserId:
+          params.referredByUserId && params.referredByUserId.trim() !== ""
+            ? params.referredByUserId
+            : undefined,
         university: params.university,
         degree: params.degree,
         year: params.year,
@@ -285,7 +323,10 @@ export async function updatePremiumPurchaseAction(
         expiryDate: params.expiryDate,
         isActive: params.isActive ?? true,
         webhookProcessed: params.webhookProcessed ?? true,
-        failureReason: params.failureReason,
+        failureReason:
+          params.failureReason && params.failureReason.trim() !== ""
+            ? params.failureReason
+            : undefined,
       },
     });
 
@@ -307,8 +348,7 @@ export async function updatePremiumPurchaseAction(
     revalidateTag("admin-user-details");
 
     return { success: true };
-  } catch (error) {
-    console.error("Failed to update premium purchase:", error);
+  } catch {
     return { success: false, error: "Failed to update premium purchase" };
   }
 }
@@ -328,8 +368,7 @@ export async function deletePremiumPurchaseAction(purchaseId: string) {
     revalidateTag("admin-user-details");
 
     return { success: true };
-  } catch (error) {
-    console.error("Failed to delete premium purchase:", error);
+  } catch {
     return { success: false, error: "Failed to delete premium purchase" };
   }
 }

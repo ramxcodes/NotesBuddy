@@ -15,6 +15,10 @@ import {
 import type { AdminChatDetails } from "@/dal/ai/admin-query";
 import { formatDistanceToNow } from "date-fns";
 import { useRouter } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface AdminChatDetailViewProps {
   chat: AdminChatDetails;
@@ -209,14 +213,80 @@ export default function AdminChatDetailView({
                       className={`rounded-lg p-3 ${
                         message.role === "USER"
                           ? "bg-blue-500 text-white"
-                          : "neuro border-2 border-black bg-white dark:border-white/20 dark:bg-gray-900"
+                          : "neuro border-2 border-black dark:border-white/20"
                       }`}
                     >
                       <div className="space-y-2">
                         <div className="prose prose-sm dark:prose-invert max-w-none">
-                          <p className="break-words whitespace-pre-wrap">
-                            {message.content}
-                          </p>
+                          {message.role === "USER" ? (
+                            <p className="break-words whitespace-pre-wrap">
+                              {message.content}
+                            </p>
+                          ) : (
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                code: (props) => {
+                                  const { className, children } = props as {
+                                    className?: string;
+                                    children: React.ReactNode;
+                                  };
+                                  const match = /language-(\w+)/.exec(
+                                    className || "",
+                                  );
+                                  const isInline = !match;
+
+                                  if (isInline) {
+                                    return (
+                                      <code className="rounded bg-gray-100 px-1 py-0.5 text-sm dark:bg-gray-800">
+                                        {children}
+                                      </code>
+                                    );
+                                  }
+
+                                  return (
+                                    <SyntaxHighlighter
+                                      style={oneDark}
+                                      language={match[1]}
+                                      PreTag="div"
+                                      className="rounded-md"
+                                    >
+                                      {String(children).replace(/\n$/, "")}
+                                    </SyntaxHighlighter>
+                                  );
+                                },
+                                pre: ({ children }) => (
+                                  <div className="overflow-auto">
+                                    {children}
+                                  </div>
+                                ),
+                                blockquote: ({ children }) => (
+                                  <blockquote className="border-l-4 border-gray-300 pl-4 italic dark:border-gray-600">
+                                    {children}
+                                  </blockquote>
+                                ),
+                                table: ({ children }) => (
+                                  <div className="overflow-x-auto">
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                      {children}
+                                    </table>
+                                  </div>
+                                ),
+                                th: ({ children }) => (
+                                  <th className="bg-gray-50 px-3 py-2 text-left text-xs font-medium tracking-wider text-gray-500 uppercase dark:bg-gray-800 dark:text-gray-400">
+                                    {children}
+                                  </th>
+                                ),
+                                td: ({ children }) => (
+                                  <td className="px-3 py-2 text-sm whitespace-nowrap text-gray-900 dark:text-gray-100">
+                                    {children}
+                                  </td>
+                                ),
+                              }}
+                            >
+                              {message.content}
+                            </ReactMarkdown>
+                          )}
                         </div>
 
                         <div className="flex items-center justify-between gap-2 text-xs">

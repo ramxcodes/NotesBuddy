@@ -22,6 +22,7 @@ import {
   CheckCircleIcon,
   XCircleIcon,
 } from "@phosphor-icons/react";
+import { toast } from "sonner";
 import { type QuizzesListResponse } from "@/dal/quiz/types";
 import {
   getDisplayNameFromPrismaValue,
@@ -217,7 +218,10 @@ export default function AdminQuizTable({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => onViewAttempts(quiz.id)}
+                      onClick={() => {
+                        onViewAttempts(quiz.id);
+                        toast.info("Loading quiz attempts...");
+                      }}
                       className="neuro-button-sm h-8 w-8 p-0"
                     >
                       <EyeIcon className="h-3 w-3 text-black dark:text-white" />
@@ -227,7 +231,12 @@ export default function AdminQuizTable({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => onToggleStatus(quiz.id)}
+                      onClick={() => {
+                        onToggleStatus(quiz.id);
+                        toast.success(
+                          `Quiz ${isActive ? "deactivated" : "activated"} successfully`,
+                        );
+                      }}
                       className="neuro-button-sm h-8 w-8 p-0"
                     >
                       {isActive ? (
@@ -241,7 +250,12 @@ export default function AdminQuizTable({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => onTogglePublished(quiz.id)}
+                      onClick={() => {
+                        onTogglePublished(quiz.id);
+                        toast.success(
+                          `Quiz ${isPublished ? "unpublished" : "published"} successfully`,
+                        );
+                      }}
                       className="neuro-button-sm h-8 w-8 p-0"
                     >
                       {isPublished ? (
@@ -255,7 +269,10 @@ export default function AdminQuizTable({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => onEditQuiz(quiz.id)}
+                      onClick={() => {
+                        onEditQuiz(quiz.id);
+                        toast.info("Opening quiz editor...");
+                      }}
                       className="neuro-button-sm h-8 w-8 p-0"
                     >
                       <PencilSimpleLineIcon className="h-4 w-4 text-black dark:text-white" />
@@ -265,7 +282,15 @@ export default function AdminQuizTable({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => onDeleteQuiz(quiz.id)}
+                      onClick={() => {
+                        if (quiz.isAttempted) {
+                          toast.warning(
+                            "This quiz has attempts. Are you sure you want to delete it?",
+                          );
+                        }
+                        onDeleteQuiz(quiz.id);
+                        toast.success("Quiz deleted successfully");
+                      }}
                       className="h-8 w-8 border-2 border-red-500 bg-white p-0 shadow-[2px_2px_0px_0px_#ef4444] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-red-400 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#ef4444]"
                     >
                       <TrashIcon className="h-3 w-3 text-red-500 dark:text-red-400" />

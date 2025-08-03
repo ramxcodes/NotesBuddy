@@ -4,6 +4,8 @@ import { getSession } from "@/lib/db/user";
 import { getFlashcardSetForUser } from "@/dal/flashcard/user-query";
 import { getUserPremiumStatus } from "@/dal/premium/query";
 import { hasFlashcardSetAccess } from "@/dal/flashcard/access";
+import prisma from "@/lib/db/prisma";
+import { Role } from "@prisma/client";
 import type { FlashcardSetDetail } from "@/dal/flashcard/types";
 
 export interface FlashcardAccessResult {
@@ -24,7 +26,7 @@ export interface FlashcardAccessResult {
 /**
  * Check if user can access a flashcard set
  */
-export async function checkFlashcardSetAccessAction(
+export async function checkUserAccesstoFlashcard(
   flashcardSetId: string,
 ): Promise<FlashcardAccessResult> {
   try {
@@ -39,8 +41,34 @@ export async function checkFlashcardSetAccessAction(
 
     const userId = session.user.id;
 
+    // Check if user is an admin - admins get access to everything
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+
     // Get flashcard set details
     const flashcardSet = await getFlashcardSetForUser(flashcardSetId, userId);
+
+    if (!flashcardSet) {
+      return {
+        canAccess: false,
+        reason: "FLASHCARD_NOT_FOUND",
+        message: "Flashcard set not found",
+      };
+    }
+
+    // If user is admin, grant access
+    if (user?.role === Role.ADMIN) {
+      return {
+        canAccess: true,
+        flashcardSet,
+        userStatus: {
+          hasPremium: true,
+          tier: "TIER_3",
+        },
+      };
+    }
 
     if (!flashcardSet) {
       return {
@@ -97,8 +125,7 @@ export async function checkFlashcardSetAccessAction(
         tier: premiumStatus.tier,
       },
     };
-  } catch (error) {
-    console.error("Error checking flashcard set access:", error);
+  } catch {
     return {
       canAccess: false,
       reason: "FLASHCARD_NOT_FOUND",

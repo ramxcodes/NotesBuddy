@@ -56,8 +56,7 @@ export default function AdminUserTable() {
           filter,
         });
         setUsersData(result);
-      } catch (error) {
-        console.error("Error fetching users:", error);
+      } catch {
       } finally {
         setLoading(false);
       }

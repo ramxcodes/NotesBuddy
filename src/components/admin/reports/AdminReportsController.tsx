@@ -58,8 +58,7 @@ export default function AdminReportsController() {
       setReportsData(reportsResult);
       setStats(statsResult);
       setDomains(domainsResult);
-    } catch (error) {
-      console.error("Error loading reports data:", error);
+    } catch {
     } finally {
       setLoading(false);
     }
@@ -104,8 +103,7 @@ export default function AdminReportsController() {
       } else {
         alert(result.error || "Failed to delete report");
       }
-    } catch (error) {
-      console.error("Error deleting report:", error);
+    } catch {
       alert("An error occurred while deleting the report");
     }
   };

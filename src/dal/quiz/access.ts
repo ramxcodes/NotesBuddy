@@ -3,7 +3,7 @@
 import { getSession, checkUserBlockedStatus } from "@/lib/db/user";
 import { checkUserAccessToContent } from "@/dal/premium/query";
 import prisma from "@/lib/db/prisma";
-import { PremiumTier } from "@prisma/client";
+import { PremiumTier, Role } from "@prisma/client";
 import { convertPrismaValueToDisplayFormat } from "@/utils/value-convert";
 
 export interface QuizAccessResult {
@@ -17,7 +17,7 @@ export interface QuizAccessResult {
     | "NO_PREMIUM"
     | "INSUFFICIENT_TIER"
     | "ACADEMIC_MISMATCH"
-    | "ALREADY_ATTEMPTED"; // If quiz allows only one attempt
+    | "ALREADY_ATTEMPTED";
   message?: string;
   quiz?: {
     id: string;
@@ -67,17 +67,13 @@ export async function checkUserAccessToQuiz(
 
     const userId = session.user.id;
 
-    // Check if user is blocked
-    const isBlocked = await checkUserBlockedStatus(userId);
-    if (isBlocked) {
-      return {
-        canAccess: false,
-        reason: "USER_BLOCKED",
-        message: "Your account has been suspended. Please contact support.",
-      };
-    }
+    // Check if user is an admin - admins get access to everything
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
 
-    // Get quiz details
+    // Get quiz details first to return in response
     const quiz = await prisma.quiz.findUnique({
       where: { id: quizId },
       include: {
@@ -94,6 +90,46 @@ export async function checkUserAccessToQuiz(
         canAccess: false,
         reason: "QUIZ_NOT_FOUND",
         message: "Quiz not found",
+      };
+    }
+
+    const quizData = {
+      id: quiz.id,
+      title: quiz.title,
+      description: quiz.description,
+      subject: quiz.subject,
+      timeLimit: quiz.timeLimit,
+      marksPerQuestion: quiz.marksPerQuestion,
+      isPremium: quiz.isPremium,
+      requiredTier: quiz.requiredTier,
+      questionCount: quiz._count.questions,
+    };
+
+    // If user is admin, grant access regardless of other conditions
+    if (user?.role === Role.ADMIN) {
+      return {
+        canAccess: true,
+        quiz: quizData,
+        userStatus: {
+          hasPremium: true,
+          tier: "TIER_3", // Treat admin as highest tier
+          university: null,
+          degree: null,
+          year: null,
+          semester: null,
+          expiryDate: null,
+          daysRemaining: null,
+        },
+      };
+    }
+
+    // Check if user is blocked
+    const isBlocked = await checkUserBlockedStatus(userId);
+    if (isBlocked) {
+      return {
+        canAccess: false,
+        reason: "USER_BLOCKED",
+        message: "Your account has been suspended. Please contact support.",
       };
     }
 
@@ -114,18 +150,6 @@ export async function checkUserAccessToQuiz(
         message: "This quiz is not yet available",
       };
     }
-
-    const quizData = {
-      id: quiz.id,
-      title: quiz.title,
-      description: quiz.description,
-      subject: quiz.subject,
-      timeLimit: quiz.timeLimit,
-      marksPerQuestion: quiz.marksPerQuestion,
-      isPremium: quiz.isPremium,
-      requiredTier: quiz.requiredTier,
-      questionCount: quiz._count.questions,
-    };
 
     // If it's a free quiz, allow access
     if (!quiz.isPremium) {
@@ -202,8 +226,7 @@ export async function checkUserAccessToQuiz(
       quiz: quizData,
       userStatus: accessResult.userStatus,
     };
-  } catch (error) {
-    console.error("Error checking quiz access:", error);
+  } catch {
     return {
       canAccess: false,
       reason: "QUIZ_NOT_FOUND",
@@ -258,13 +281,11 @@ export async function getQuizForAttempt(quizId: string) {
             id: option.id,
             text: option.text,
             order: option.order,
-            // Don't expose isCorrect to frontend
           })),
         })),
       },
     };
-  } catch (error) {
-    console.error("Error getting quiz for attempt:", error);
+  } catch {
     return {
       canAccess: false,
       reason: "QUIZ_NOT_FOUND" as const,

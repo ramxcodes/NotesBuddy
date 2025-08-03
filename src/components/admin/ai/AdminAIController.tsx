@@ -143,8 +143,7 @@ export default function AdminAIController() {
             chats: sortedChats,
           });
         }
-      } catch (error) {
-        console.error("Error fetching chats:", error);
+      } catch {
       } finally {
         setLoading(false);
       }
@@ -168,9 +167,7 @@ export default function AdminAIController() {
       if (result.success && result.data) {
         setStats(result.data);
       }
-    } catch (error) {
-      console.error("Error fetching chat stats:", error);
-    }
+    } catch {}
   }, []);
 
   const fetchSubjects = useCallback(async () => {
@@ -179,9 +176,7 @@ export default function AdminAIController() {
       if (result) {
         setSubjects(result);
       }
-    } catch (error) {
-      console.error("Error fetching chat subjects:", error);
-    }
+    } catch {}
   }, []);
 
   const handlePageChange = (page: number) => {

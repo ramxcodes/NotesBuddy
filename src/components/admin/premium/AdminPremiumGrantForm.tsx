@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +12,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -198,9 +199,6 @@ export function AdminPremiumGrantForm({
     // Processing
     webhookProcessed: true,
     failureReason: "",
-
-    // Admin notes
-    adminNotes: "",
   });
 
   // Update form data when selected user changes
@@ -250,8 +248,7 @@ export function AdminPremiumGrantForm({
       } else {
         toast.error(result.error || "Failed to delete premium purchase");
       }
-    } catch (error) {
-      console.error("Error deleting premium purchase:", error);
+    } catch {
       toast.error("Failed to delete premium purchase");
     }
   };
@@ -271,8 +268,7 @@ export function AdminPremiumGrantForm({
       } else {
         toast.error(result.error || "Failed to update premium purchase");
       }
-    } catch (error) {
-      console.error("Error updating premium purchase:", error);
+    } catch {
       toast.error("Failed to update premium purchase");
     }
   };
@@ -307,7 +303,6 @@ export function AdminPremiumGrantForm({
       isActive: purchase.isActive,
       webhookProcessed: purchase.webhookProcessed,
       failureReason: purchase.failureReason || "",
-      adminNotes: "",
     });
   };
 
@@ -352,8 +347,7 @@ export function AdminPremiumGrantForm({
       } else {
         setSearchResults([]);
       }
-    } catch (error) {
-      console.error("Error searching users:", error);
+    } catch {
       setSearchResults([]);
     } finally {
       setIsSearching(false);
@@ -425,14 +419,12 @@ export function AdminPremiumGrantForm({
           originalAmount: "0",
           discountAmount: "0",
           finalAmount: "0",
-          adminNotes: "",
         }));
         onSuccess();
       } else {
         toast.error(result.error || "Failed to grant premium");
       }
-    } catch (error) {
-      console.error("Error granting premium:", error);
+    } catch {
       toast.error("Failed to grant premium");
     } finally {
       setIsGranting(false);
@@ -1040,23 +1032,6 @@ export function AdminPremiumGrantForm({
                       className="neuro-sm"
                     />
                   </div>
-
-                  {/* Admin Notes */}
-                  <div className="space-y-2">
-                    <Label htmlFor="adminNotes" className="font-bold">
-                      Admin Notes
-                    </Label>
-                    <Textarea
-                      id="adminNotes"
-                      value={formData.adminNotes}
-                      onChange={(e) =>
-                        updateFormField("adminNotes", e.target.value)
-                      }
-                      placeholder="Add any admin notes..."
-                      className="neuro-sm"
-                      rows={4}
-                    />
-                  </div>
                 </div>
               </div>
 
@@ -1657,23 +1632,6 @@ export function AdminPremiumGrantForm({
                       }
                       placeholder="Optional failure reason"
                       className="neuro-sm"
-                    />
-                  </div>
-
-                  {/* Admin Notes */}
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-adminNotes" className="font-bold">
-                      Admin Notes
-                    </Label>
-                    <Textarea
-                      id="edit-adminNotes"
-                      value={editFormData.adminNotes}
-                      onChange={(e) =>
-                        updateEditFormField("adminNotes", e.target.value)
-                      }
-                      placeholder="Add any admin notes..."
-                      className="neuro-sm"
-                      rows={4}
                     />
                   </div>
                 </div>

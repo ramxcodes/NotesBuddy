@@ -11,6 +11,7 @@ import {
   type UpdateQuizInput,
   type QuizAttemptDetails,
   type QuizAttemptWithUser,
+  type QuizStats,
 } from "./types";
 import { Prisma } from "@prisma/client";
 
@@ -590,6 +591,31 @@ export const getQuizAttempts = unstable_cache(
   ["quiz-attempts"],
   getCacheOptions(adminCacheConfig.getQuizAttempts),
 );
+
+// Get quiz statistics for admin dashboard
+export async function getQuizStats(): Promise<QuizStats> {
+  const [
+    totalQuizzes,
+    activeQuizzes,
+    publishedQuizzes,
+    totalQuestions,
+    totalAttempts,
+  ] = await Promise.all([
+    prisma.quiz.count(),
+    prisma.quiz.count({ where: { isActive: true } }),
+    prisma.quiz.count({ where: { isPublished: true } }),
+    prisma.question.count(),
+    prisma.quizAttempt.count(),
+  ]);
+
+  return {
+    totalQuizzes,
+    activeQuizzes,
+    publishedQuizzes,
+    totalQuestions,
+    totalAttempts,
+  };
+}
 
 // Get unique subjects for filter dropdown
 export async function getQuizSubjects(): Promise<string[]> {

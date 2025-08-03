@@ -9,11 +9,13 @@ import {
   toggleQuizPublishedAction,
   deleteQuizAction,
   getQuizSubjectsAction,
+  getQuizStatsAction,
 } from "../actions/admin-quizzes";
 import {
   type QuizzesListResponse,
   type QuizSortOption,
   type QuizFilterOption,
+  type QuizStats,
 } from "@/dal/quiz/types";
 import { University, Degree, Year, Semester } from "@prisma/client";
 import AdminQuizHeader from "./AdminQuizHeader";
@@ -27,6 +29,7 @@ export default function AdminQuizController() {
   const [quizzesData, setQuizzesData] = useState<QuizzesListResponse | null>(
     null,
   );
+  const [stats, setStats] = useState<QuizStats | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<QuizSortOption>("NEWEST");
@@ -90,6 +93,17 @@ export default function AdminQuizController() {
     }
   }, []);
 
+  const fetchStats = useCallback(async () => {
+    try {
+      const result = await getQuizStatsAction();
+      if (result.success && result.data) {
+        setStats(result.data);
+      }
+    } catch (error) {
+      console.error("Error fetching quiz stats:", error);
+    }
+  }, []);
+
   const handleSortChange = (newSort: QuizSortOption) => {
     setSort(newSort);
     setCurrentPage(1);
@@ -142,6 +156,7 @@ export default function AdminQuizController() {
     const result = await toggleQuizStatusAction(quizId);
     if (result.success) {
       fetchQuizzes(currentPage);
+      fetchStats(); // Refresh stats when status changes
     }
   };
 
@@ -149,6 +164,7 @@ export default function AdminQuizController() {
     const result = await toggleQuizPublishedAction(quizId);
     if (result.success) {
       fetchQuizzes(currentPage);
+      fetchStats(); // Refresh stats when published status changes
     }
   };
 
@@ -161,6 +177,7 @@ export default function AdminQuizController() {
       const result = await deleteQuizAction(quizId);
       if (result.success) {
         fetchQuizzes(currentPage);
+        fetchStats(); // Refresh stats when quiz is deleted
       }
     }
   };
@@ -204,9 +221,14 @@ export default function AdminQuizController() {
     fetchSubjects();
   }, [fetchSubjects]);
 
+  // Fetch stats on mount
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
   return (
     <div className="w-full space-y-6">
-      <AdminQuizHeader onCreateQuiz={handleCreateQuiz} />
+      <AdminQuizHeader stats={stats} onCreateQuiz={handleCreateQuiz} />
 
       <AdminQuizFilterAndSearch
         search={search}

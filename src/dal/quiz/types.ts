@@ -208,6 +208,14 @@ export interface QuizAttemptDetails {
   }[];
 }
 
+export interface QuizStats {
+  totalQuizzes: number;
+  activeQuizzes: number;
+  publishedQuizzes: number;
+  totalQuestions: number;
+  totalAttempts: number;
+}
+
 // Quiz Attempt with User for Admin View
 export interface QuizAttemptWithUser {
   id: string;

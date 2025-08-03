@@ -134,6 +134,19 @@ export interface FlashcardSetFilters {
   isActive?: boolean;
   isPublished?: boolean;
   search?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface FlashcardSetsListResponse {
+  sets: FlashcardSetListItem[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasMore: boolean;
+  };
 }
 
 export interface FlashcardUserActivity {

@@ -21,6 +21,7 @@ import AdminFlashcardHeader from "./AdminFlashcardHeader";
 import AdminFlashcardFilterAndSearch from "./AdminFlashcardFilterAndSearch";
 import AdminFlashcardTable from "./AdminFlashcardTable";
 import AdminFlashcardEmptyState from "./AdminFlashcardEmptyState";
+import AdminQuizPagination from "../quiz/AdminQuizPagination";
 
 type FlashcardSortOption =
   | "NEWEST"
@@ -50,6 +51,11 @@ export default function AdminFlashcardController() {
   const [filter, setFilter] = useState<FlashcardFilterOption>("ALL");
   const [subjects, setSubjects] = useState<string[]>([]);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 10;
+
   // Academic filters
   const [selectedUniversity, setSelectedUniversity] = useState<
     University | undefined
@@ -64,90 +70,64 @@ export default function AdminFlashcardController() {
   // Debounce search to avoid too many API calls
   const debouncedSearch = useDebounce(search, 500);
 
-  const fetchFlashcardSets = useCallback(async () => {
-    setLoading(true);
-    try {
-      const filters: FlashcardSetFilters = {
-        search: debouncedSearch || undefined,
-        university: selectedUniversity,
-        degree: selectedDegree,
-        year: selectedYear,
-        semester: selectedSemester,
-        subject: selectedSubject || undefined,
-      };
+  const fetchFlashcardSets = useCallback(
+    async (page = 1) => {
+      setLoading(true);
+      try {
+        const filters: FlashcardSetFilters = {
+          page,
+          limit: pageSize,
+          search: debouncedSearch || undefined,
+          university: selectedUniversity,
+          degree: selectedDegree,
+          year: selectedYear,
+          semester: selectedSemester,
+          subject: selectedSubject || undefined,
+        };
 
-      // Apply filter-specific conditions
-      switch (filter) {
-        case "ACTIVE":
-          filters.isActive = true;
-          break;
-        case "INACTIVE":
-          filters.isActive = false;
-          break;
-        case "PUBLISHED":
-          filters.isPublished = true;
-          break;
-        case "UNPUBLISHED":
-          filters.isPublished = false;
-          break;
-        case "PREMIUM":
-          filters.isPremium = true;
-          break;
-        case "FREE":
-          filters.isPremium = false;
-          break;
-      }
-
-      const result = await getFlashcardSetsAction(filters);
-      if (result.success && result.data) {
-        const sortedSets = [...result.data];
-
-        // Apply sorting
-        switch (sort) {
-          case "NEWEST":
-            sortedSets.sort(
-              (a, b) =>
-                new Date(b.createdAt).getTime() -
-                new Date(a.createdAt).getTime(),
-            );
+        // Apply filter-specific conditions
+        switch (filter) {
+          case "ACTIVE":
+            filters.isActive = true;
             break;
-          case "OLDEST":
-            sortedSets.sort(
-              (a, b) =>
-                new Date(a.createdAt).getTime() -
-                new Date(b.createdAt).getTime(),
-            );
+          case "INACTIVE":
+            filters.isActive = false;
             break;
-          case "TITLE_ASC":
-            sortedSets.sort((a, b) => a.title.localeCompare(b.title));
+          case "PUBLISHED":
+            filters.isPublished = true;
             break;
-          case "TITLE_DESC":
-            sortedSets.sort((a, b) => b.title.localeCompare(a.title));
+          case "UNPUBLISHED":
+            filters.isPublished = false;
             break;
-          case "MOST_CARDS":
-            sortedSets.sort((a, b) => b.cardCount - a.cardCount);
+          case "PREMIUM":
+            filters.isPremium = true;
             break;
-          case "MOST_VISITS":
-            sortedSets.sort((a, b) => b.visitCount - a.visitCount);
+          case "FREE":
+            filters.isPremium = false;
             break;
         }
 
-        setFlashcardSets(sortedSets);
+        const result = await getFlashcardSetsAction(filters);
+        if (result.success && result.data) {
+          setFlashcardSets(result.data.sets);
+          setTotalPages(result.data.pagination.totalPages);
+          setCurrentPage(page);
+        }
+      } catch {
+      } finally {
+        setLoading(false);
       }
-    } catch {
-    } finally {
-      setLoading(false);
-    }
-  }, [
-    debouncedSearch,
-    sort,
-    filter,
-    selectedUniversity,
-    selectedDegree,
-    selectedYear,
-    selectedSemester,
-    selectedSubject,
-  ]);
+    },
+    [
+      debouncedSearch,
+      filter,
+      selectedUniversity,
+      selectedDegree,
+      selectedYear,
+      selectedSemester,
+      selectedSubject,
+    ],
+  );
 
   const fetchStats = useCallback(async () => {
     try {
@@ -168,7 +148,7 @@ export default function AdminFlashcardController() {
   }, []);
 
   useEffect(() => {
-    fetchFlashcardSets();
+    fetchFlashcardSets(1);
   }, [fetchFlashcardSets]);
 
   useEffect(() => {
@@ -180,7 +160,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await toggleFlashcardSetStatusAction(id, isActive);
       if (result.success) {
-        await fetchFlashcardSets();
+        await fetchFlashcardSets(currentPage);
         await fetchStats();
       }
     } catch {}
@@ -190,7 +170,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await toggleFlashcardSetPublishedAction(id, isPublished);
       if (result.success) {
-        await fetchFlashcardSets();
+        await fetchFlashcardSets(currentPage);
         await fetchStats();
       }
     } catch {}
@@ -208,7 +188,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await deleteFlashcardSetAction(id);
       if (result.success) {
-        await fetchFlashcardSets();
+        await fetchFlashcardSets(currentPage);
         await fetchStats();
       }
     } catch {}
@@ -227,6 +207,11 @@ export default function AdminFlashcardController() {
     setSelectedYear(undefined);
     setSelectedSemester(undefined);
     setSelectedSubject("");
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    fetchFlashcardSets(page);
   };
 
   return (
@@ -283,6 +268,15 @@ export default function AdminFlashcardController() {
           onDelete={handleDelete}
           onToggleStatus={handleToggleStatus}
           onTogglePublished={handleTogglePublished}
+        />
+      )}
+
+      {/* Pagination */}
+      {flashcardSets.length > 0 && (
+        <AdminQuizPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
         />
       )}
     </div>

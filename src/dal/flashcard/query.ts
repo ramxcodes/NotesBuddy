@@ -1,9 +1,12 @@
 import prisma from "@/lib/db/prisma";
+import { unstable_cache } from "next/cache";
+import { getCacheOptions, adminCacheConfig } from "@/cache/cache";
 import {
   FlashcardSetListItem,
   FlashcardSetDetail,
   FlashcardSetStats,
   FlashcardSetFilters,
+  FlashcardSetsListResponse,
   CreateFlashcardSetInput,
   UpdateFlashcardSetInput,
 } from "./types";
@@ -98,41 +101,57 @@ export async function deleteFlashcardSet(id: string) {
   });
 }
 
-export async function getFlashcardSets(filters: FlashcardSetFilters = {}) {
+export async function getFlashcardSets(
+  filters: FlashcardSetFilters = {},
+): Promise<FlashcardSetsListResponse> {
+  const { page = 1, limit = 10, ...filterParams } = filters;
+  const offset = (page - 1) * limit;
+
   const where: Record<string, unknown> = {};
 
-  if (filters.university) where.university = filters.university;
-  if (filters.degree) where.degree = filters.degree;
-  if (filters.year) where.year = filters.year;
-  if (filters.semester) where.semester = filters.semester;
-  if (filters.subject)
-    where.subject = { contains: filters.subject, mode: "insensitive" };
-  if (filters.isPremium !== undefined) where.isPremium = filters.isPremium;
-  if (filters.isActive !== undefined) where.isActive = filters.isActive;
-  if (filters.isPublished !== undefined)
-    where.isPublished = filters.isPublished;
-  if (filters.search) {
+  if (filterParams.university) where.university = filterParams.university;
+  if (filterParams.degree) where.degree = filterParams.degree;
+  if (filterParams.year) where.year = filterParams.year;
+  if (filterParams.semester) where.semester = filterParams.semester;
+  if (filterParams.subject)
+    where.subject = { contains: filterParams.subject, mode: "insensitive" };
+  if (filterParams.isPremium !== undefined)
+    where.isPremium = filterParams.isPremium;
+  if (filterParams.isActive !== undefined)
+    where.isActive = filterParams.isActive;
+  if (filterParams.isPublished !== undefined)
+    where.isPublished = filterParams.isPublished;
+  if (filterParams.search) {
     where.OR = [
-      { title: { contains: filters.search, mode: "insensitive" } },
-      { description: { contains: filters.search, mode: "insensitive" } },
-      { subject: { contains: filters.search, mode: "insensitive" } },
+      { title: { contains: filterParams.search, mode: "insensitive" } },
+      { description: { contains: filterParams.search, mode: "insensitive" } },
+      { subject: { contains: filterParams.search, mode: "insensitive" } },
     ];
   }
 
-  const sets = await prisma.flashcardSet.findMany({
-    where,
-    include: {
-      _count: {
-        select: {
-          cards: true,
-          visits: true,
+  // Get total count and paginated results in parallel
+  const [sets, total] = await Promise.all([
+    prisma.flashcardSet.findMany({
+      where,
+      include: {
+        _count: {
+          select: {
+            cards: true,
+            visits: true,
+          },
         },
       },
-    },
-    orderBy: [{ updatedAt: "desc" }],
-  });
+      orderBy: [{ updatedAt: "desc" }],
+      skip: offset,
+      take: limit,
+    }),
+    prisma.flashcardSet.count({ where }),
+  ]);
 
-  return sets.map(
+  const totalPages = Math.ceil(total / limit);
+  const hasMore = page < totalPages;
+
+  const mappedSets = sets.map(
     (set) =>
       ({
         id: set.id,
@@ -153,6 +172,17 @@ export async function getFlashcardSets(filters: FlashcardSetFilters = {}) {
         updatedAt: set.updatedAt,
       }) satisfies FlashcardSetListItem,
   );
+
+  return {
+    sets: mappedSets,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages,
+      hasMore,
+    },
+  };
 }
 
 export async function getFlashcardSetById(
@@ -195,7 +225,7 @@ export async function getFlashcardSetById(
   };
 }
 
-export async function getFlashcardSetStats(): Promise<FlashcardSetStats> {
+async function getFlashcardSetStatsInternal(): Promise<FlashcardSetStats> {
   const [totalSets, activeSets, publishedSets, totalCards, totalVisits] =
     await Promise.all([
       prisma.flashcardSet.count(),
@@ -213,6 +243,12 @@ export async function getFlashcardSetStats(): Promise<FlashcardSetStats> {
     totalVisits,
   };
 }
+
+export const getFlashcardSetStats = unstable_cache(
+  getFlashcardSetStatsInternal,
+  ["flashcard-stats"],
+  getCacheOptions(adminCacheConfig.getFlashcardSetStats),
+);
 
 export async function toggleFlashcardSetStatus(id: string, isActive: boolean) {
   return await prisma.flashcardSet.update({

@@ -11,6 +11,7 @@ import {
   getQuizAttemptDetails,
   getQuizAttempts,
   getQuizSubjects,
+  getQuizStats,
 } from "@/dal/quiz/query";
 import {
   createQuizSchema,
@@ -318,5 +319,26 @@ export async function getQuizSubjectsAction(): Promise<string[] | null> {
   } catch (error) {
     console.error("Error fetching quiz subjects:", error);
     return null;
+  }
+}
+
+// Get quiz statistics for admin dashboard
+export async function getQuizStatsAction(): Promise<{
+  success: boolean;
+  data?: import("@/dal/quiz/types").QuizStats;
+  error?: string;
+}> {
+  const isAdmin = await adminStatus();
+
+  if (!isAdmin) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    const stats = await getQuizStats();
+    return { success: true, data: stats };
+  } catch (error) {
+    console.error("Error fetching quiz stats:", error);
+    return { success: false, error: "Failed to fetch quiz stats" };
   }
 }

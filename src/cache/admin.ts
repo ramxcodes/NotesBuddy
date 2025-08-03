@@ -46,4 +46,14 @@ export const adminCacheConfig = {
     tags: ["report-details"],
     cacheKey: "report-details",
   } as CacheConfig,
+  getFlashcardSetStats: {
+    cacheTime: 10, // 10 minutes
+    tags: ["flashcard-stats"],
+    cacheKey: "flashcard-stats",
+  } as CacheConfig,
+  getAdminFlashcardSets: {
+    cacheTime: 10, // 10 minutes
+    tags: ["admin-flashcard-sets"],
+    cacheKey: "admin-flashcard-sets",
+  } as CacheConfig,
 };

@@ -47,7 +47,7 @@ export default function AdminNotesPagination({
   }
 
   return (
-    <div className="neuro rounded-xl p-6">
+    <div className="neuro rounded-md p-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Results info */}
         <div className="font-satoshi text-sm font-bold text-black/70 dark:text-white/70">

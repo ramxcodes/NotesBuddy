@@ -9,6 +9,7 @@ interface LoadMoreNotesParams {
   year?: string;
   semester?: string;
   subject?: string;
+  premium?: string;
   lastTitle?: string;
   lastId?: string;
 }
@@ -21,6 +22,7 @@ export async function loadMoreNotesAction(params: LoadMoreNotesParams) {
     year: params.year === "all" ? undefined : params.year,
     semester: params.semester === "all" ? undefined : params.semester,
     subject: params.subject === "all" ? undefined : params.subject,
+    premium: params.premium === "all" ? undefined : params.premium,
   };
 
   const cursor = {

@@ -4,7 +4,7 @@ export default function QuizAttemptDetailLoading() {
       <div className="mx-auto max-w-7xl">
         <div className="space-y-6">
           {/* Header Skeleton */}
-          <div className="neuro rounded-xl p-6">
+          <div className="neuro rounded-md p-6">
             <div className="flex animate-pulse items-center gap-4">
               <div className="h-10 w-32 rounded bg-gray-300"></div>
               <div className="flex-1">
@@ -18,7 +18,7 @@ export default function QuizAttemptDetailLoading() {
           {/* Content Skeleton */}
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <div className="neuro rounded-xl p-6">
+              <div className="neuro rounded-md p-6">
                 <div className="animate-pulse space-y-4">
                   <div className="h-6 w-1/4 rounded bg-gray-300"></div>
                   <div className="space-y-3">
@@ -31,7 +31,7 @@ export default function QuizAttemptDetailLoading() {
             </div>
             <div className="space-y-6">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="neuro rounded-xl p-6">
+                <div key={i} className="neuro rounded-md p-6">
                   <div className="animate-pulse space-y-4">
                     <div className="h-6 w-1/3 rounded bg-gray-300"></div>
                     <div className="space-y-2">

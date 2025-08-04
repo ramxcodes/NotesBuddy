@@ -37,7 +37,7 @@ function MetricCard({
   isPercentage?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="flex items-center justify-between rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <div className="space-y-2">
         <h3 className="flex items-center gap-2 text-lg font-bold text-black dark:text-white">
           {icon}
@@ -62,7 +62,7 @@ function ChartContainer({
   isLoading?: boolean;
 }) {
   return (
-    <div className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <h3 className="mb-6 text-xl font-black text-black dark:text-white">
         {title}
       </h3>
@@ -133,7 +133,7 @@ export function UserBehavior({ timeRange, customRange }: UserBehaviorProps) {
             .map((_, i) => (
               <div
                 key={i}
-                className="flex h-32 items-center justify-center rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]"
+                className="flex h-32 items-center justify-center rounded-md border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]"
               >
                 <div className="h-8 w-8 animate-spin rounded-full border-2 border-black border-t-transparent dark:border-white dark:border-t-transparent"></div>
               </div>
@@ -148,7 +148,7 @@ export function UserBehavior({ timeRange, customRange }: UserBehaviorProps) {
 
   if (!analytics) {
     return (
-      <div className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+      <div className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
         <p className="text-center text-black dark:text-white">
           Unable to load user behavior data.
         </p>

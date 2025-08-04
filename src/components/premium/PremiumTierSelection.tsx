@@ -58,7 +58,7 @@ export function PremiumTierSelection({
       transition={{ duration: 0.6, delay: 0.1 }}
       viewport={{ once: true }}
     >
-      <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <Card className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="font-excon text-xl font-black text-black dark:text-white">
             Select Your Plan
@@ -74,12 +74,12 @@ export function PremiumTierSelection({
               onValueChange={(value) => onTierChange(value as PremiumTier)}
             >
               <SelectTrigger
-                className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
                 data-umami-event="premium-tier-selector-click"
               >
                 <SelectValue placeholder="Select a plan" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectContent className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                 {tierConfigs.map((tier) => (
                   <SelectItem
                     key={tier.tier}
@@ -96,7 +96,7 @@ export function PremiumTierSelection({
             </Select>
 
             {selectedTierConfig && (
-              <div className="rounded-xl border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
+              <div className="rounded-md border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                 <TierBenefits tier={selectedTierConfig} />
               </div>
             )}

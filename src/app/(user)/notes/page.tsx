@@ -1,6 +1,7 @@
 import Search from "@/components/note/NotesSearch";
 import { Metadata } from "next";
 import FilterNotesDropdown from "@/components/note/FilterNotesDropdown";
+import NotesPremiumFilterDropdown from "@/components/note/NotesPremiumFilterDropdown";
 import { getFilteredNotes } from "@/dal/note/helper";
 import { getSession } from "@/lib/db/user";
 import {
@@ -65,6 +66,7 @@ interface SearchParams {
   year?: string;
   semester?: string;
   subject?: string;
+  premium?: string;
   lastTitle?: string;
   lastId?: string;
 }
@@ -76,7 +78,8 @@ export default async function NotesPage({
 }) {
   // Get search parameters
   const params = await searchParams;
-  const { query, university, degree, year, semester, subject } = params;
+  const { query, university, degree, year, semester, subject, premium } =
+    params;
 
   // Get user session and profile data
   const session = await getSession();
@@ -106,6 +109,7 @@ export default async function NotesPage({
     year: year === "all" ? undefined : year,
     semester: semester === "all" ? undefined : semester,
     subject: subject === "all" ? undefined : subject,
+    premium: premium === "all" ? undefined : premium,
   };
 
   // Fetch initial notes (first page only)
@@ -119,6 +123,7 @@ export default async function NotesPage({
     year,
     semester,
     subject,
+    premium,
   };
 
   return (
@@ -156,11 +161,14 @@ export default async function NotesPage({
 
           {/* Filter Dropdown */}
           <div className="w-full max-w-4xl">
-            <FilterNotesDropdown
-              userProfile={userProfile}
-              isOnboarded={isOnboarded}
-              isAuthenticated={!!session?.user}
-            />
+            <div className="flex flex-col gap-4">
+              <FilterNotesDropdown
+                userProfile={userProfile}
+                isOnboarded={isOnboarded}
+                isAuthenticated={!!session?.user}
+              />
+              <NotesPremiumFilterDropdown />
+            </div>
           </div>
 
           {/* Infinite List Component */}

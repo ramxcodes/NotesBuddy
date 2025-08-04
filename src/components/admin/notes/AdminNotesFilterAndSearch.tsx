@@ -73,7 +73,7 @@ export default function AdminNotesFilterAndSearch({
   };
 
   return (
-    <div className="neuro rounded-xl p-6">
+    <div className="neuro rounded-md p-6">
       <div className="space-y-6">
         {/* Search and Sort */}
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

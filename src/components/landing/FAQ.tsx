@@ -53,7 +53,7 @@ function FAQItem({
 
   return (
     <motion.div
-      className="bg-card border-primary dark:border-primary/30 rounded-xl border border-r-8 border-b-8"
+      className="bg-card border-primary dark:border-primary/30 rounded-md border border-r-8 border-b-8"
       variants={itemVariants}
       initial="hidden"
       whileInView="visible"

@@ -156,7 +156,7 @@ export function AdminCouponUsageView({
           <Button
             onClick={onClose}
             variant="outline"
-            className="font-satoshi flex items-center gap-2 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+            className="font-satoshi flex items-center gap-2 rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
           >
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Coupons
@@ -175,7 +175,7 @@ export function AdminCouponUsageView({
       </div>
 
       {/* Coupon Overview */}
-      <div className="rounded-xl border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <div className="rounded-md border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
         <div className="grid gap-6 md:grid-cols-4">
           {/* Discount Value */}
           <div className="flex items-center gap-3 rounded-lg border-2 border-black bg-zinc-50 p-4 dark:border-white/20 dark:bg-zinc-700">
@@ -299,7 +299,7 @@ export function AdminCouponUsageView({
           <h3 className="font-excon text-xl font-black text-black dark:text-white">
             Users Who Used This Coupon
           </h3>
-          <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <div className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             <Table>
               <TableHeader>
                 <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700">
@@ -367,7 +367,7 @@ export function AdminCouponUsageView({
 
       {/* No Usage */}
       {couponData.usageStats.recentUsages.length === 0 && (
-        <div className="rounded-xl border-2 border-black bg-zinc-100 p-8 text-center shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+        <div className="rounded-md border-2 border-black bg-zinc-100 p-8 text-center shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
           <div className="font-excon text-xl font-black text-black dark:text-white">
             No usage yet
           </div>

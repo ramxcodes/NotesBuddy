@@ -188,7 +188,7 @@ export default function EditFlashcardForm({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="neuro rounded-xl p-6">
+      <div className="neuro rounded-md p-6">
         <div className="flex items-center gap-4">
           <Button
             onClick={() => router.push("/admin/flashcards")}
@@ -213,7 +213,7 @@ export default function EditFlashcardForm({
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
             Basic Information
           </h2>
@@ -265,7 +265,7 @@ export default function EditFlashcardForm({
         </div>
 
         {/* Academic Information */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
             Academic Information
           </h2>
@@ -390,7 +390,7 @@ export default function EditFlashcardForm({
         </div>
 
         {/* Flashcard Set Settings */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
             Flashcard Set Settings
           </h2>
@@ -486,7 +486,7 @@ export default function EditFlashcardForm({
         </div>
 
         {/* Flashcards */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-excon text-xl font-black text-black dark:text-white">
               Flashcards ({cards.length})

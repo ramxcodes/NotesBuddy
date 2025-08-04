@@ -14,7 +14,7 @@ export default function QuizLoading() {
       </div>
 
       {/* Filters Skeleton */}
-      <div className="neuro rounded-xl p-6">
+      <div className="neuro rounded-md p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex gap-4">
             <Skeleton className="h-10 w-64" />
@@ -30,7 +30,7 @@ export default function QuizLoading() {
       </div>
 
       {/* Table Skeleton */}
-      <div className="neuro rounded-xl">
+      <div className="neuro rounded-md">
         <div className="p-6">
           {/* Table Header */}
           <div className="mb-4 flex gap-4">

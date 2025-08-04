@@ -130,12 +130,12 @@ export function PremiumUpgrade({
               disabled={isLoading}
             >
               <SelectTrigger
-                className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]"
                 data-umami-event="premium-upgrade-tier-selector-click"
               >
                 <SelectValue placeholder="Select upgrade plan" />
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
+              <SelectContent className="rounded-md border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#757373]">
                 {upgradeOptions.map((option) => {
                   const upgradePrice = calculateUpgradePrice(
                     upgradeContext.currentTier,

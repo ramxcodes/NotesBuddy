@@ -8,7 +8,7 @@ export default function ScoreActions() {
     <div className="mt-6 flex justify-center gap-4">
       <Button
         onClick={() => router.push("/quiz")}
-        className="rounded-xl border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
+        className="rounded-md border-2 border-black bg-black font-bold text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
         data-umami-event="quiz-score-take-another"
       >
         Take Another Quiz

@@ -23,7 +23,7 @@ export default function QuizQuestion({
   onAnswerSelect,
 }: QuizQuestionProps) {
   return (
-    <div className="mb-6 rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="mb-6 rounded-md border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <div className="p-8">
         <h2 className="font-excon mb-6 text-xl font-black text-black dark:text-white">
           {question.question}

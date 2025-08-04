@@ -65,7 +65,7 @@ export default function QuizCard({ quiz, isAuthenticated }: QuizCardProps) {
   const lastAttempt = userAttempts?.[0];
 
   return (
-    <div className="neuro group rounded-xl p-6 transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[6px_6px_0px_0px_#000] dark:hover:shadow-[6px_6px_0px_0px_#757373]">
+    <div className="neuro group rounded-md p-6 transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[6px_6px_0px_0px_#000] dark:hover:shadow-[6px_6px_0px_0px_#757373]">
       {/* Header */}
       <div className="mb-4 flex items-start justify-between">
         <div className="flex-1">

@@ -18,7 +18,7 @@ export default async function EditQuizPage({ params }: PageProps) {
     <div className="mx-auto max-w-6xl space-y-6">
       <Suspense
         fallback={
-          <div className="neuro rounded-xl p-6">
+          <div className="neuro rounded-md p-6">
             <div className="animate-pulse">
               <div className="mb-2 h-6 w-3/4 rounded bg-gray-300"></div>
               <div className="h-4 w-1/2 rounded bg-gray-300"></div>

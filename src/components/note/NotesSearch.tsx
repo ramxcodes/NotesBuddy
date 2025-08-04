@@ -68,14 +68,14 @@ export default function Search({ query }: { query: string }) {
   };
 
   return (
-    <div className="relative w-full rounded-xl">
-      <div className="relative rounded-xl border-4 border-black shadow-[8px_8px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#757373] dark:hover:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="relative w-full rounded-md">
+      <div className="relative rounded-md border-4 border-black shadow-[8px_8px_0px_0px_#000] transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#757373] dark:hover:shadow-[4px_4px_0px_0px_#757373]">
         <SearchIcon className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 transform text-black dark:text-white" />
         <Input
           ref={inputRef}
           type="text"
           placeholder="Search notes by title or subject..."
-          className="rounded-xl border-0 bg-transparent pr-16 pl-12 font-bold text-black shadow-none placeholder:text-black/70 focus-visible:ring-0 focus-visible:ring-offset-0 dark:text-white dark:placeholder:text-white/70"
+          className="rounded-md border-0 bg-transparent pr-16 pl-12 font-bold text-black shadow-none placeholder:text-black/70 focus-visible:ring-0 focus-visible:ring-offset-0 dark:text-white dark:placeholder:text-white/70"
           value={search}
           onChange={handleInputChange}
           onFocus={handleFocus}

@@ -18,6 +18,7 @@ interface SearchParams {
   year?: string;
   semester?: string;
   subject?: string;
+  premium?: string;
 }
 
 interface NotesInfiniteListProps {
@@ -53,6 +54,7 @@ export function NotesInfiniteList({
     searchParams.year,
     searchParams.semester,
     searchParams.subject,
+    searchParams.premium,
   ]);
 
   const loadMoreNotes = async () => {
@@ -76,12 +78,10 @@ export function NotesInfiniteList({
           return;
         }
 
-        // Sanitize search query if present
         const sanitizedQuery = searchParams.query
           ? searchOptimizer.sanitizeSearchQuery(searchParams.query)
           : undefined;
 
-        // Check if search should be throttled
         if (
           sanitizedQuery &&
           searchOptimizer.shouldThrottleSearch(sanitizedQuery)
@@ -89,7 +89,6 @@ export function NotesInfiniteList({
           return;
         }
 
-        // Perform search with performance monitoring
         const newNotes = await measureSearchPerformance(
           () =>
             loadMoreNotesAction({
@@ -99,6 +98,7 @@ export function NotesInfiniteList({
               year: searchParams.year,
               semester: searchParams.semester,
               subject: searchParams.subject,
+              premium: searchParams.premium,
               lastTitle: lastNote?.title || undefined,
               lastId: lastNote?._id || undefined,
             }),

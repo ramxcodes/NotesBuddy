@@ -37,7 +37,7 @@ export default function AdminCouponTable({
   onViewUsage,
 }: AdminCouponTableProps) {
   return (
-    <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
       <Table>
         <TableHeader>
           <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700">

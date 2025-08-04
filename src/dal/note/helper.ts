@@ -54,6 +54,7 @@ export const getNotesCount = unstable_cache(
     year?: string;
     semester?: string;
     subject?: string;
+    premium?: string;
   }) => {
     return await client.fetch(
       NOTES_COUNT_QUERY,
@@ -64,6 +65,7 @@ export const getNotesCount = unstable_cache(
         year: filters.year || null,
         semester: filters.semester || null,
         subject: filters.subject || null,
+        premium: filters.premium || null,
       },
       getNextOptions(notesCacheConfig.getNotesCount),
     );
@@ -81,6 +83,7 @@ export const getFilteredNotes = unstable_cache(
       year?: string;
       semester?: string;
       subject?: string;
+      premium?: string;
     },
     cursor?: {
       lastTitle?: string;
@@ -96,6 +99,7 @@ export const getFilteredNotes = unstable_cache(
         year: filters.year || null,
         semester: filters.semester || null,
         subject: filters.subject || null,
+        premium: filters.premium || null,
         lastTitle: cursor?.lastTitle || null,
         lastId: cursor?.lastId || null,
       },

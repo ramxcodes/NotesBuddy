@@ -82,7 +82,7 @@ export default function AdminNotesTable({
 
   if (isLoading) {
     return (
-      <div className="neuro rounded-xl">
+      <div className="neuro rounded-md">
         <div className="p-8 text-center">
           <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-black dark:border-white"></div>
           <p className="font-satoshi mt-4 text-sm font-bold">
@@ -94,7 +94,7 @@ export default function AdminNotesTable({
   }
 
   return (
-    <div className="neuro rounded-xl">
+    <div className="neuro rounded-md">
       <Table>
         <TableHeader>
           <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700">

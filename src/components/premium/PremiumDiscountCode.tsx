@@ -80,7 +80,7 @@ export function PremiumDiscountCode({
       transition={{ duration: 0.6, delay: 0.2 }}
       viewport={{ once: true }}
     >
-      <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <Card className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
         <CardHeader>
           <CardTitle className="flex items-center gap-3">
             <GiftIcon className="h-5 w-5 text-black dark:text-white" />
@@ -101,7 +101,7 @@ export function PremiumDiscountCode({
                 onChange={(e) =>
                   onDiscountCodeChange(e.target.value.toUpperCase())
                 }
-                className="font-satoshi rounded-xl border-2 border-black bg-white pr-10 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="font-satoshi rounded-md border-2 border-black bg-white pr-10 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 data-umami-event="premium-discount-code-input-change"
               />
               <div className="absolute top-1/2 right-3 -translate-y-1/2">
@@ -112,7 +112,7 @@ export function PremiumDiscountCode({
               variant="outline"
               onClick={onApplyCode}
               disabled={isCalculating}
-              className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+              className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
               data-umami-event={`premium-discount-code-apply-${discountCode ? "with-code" : "empty"}`}
             >
               {isCalculating ? (

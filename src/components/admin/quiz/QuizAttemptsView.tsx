@@ -282,7 +282,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
     return (
       <div className="space-y-6">
         {/* Header Skeleton */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <div className="animate-pulse">
             <div className="mb-2 h-8 w-1/3 rounded bg-gray-300"></div>
             <div className="h-4 w-2/3 rounded bg-gray-300"></div>
@@ -290,7 +290,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
         </div>
 
         {/* Content Skeleton */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <div className="animate-pulse space-y-4">
             <div className="h-6 w-1/4 rounded bg-gray-300"></div>
             <div className="grid gap-4 md:grid-cols-3">
@@ -308,7 +308,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
     return (
       <div className="space-y-6">
         {/* Header */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <div className="flex items-center gap-4">
             <Button
               onClick={() => router.push("/admin/quiz")}
@@ -330,7 +330,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
           </div>
         </div>
 
-        <div className="neuro-danger rounded-xl p-6">
+        <div className="neuro-danger rounded-md p-6">
           <p className="font-satoshi font-bold text-red-600 dark:text-red-400">
             {error || "Quiz not found"}
           </p>
@@ -348,7 +348,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="neuro rounded-xl p-6">
+      <div className="neuro rounded-md p-6">
         <div className="flex items-center gap-4">
           <Button
             onClick={() => router.push("/admin/quiz")}
@@ -371,7 +371,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
       </div>
 
       {/* Quiz Information */}
-      <div className="neuro rounded-xl p-6">
+      <div className="neuro rounded-md p-6">
         <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
           Quiz Information
         </h2>
@@ -467,7 +467,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
 
       {/* Statistics */}
       {stats && (
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
             Attempt Statistics
           </h2>
@@ -528,7 +528,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
       )}
 
       {/* Filters */}
-      <div className="neuro rounded-xl p-6">
+      <div className="neuro rounded-md p-6">
         <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
           Filter & Search
         </h2>
@@ -603,7 +603,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
       </div>
 
       {/* Attempts Table */}
-      <div className="neuro rounded-xl p-6">
+      <div className="neuro rounded-md p-6">
         <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
           Attempts ({filteredAttempts.length})
         </h2>

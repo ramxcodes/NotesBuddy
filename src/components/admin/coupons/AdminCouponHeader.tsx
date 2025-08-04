@@ -23,7 +23,7 @@ export default function AdminCouponHeader({
       </div>
       <Button
         onClick={onCreateCoupon}
-        className="font-excon flex items-center gap-2 rounded-xl border-2 border-black bg-black px-6 py-3 font-black text-white shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373]"
+        className="font-excon flex items-center gap-2 rounded-md border-2 border-black bg-black px-6 py-3 font-black text-white shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373]"
         data-umami-event="admin-coupon-create-button-click"
       >
         <PlusIcon weight="duotone" className="h-5 w-5" />

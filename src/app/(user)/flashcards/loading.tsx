@@ -17,7 +17,7 @@ export default function FlashcardsPageLoading() {
       {/* Flashcard Grid */}
       <div className="mx-4 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 9 }).map((_, index) => (
-          <div key={index} className="neuro rounded-xl p-6">
+          <div key={index} className="neuro rounded-md p-6">
             {/* Header */}
             <div className="mb-4 flex items-start justify-between">
               <div className="flex-1 space-y-2">

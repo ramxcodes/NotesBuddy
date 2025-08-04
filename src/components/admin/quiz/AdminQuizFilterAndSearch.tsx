@@ -89,7 +89,7 @@ export default function AdminQuizFilterAndSearch({
     filter !== "ALL";
 
   return (
-    <div className="neuro rounded-xl p-6">
+    <div className="neuro rounded-md p-6">
       <div className="space-y-4">
         {/* Search and Primary Filters */}
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

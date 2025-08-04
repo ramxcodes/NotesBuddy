@@ -15,7 +15,7 @@ export default function AdminNotesEmptyState({
 }: Props) {
   if (isLoading) {
     return (
-      <div className="neuro rounded-xl">
+      <div className="neuro rounded-md">
         <div className="flex flex-col items-center justify-center px-4 py-16">
           <div className="mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-black dark:border-white"></div>
           <p className="font-satoshi text-sm font-bold text-black/60 dark:text-white/60">
@@ -27,7 +27,7 @@ export default function AdminNotesEmptyState({
   }
 
   return (
-    <div className="neuro rounded-xl">
+    <div className="neuro rounded-md">
       <div className="flex flex-col items-center justify-center px-4 py-16">
         <div className="neuro-sm rounded-full bg-white p-6 dark:bg-zinc-800">
           {hasActiveFilters ? (
@@ -50,7 +50,7 @@ export default function AdminNotesEmptyState({
         {hasActiveFilters && (
           <Button
             onClick={onClearFilters}
-            className="neuro-button font-satoshi mt-4 rounded-xl font-bold"
+            className="neuro-button font-satoshi mt-4 rounded-md font-bold"
           >
             Clear All Filters
           </Button>

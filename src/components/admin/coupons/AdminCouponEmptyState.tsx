@@ -12,7 +12,7 @@ export default function AdminCouponEmptyState({
   filter,
 }: AdminCouponEmptyStateProps) {
   return (
-    <div className="rounded-xl border-2 border-black bg-zinc-100 p-8 text-center shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="rounded-md border-2 border-black bg-zinc-100 p-8 text-center shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <div className="font-excon text-2xl font-black text-black dark:text-white">
         No coupons found
       </div>

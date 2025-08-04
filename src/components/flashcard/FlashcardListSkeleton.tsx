@@ -18,7 +18,7 @@ export default function FlashcardListSkeleton() {
       {/* Cards Skeleton */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 9 }).map((_, i) => (
-          <div key={i} className="neuro animate-pulse rounded-xl p-6">
+          <div key={i} className="neuro animate-pulse rounded-md p-6">
             {/* Header */}
             <div className="mb-4 flex items-start justify-between">
               <div className="flex-1">

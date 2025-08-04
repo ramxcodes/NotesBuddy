@@ -54,7 +54,7 @@ export default function AdminQuizPagination({
         variant="outline"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="neuro-button font-satoshi rounded-xl font-bold disabled:opacity-50"
+        className="neuro-button font-satoshi rounded-md font-bold disabled:opacity-50"
       >
         <CaretLeftIcon className="h-4 w-4" />
         Previous
@@ -82,7 +82,7 @@ export default function AdminQuizPagination({
               key={pageNumber}
               variant={isActive ? "default" : "outline"}
               onClick={() => onPageChange(pageNumber)}
-              className={`font-satoshi h-10 w-10 rounded-xl font-bold ${
+              className={`font-satoshi h-10 w-10 rounded-md font-bold ${
                 isActive
                   ? "border-2 border-black bg-black text-white dark:border-white/20 dark:bg-white dark:text-black"
                   : "neuro-button"
@@ -99,7 +99,7 @@ export default function AdminQuizPagination({
         variant="outline"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="neuro-button font-satoshi rounded-xl font-bold disabled:opacity-50"
+        className="neuro-button font-satoshi rounded-md font-bold disabled:opacity-50"
       >
         Next
         <CaretRightIcon className="h-4 w-4" />

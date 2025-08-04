@@ -3,11 +3,11 @@ export default function QuizListSkeleton() {
     <div className="space-y-6">
       {/* Search Skeleton */}
       <div className="mx-auto w-full max-w-2xl">
-        <div className="neuro-sm h-14 animate-pulse rounded-xl bg-gray-300 dark:bg-gray-700" />
+        <div className="neuro-sm h-14 animate-pulse rounded-md bg-gray-300 dark:bg-gray-700" />
       </div>
 
       {/* Filter Skeleton */}
-      <div className="my-6 rounded-xl border-4 border-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#757373]">
+      <div className="my-6 rounded-md border-4 border-black px-8 py-12 shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:shadow-[8px_8px_0px_0px_#757373]">
         <div className="flex flex-wrap items-end justify-center gap-4">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="flex flex-col gap-2">
@@ -21,7 +21,7 @@ export default function QuizListSkeleton() {
       {/* Quiz Cards Skeleton */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="neuro animate-pulse rounded-xl p-6">
+          <div key={i} className="neuro animate-pulse rounded-md p-6">
             {/* Header Skeleton */}
             <div className="mb-4 space-y-2">
               <div className="h-6 w-3/4 rounded bg-gray-300 dark:bg-gray-700" />

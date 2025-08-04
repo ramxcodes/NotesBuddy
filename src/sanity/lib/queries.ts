@@ -13,6 +13,10 @@ export const NOTES_QUERY =
     (!defined($year) || year == $year) &&
     (!defined($semester) || semester == $semester) &&
     (!defined($subject) || subject match $subject) &&
+    (!defined($premium) || 
+      ($premium == "free" && (!defined(isPremium) || isPremium == false)) ||
+      ($premium == "premium" && isPremium == true)
+    ) &&
     (!defined($lastTitle) || title > $lastTitle || (title == $lastTitle && _id > $lastId))
   ] | order(title asc, _id asc) [0...6] {
   _id,
@@ -47,7 +51,11 @@ export const NOTES_COUNT_QUERY =
     (!defined($degree) || degree == $degree) &&
     (!defined($year) || year == $year) &&
     (!defined($semester) || semester == $semester) &&
-    (!defined($subject) || subject match $subject)
+    (!defined($subject) || subject match $subject) &&
+    (!defined($premium) || 
+      ($premium == "free" && (!defined(isPremium) || isPremium == false)) ||
+      ($premium == "premium" && isPremium == true)
+    )
   ])`);
 
 // Enhanced subjects query with caching optimization

@@ -22,7 +22,7 @@ export function PremiumPriceSummary({
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ duration: 0.4 }}
         >
-          <Card className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <Card className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             <CardHeader>
               <CardTitle className="flex items-center gap-3">
                 <LightningIcon className="h-5 w-5 text-black dark:text-white" />

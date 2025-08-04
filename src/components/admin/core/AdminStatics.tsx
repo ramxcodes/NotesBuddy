@@ -16,7 +16,7 @@ function StatCard({ title, value, isCurrency = false }: StatCardProps) {
   };
 
   return (
-    <div className="flex h-32 w-64 flex-col justify-center rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="flex h-32 w-64 flex-col justify-center rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
       <div className="space-y-2">
         <h3 className="text-lg font-bold text-black dark:text-white">
           {title}

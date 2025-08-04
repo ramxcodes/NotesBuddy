@@ -105,7 +105,7 @@ function FeatureCard({
         <div className="from-primary/5 dark:from-primary/10 absolute inset-0 rounded-2xl bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
         <div className="relative z-10">
-          <div className="bg-primary/10 dark:bg-primary/20 group-hover:bg-primary/20 dark:group-hover:bg-primary/30 mb-6 flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-300">
+          <div className="bg-primary/10 dark:bg-primary/20 group-hover:bg-primary/20 dark:group-hover:bg-primary/30 mb-6 flex h-12 w-12 items-center justify-center rounded-md transition-colors duration-300">
             {icon}
           </div>
 

@@ -115,7 +115,7 @@ export default function AdminUserTable() {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           variant="outline"
-          className="rounded-xl border-2 border-black bg-zinc-100 shadow-[2px_2px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+          className="rounded-md border-2 border-black bg-zinc-100 shadow-[2px_2px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           Previous
         </Button>
@@ -125,7 +125,7 @@ export default function AdminUserTable() {
             key={page}
             onClick={() => handlePageChange(page)}
             variant={page === currentPage ? "default" : "outline"}
-            className={`rounded-xl border-2 border-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] ${
+            className={`rounded-md border-2 border-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] ${
               page === currentPage
                 ? "bg-black text-white dark:bg-white dark:text-black"
                 : "bg-zinc-100 dark:bg-zinc-900 dark:text-white"
@@ -139,7 +139,7 @@ export default function AdminUserTable() {
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === usersData.totalPages}
           variant="outline"
-          className="rounded-xl border-2 border-black bg-zinc-100 shadow-[2px_2px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+          className="rounded-md border-2 border-black bg-zinc-100 shadow-[2px_2px_0px_0px_#000] disabled:opacity-50 dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
         >
           Next
         </Button>
@@ -162,7 +162,7 @@ export default function AdminUserTable() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, email, or phone..."
-            className="flex-1 rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]"
+            className="flex-1 rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]"
             data-umami-event="admin-user-search-input"
           />
         </div>
@@ -174,12 +174,12 @@ export default function AdminUserTable() {
             onValueChange={(value: SortOption) => handleSortChange(value)}
           >
             <SelectTrigger
-              className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              className="w-48 rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
               data-umami-event="admin-user-sort-trigger"
             >
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="A_TO_Z"
                 className="rounded-lg"
@@ -216,12 +216,12 @@ export default function AdminUserTable() {
             onValueChange={(value: FilterOption) => handleFilterChange(value)}
           >
             <SelectTrigger
-              className="w-48 rounded-xl border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+              className="w-48 rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
               data-umami-event="admin-user-filter-trigger"
             >
               <SelectValue placeholder="Filter by..." />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+            <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
               <SelectItem
                 value="ALL"
                 className="rounded-lg"
@@ -263,7 +263,7 @@ export default function AdminUserTable() {
 
       {/* Table */}
       {!loading && usersData && (
-        <div className="rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+        <div className="rounded-md border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
           <Table>
             <TableHeader>
               <TableRow className="border-b-2 border-black dark:border-white/20">
@@ -303,7 +303,7 @@ export default function AdminUserTable() {
                       alt={user.name}
                       width={40}
                       height={40}
-                      className="rounded-xl border-2 border-black dark:border-white/20"
+                      className="rounded-md border-2 border-black dark:border-white/20"
                     />
                   </TableCell>
                   <TableCell className="p-3">

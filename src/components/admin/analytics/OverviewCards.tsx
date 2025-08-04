@@ -50,7 +50,7 @@ function StatCard({
   };
 
   return (
-    <div className="flex h-50 w-full flex-col justify-between rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="flex h-50 w-full flex-col justify-between rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
       <div className="flex items-center justify-between">
         <div className="rounded-lg border-2 border-black bg-white p-3 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
           {icon}
@@ -70,7 +70,7 @@ function StatCard({
 
 function LoadingCard() {
   return (
-    <div className="flex h-40 w-full flex-col items-center justify-center rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="flex h-40 w-full flex-col items-center justify-center rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-black border-t-transparent dark:border-white dark:border-t-transparent"></div>
       <p className="mt-2 text-sm text-black dark:text-white">Loading...</p>
     </div>
@@ -117,7 +117,7 @@ export function OverviewCards({ timeRange, customRange }: OverviewCardsProps) {
 
   if (!analytics) {
     return (
-      <div className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+      <div className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
         <p className="text-center text-black dark:text-white">
           Unable to load analytics data. Please check your configuration.
         </p>

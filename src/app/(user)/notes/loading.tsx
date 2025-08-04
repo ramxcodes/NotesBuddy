@@ -13,7 +13,7 @@ export default function NotesLoading() {
 
           {/* Search Skeleton */}
           <div className="w-full max-w-2xl">
-            <Skeleton className="h-12 w-full rounded-xl" />
+            <Skeleton className="h-12 w-full rounded-md" />
           </div>
 
           {/* Filter Dropdown Skeleton */}
@@ -29,7 +29,7 @@ export default function NotesLoading() {
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className="border-primary dark:border-secondary relative flex h-[350px] flex-col rounded-xl border-2 border-r-8 border-b-8"
+                className="border-primary dark:border-secondary relative flex h-[350px] flex-col rounded-md border-2 border-r-8 border-b-8"
               >
                 <div className="flex flex-1 flex-col gap-3 p-6 pb-4">
                   <Skeleton className="mb-2 h-6 w-32" />

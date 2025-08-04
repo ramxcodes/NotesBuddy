@@ -238,7 +238,7 @@ export default function CreateQuizForm() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="neuro rounded-xl p-6">
+      <div className="neuro rounded-md p-6">
         <div className="flex items-center gap-4">
           <Button
             onClick={() => router.push("/admin/quiz")}
@@ -263,7 +263,7 @@ export default function CreateQuizForm() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
             Basic Information
           </h2>
@@ -315,7 +315,7 @@ export default function CreateQuizForm() {
         </div>
 
         {/* Academic Information */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
             Academic Information
           </h2>
@@ -440,7 +440,7 @@ export default function CreateQuizForm() {
         </div>
 
         {/* Quiz Settings */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <h2 className="font-excon mb-4 text-xl font-black text-black dark:text-white">
             Quiz Settings
           </h2>
@@ -542,7 +542,7 @@ export default function CreateQuizForm() {
         </div>
 
         {/* Questions */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-excon text-xl font-black text-black dark:text-white">
               Questions ({questions.length})

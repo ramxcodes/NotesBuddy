@@ -10,45 +10,50 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export type SortOption = "newest" | "oldest" | "title-asc" | "title-desc";
+export type PremiumFilterOption = "all" | "free" | "premium";
 
-interface SortDropdownProps {
+interface NotesPremiumFilterDropdownProps {
   className?: string;
 }
 
-const sortOptions = [
-  { value: "newest", label: "Newest First" },
-  { value: "oldest", label: "Oldest First" },
-  { value: "title-asc", label: "A - Z" },
-  { value: "title-desc", label: "Z - A" },
+const premiumFilterOptions = [
+  { value: "all", label: "All Notes" },
+  { value: "free", label: "Free Notes" },
+  { value: "premium", label: "Premium Notes" },
 ] as const;
 
-export default function SortDropdown({ className }: SortDropdownProps) {
+export default function NotesPremiumFilterDropdown({
+  className,
+}: NotesPremiumFilterDropdownProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const currentSort = (searchParams.get("sort") as SortOption) || "newest";
+  const currentFilter =
+    (searchParams.get("premium") as PremiumFilterOption) || "all";
 
-  const handleSortChange = (value: string) => {
+  const handleFilterChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    if (value === "newest") {
-      params.delete("sort");
+    if (value === "all") {
+      params.delete("premium");
     } else {
-      params.set("sort", value);
+      params.set("premium", value);
     }
+
+    params.delete("lastTitle");
+    params.delete("lastId");
 
     router.push(`?${params.toString()}`);
   };
 
   return (
     <div className={className}>
-      <Select value={currentSort} onValueChange={handleSortChange}>
+      <Select value={currentFilter} onValueChange={handleFilterChange}>
         <SelectTrigger className="w-[180px] rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
-          <SelectValue placeholder="Sort by" />
+          <SelectValue placeholder="Filter by type" />
         </SelectTrigger>
         <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
-          {sortOptions.map((option) => (
+          {premiumFilterOptions.map((option) => (
             <SelectItem
               className="font-bold text-black hover:bg-black/10 dark:text-white dark:hover:bg-white/10"
               key={option.value}

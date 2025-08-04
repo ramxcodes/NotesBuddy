@@ -75,7 +75,7 @@ export function AnalyticsHeader({
   };
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] sm:flex-row sm:items-center sm:justify-between dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+    <div className="flex flex-col gap-4 rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] sm:flex-row sm:items-center sm:justify-between dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
       <div className="space-y-1">
         <h2 className="flex items-center gap-2 text-xl font-black text-black dark:text-white">
           <Clock className="h-5 w-5" />

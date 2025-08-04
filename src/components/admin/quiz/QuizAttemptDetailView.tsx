@@ -163,7 +163,7 @@ export default function QuizAttemptDetailView({
     return (
       <div className="space-y-6">
         {/* Header Skeleton */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <div className="animate-pulse">
             <div className="mb-2 h-8 w-1/3 rounded bg-gray-300"></div>
             <div className="h-4 w-2/3 rounded bg-gray-300"></div>
@@ -173,7 +173,7 @@ export default function QuizAttemptDetailView({
         {/* Content Skeleton */}
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <div className="neuro rounded-xl p-6">
+            <div className="neuro rounded-md p-6">
               <div className="animate-pulse space-y-4">
                 <div className="h-6 w-1/4 rounded bg-gray-300"></div>
                 <div className="space-y-3">
@@ -185,7 +185,7 @@ export default function QuizAttemptDetailView({
             </div>
           </div>
           <div className="space-y-6">
-            <div className="neuro rounded-xl p-6">
+            <div className="neuro rounded-md p-6">
               <div className="animate-pulse space-y-4">
                 <div className="h-6 w-1/3 rounded bg-gray-300"></div>
                 <div className="space-y-2">
@@ -205,7 +205,7 @@ export default function QuizAttemptDetailView({
     return (
       <div className="space-y-6">
         {/* Header */}
-        <div className="neuro rounded-xl p-6">
+        <div className="neuro rounded-md p-6">
           <div className="flex items-center gap-4">
             <Button
               onClick={() => router.push(`/admin/quiz/${quizId}/attempts`)}
@@ -223,7 +223,7 @@ export default function QuizAttemptDetailView({
           </div>
         </div>
 
-        <div className="neuro-danger rounded-xl p-6">
+        <div className="neuro-danger rounded-md p-6">
           <p className="font-satoshi font-bold text-red-600 dark:text-red-400">
             {error || "Attempt details not found"}
           </p>
@@ -247,7 +247,7 @@ export default function QuizAttemptDetailView({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="neuro rounded-xl p-6">
+      <div className="neuro rounded-md p-6">
         <div className="flex items-center gap-4">
           <Button
             onClick={() => router.push(`/admin/quiz/${quizId}/attempts`)}
@@ -276,7 +276,7 @@ export default function QuizAttemptDetailView({
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Content - Question Breakdown */}
         <div className="lg:col-span-2">
-          <div className="neuro rounded-xl p-6">
+          <div className="neuro rounded-md p-6">
             <h2 className="font-excon mb-6 flex items-center gap-2 text-xl font-black text-black dark:text-white">
               <QuestionIcon className="h-6 w-6" />
               Question-by-Question Analysis
@@ -359,7 +359,7 @@ export default function QuizAttemptDetailView({
         {/* Sidebar - Summary & Quiz Info */}
         <div className="space-y-6">
           {/* Performance Summary */}
-          <div className="neuro rounded-xl p-6">
+          <div className="neuro rounded-md p-6">
             <h3 className="font-excon mb-4 flex items-center gap-2 text-lg font-black text-black dark:text-white">
               <TrophyIcon className="h-5 w-5" />
               Performance Summary
@@ -416,7 +416,7 @@ export default function QuizAttemptDetailView({
           </div>
 
           {/* User Information */}
-          <div className="neuro rounded-xl p-6">
+          <div className="neuro rounded-md p-6">
             <h3 className="font-excon mb-4 flex items-center gap-2 text-lg font-black text-black dark:text-white">
               <UserIcon className="h-5 w-5" />
               User Information
@@ -443,7 +443,7 @@ export default function QuizAttemptDetailView({
           </div>
 
           {/* Quiz Information */}
-          <div className="neuro rounded-xl p-6">
+          <div className="neuro rounded-md p-6">
             <h3 className="font-excon mb-4 flex items-center gap-2 text-lg font-black text-black dark:text-white">
               <ListIcon className="h-5 w-5" />
               Quiz Information
@@ -506,7 +506,7 @@ export default function QuizAttemptDetailView({
           </div>
 
           {/* Attempt Timeline */}
-          <div className="neuro rounded-xl p-6">
+          <div className="neuro rounded-md p-6">
             <h3 className="font-excon mb-4 flex items-center gap-2 text-lg font-black text-black dark:text-white">
               <CalendarIcon className="h-5 w-5" />
               Attempt Timeline

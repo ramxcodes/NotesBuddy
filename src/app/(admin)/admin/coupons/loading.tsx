@@ -9,28 +9,28 @@ export default function CouponsLoading() {
           <Skeleton className="mb-6 h-8 w-48" />
           <Skeleton className="h-6 w-64" />
         </div>
-        <Skeleton className="h-12 w-40 rounded-xl" />
+        <Skeleton className="h-12 w-40 rounded-md" />
       </div>
 
       {/* Filters and Search Skeleton */}
       <div className="space-y-4">
         {/* Search */}
         <div className="flex gap-2">
-          <Skeleton className="h-12 flex-1 rounded-xl" />
+          <Skeleton className="h-12 flex-1 rounded-md" />
         </div>
 
         {/* Filters */}
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
             <Skeleton className="h-4 w-4" />
-            <Skeleton className="h-12 w-48 rounded-xl" />
+            <Skeleton className="h-12 w-48 rounded-md" />
           </div>
-          <Skeleton className="h-12 w-48 rounded-xl" />
+          <Skeleton className="h-12 w-48 rounded-md" />
         </div>
       </div>
 
       {/* Table Skeleton */}
-      <div className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <div className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
         <div className="p-6">
           {/* Table Header */}
           <div className="mb-4 flex gap-4">
@@ -74,9 +74,9 @@ export default function CouponsLoading() {
 
       {/* Pagination Skeleton */}
       <div className="flex items-center justify-center gap-2">
-        <Skeleton className="h-10 w-20 rounded-xl" />
+        <Skeleton className="h-10 w-20 rounded-md" />
         <Skeleton className="h-6 w-32" />
-        <Skeleton className="h-10 w-16 rounded-xl" />
+        <Skeleton className="h-10 w-16 rounded-md" />
       </div>
     </div>
   );

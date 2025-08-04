@@ -53,7 +53,7 @@ export default function ScoreCard({ scoreData }: ScoreCardProps) {
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="mb-6 rounded-xl border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
+      <div className="mb-6 rounded-md border-2 border-black bg-zinc-100 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373]">
         <div className="p-8 text-center">
           <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full border-2 border-black bg-yellow-400 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
             <TrophyIcon className="h-12 w-12 text-black" weight="fill" />

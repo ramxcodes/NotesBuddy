@@ -1,8 +1,5 @@
-// Search optimization utilities for better performance at scale
-
 import { NOTES_QUERYResult } from "@/sanity/types";
 
-// Extend the note type to include searchScore from our query
 type NoteWithSearchScore = NOTES_QUERYResult[0] & {
   searchScore?: number;
 };
@@ -14,6 +11,7 @@ interface SearchFilters {
   year?: string;
   semester?: string;
   subject?: string;
+  premium?: string;
 }
 
 interface SearchCursor {
@@ -38,7 +36,6 @@ class SearchOptimizer {
     return SearchOptimizer.instance;
   }
 
-  // Client-side search result caching
   getCachedResults(cacheKey: string): NOTES_QUERYResult | null {
     const cached = this.searchCache.get(cacheKey);
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
@@ -53,7 +50,6 @@ class SearchOptimizer {
       timestamp: Date.now(),
     });
 
-    // Cleanup old cache entries
     if (this.searchCache.size > 100) {
       const oldestKey = this.searchCache.keys().next().value;
       if (oldestKey) {
@@ -62,7 +58,6 @@ class SearchOptimizer {
     }
   }
 
-  // Generate optimized cache key
   generateCacheKey(filters: SearchFilters, cursor?: SearchCursor): string {
     const filterStr = Object.entries(filters)
       .filter(
@@ -78,19 +73,16 @@ class SearchOptimizer {
     return `search:${filterStr}${cursorStr ? `|${cursorStr}` : ""}`;
   }
 
-  // Search query sanitization
   sanitizeSearchQuery(query: string): string {
     return query
       .trim()
       .toLowerCase()
-      .replace(/[^\w\s-]/g, "") // Remove special characters
-      .replace(/\s+/g, " ") // Normalize whitespace
-      .substring(0, 100); // Limit length
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, " ")
+      .substring(0, 100);
   }
 
-  // Check if search should be throttled
   shouldThrottleSearch(query: string): boolean {
-    // Skip very short or very common queries
     if (query.length < 2) return true;
 
     const commonQueries = [
@@ -111,7 +103,6 @@ class SearchOptimizer {
 
 export const searchOptimizer = SearchOptimizer.getInstance();
 
-// Performance monitoring
 export function measureSearchPerformance<T>(
   searchFunction: () => Promise<T>,
   query: string,

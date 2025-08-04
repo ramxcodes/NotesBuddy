@@ -19,7 +19,7 @@ export default function AdminQuizEmptyState({
 
   if (hasFilters) {
     return (
-      <div className="neuro rounded-xl p-12 text-center">
+      <div className="neuro rounded-md p-12 text-center">
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/20">
           <MagnifyingGlassIcon className="h-10 w-10 text-orange-600" />
         </div>
@@ -38,7 +38,7 @@ export default function AdminQuizEmptyState({
   }
 
   return (
-    <div className="neuro rounded-xl p-12 text-center">
+    <div className="neuro rounded-md p-12 text-center">
       <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/20">
         <QuestionIcon className="h-10 w-10 text-blue-600" />
       </div>

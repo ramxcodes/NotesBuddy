@@ -35,7 +35,7 @@ export default function ShippingPage() {
         Last updated: Jan 18, 2025
       </p>
       <div className="flex w-full max-w-2xl flex-col gap-8">
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-2xl font-bold">
             Shipping and Delivery Policy for Notes Buddy
           </h2>
@@ -45,7 +45,7 @@ export default function ShippingPage() {
             notes and resources efficiently and effectively.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Service Availability
           </h2>
@@ -55,7 +55,7 @@ export default function ShippingPage() {
             from our resources.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Delivery Timeline
           </h2>
@@ -66,7 +66,7 @@ export default function ShippingPage() {
             </li>
           </ul>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Cost and Payment
           </h2>
@@ -90,7 +90,7 @@ export default function ShippingPage() {
             region.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             Tracking and Updates
           </h2>
@@ -100,7 +100,7 @@ export default function ShippingPage() {
             your Notes Buddy account.
           </p>
         </section>
-        <section className="rounded-xl border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
+        <section className="rounded-md border-2 border-black bg-zinc-100 p-6 shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373]">
           <h2 className="font-excon mb-2 text-xl font-bold">
             No Return Policy
           </h2>

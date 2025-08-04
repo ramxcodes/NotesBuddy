@@ -35,7 +35,7 @@ export default function FlashcardViewLoading() {
         <div className="mb-8 flex justify-center">
           <div className="w-full max-w-2xl">
             {/* Flashcard skeleton */}
-            <div className="neuro aspect-[3/2] rounded-xl p-8">
+            <div className="neuro aspect-[3/2] rounded-md p-8">
               <div className="flex h-full flex-col justify-center space-y-4">
                 {/* Card content skeleton */}
                 <Skeleton className="h-6 w-3/4" />

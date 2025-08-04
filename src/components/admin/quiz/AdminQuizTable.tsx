@@ -49,7 +49,7 @@ export default function AdminQuizTable({
   const tierValues = normalizedTierValues();
 
   return (
-    <div className="neuro rounded-xl">
+    <div className="neuro rounded-md">
       <Table>
         <TableHeader>
           <TableRow className="border-b-2 border-black hover:bg-zinc-50 dark:border-white/20 dark:hover:bg-zinc-700">

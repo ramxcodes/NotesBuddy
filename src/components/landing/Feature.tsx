@@ -47,7 +47,7 @@ function FeatureCard({
     >
       <div className="bg-card relative rounded-2xl border-2 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="relative z-10">
-          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:bg-black">
+          <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:bg-black">
             {icon}
           </div>
           <h3 className="text-foreground font-excon mb-3 text-xl font-semibold">

@@ -137,7 +137,7 @@ export function AdminEditCouponModal({
   if (fetchLoading) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md rounded-xl border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
+        <DialogContent className="max-w-md rounded-md border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
           <div className="flex items-center justify-center py-8">
             <div className="flex items-center gap-3">
               <CircleNotchIcon className="h-6 w-6 animate-spin text-black dark:text-white" />
@@ -154,7 +154,7 @@ export function AdminEditCouponModal({
   if (!couponData) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md rounded-xl border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
+        <DialogContent className="max-w-md rounded-md border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
           <div className="py-8 text-center">
             <p className="font-satoshi font-bold text-red-600 dark:text-red-400">
               Failed to load coupon details
@@ -170,7 +170,7 @@ export function AdminEditCouponModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl rounded-xl border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
+      <DialogContent className="max-w-2xl rounded-md border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[8px_8px_0px_0px_#757373]">
         <DialogHeader>
           <DialogTitle className="font-excon flex items-center gap-3 text-2xl font-black text-black dark:text-white">
             <PencilSimpleLineIcon weight="duotone" className="h-6 w-6" />
@@ -206,7 +206,7 @@ export function AdminEditCouponModal({
                   }))
                 }
                 placeholder="e.g., STUDENT10, SAVE25"
-                className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 required
               />
             </div>
@@ -222,10 +222,10 @@ export function AdminEditCouponModal({
                   setFormData((prev) => ({ ...prev, discountType: value }))
                 }
               >
-                <SelectTrigger className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]">
+                <SelectTrigger className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="rounded-xl border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+                <SelectContent className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                   <SelectItem value={DiscountType.PERCENTAGE}>
                     Percentage
                   </SelectItem>
@@ -266,7 +266,7 @@ export function AdminEditCouponModal({
                     ? "100"
                     : undefined
                 }
-                className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 required
               />
             </div>
@@ -290,7 +290,7 @@ export function AdminEditCouponModal({
                   }
                   placeholder="500"
                   min="0"
-                  className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                  className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 />
               </div>
             )}
@@ -313,7 +313,7 @@ export function AdminEditCouponModal({
                 }
                 placeholder="100"
                 min="0"
-                className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
               />
             </div>
           </div>
@@ -332,7 +332,7 @@ export function AdminEditCouponModal({
                 }))
               }
               placeholder="Describe the coupon offer..."
-              className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+              className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
             />
           </div>
 
@@ -374,7 +374,7 @@ export function AdminEditCouponModal({
                   onChange={(e) =>
                     handleDateChange("validFrom", e.target.value)
                   }
-                  className="font-satoshi rounded-xl border-2 border-black bg-white pl-10 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                  className="font-satoshi rounded-md border-2 border-black bg-white pl-10 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                   required
                 />
               </div>
@@ -393,7 +393,7 @@ export function AdminEditCouponModal({
                   onChange={(e) =>
                     handleDateChange("validUntil", e.target.value)
                   }
-                  className="font-satoshi rounded-xl border-2 border-black bg-white pl-10 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                  className="font-satoshi rounded-md border-2 border-black bg-white pl-10 font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 />
               </div>
             </div>
@@ -418,7 +418,7 @@ export function AdminEditCouponModal({
                 }
                 placeholder="100"
                 min="1"
-                className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
               />
             </div>
 
@@ -439,7 +439,7 @@ export function AdminEditCouponModal({
                 placeholder="1"
                 min="1"
                 max="10"
-                className="font-satoshi rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+                className="font-satoshi rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
                 required
               />
             </div>
@@ -489,7 +489,7 @@ export function AdminEditCouponModal({
               type="button"
               variant="outline"
               onClick={onClose}
-              className="font-satoshi flex-1 rounded-xl border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
+              className="font-satoshi flex-1 rounded-md border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none dark:border-white/20 dark:bg-zinc-900 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373]"
               data-umami-event="admin-edit-coupon-cancel-click"
             >
               Cancel
@@ -497,7 +497,7 @@ export function AdminEditCouponModal({
             <Button
               type="submit"
               disabled={loading || !formData.applicableTiers?.length}
-              className="font-excon flex-1 rounded-xl border-2 border-black bg-black font-black text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
+              className="font-excon flex-1 rounded-md border-2 border-black bg-black font-black text-white shadow-[2px_2px_0px_0px_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-50 dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#757373]"
               data-umami-event="admin-edit-coupon-submit-click"
             >
               {loading ? (

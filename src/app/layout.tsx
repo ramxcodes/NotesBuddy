@@ -9,7 +9,6 @@ import { Poppins, Lexend, Montserrat, Roboto, Inter } from "next/font/google";
 import { ReactLenis } from "@/utils/lenis";
 import { Toaster } from "@/components/ui/sonner";
 import MainNav from "@/components/core/MainNav";
-import { ThemeInitScript } from "@/components/ui/ThemeInitScript";
 
 export const poppins = Poppins({
   subsets: ["latin"],
@@ -151,12 +150,9 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en">
         {process.env.NEXT_PUBLIC_ENABLE_UMAMI === "true" && <Umami />}
         <ReactLenis root>
-          <head>
-            <ThemeInitScript />
-          </head>
           <body
             className={`${poppins.variable} ${lexend.variable} ${montserrat.variable} ${roboto.variable} ${inter.variable}`}
           >

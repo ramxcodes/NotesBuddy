@@ -119,7 +119,6 @@ export default function FilterFlashcardDropdown({
 
   const debouncedFilters = useDebounce(filters, 300);
 
-  // Get filtered options based on current selections
   const degrees = filters.university
     ? getDegreesByUniversity(filters.university)
     : [];

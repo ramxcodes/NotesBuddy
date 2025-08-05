@@ -6,6 +6,16 @@ import {
   FlashcardUserActivity,
 } from "./types";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { unstable_cache } from "next/cache";
+import { getCacheOptions } from "@/cache/cache";
+
+const userFlashcardCacheConfig = {
+  getUserFlashcardSubjects: {
+    cacheTime: 60, // 1 hour
+    tags: ["flashcard-subjects"],
+    cacheKey: "flashcard-subjects",
+  },
+};
 
 // User Functions
 export async function getPublishedFlashcardSets(
@@ -50,20 +60,10 @@ export async function getPublishedFlashcardSets(
     }
   }
 
-  if (
-    userProfile &&
-    !filters.university &&
-    !filters.degree &&
-    !filters.year &&
-    !filters.semester
-  ) {
-    where.university = userProfile.university;
-    where.degree = userProfile.degree;
-    where.year = userProfile.year;
-    where.semester = userProfile.semester;
-  }
-
-  // Apply additional filters
+  if (filters.university) where.university = filters.university;
+  if (filters.degree) where.degree = filters.degree;
+  if (filters.year) where.year = filters.year;
+  if (filters.semester) where.semester = filters.semester;
   if (filters.subject)
     where.subject = { contains: filters.subject, mode: "insensitive" };
   if (filters.isPremium !== undefined) where.isPremium = filters.isPremium;
@@ -367,7 +367,8 @@ export async function getFlashcardSetsBySubject(
 // Alias for getUserFlashcardSets
 export const getUserFlashcardSets = getPublishedFlashcardSets;
 
-export async function getUserFlashcardSubjects(filters: {
+// Internal function for getting flashcard subjects
+async function getUserFlashcardSubjectsInternal(filters: {
   university?: University;
   degree?: Degree;
   year?: Year;
@@ -397,6 +398,13 @@ export async function getUserFlashcardSubjects(filters: {
 
   return sets.map((set) => set.subject);
 }
+
+// Cached wrapper for getUserFlashcardSubjects
+export const getUserFlashcardSubjects = unstable_cache(
+  getUserFlashcardSubjectsInternal,
+  ["flashcard-subjects"],
+  getCacheOptions(userFlashcardCacheConfig.getUserFlashcardSubjects),
+);
 
 // Load more flashcard sets with cursor-based pagination - specifically for infinite scroll
 export async function loadMoreUserFlashcardSets(
@@ -438,15 +446,11 @@ export async function loadMoreUserFlashcardSets(
     ];
   }
 
-  // Apply user's academic context if available
-  if (userProfile) {
-    where.university = userProfile.university;
-    where.degree = userProfile.degree;
-    where.year = userProfile.year;
-    where.semester = userProfile.semester;
-  }
-
-  // Apply additional filters
+  // Apply academic filters only when explicitly provided
+  if (filters.university) where.university = filters.university;
+  if (filters.degree) where.degree = filters.degree;
+  if (filters.year) where.year = filters.year;
+  if (filters.semester) where.semester = filters.semester;
   if (filters.subject)
     where.subject = { contains: filters.subject, mode: "insensitive" };
   if (filters.isPremium !== undefined) where.isPremium = filters.isPremium;

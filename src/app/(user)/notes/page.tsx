@@ -2,6 +2,7 @@ import Search from "@/components/note/NotesSearch";
 import { Metadata } from "next";
 import FilterNotesDropdown from "@/components/note/FilterNotesDropdown";
 import NotesPremiumFilterDropdown from "@/components/note/NotesPremiumFilterDropdown";
+import NotesTypeFilterDropdown from "@/components/note/NotesTypeFilterDropdown";
 import { getFilteredNotes } from "@/dal/note/helper";
 import { getSession } from "@/lib/db/user";
 import {
@@ -67,6 +68,7 @@ interface SearchParams {
   semester?: string;
   subject?: string;
   premium?: string;
+  type?: string;
   lastTitle?: string;
   lastId?: string;
 }
@@ -78,7 +80,7 @@ export default async function NotesPage({
 }) {
   // Get search parameters
   const params = await searchParams;
-  const { query, university, degree, year, semester, subject, premium } =
+  const { query, university, degree, year, semester, subject, premium, type } =
     params;
 
   // Get user session and profile data
@@ -110,6 +112,7 @@ export default async function NotesPage({
     semester: semester === "all" ? undefined : semester,
     subject: subject === "all" ? undefined : subject,
     premium: premium === "all" ? undefined : premium,
+    type: type === "all" ? undefined : type || "notes",
   };
 
   // Fetch initial notes (first page only)
@@ -124,6 +127,7 @@ export default async function NotesPage({
     semester,
     subject,
     premium,
+    type: type || "notes", // Ensure type is always passed to the infinite list
   };
 
   return (
@@ -167,7 +171,10 @@ export default async function NotesPage({
                 isOnboarded={isOnboarded}
                 isAuthenticated={!!session?.user}
               />
-              <NotesPremiumFilterDropdown />
+              <div className="flex gap-4">
+                <NotesPremiumFilterDropdown />
+                <NotesTypeFilterDropdown />
+              </div>
             </div>
           </div>
 

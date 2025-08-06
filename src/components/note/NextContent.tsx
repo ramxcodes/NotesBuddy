@@ -26,6 +26,7 @@ interface NextContentProps {
   year: string;
   semester: string;
   subject: string;
+  type: string | null;
   currentSlug: string;
 }
 
@@ -67,6 +68,7 @@ export default function NextContent({
   year,
   semester,
   subject,
+  type,
   currentSlug,
 }: NextContentProps) {
   const [nextUnits, setNextUnits] = useState<NextUnit[]>([]);
@@ -88,6 +90,7 @@ export default function NextContent({
           year,
           semester,
           subject,
+          type,
           currentSlug,
         );
 
@@ -105,7 +108,7 @@ export default function NextContent({
     }
 
     fetchData();
-  }, [university, degree, year, semester, subject, currentSlug]);
+  }, [university, degree, year, semester, subject, type, currentSlug]);
 
   const fetchQuizzes = async () => {
     if (quizzes.length > 0) {

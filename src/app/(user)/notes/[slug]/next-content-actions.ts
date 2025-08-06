@@ -12,6 +12,7 @@ export async function getNextContentAction(
   year: string,
   semester: string,
   subject: string,
+  type: string | null,
   currentSlug: string,
 ) {
   try {
@@ -21,6 +22,7 @@ export async function getNextContentAction(
       year,
       semester,
       subject,
+      type,
       currentSlug,
     );
     return { success: true, data };

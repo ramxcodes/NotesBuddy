@@ -405,6 +405,31 @@
         },
         "optional": true
       },
+      "type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "NOTES"
+            },
+            {
+              "type": "string",
+              "value": "MST"
+            },
+            {
+              "type": "string",
+              "value": "PYQ"
+            },
+            {
+              "type": "string",
+              "value": "ONE-SHOT"
+            }
+          ]
+        },
+        "optional": true
+      },
       "isPremium": {
         "type": "objectAttribute",
         "value": {

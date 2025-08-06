@@ -55,6 +55,7 @@ export const getNotesCount = unstable_cache(
     semester?: string;
     subject?: string;
     premium?: string;
+    type?: string;
   }) => {
     return await client.fetch(
       NOTES_COUNT_QUERY,
@@ -66,6 +67,7 @@ export const getNotesCount = unstable_cache(
         semester: filters.semester || null,
         subject: filters.subject || null,
         premium: filters.premium || null,
+        type: filters.type || null,
       },
       getNextOptions(notesCacheConfig.getNotesCount),
     );
@@ -73,6 +75,31 @@ export const getNotesCount = unstable_cache(
   [notesCacheConfig.getNotesCount.cacheKey!],
   getCacheOptions(notesCacheConfig.getNotesCount),
 );
+
+// Smart cache selection based on filter types
+const getCacheConfigForFilters = (filters: {
+  search?: string;
+  university?: string;
+  degree?: string;
+  year?: string;
+  semester?: string;
+  subject?: string;
+  premium?: string;
+  type?: string;
+}) => {
+  // If premium filter is the primary filter being used
+  if (filters.premium && !filters.type && !filters.search) {
+    return notesCacheConfig.getFilteredNotesByPremium;
+  }
+
+  // If type filter is the primary filter being used
+  if (filters.type && !filters.premium && !filters.search) {
+    return notesCacheConfig.getFilteredNotesByType;
+  }
+
+  // Default to general filtered notes cache
+  return notesCacheConfig.getFilteredNotes;
+};
 
 export const getFilteredNotes = unstable_cache(
   async (
@@ -84,6 +111,7 @@ export const getFilteredNotes = unstable_cache(
       semester?: string;
       subject?: string;
       premium?: string;
+      type?: string;
     },
     cursor?: {
       lastTitle?: string;
@@ -100,10 +128,11 @@ export const getFilteredNotes = unstable_cache(
         semester: filters.semester || null,
         subject: filters.subject || null,
         premium: filters.premium || null,
+        type: filters.type || null,
         lastTitle: cursor?.lastTitle || null,
         lastId: cursor?.lastId || null,
       },
-      getNextOptions(notesCacheConfig.getFilteredNotes),
+      getNextOptions(getCacheConfigForFilters(filters)),
     );
   },
   [notesCacheConfig.getFilteredNotes.cacheKey!],

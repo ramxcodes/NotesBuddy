@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { unstable_cache } from "next/cache";
 import { getCacheOptions } from "@/cache/cache";
+import { notesCacheConfig } from "@/cache/notes";
 import { nextContentCacheConfig } from "@/cache/next-content";
 import {
   NEXT_UNITS_QUERY,
@@ -38,6 +39,7 @@ export const getNextUnitsAndContent = unstable_cache(
     year: string,
     semester: string,
     subject: string,
+    type: string | null,
     currentSlug: string,
   ): Promise<NextContentData> => {
     // Get next units from Sanity
@@ -128,8 +130,8 @@ export const getNextUnitsAndContent = unstable_cache(
       hasFlashcards: flashcardsCount > 0,
     };
   },
-  [nextContentCacheConfig.getSubjectContent.cacheKey!],
-  getCacheOptions(nextContentCacheConfig.getSubjectContent),
+  [notesCacheConfig.getNextUnitsAndContent.cacheKey!],
+  getCacheOptions(notesCacheConfig.getNextUnitsAndContent),
 );
 
 // Get available quizzes for a subject

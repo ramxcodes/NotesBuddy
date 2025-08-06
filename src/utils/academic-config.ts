@@ -522,6 +522,24 @@ export function getDefaultFilterValues() {
 }
 
 /**
+ * Get type display name based on type value
+ */
+export const getTypeDisplayName = (type: string) => {
+  switch (type) {
+    case "NOTES":
+      return "Notes";
+    case "MST":
+      return "MST";
+    case "PYQ":
+      return "PYQ";
+    case "ONE-SHOT":
+      return "One-Shot";
+    default:
+      return "Notes";
+  }
+};
+
+/**
  * Convert user profile to sanity filter values
  */
 export function userProfileToFilterValues(profile: {

@@ -200,6 +200,7 @@ export default async function NotePage({
                   year={note.year}
                   semester={note.semester}
                   subject={note.subject}
+                  type={note.type}
                   currentSlug={note.slug.current}
                 />
               )}

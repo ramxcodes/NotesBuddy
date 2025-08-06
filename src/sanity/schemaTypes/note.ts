@@ -73,6 +73,18 @@ export const note = defineType({
       type: "string",
     }),
     defineField({
+      name: "type",
+      type: "string",
+      options: {
+        list: [
+          { title: "Notes", value: "NOTES" },
+          { title: "MST", value: "MST" },
+          { title: "PYQ", value: "PYQ" },
+          { title: "One-Shot", value: "ONE-SHOT" },
+        ],
+      },
+    }),
+    defineField({
       name: "isPremium",
       type: "boolean",
     }),

@@ -6,10 +6,15 @@ export async function revalidateAllNotesCaching() {
   "use server";
   const allTags = [
     notesCacheConfig.getFilteredNotes.tags,
+    notesCacheConfig.getFilteredNotesByType.tags,
+    notesCacheConfig.getFilteredNotesByPremium.tags,
     notesCacheConfig.getNotesCount.tags,
     notesCacheConfig.getSubjects.tags,
     notesCacheConfig.getPopularSearches.tags,
     notesCacheConfig.getNoteBySlug.tags,
+    notesCacheConfig.getNextUnitsAndContent.tags,
+    notesCacheConfig.getNotesUnits.tags,
+    notesCacheConfig.getExamContent.tags,
   ]
     .filter(Boolean)
     .flat();

@@ -64,23 +64,63 @@ const ScrollProgress = () => {
       {showNavigateButton && (
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="hover:bg-accent fixed right-10 bottom-6 cursor-pointer transition-all duration-300"
-              onClick={handleScrollAction}
-            >
-              {scrollDirection === "down" ? (
-                <ChevronsDown className="transition-all" />
-              ) : (
-                <ChevronsUp className="transition-all" />
-              )}
-              <span className="sr-only">
-                {scrollDirection === "down"
-                  ? "Scroll to Bottom"
-                  : "Scroll to Top"}
-              </span>
-            </Button>
+            <div className="fixed right-10 bottom-6 flex flex-col items-center gap-1">
+              <div className="relative">
+                {/* Circular progress indicator */}
+                <svg
+                  className="h-12 w-12 -rotate-90 transform"
+                  viewBox="0 0 48 48"
+                >
+                  {/* Background circle */}
+                  <circle
+                    cx="24"
+                    cy="24"
+                    r="20"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    className="text-muted-foreground/20"
+                  />
+                  {/* Progress circle */}
+                  <circle
+                    cx="24"
+                    cy="24"
+                    r="20"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeDasharray={`${2 * Math.PI * 20}`}
+                    strokeDashoffset={`${2 * Math.PI * 20 * (1 - scrollProgress / 100)}`}
+                    className="text-primary transition-all duration-300"
+                    strokeLinecap="round"
+                  />
+                </svg>
+
+                {/* Button in the center */}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="hover:bg-accent absolute inset-1 h-10 w-10 cursor-pointer rounded-full transition-all duration-300"
+                  onClick={handleScrollAction}
+                >
+                  {scrollDirection === "down" ? (
+                    <ChevronsDown className="h-4 w-4 transition-all" />
+                  ) : (
+                    <ChevronsUp className="h-4 w-4 transition-all" />
+                  )}
+                  <span className="sr-only">
+                    {scrollDirection === "down"
+                      ? "Scroll to Bottom"
+                      : "Scroll to Top"}
+                  </span>
+                </Button>
+              </div>
+
+              {/* Percentage indicator */}
+              <div className="text-muted-foreground bg-background/80 rounded-full border px-2 py-1 text-xs font-medium shadow-sm backdrop-blur-sm">
+                {Math.round(scrollProgress)}%
+              </div>
+            </div>
           </TooltipTrigger>
           <TooltipContent>
             <p>

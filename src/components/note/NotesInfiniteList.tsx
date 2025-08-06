@@ -19,6 +19,7 @@ interface SearchParams {
   semester?: string;
   subject?: string;
   premium?: string;
+  type?: string;
 }
 
 interface NotesInfiniteListProps {
@@ -55,6 +56,7 @@ export function NotesInfiniteList({
     searchParams.semester,
     searchParams.subject,
     searchParams.premium,
+    searchParams.type, // Add type to dependency array
   ]);
 
   const loadMoreNotes = async () => {
@@ -99,6 +101,7 @@ export function NotesInfiniteList({
               semester: searchParams.semester,
               subject: searchParams.subject,
               premium: searchParams.premium,
+              type: searchParams.type,
               lastTitle: lastNote?.title || undefined,
               lastId: lastNote?._id || undefined,
             }),

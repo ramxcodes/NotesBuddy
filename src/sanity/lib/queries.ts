@@ -17,6 +17,13 @@ export const NOTES_QUERY =
       ($premium == "free" && (!defined(isPremium) || isPremium == false)) ||
       ($premium == "premium" && isPremium == true)
     ) &&
+    (!defined($type) || 
+      ($type == "all") ||
+      ($type == "notes" && type == "NOTES") ||
+      ($type == "mst" && type == "MST") ||
+      ($type == "pyq" && type == "PYQ") ||
+      ($type == "one-shot" && type == "ONE-SHOT")
+    ) &&
     (!defined($lastTitle) || title > $lastTitle || (title == $lastTitle && _id > $lastId))
   ] | order(title asc, _id asc) [0...6] {
   _id,
@@ -29,6 +36,7 @@ export const NOTES_QUERY =
   year,
   semester,
   subject,
+  type,
   isPremium,
   tier,
   "searchScore": select(
@@ -55,6 +63,13 @@ export const NOTES_COUNT_QUERY =
     (!defined($premium) || 
       ($premium == "free" && (!defined(isPremium) || isPremium == false)) ||
       ($premium == "premium" && isPremium == true)
+    ) &&
+    (!defined($type) || 
+      ($type == "all") ||
+      ($type == "notes" && type == "NOTES") ||
+      ($type == "mst" && type == "MST") ||
+      ($type == "pyq" && type == "PYQ") ||
+      ($type == "one-shot" && type == "ONE-SHOT")
     )
   ])`);
 
@@ -80,6 +95,7 @@ export const NOTE_BY_SLUG_QUERY = defineQuery(`
   year,
   semester,
   subject,
+  type,
   tier,
   "headings": content[style in ["h2", "h3", "h4", "h5", "h6"]],
   content,

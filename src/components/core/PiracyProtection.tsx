@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -202,11 +203,16 @@ export default function PiracyProtection({ isPremium }: PiracyProtectionProps) {
     setShowPremiumDialog(true);
   }, [isPremium]);
 
+  const handleGoBack = () => {
+    setShowPremiumDialog(false);
+    window.history.back();
+  };
+
   const handleProceedToPremium = async () => {
     setShowPremiumDialog(false);
 
     // Show toast for premium content access
-    toast("🔒 Entering safe mode for premium content...", {
+    toast("Entering safe mode for premium content...", {
       duration: 3000,
     });
 
@@ -316,7 +322,13 @@ export default function PiracyProtection({ isPremium }: PiracyProtectionProps) {
               purposes.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="flex gap-3">
+            <AlertDialogCancel
+              onClick={handleGoBack}
+              className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"
+            >
+              Go Back
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleProceedToPremium}
               className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:text-white hover:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[3px_3px_0px_0px_#757373]"

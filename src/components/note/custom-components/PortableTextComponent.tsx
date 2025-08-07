@@ -8,9 +8,10 @@ import {
   PortableTextMarkComponentProps,
 } from "@portabletext/react";
 import "katex/dist/katex.min.css";
-import { BlockMath } from "react-katex";
+import { BlockMath, InlineMath } from "react-katex";
 import { ImageComponent } from "./ImageComponent";
 import { CodeComponent } from "./CodeComponent";
+import { YouTubeComponent } from "./YouTubeComponent";
 
 type HeadingProps = PortableTextComponentProps<PortableTextBlock>;
 
@@ -22,6 +23,7 @@ interface TextChild {
 interface LatexBlockProps {
   _type: "latex";
   body: string;
+  isInline?: boolean;
 }
 
 const getHeadingText = (value: PortableTextBlock): string => {
@@ -34,7 +36,11 @@ const getHeadingText = (value: PortableTextBlock): string => {
 };
 
 const LaTeXComponent = ({ value }: { value: LatexBlockProps }) => {
-  const { body } = value;
+  const { body, isInline = false } = value;
+
+  if (isInline) {
+    return <InlineMath math={body} />;
+  }
 
   return (
     <div className="latex-container">
@@ -137,5 +143,6 @@ export const myPortableTextComponents = {
     latex: LaTeXComponent,
     customImage: ImageComponent,
     code: CodeComponent,
+    youtube: YouTubeComponent,
   },
 };

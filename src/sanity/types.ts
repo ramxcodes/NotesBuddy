@@ -13,6 +13,11 @@
  */
 
 // Source: schema.json
+export type Youtube = {
+  _type: "youtube";
+  url?: string;
+};
+
 export type Code = {
   _type: "code";
   language?:
@@ -87,7 +92,13 @@ export type Note = {
     | "7th-semester"
     | "8th-semester";
   subject?: string;
-  type?: "NOTES" | "MST" | "PYQ" | "ONE-SHOT";
+  type?:
+    | "NOTES"
+    | "MST"
+    | "PYQ"
+    | "ONE-SHOT"
+    | "VIDEO-MATERIAL"
+    | "HANDWRITTEN-NOTES";
   isPremium?: boolean;
   tier?: "TIER_1" | "TIER_2" | "TIER_3";
   content?: Array<
@@ -129,6 +140,9 @@ export type Note = {
     | ({
         _key: string;
       } & Code)
+    | ({
+        _key: string;
+      } & Youtube)
   >;
 };
 
@@ -270,6 +284,7 @@ export type SanityAssetSourceData = {
 };
 
 export type AllSanitySchemaTypes =
+  | Youtube
   | Code
   | CustomImage
   | Note
@@ -341,7 +356,14 @@ export type NOTES_QUERYResult = Array<{
     | "8th-semester"
     | null;
   subject: string | null;
-  type: "MST" | "NOTES" | "ONE-SHOT" | "PYQ" | null;
+  type:
+    | "HANDWRITTEN-NOTES"
+    | "MST"
+    | "NOTES"
+    | "ONE-SHOT"
+    | "PYQ"
+    | "VIDEO-MATERIAL"
+    | null;
   isPremium: boolean | null;
   tier: "TIER_1" | "TIER_2" | "TIER_3" | null;
   searchScore: 0 | 1 | 2 | 3;
@@ -374,7 +396,14 @@ export type NOTE_BY_SLUG_QUERYResult = {
     | "8th-semester"
     | null;
   subject: string | null;
-  type: "MST" | "NOTES" | "ONE-SHOT" | "PYQ" | null;
+  type:
+    | "HANDWRITTEN-NOTES"
+    | "MST"
+    | "NOTES"
+    | "ONE-SHOT"
+    | "PYQ"
+    | "VIDEO-MATERIAL"
+    | null;
   tier: "TIER_1" | "TIER_2" | "TIER_3" | null;
   headings: Array<{
     children?: Array<{
@@ -407,6 +436,9 @@ export type NOTE_BY_SLUG_QUERYResult = {
     | ({
         _key: string;
       } & Table)
+    | ({
+        _key: string;
+      } & Youtube)
     | {
         children?: Array<{
           marks?: Array<string>;

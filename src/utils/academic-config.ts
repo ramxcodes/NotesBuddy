@@ -534,6 +534,10 @@ export const getTypeDisplayName = (type: string) => {
       return "PYQ";
     case "ONE-SHOT":
       return "One-Shot";
+    case "VIDEO-MATERIAL":
+      return "Video Material";
+    case "HANDWRITTEN-NOTES":
+      return "Handwritten Notes";
     default:
       return "Notes";
   }

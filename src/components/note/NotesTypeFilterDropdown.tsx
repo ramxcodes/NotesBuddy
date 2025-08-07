@@ -10,7 +10,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export type TypeFilterOption = "all" | "notes" | "mst" | "pyq" | "one-shot";
+export type TypeFilterOption =
+  | "all"
+  | "notes"
+  | "mst"
+  | "pyq"
+  | "one-shot"
+  | "video-material"
+  | "handwritten-notes";
 
 interface NotesTypeFilterDropdownProps {
   className?: string;
@@ -22,6 +29,8 @@ const typeFilterOptions = [
   { value: "mst", label: "MST" },
   { value: "pyq", label: "PYQ" },
   { value: "one-shot", label: "One-Shot" },
+  { value: "video-material", label: "Video Material" },
+  { value: "handwritten-notes", label: "Handwritten Notes" },
 ] as const;
 
 export default function NotesTypeFilterDropdown({

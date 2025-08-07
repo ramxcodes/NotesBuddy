@@ -21,7 +21,7 @@ export const NEXT_UNITS_QUERY = defineQuery(`
   }
 `);
 
-// Query to get exam-related content (MST, PYQ, ONE-SHOT)
+// Query to get exam-related content (MST, PYQ, ONE-SHOT, VIDEO-MATERIAL, HANDWRITTEN-NOTES)
 export const SUBJECT_OTHER_CONTENT_QUERY = defineQuery(`
   *[_type == "note" && 
     university == $university &&
@@ -29,7 +29,7 @@ export const SUBJECT_OTHER_CONTENT_QUERY = defineQuery(`
     year == $year &&
     semester == $semester &&
     subject == $subject &&
-    (type == "MST" || type == "PYQ" || type == "ONE-SHOT") &&
+    (type == "MST" || type == "PYQ" || type == "ONE-SHOT" || type == "VIDEO-MATERIAL" || type == "HANDWRITTEN-NOTES") &&
     slug.current != $currentSlug &&
     defined(slug.current)
   ] | order(title asc) [0...3] {

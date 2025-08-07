@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { PremiumTier } from "@prisma/client";
 
-// Tier Configuration
 export const TIER_CONFIG = {
   TIER_1: {
     price: 99,
-    duration: 180, // 6 months in days
+    duration: 180,
     features: [
       "Access to one shots",
       "Access to all quizzes",
+      "Access to all premium notes",
       "6 Month Access",
     ],
     title: "Basic Plan",
@@ -20,6 +20,7 @@ export const TIER_CONFIG = {
     features: [
       "Access to one shots",
       "Access to all quizzes",
+      "Access to all premium notes",
       "Access to all notes",
       "Access to all flashcards",
       "Access to PYQs",
@@ -35,12 +36,13 @@ export const TIER_CONFIG = {
     features: [
       "Access to one shots",
       "Access to all quizzes",
+      "Access to all premium notes",
       "Access to all notes",
       "Access to all flashcards",
       "Access to PYQs",
       "Access to MST-1 & MST-2",
       "Access to Video Materials",
-      "Access to AI Chatbot & Topper's Notes (in progress)",
+      "Handwritten Notes (if available)",
       "6 Month Access",
     ],
     title: "Pro Plan",
@@ -48,7 +50,6 @@ export const TIER_CONFIG = {
   },
 } as const;
 
-// Validation Schemas
 export const premiumTierSchema = z.enum(["TIER_1", "TIER_2", "TIER_3"]);
 
 export const discountCodeSchema = z
@@ -168,7 +169,6 @@ export const calculateDaysRemaining = (expiryDate: Date | string): number => {
   return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 };
 
-// Upgrade-related types and functions
 export interface UpgradeOption {
   tier: PremiumTier;
   title: string;
@@ -176,7 +176,7 @@ export interface UpgradeOption {
   features: string[];
   price: number;
   duration: number;
-  upgradePrice?: number; // Price after considering current plan credit
+  upgradePrice?: number;
   isUpgrade: boolean;
   currentTier?: PremiumTier;
 }
@@ -191,18 +191,16 @@ export interface UpgradeContext {
   daysRemaining: number;
 }
 
-// Get available upgrade options for a user
 export const getUpgradeOptions = (
   currentTier: PremiumTier,
 ): UpgradeOption[] => {
   const allTiers = getAllTierConfigs();
 
-  // Only allow upgrades to higher tiers
   const upgradeableTiers = allTiers.filter((tier) => {
     if (currentTier === "TIER_1")
       return tier.tier === "TIER_2" || tier.tier === "TIER_3";
     if (currentTier === "TIER_2") return tier.tier === "TIER_3";
-    return false; // TIER_3 cannot upgrade
+    return false;
   });
 
   return upgradeableTiers.map((tier) => ({
@@ -212,7 +210,6 @@ export const getUpgradeOptions = (
   }));
 };
 
-// Calculate upgrade price considering remaining days
 export const calculateUpgradePrice = (
   currentTier: PremiumTier,
   targetTier: PremiumTier,
@@ -221,17 +218,14 @@ export const calculateUpgradePrice = (
   const currentConfig = getTierConfig(currentTier);
   const targetConfig = getTierConfig(targetTier);
 
-  // Calculate prorated credit from current plan
   const dailyRate = currentConfig.price / currentConfig.duration;
   const remainingCredit = dailyRate * daysRemaining;
 
-  // Calculate upgrade price (target price minus remaining credit)
   const upgradePrice = Math.max(0, targetConfig.price - remainingCredit);
 
   return Math.round(upgradePrice);
 };
 
-// Check if a tier is an upgrade from current tier
 export const isUpgradeTier = (
   currentTier: PremiumTier,
   targetTier: PremiumTier,

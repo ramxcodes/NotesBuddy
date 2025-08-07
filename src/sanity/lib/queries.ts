@@ -22,7 +22,9 @@ export const NOTES_QUERY =
       ($type == "notes" && type == "NOTES") ||
       ($type == "mst" && type == "MST") ||
       ($type == "pyq" && type == "PYQ") ||
-      ($type == "one-shot" && type == "ONE-SHOT")
+      ($type == "one-shot" && type == "ONE-SHOT") ||
+      ($type == "video-material" && type == "VIDEO-MATERIAL") ||
+      ($type == "handwritten-notes" && type == "HANDWRITTEN-NOTES")
     ) &&
     (!defined($lastTitle) || title > $lastTitle || (title == $lastTitle && _id > $lastId))
   ] | order(title asc, _id asc) [0...6] {
@@ -69,7 +71,9 @@ export const NOTES_COUNT_QUERY =
       ($type == "notes" && type == "NOTES") ||
       ($type == "mst" && type == "MST") ||
       ($type == "pyq" && type == "PYQ") ||
-      ($type == "one-shot" && type == "ONE-SHOT")
+      ($type == "one-shot" && type == "ONE-SHOT") ||
+      ($type == "video-material" && type == "VIDEO-MATERIAL") ||
+      ($type == "handwritten-notes" && type == "HANDWRITTEN-NOTES")
     )
   ])`);
 

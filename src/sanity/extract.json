@@ -1,5 +1,28 @@
 [
   {
+    "name": "youtube",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "youtube"
+          }
+        },
+        "url": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
     "name": "code",
     "type": "type",
     "value": {
@@ -425,6 +448,14 @@
             {
               "type": "string",
               "value": "ONE-SHOT"
+            },
+            {
+              "type": "string",
+              "value": "VIDEO-MATERIAL"
+            },
+            {
+              "type": "string",
+              "value": "HANDWRITTEN-NOTES"
             }
           ]
         },
@@ -695,6 +726,21 @@
                 "rest": {
                   "type": "inline",
                   "name": "code"
+                }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "youtube"
                 }
               }
             ]

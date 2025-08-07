@@ -17,9 +17,9 @@ interface NotesPremiumFilterDropdownProps {
 }
 
 const premiumFilterOptions = [
-  { value: "all", label: "All Notes" },
-  { value: "free", label: "Free Notes" },
-  { value: "premium", label: "Premium Notes" },
+  { value: "all", label: "All" },
+  { value: "free", label: "Free" },
+  { value: "premium", label: "Premium" },
 ] as const;
 
 export default function NotesPremiumFilterDropdown({
@@ -29,15 +29,15 @@ export default function NotesPremiumFilterDropdown({
   const searchParams = useSearchParams();
 
   const currentFilter =
-    (searchParams.get("premium") as PremiumFilterOption) || "all";
+    (searchParams.get("status") as PremiumFilterOption) || "all";
 
   const handleFilterChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (value === "all") {
-      params.delete("premium");
+      params.delete("status");
     } else {
-      params.set("premium", value);
+      params.set("status", value);
     }
 
     params.delete("lastTitle");
@@ -50,7 +50,7 @@ export default function NotesPremiumFilterDropdown({
     <div className={className}>
       <Select value={currentFilter} onValueChange={handleFilterChange}>
         <SelectTrigger className="w-[180px] rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
-          <SelectValue placeholder="Filter by type" />
+          <SelectValue placeholder="Filter by premium status" />
         </SelectTrigger>
         <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
           {premiumFilterOptions.map((option) => (

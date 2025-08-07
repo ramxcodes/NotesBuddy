@@ -12,6 +12,7 @@ import { BlockMath, InlineMath } from "react-katex";
 import { ImageComponent } from "./ImageComponent";
 import { CodeComponent } from "./CodeComponent";
 import { YouTubeComponent } from "./YouTubeComponent";
+import { TableComponent } from "./TableComponent";
 
 type HeadingProps = PortableTextComponentProps<PortableTextBlock>;
 
@@ -144,5 +145,6 @@ export const myPortableTextComponents = {
     customImage: ImageComponent,
     code: CodeComponent,
     youtube: YouTubeComponent,
+    table: TableComponent,
   },
 };

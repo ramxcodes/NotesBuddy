@@ -559,7 +559,7 @@ export default function BulkFlashcardImport() {
               <Button
                 onClick={handleImport}
                 disabled={loading}
-                className="flex-1 border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:text-white hover:shadow-[6px_6px_0px_0px_#000] disabled:translate-x-0 disabled:translate-y-0 disabled:opacity-50 disabled:shadow-[4px_4px_0px_0px_#000] dark:border-white dark:text-black dark:shadow-[4px_4px_0px_0px_#fff] dark:hover:shadow-[6px_6px_0px_0px_#fff] dark:disabled:shadow-[4px_4px_0px_0px_#fff]"
+                className="flex-1 border-2 border-black font-bold text-white shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:text-white hover:shadow-[6px_6px_0px_0px_#000] disabled:translate-x-0 disabled:translate-y-0 disabled:opacity-50 disabled:shadow-[4px_4px_0px_0px_#000] dark:border-white dark:text-black dark:shadow-[4px_4px_0px_0px_#fff] dark:hover:shadow-[6px_6px_0px_0px_#fff] dark:disabled:shadow-[4px_4px_0px_0px_#fff]"
               >
                 {loading ? "Importing..." : "Import Flashcards"}
               </Button>

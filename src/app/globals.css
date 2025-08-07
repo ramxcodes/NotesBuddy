@@ -151,19 +151,19 @@
     @apply border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#757373];
   }
   .neuro-sm {
-    @apply border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373];
+    @apply border-2 border-black bg-white shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373];
   }
   .neuro-lg {
-    @apply border-2 border-black bg-white shadow-[6px_6px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[6px_6px_0px_0px_#757373];
+    @apply border-2 border-black bg-white shadow-[6px_6px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[6px_6px_0px_0px_#757373];
   }
   .neuro-xl {
-    @apply border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white dark:bg-zinc-900 dark:shadow-[8px_8px_0px_0px_#757373];
+    @apply border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[8px_8px_0px_0px_#757373];
   }
   .neuro-button {
-    @apply border-2 border-black bg-black px-6 py-3 font-black text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white dark:bg-white dark:text-black dark:text-white dark:shadow-[4px_4px_0px_0px_#757373];
+    @apply border-2 border-black bg-black px-6 py-3 font-black text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:text-white dark:shadow-[4px_4px_0px_0px_#757373];
   }
   .neuro-button-sm {
-    @apply border-2 border-black bg-white shadow-[1px_1px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none dark:border-white dark:bg-zinc-800 dark:shadow-[1px_1px_0px_0px_#757373];
+    @apply border-2 border-black bg-white shadow-[1px_1px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none dark:border-white/20 dark:bg-zinc-800 dark:shadow-[1px_1px_0px_0px_#757373];
   }
   .neuro-success {
     @apply border-2 border-green-600 bg-green-50 shadow-[2px_2px_0px_0px_#16a34a] dark:border-green-400 dark:bg-green-900/20 dark:shadow-[2px_2px_0px_0px_#16a34a];
@@ -259,6 +259,55 @@
   }
   .note-a {
     @apply flex items-center gap-1 text-[#101827] underline-offset-4 hover:underline-offset-8 dark:text-[#F3F7F6];
+  }
+
+  /* Table specific styles */
+  .note-table-container {
+    @apply my-8;
+  }
+
+  .note-table-wrapper {
+    @apply overflow-x-auto rounded-lg border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#fff];
+  }
+
+  .note-table {
+    @apply min-w-full border-collapse;
+    margin: 0 !important;
+  }
+
+  /* Override any default table margins */
+  .note-table-wrapper > div {
+    margin: 0 !important;
+  }
+
+  .note-table-wrapper table {
+    margin: 0 !important;
+  }
+
+  .note-table-header-row {
+    @apply border-b-2 border-black dark:border-white/20;
+  }
+
+  .note-table-header {
+    @apply border-r-2 border-black px-4 py-3 font-black text-gray-900 last:border-r-0 dark:border-white/20 dark:text-gray-200;
+    font-family: "Excon", sans-serif;
+    margin: 0;
+    padding: 12px 16px;
+  }
+
+  .note-table-row {
+    @apply border-b-2 border-black hover:bg-gray-50 dark:border-white/20 dark:hover:bg-gray-800;
+  }
+
+  .note-table-row:last-child {
+    @apply border-b-0;
+  }
+
+  .note-table-cell {
+    @apply border-r-2 border-black px-4 py-3 font-medium text-[#3E4342] last:border-r-0 dark:border-white/20 dark:text-[#9EA3A2];
+    font-family: "Satoshi", sans-serif;
+    margin: 0;
+    padding: 12px 16px;
   }
 
   /* Image specific styles */

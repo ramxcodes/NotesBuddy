@@ -19,6 +19,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useDebounce } from "@/hooks/use-debounce";
 import {
   getDisplayNameFromPrismaValue,
@@ -27,6 +33,7 @@ import {
 import {
   getAdminUsersAction,
   toggleUserBlockAction,
+  deleteUserAction,
 } from "../actions/admin-users";
 import {
   AdminUser,
@@ -34,6 +41,9 @@ import {
   SortOption,
   FilterOption,
 } from "@/dal/user/admin/user-table-types";
+import { MoreVertical, Trash2 } from "lucide-react";
+import DeleteUserDialog from "./DeleteUserDialog";
+import { toast } from "sonner";
 
 export default function AdminUserTable() {
   const [usersData, setUsersData] = useState<AdminUsersResponse | null>(null);
@@ -42,6 +52,11 @@ export default function AdminUserTable() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortOption>("NEW_USERS");
   const [filter, setFilter] = useState<FilterOption>("ALL");
+
+  // Delete dialog state
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<AdminUser | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const debouncedSearch = useDebounce(search, 500);
 
@@ -82,6 +97,40 @@ export default function AdminUserTable() {
     const result = await toggleUserBlockAction(userId);
     if (result.success) {
       fetchUsers(currentPage);
+    }
+  };
+
+  const handleDeleteUser = (user: AdminUser) => {
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async (userId: string) => {
+    setIsDeleting(true);
+    try {
+      const result = await deleteUserAction(userId);
+      if (result.success) {
+        setDeleteDialogOpen(false);
+        setUserToDelete(null);
+        toast.success("User and all associated data deleted successfully");
+        // Refresh the user list
+        await fetchUsers(currentPage);
+      } else {
+        toast.error(result.error || "Failed to delete user");
+        console.error("Failed to delete user:", result.error);
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred while deleting user");
+      console.error("Error deleting user:", error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleCloseDeleteDialog = () => {
+    if (!isDeleting) {
+      setDeleteDialogOpen(false);
+      setUserToDelete(null);
     }
   };
 
@@ -371,18 +420,47 @@ export default function AdminUserTable() {
                     </span>
                   </TableCell>
                   <TableCell className="p-3">
-                    <Button
-                      onClick={() => handleBlockUser(user.id)}
-                      variant="outline"
-                      size="sm"
-                      className={`rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] ${
-                        user.isBlocked
-                          ? "bg-green-500 dark:bg-green-800"
-                          : "bg-red-500 dark:bg-red-800"
-                      }`}
-                    >
-                      {user.isBlocked ? "Unblock" : "Block"}
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        onClick={() => handleBlockUser(user.id)}
+                        variant="outline"
+                        size="sm"
+                        className={`rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] ${
+                          user.isBlocked
+                            ? "bg-green-500 dark:bg-green-800"
+                            : "bg-red-500 dark:bg-red-800"
+                        }`}
+                      >
+                        {user.isBlocked ? "Unblock" : "Block"}
+                      </Button>
+
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="rounded-lg border-2 border-black shadow-[2px_2px_0px_0px_#000] hover:shadow-[1px_1px_0px_0px_#000] dark:border-white/20 dark:shadow-[2px_2px_0px_0px_#757373] dark:hover:shadow-[1px_1px_0px_0px_#757373]"
+                            data-umami-event="admin-user-actions-dropdown"
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]"
+                        >
+                          <DropdownMenuItem
+                            onClick={() => handleDeleteUser(user)}
+                            variant="destructive"
+                            className="cursor-pointer rounded-lg"
+                            data-umami-event="admin-user-delete-trigger"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete User
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -400,6 +478,15 @@ export default function AdminUserTable() {
           Showing {usersData.users.length} of {usersData.totalCount} users
         </div>
       )}
+
+      {/* Delete User Dialog */}
+      <DeleteUserDialog
+        isOpen={deleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        user={userToDelete}
+        onConfirm={handleConfirmDelete}
+        isDeleting={isDeleting}
+      />
     </div>
   );
 }

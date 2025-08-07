@@ -1,6 +1,9 @@
 "use server";
 
-import { getAdminUsers } from "@/dal/user/admin/user-table-query";
+import {
+  getAdminUsers,
+  deleteUserAndAllRecords,
+} from "@/dal/user/admin/user-table-query";
 import { adminStatus } from "@/lib/db/user";
 import {
   AdminUsersResponse,
@@ -76,5 +79,60 @@ export async function toggleUserBlockAction(
   } catch (error) {
     console.error("Error toggling user block status:", error);
     return { success: false };
+  }
+}
+
+export async function deleteUserAction(
+  userId: string,
+): Promise<{ success: boolean; error?: string }> {
+  const isAdmin = await adminStatus();
+
+  if (!isAdmin) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    // First check if user exists
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
+      return { success: false, error: "User not found" };
+    }
+
+    // Prevent deletion of admin users for safety
+    if (user.role === "ADMIN") {
+      return { success: false, error: "Cannot delete admin users" };
+    }
+
+    // Delete user and all related records
+    const deleteSuccess = await deleteUserAndAllRecords(userId);
+
+    if (!deleteSuccess) {
+      return {
+        success: false,
+        error: "Failed to delete user and related records",
+      };
+    }
+
+    // Revalidate relevant cache tags
+    revalidateTag("admin-users");
+    revalidateTag("admin-premium-users");
+    revalidateTag("admin-reports");
+    revalidateTag("admin-chats");
+    revalidateTag("admin-quiz-stats");
+    revalidateTag("admin-flashcard-stats");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return { success: false, error: "An unexpected error occurred" };
   }
 }

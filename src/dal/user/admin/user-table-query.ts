@@ -26,10 +26,8 @@ const _getAdminUsers = async ({
 }: GetUsersParams): Promise<AdminUsersResponse> => {
   const skip = (page - 1) * limit;
 
-  // Build where clause
   const whereClause: Prisma.UserWhereInput = {};
 
-  // Search functionality
   if (search && search.trim()) {
     whereClause.OR = [
       { name: { contains: search, mode: "insensitive" } },
@@ -42,7 +40,6 @@ const _getAdminUsers = async ({
     ];
   }
 
-  // Filter by premium status
   if (filter === "PREMIUM") {
     whereClause.isPremiumActive = true;
   } else if (filter === "FREE") {
@@ -51,7 +48,6 @@ const _getAdminUsers = async ({
     whereClause.isBlocked = true;
   }
 
-  // Build order by clause
   let orderBy: Prisma.UserOrderByWithRelationInput = {};
   switch (sort) {
     case "A_TO_Z":
@@ -112,7 +108,6 @@ const _getAdminUsers = async ({
 
   const totalPages = Math.ceil(totalCount / limit);
 
-  // Transform users data to include deviceCount
   const transformedUsers: AdminUser[] = users.map((user) => ({
     id: user.id,
     name: user.name,
@@ -139,3 +134,101 @@ export const getAdminUsers = unstable_cache(
   ["admin-users"],
   adminCacheConfig.getAdminUsers,
 );
+
+/**
+ * Delete a user and all their related data
+ * This function will cascade delete all related records
+ */
+export async function deleteUserAndAllRecords(
+  userId: string,
+): Promise<boolean> {
+  try {
+    await prisma.$transaction(
+      async (tx) => {
+        await tx.chatMessage.deleteMany({
+          where: {
+            chat: {
+              userId: userId,
+            },
+          },
+        });
+        await tx.chat.deleteMany({
+          where: { userId: userId },
+        });
+
+        await tx.quizAnswer.deleteMany({
+          where: {
+            attempt: {
+              userId: userId,
+            },
+          },
+        });
+
+        await tx.quizAttempt.deleteMany({
+          where: { userId: userId },
+        });
+
+        // Delete flashcard visits
+        await tx.flashcardVisit.deleteMany({
+          where: { userId: userId },
+        });
+
+        await tx.referralReward.deleteMany({
+          where: {
+            OR: [{ referrerUserId: userId }, { refereeUserId: userId }],
+          },
+        });
+
+        await tx.premiumPurchase.updateMany({
+          where: { referredByUserId: userId },
+          data: { referredByUserId: null },
+        });
+
+        await tx.purchaseDiscount.deleteMany({
+          where: {
+            purchase: {
+              userId: userId,
+            },
+          },
+        });
+
+        await tx.premiumPurchase.deleteMany({
+          where: { userId: userId },
+        });
+
+        await tx.report.deleteMany({
+          where: { userId: userId },
+        });
+
+        await tx.deviceFingerprint.deleteMany({
+          where: { userId: userId },
+        });
+
+        await tx.userProfile.deleteMany({
+          where: { userId: userId },
+        });
+
+        await tx.account.deleteMany({
+          where: { userId: userId },
+        });
+
+        await tx.session.deleteMany({
+          where: { userId: userId },
+        });
+
+        await tx.user.delete({
+          where: { id: userId },
+        });
+      },
+      {
+        timeout: 30000,
+        isolationLevel: "ReadCommitted",
+      },
+    );
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting user and all records:", error);
+    return false;
+  }
+}

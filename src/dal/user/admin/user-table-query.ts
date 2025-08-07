@@ -46,6 +46,11 @@ const _getAdminUsers = async ({
     whereClause.isPremiumActive = false;
   } else if (filter === "BLOCKED") {
     whereClause.isBlocked = true;
+  } else if (filter === "HAD_PREMIUM") {
+    whereClause.isPremiumActive = false;
+    whereClause.premiumPurchases = {
+      some: {},
+    };
   }
 
   let orderBy: Prisma.UserOrderByWithRelationInput = {};
@@ -101,6 +106,32 @@ const _getAdminUsers = async ({
             semester: true,
           },
         },
+        premiumPurchases: {
+          select: {
+            id: true,
+            tier: true,
+            isActive: true,
+            expiryDate: true,
+            createdAt: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          take: 5, // Limit to last 5 purchases
+        },
+        deviceFingerprints: {
+          select: {
+            id: true,
+            deviceLabel: true,
+            fingerprint: true,
+            lastUsedAt: true,
+            isActive: true,
+          },
+          orderBy: {
+            lastUsedAt: "desc",
+          },
+          take: 5, // Limit to last 5 devices
+        },
       },
     }),
     prisma.user.count({ where: whereClause }),
@@ -119,6 +150,20 @@ const _getAdminUsers = async ({
     createdAt: user.createdAt,
     deviceCount: user._count.deviceFingerprints,
     profile: user.profile,
+    premiumHistory: user.premiumPurchases.map((purchase) => ({
+      id: purchase.id,
+      tier: purchase.tier,
+      isActive: purchase.isActive,
+      expiryDate: purchase.expiryDate,
+      createdAt: purchase.createdAt,
+    })),
+    deviceDetails: user.deviceFingerprints.map((device) => ({
+      id: device.id,
+      deviceLabel: device.deviceLabel,
+      fingerprint: (device.fingerprint as Record<string, unknown>) || {},
+      lastUsedAt: device.lastUsedAt,
+      isActive: device.isActive,
+    })),
   }));
 
   return {

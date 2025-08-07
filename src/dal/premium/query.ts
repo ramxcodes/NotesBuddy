@@ -499,13 +499,12 @@ export async function checkUserAccessToContent(
   requiredYear?: string | null,
   requiredSemester?: string | null,
 ): Promise<UserAccessStatus> {
-  // First check if user is an admin - admins get access to everything
-  const user = await prisma.user.findUnique({
+  const userRole = await prisma.user.findUnique({
     where: { id: userId },
     select: { role: true },
   });
 
-  if (user?.role === Role.ADMIN) {
+  if (userRole?.role === Role.ADMIN) {
     return {
       canAccess: true,
       userStatus: {
@@ -531,7 +530,44 @@ export async function checkUserAccessToContent(
 
   const premiumStatus = await getUserPremiumStatus(userId);
 
-  // Get user's active purchase for academic details
+  const userPremiumData = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      isPremiumActive: true,
+      premiumExpiryDate: true,
+    },
+  });
+
+  if (
+    userPremiumData &&
+    userPremiumData.isPremiumActive &&
+    userPremiumData.premiumExpiryDate &&
+    userPremiumData.premiumExpiryDate <= new Date()
+  ) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        isPremiumActive: false,
+        currentPremiumTier: null,
+        premiumExpiryDate: null,
+      },
+    });
+
+    await prisma.premiumPurchase.updateMany({
+      where: {
+        userId,
+        expiryDate: { lte: new Date() },
+        isActive: true,
+      },
+      data: {
+        isActive: false,
+      },
+    });
+
+    revalidateTag("user-premium-status");
+    revalidateTag("user-purchase-history");
+  }
+
   const activePurchase = await prisma.premiumPurchase.findFirst({
     where: {
       userId,

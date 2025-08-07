@@ -26,6 +26,7 @@ import type {
 import { getSession } from "@/lib/db/user";
 import { getUserFullProfile } from "@/dal/user/onboarding/query";
 import { revalidatePath } from "next/cache";
+import { University, Degree, Year, Semester } from "@prisma/client";
 
 // Admin Actions
 export async function createFlashcardSetAction(data: CreateFlashcardSetInput) {
@@ -237,5 +238,134 @@ export async function getFlashcardSetsBySubjectAction(subject: string) {
   } catch (error) {
     console.error("Error fetching flashcard sets by subject:", error);
     return { success: false, error: "Failed to fetch flashcard sets" };
+  }
+}
+
+// Bulk Import Types
+export interface BulkImportFlashcardSet {
+  subject: string;
+  topic: string;
+  flashcards: {
+    front: string;
+    back: string;
+    order: number;
+  }[];
+}
+
+export interface BulkImportData {
+  flashcardSets: BulkImportFlashcardSet[];
+}
+
+export interface BulkImportParams {
+  jsonData: BulkImportData;
+  university: University;
+  degree: Degree;
+  year: Year;
+  semester: Semester;
+  unitNumber?: string;
+}
+
+// Bulk Import Action
+export async function bulkImportFlashcardsAction(params: BulkImportParams) {
+  try {
+    const { jsonData, university, degree, year, semester, unitNumber } = params;
+
+    if (!jsonData.flashcardSets || !Array.isArray(jsonData.flashcardSets)) {
+      return {
+        success: false,
+        error: "Invalid JSON format. Expected flashcardSets array.",
+      };
+    }
+
+    const results = [];
+
+    for (const flashcardSet of jsonData.flashcardSets) {
+      const { subject, topic, flashcards } = flashcardSet;
+
+      if (!subject || !topic || !flashcards || !Array.isArray(flashcards)) {
+        results.push({
+          success: false,
+          subject,
+          topic,
+          error: "Missing required fields: subject, topic, or flashcards",
+        });
+        continue;
+      }
+
+      // Generate title and description
+      const title = unitNumber
+        ? `Unit ${unitNumber}: ${subject}`
+        : `${subject}`;
+      const description = topic;
+
+      // Validate and format flashcards
+      const formattedCards = flashcards
+        .filter((card) => card.front && card.back)
+        .map((card, index) => ({
+          front: card.front.trim(),
+          back: card.back.trim(),
+          order: card.order || index + 1,
+        }));
+
+      if (formattedCards.length === 0) {
+        results.push({
+          success: false,
+          subject,
+          topic,
+          error: "No valid flashcards found",
+        });
+        continue;
+      }
+
+      try {
+        // Create the flashcard set
+        const flashcardSetData: CreateFlashcardSetInput = {
+          title,
+          description,
+          subject,
+          university,
+          degree,
+          year,
+          semester,
+          isPremium: false,
+          cards: formattedCards,
+        };
+
+        const createdSet = await createFlashcardSet(flashcardSetData);
+
+        results.push({
+          success: true,
+          subject,
+          topic,
+          title,
+          id: createdSet.id,
+          cardCount: formattedCards.length,
+        });
+      } catch (error) {
+        results.push({
+          success: false,
+          subject,
+          topic,
+          error: `Failed to create flashcard set: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+      }
+    }
+
+    // Revalidate admin flashcards page
+    revalidatePath("/admin/flashcards");
+
+    return {
+      success: true,
+      results,
+      totalProcessed: jsonData.flashcardSets.length,
+      successCount: results.filter((r) => r.success).length,
+      errorCount: results.filter((r) => !r.success).length,
+    };
+  } catch (error) {
+    console.error("Error in bulk import:", error);
+    return {
+      success: false,
+      error: `Bulk import failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+    };
   }
 }

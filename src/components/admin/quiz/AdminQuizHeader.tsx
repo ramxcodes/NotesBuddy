@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -10,6 +11,7 @@ import {
   EyeIcon,
   ChartBarIcon,
   UserIcon,
+  UploadIcon,
 } from "@phosphor-icons/react";
 import type { QuizStats } from "@/dal/quiz/types";
 
@@ -22,6 +24,8 @@ export default function AdminQuizHeader({
   stats,
   onCreateQuiz,
 }: AdminQuizHeaderProps) {
+  const router = useRouter();
+
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat().format(num);
   };
@@ -36,13 +40,23 @@ export default function AdminQuizHeader({
             Create and manage educational quizzes for students
           </p>
         </div>
-        <Button
-          onClick={onCreateQuiz}
-          className="border-2 border-black bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-        >
-          <PlusIcon weight="duotone" className="h-5 w-5" />
-          Create Quiz
-        </Button>
+        <div className="flex space-x-2">
+          <Button
+            onClick={() => router.push("/admin/quiz/bulk-import")}
+            variant="outline"
+            className="border-2 border-black bg-transparent font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-50 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] dark:hover:bg-gray-800"
+          >
+            <UploadIcon weight="duotone" className="h-5 w-5" />
+            Bulk Import
+          </Button>
+          <Button
+            onClick={onCreateQuiz}
+            className="border-2 border-black bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <PlusIcon weight="duotone" className="h-5 w-5" />
+            Create Quiz
+          </Button>
+        </div>
       </div>
 
       {/* Statistics Cards */}

@@ -219,6 +219,7 @@ export default function AdminFlashcardController() {
       <AdminFlashcardHeader
         stats={stats}
         onCreateNew={() => router.push("/admin/flashcards/create")}
+        onBulkImport={() => router.push("/admin/flashcards/bulk-import")}
       />
 
       <AdminFlashcardFilterAndSearch

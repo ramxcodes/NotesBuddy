@@ -1,6 +1,7 @@
 import prisma from "@/lib/db/prisma";
 import { unstable_cache } from "next/cache";
 import { getCacheOptions, adminCacheConfig } from "@/cache/cache";
+import { University, Degree, Year, Semester } from "@prisma/client";
 import {
   type QuizListItem,
   type QuizzesListResponse,
@@ -626,4 +627,160 @@ export async function getQuizSubjects(): Promise<string[]> {
   });
 
   return subjects.map((s) => s.subject);
+}
+
+// Bulk import quizzes
+export async function bulkCreateQuizzes(
+  quizSets: Array<{
+    id: string;
+    subject: string;
+    topic: string;
+    questions: Array<{
+      question: string;
+      explanation: string;
+      options: Array<{
+        text: string;
+        isCorrect: boolean;
+        order: number;
+      }>;
+      order: number;
+    }>;
+    timestamp: string;
+  }>,
+  academicInfo: {
+    university: University;
+    degree: Degree;
+    year: Year;
+    semester: Semester;
+  },
+  unitNumber?: number,
+  customTitle?: string,
+  customDescription?: string,
+): Promise<{
+  success: boolean;
+  quizId?: string;
+  imported?: {
+    quizzes: number;
+    questions: number;
+    options: number;
+  };
+  error?: string;
+}> {
+  try {
+    let importedQuizzes = 0;
+    let importedQuestions = 0;
+    let importedOptions = 0;
+    let createdQuizId: string | undefined;
+
+    const chunkSize = 3;
+
+    for (let i = 0; i < quizSets.length; i += chunkSize) {
+      const chunk = quizSets.slice(i, i + chunkSize);
+
+      await prisma.$transaction(
+        async (tx) => {
+          for (const quizSet of chunk) {
+            const quiz = await tx.quiz.create({
+              data: {
+                title: customTitle || `${quizSet.subject}`,
+                description:
+                  customDescription ||
+                  `Quiz on ${quizSet.topic} from ${quizSet.subject}`,
+                subject: quizSet.subject,
+                university: academicInfo.university,
+                degree: academicInfo.degree,
+                year: academicInfo.year,
+                semester: academicInfo.semester,
+                timeLimit: null,
+                marksPerQuestion: 1,
+                isActive: true,
+                isPublished: false,
+              },
+            });
+
+            if (quizSets.length === 1) {
+              createdQuizId = quiz.id;
+            }
+
+            importedQuizzes++;
+
+            // Prepare all questions for batch creation
+            const questionsToCreate = quizSet.questions.map((questionData) => ({
+              quizId: quiz.id,
+              question: questionData.question,
+              explanation: questionData.explanation,
+              order: questionData.order,
+            }));
+
+            // Create all questions at once
+            await tx.question.createMany({
+              data: questionsToCreate,
+            });
+
+            importedQuestions += questionsToCreate.length;
+
+            // Get the created questions to link options
+            const createdQuestions = await tx.question.findMany({
+              where: { quizId: quiz.id },
+              orderBy: { order: "asc" },
+            });
+
+            // Prepare all options for batch creation
+            const optionsToCreate: Array<{
+              questionId: string;
+              text: string;
+              isCorrect: boolean;
+              order: number;
+            }> = [];
+
+            for (let i = 0; i < createdQuestions.length; i++) {
+              const question = createdQuestions[i];
+              const questionData = quizSet.questions[i];
+
+              for (const optionData of questionData.options) {
+                optionsToCreate.push({
+                  questionId: question.id,
+                  text: optionData.text,
+                  isCorrect: optionData.isCorrect,
+                  order: optionData.order,
+                });
+              }
+            }
+
+            // Create all options at once
+            if (optionsToCreate.length > 0) {
+              await tx.questionOption.createMany({
+                data: optionsToCreate,
+              });
+
+              importedOptions += optionsToCreate.length;
+            }
+          }
+        },
+        {
+          timeout: 20000, // 20 seconds timeout per chunk
+          maxWait: 5000, // 5 seconds max wait to acquire connection
+        },
+      );
+    }
+
+    return {
+      success: true,
+      quizId: createdQuizId,
+      imported: {
+        quizzes: importedQuizzes,
+        questions: importedQuestions,
+        options: importedOptions,
+      },
+    };
+  } catch (error) {
+    console.error("Error in bulk quiz creation:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to bulk create quizzes",
+    };
+  }
 }

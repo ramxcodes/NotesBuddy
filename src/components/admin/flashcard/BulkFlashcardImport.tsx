@@ -1,0 +1,583 @@
+"use client";
+
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  getUniversities,
+  getDegreesByUniversity,
+  getYearsByUniversityAndDegree,
+  getSemestersByUniversityDegreeAndYear,
+} from "@/utils/academic-config";
+import {
+  bulkImportFlashcardsAction,
+  type BulkImportData,
+} from "@/components/admin/actions/admin-flashcards";
+import { University, Degree, Year, Semester } from "@prisma/client";
+import {
+  CheckCircleIcon,
+  XCircleIcon,
+  UploadIcon,
+  WarningIcon,
+  CodeIcon,
+  FileTextIcon,
+  PlusCircleIcon,
+  CloudArrowUpIcon,
+} from "@phosphor-icons/react";
+
+interface ImportResult {
+  success: boolean;
+  subject?: string;
+  topic?: string;
+  title?: string;
+  id?: string;
+  cardCount?: number;
+  error?: string;
+}
+
+interface ImportResponse {
+  success: boolean;
+  results?: ImportResult[];
+  totalProcessed?: number;
+  successCount?: number;
+  errorCount?: number;
+  error?: string;
+}
+
+export default function BulkFlashcardImport() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [jsonInput, setJsonInput] = useState("");
+  const [unitNumber, setUnitNumber] = useState("");
+  const [university, setUniversity] = useState<University | "">("");
+  const [degree, setDegree] = useState<Degree | "">("");
+  const [year, setYear] = useState<Year | "">("");
+  const [semester, setSemester] = useState<Semester | "">("");
+  const [importResult, setImportResult] = useState<ImportResponse | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const universities = getUniversities();
+  const degrees = university ? getDegreesByUniversity(university) : [];
+  const years =
+    university && degree
+      ? getYearsByUniversityAndDegree(university, degree)
+      : [];
+  const semesters =
+    university && degree && year
+      ? getSemestersByUniversityDegreeAndYear(university, degree, year)
+      : [];
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    processFile(file);
+  };
+
+  const processFile = (file: File | null | undefined) => {
+    if (!file) return;
+
+    if (file.type !== "application/json") {
+      setError("Please upload a valid JSON file");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        setJsonInput(content);
+        setError("");
+      } catch {
+        setError("Failed to read file");
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files[0];
+    processFile(file);
+  };
+
+  const validateJsonData = (data: unknown): data is BulkImportData => {
+    if (!data || typeof data !== "object") {
+      setError("Invalid JSON format");
+      return false;
+    }
+
+    const obj = data as Record<string, unknown>;
+
+    if (!obj.flashcardSets || !Array.isArray(obj.flashcardSets)) {
+      setError("JSON must contain a 'flashcardSets' array");
+      return false;
+    }
+
+    for (let i = 0; i < obj.flashcardSets.length; i++) {
+      const set = obj.flashcardSets[i] as Record<string, unknown>;
+      if (
+        !set.subject ||
+        !set.topic ||
+        !set.flashcards ||
+        !Array.isArray(set.flashcards)
+      ) {
+        setError(
+          `Invalid flashcard set at index ${i}: missing subject, topic, or flashcards`,
+        );
+        return false;
+      }
+
+      for (let j = 0; j < set.flashcards.length; j++) {
+        const card = set.flashcards[j] as Record<string, unknown>;
+        if (!card.front || !card.back) {
+          setError(
+            `Invalid flashcard at set ${i}, card ${j}: missing front or back`,
+          );
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
+  const handleImport = async () => {
+    setLoading(true);
+    setError("");
+    setImportResult(null);
+    setProgress(0);
+
+    try {
+      // Validate required fields
+      if (!university || !degree || !year || !semester) {
+        setError("Please select all academic fields");
+        return;
+      }
+
+      if (!jsonInput.trim()) {
+        setError("Please provide JSON data");
+        return;
+      }
+
+      // Parse and validate JSON
+      let jsonData: BulkImportData;
+      try {
+        jsonData = JSON.parse(jsonInput);
+      } catch {
+        setError("Invalid JSON format");
+        return;
+      }
+
+      if (!validateJsonData(jsonData)) {
+        return;
+      }
+
+      setProgress(20);
+
+      // Call the import action
+      const result = await bulkImportFlashcardsAction({
+        jsonData,
+        university,
+        degree,
+        year,
+        semester,
+        unitNumber: unitNumber || undefined,
+      });
+
+      setProgress(100);
+      setImportResult(result);
+
+      if (result.success) {
+        // Clear form if successful
+        setJsonInput("");
+        setUnitNumber("");
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderImportResults = () => {
+    if (!importResult) return null;
+
+    if (!importResult.success) {
+      return (
+        <Alert className="mt-4">
+          <XCircleIcon className="h-4 w-4" />
+          <AlertTitle>Import Failed</AlertTitle>
+          <AlertDescription>{importResult.error}</AlertDescription>
+        </Alert>
+      );
+    }
+
+    const { results, totalProcessed, successCount, errorCount } = importResult;
+
+    return (
+      <div className="mt-6 space-y-4">
+        <Alert>
+          <CheckCircleIcon className="h-4 w-4" />
+          <AlertTitle>Import Completed</AlertTitle>
+          <AlertDescription>
+            Processed {totalProcessed} flashcard sets. {successCount}{" "}
+            successful, {errorCount} failed.
+          </AlertDescription>
+        </Alert>
+
+        {results && results.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Import Results</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {results.map((result, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-center justify-between rounded-lg border p-3 ${
+                      result.success
+                        ? "border-green-200 bg-green-50"
+                        : "border-red-200 bg-red-50"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      {result.success ? (
+                        <CheckCircleIcon className="h-5 w-5 text-green-600" />
+                      ) : (
+                        <XCircleIcon className="h-5 w-5 text-red-600" />
+                      )}
+                      <div>
+                        <p className="font-medium">
+                          {result.success
+                            ? result.title
+                            : `${result.subject} - ${result.topic}`}
+                        </p>
+                        {result.success ? (
+                          <p className="text-muted-foreground text-sm">
+                            {result.cardCount} cards imported
+                          </p>
+                        ) : (
+                          <p className="text-sm text-red-600">{result.error}</p>
+                        )}
+                      </div>
+                    </div>
+                    {result.success && result.id && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          router.push(`/admin/flashcards/${result.id}`)
+                        }
+                      >
+                        Edit
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="container mx-auto py-6">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Bulk Import Flashcards</h1>
+        <p className="text-muted-foreground">
+          Import multiple flashcard sets from JSON data
+        </p>
+      </div>
+
+      <div className="mx-auto max-w-4xl">
+        {/* Import Form */}
+        <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <UploadIcon className="h-5 w-5" />
+              <span>Import Configuration</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Academic Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col space-y-2">
+                <Label htmlFor="university">University</Label>
+                <Select
+                  value={university}
+                  onValueChange={(value) => {
+                    setUniversity(value as University);
+                    setDegree("");
+                    setYear("");
+                    setSemester("");
+                  }}
+                >
+                  <SelectTrigger className="w-full rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+                    <SelectValue placeholder="Select university" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+                    {universities.map((uni) => (
+                      <SelectItem key={uni.value} value={uni.value}>
+                        {uni.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex flex-col space-y-2">
+                <Label htmlFor="degree">Degree</Label>
+                <Select
+                  value={degree}
+                  onValueChange={(value) => {
+                    setDegree(value as Degree);
+                    setYear("");
+                    setSemester("");
+                  }}
+                  disabled={!university}
+                >
+                  <SelectTrigger className="w-full rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+                    <SelectValue placeholder="Select degree" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+                    {degrees.map((deg) => (
+                      <SelectItem key={deg.value} value={deg.value}>
+                        {deg.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex flex-col space-y-2">
+                <Label htmlFor="year">Year</Label>
+                <Select
+                  value={year}
+                  onValueChange={(value) => {
+                    setYear(value as Year);
+                    setSemester("");
+                  }}
+                  disabled={!degree}
+                >
+                  <SelectTrigger className="w-full rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+                    <SelectValue placeholder="Select year" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+                    {years.map((yr) => (
+                      <SelectItem key={yr.value} value={yr.value}>
+                        {yr.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex flex-col space-y-2">
+                <Label htmlFor="semester">Semester</Label>
+                <Select
+                  value={semester}
+                  onValueChange={(value) => setSemester(value as Semester)}
+                  disabled={!year}
+                >
+                  <SelectTrigger className="w-full rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
+                    <SelectValue placeholder="Select semester" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+                    {semesters.map((sem) => (
+                      <SelectItem key={sem.value} value={sem.value}>
+                        {sem.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Unit Number */}
+            <div className="flex flex-col space-y-2">
+              <Label htmlFor="unitNumber">Unit Number (Optional)</Label>
+              <Input
+                id="unitNumber"
+                value={unitNumber}
+                onChange={(e) => setUnitNumber(e.target.value)}
+                placeholder="e.g., 1, 2, 3"
+                className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
+              />
+              <p className="text-muted-foreground mt-1 text-sm">
+                Will be used in title format: &quot;Unit &#123;unitNumber&#125;:
+                &#123;subject&#125;&quot;
+              </p>
+            </div>
+
+            {/* File Upload */}
+            <div className="flex flex-col space-y-3">
+              <Label className="flex items-center gap-2 text-base font-semibold">
+                <UploadIcon className="h-5 w-5" />
+                Upload JSON File
+              </Label>
+              <div
+                className={`relative cursor-pointer rounded-lg border-2 border-dashed p-8 transition-all duration-200 hover:border-solid ${
+                  isDragOver
+                    ? "border-blue-500 bg-blue-50 dark:bg-blue-950/20"
+                    : "border-black dark:border-white/20"
+                } bg-white shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[6px_6px_0px_0px_#757373]`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => document.getElementById("file")?.click()}
+              >
+                <input
+                  id="file"
+                  type="file"
+                  accept=".json"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <div
+                    className={`rounded-full p-4 transition-colors ${
+                      isDragOver
+                        ? "bg-blue-100 dark:bg-blue-900/50"
+                        : "bg-gray-100 dark:bg-zinc-700"
+                    }`}
+                  >
+                    <CloudArrowUpIcon
+                      className={`h-12 w-12 transition-colors ${
+                        isDragOver
+                          ? "text-blue-600 dark:text-blue-400"
+                          : "text-gray-400 dark:text-gray-500"
+                      }`}
+                    />
+                  </div>
+                  <div className="space-y-2 text-center">
+                    <p className="text-lg font-bold text-black dark:text-white">
+                      {isDragOver
+                        ? "Drop your JSON file here"
+                        : "Choose a file or drag it here"}
+                    </p>
+                    <p className="text-muted-foreground text-sm">
+                      Only JSON files are supported
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 rounded-md bg-black px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+                    <UploadIcon className="h-4 w-4" />
+                    Browse Files
+                  </div>
+                </div>
+              </div>
+              <p className="text-muted-foreground text-sm">
+                Select a JSON file to automatically populate the JSON data field
+                below.
+              </p>
+            </div>
+
+            {/* JSON Input */}
+            <div className="flex flex-col space-y-3" data-lenis-prevent>
+              <Label
+                htmlFor="jsonInput"
+                className="flex items-center gap-2 text-base font-semibold"
+              >
+                <CodeIcon className="h-5 w-5" />
+                JSON Data
+              </Label>
+              <div className="relative">
+                <div className="absolute top-3 left-3 z-10">
+                  <FileTextIcon className="text-muted-foreground h-5 w-5" />
+                </div>
+                <Textarea
+                  id="jsonInput"
+                  value={jsonInput}
+                  onChange={(e) => setJsonInput(e.target.value)}
+                  placeholder="Paste your JSON data here or upload a file..."
+                  className="max-h-[500px] min-h-[500px] resize-none overflow-y-auto border-2 border-black bg-white pl-12 font-mono text-sm font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
+                />
+                {jsonInput && (
+                  <div className="text-muted-foreground absolute right-3 bottom-3 flex items-center gap-2 rounded-md bg-white/90 px-2 py-1 text-xs font-medium shadow-sm dark:bg-zinc-800/90">
+                    <PlusCircleIcon className="h-3 w-3" />
+                    {jsonInput.split("\n").length} lines
+                  </div>
+                )}
+              </div>
+              <p className="text-muted-foreground text-sm">
+                Upload a JSON file above or paste your JSON data directly. The
+                input is limited to 500px height for better visibility.
+              </p>
+            </div>
+
+            {/* Progress */}
+            {loading && (
+              <div className="flex flex-col space-y-2">
+                <Label>Import Progress</Label>
+                <Progress value={progress} className="mt-1" />
+              </div>
+            )}
+
+            {/* Error */}
+            {error && (
+              <Alert
+                variant="destructive"
+                className="border-2 border-red-500 bg-red-50 shadow-[4px_4px_0px_0px_#ef4444] dark:border-red-400 dark:bg-red-950 dark:shadow-[4px_4px_0px_0px_#ef4444]"
+              >
+                <WarningIcon className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            {/* Actions */}
+            <div className="flex space-x-2">
+              <Button
+                onClick={handleImport}
+                disabled={loading}
+                className="flex-1 border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:text-white hover:shadow-[6px_6px_0px_0px_#000] disabled:translate-x-0 disabled:translate-y-0 disabled:opacity-50 disabled:shadow-[4px_4px_0px_0px_#000] dark:border-white dark:text-black dark:shadow-[4px_4px_0px_0px_#fff] dark:hover:shadow-[6px_6px_0px_0px_#fff] dark:disabled:shadow-[4px_4px_0px_0px_#fff]"
+              >
+                {loading ? "Importing..." : "Import Flashcards"}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => router.push("/admin/flashcards")}
+                disabled={loading}
+                className="border-2 border-black bg-transparent font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_#000] disabled:translate-x-0 disabled:translate-y-0 disabled:opacity-50 disabled:shadow-[4px_4px_0px_0px_#000] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_#fff] dark:hover:shadow-[6px_6px_0px_0px_#fff] dark:disabled:shadow-[4px_4px_0px_0px_#fff]"
+              >
+                Cancel
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Import Results */}
+      {renderImportResults()}
+    </div>
+  );
+}

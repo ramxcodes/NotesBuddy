@@ -9,17 +9,20 @@ import {
   EyeIcon,
   ChartBarIcon,
   TrendUpIcon,
+  UploadIcon,
 } from "@phosphor-icons/react";
 import type { FlashcardSetStats } from "@/dal/flashcard/types";
 
 interface AdminFlashcardHeaderProps {
   stats: FlashcardSetStats | null;
   onCreateNew: () => void;
+  onBulkImport: () => void;
 }
 
 export default function AdminFlashcardHeader({
   stats,
   onCreateNew,
+  onBulkImport,
 }: AdminFlashcardHeaderProps) {
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat().format(num);
@@ -37,13 +40,23 @@ export default function AdminFlashcardHeader({
             Create and manage flashcard sets for students
           </p>
         </div>
-        <Button
-          onClick={onCreateNew}
-          className="border-2 border-black bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-        >
-          <PlusIcon className="mr-2 h-4 w-4" />
-          Create Flashcard Set
-        </Button>
+        <div className="flex space-x-3">
+          <Button
+            onClick={onBulkImport}
+            variant="outline"
+            className="border-2 border-black bg-transparent font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-50 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:border-white dark:text-white dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] dark:hover:bg-gray-800"
+          >
+            <UploadIcon className="mr-2 h-4 w-4" />
+            Bulk Import
+          </Button>
+          <Button
+            onClick={onCreateNew}
+            className="border-2 border-black bg-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-800 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <PlusIcon className="mr-2 h-4 w-4" />
+            Create Flashcard Set
+          </Button>
+        </div>
       </div>
 
       {/* Stats Cards */}

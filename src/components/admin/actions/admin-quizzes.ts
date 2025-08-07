@@ -2,6 +2,7 @@
 
 import { adminStatus } from "@/lib/db/user";
 import { revalidateTag } from "next/cache";
+import { University, Degree, Year, Semester } from "@prisma/client";
 import {
   getQuizzes,
   getQuizDetails,
@@ -12,6 +13,7 @@ import {
   getQuizAttempts,
   getQuizSubjects,
   getQuizStats,
+  bulkCreateQuizzes,
 } from "@/dal/quiz/query";
 import {
   createQuizSchema,
@@ -340,5 +342,155 @@ export async function getQuizStatsAction(): Promise<{
   } catch (error) {
     console.error("Error fetching quiz stats:", error);
     return { success: false, error: "Failed to fetch quiz stats" };
+  }
+}
+export interface BulkQuizImportData {
+  quizSets: Array<{
+    id: string;
+    subject: string;
+    topic: string;
+    questions: Array<{
+      question: string;
+      explanation: string;
+      options: Array<{
+        text: string;
+        isCorrect: boolean;
+        order: number;
+      }>;
+      order: number;
+    }>;
+    timestamp: string;
+  }>;
+}
+
+export interface BulkQuizImportResult {
+  success: boolean;
+  error?: string;
+  results?: Array<{
+    success: boolean;
+    subject?: string;
+    topic?: string;
+    title?: string;
+    id?: string;
+    questionCount?: number;
+    error?: string;
+  }>;
+  totalProcessed?: number;
+  successCount?: number;
+  errorCount?: number;
+}
+
+export async function bulkImportQuizzesAction({
+  jsonData,
+  university,
+  degree,
+  year,
+  semester,
+  unitNumber,
+}: {
+  jsonData: BulkQuizImportData;
+  university: string;
+  degree: string;
+  year: string;
+  semester: string;
+  unitNumber?: string;
+}): Promise<BulkQuizImportResult> {
+  const isAdmin = await adminStatus();
+
+  if (!isAdmin) {
+    return { success: false, error: "Admin access required" };
+  }
+
+  try {
+    const results: Array<{
+      success: boolean;
+      subject?: string;
+      topic?: string;
+      title?: string;
+      id?: string;
+      questionCount?: number;
+      error?: string;
+    }> = [];
+
+    let successCount = 0;
+    let errorCount = 0;
+
+    for (const quizSet of jsonData.quizSets) {
+      try {
+        const { subject, topic, questions } = quizSet;
+
+        if (!subject || !topic || !questions || questions.length === 0) {
+          results.push({
+            success: false,
+            subject,
+            topic,
+            error: "Missing required fields: subject, topic, or questions",
+          });
+          errorCount++;
+          continue;
+        }
+
+        const title = unitNumber ? `Unit ${unitNumber}: ${subject}` : subject;
+        const description = topic;
+
+        const result = await bulkCreateQuizzes(
+          [quizSet],
+          {
+            university: university as University,
+            degree: degree as Degree,
+            year: year as Year,
+            semester: semester as Semester,
+          },
+          unitNumber ? parseInt(unitNumber) : undefined,
+          title,
+          description,
+        );
+
+        if (result.success && result.quizId) {
+          results.push({
+            success: true,
+            subject,
+            topic,
+            title,
+            id: result.quizId,
+            questionCount: questions.length,
+          });
+          successCount++;
+        } else {
+          results.push({
+            success: false,
+            subject,
+            topic,
+            error: result.error || "Failed to create quiz",
+          });
+          errorCount++;
+        }
+      } catch (error) {
+        results.push({
+          success: false,
+          subject: quizSet.subject,
+          topic: quizSet.topic,
+          error: `Failed to create quiz: ${error instanceof Error ? error.message : "Unknown error"}`,
+        });
+        errorCount++;
+      }
+    }
+
+    revalidateTag("quizzes");
+
+    return {
+      success: true,
+      results,
+      totalProcessed: jsonData.quizSets.length,
+      successCount,
+      errorCount,
+    };
+  } catch (error) {
+    console.error("Error importing quizzes:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to import quizzes",
+    };
   }
 }

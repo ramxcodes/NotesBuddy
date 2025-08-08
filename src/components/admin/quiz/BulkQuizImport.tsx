@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -27,7 +28,13 @@ import {
   type BulkQuizImportData,
   type BulkQuizImportResult,
 } from "@/components/admin/actions/admin-quizzes";
-import { University, Degree, Year, Semester } from "@prisma/client";
+import {
+  University,
+  Degree,
+  Year,
+  Semester,
+  PremiumTier,
+} from "@prisma/client";
 import {
   CheckCircleIcon,
   XCircleIcon,
@@ -50,6 +57,8 @@ export default function BulkQuizImport() {
   const [semester, setSemester] = useState<Semester | "">("");
   const [unitNumber, setUnitNumber] = useState("");
   const [jsonInput, setJsonInput] = useState("");
+  const [isPremium, setIsPremium] = useState(false);
+  const [requiredTier, setRequiredTier] = useState<PremiumTier | "">("");
 
   // UI state
   const [loading, setLoading] = useState(false);
@@ -203,6 +212,8 @@ export default function BulkQuizImport() {
         year,
         semester,
         unitNumber: unitNumber || undefined,
+        isPremium,
+        requiredTier: requiredTier || undefined,
       });
 
       setProgress(100);
@@ -211,6 +222,8 @@ export default function BulkQuizImport() {
       if (result.success) {
         // Clear form if successful
         setJsonInput("");
+        setIsPremium(false);
+        setRequiredTier("");
       }
     } catch (err) {
       setError(
@@ -420,6 +433,56 @@ export default function BulkQuizImport() {
                 placeholder="e.g., 1 for Unit 1: Subject"
                 className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
               />
+            </div>
+
+            {/* Premium Settings */}
+            <div className="space-y-4">
+              <Label className="text-base font-semibold">
+                Premium Settings
+              </Label>
+
+              {/* Is Premium Checkbox */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="isPremium"
+                  checked={isPremium}
+                  onCheckedChange={(checked) => {
+                    setIsPremium(checked === true);
+                    if (!checked) {
+                      setRequiredTier("");
+                    }
+                  }}
+                  className="border-2 border-black data-[state=checked]:bg-black data-[state=checked]:text-white dark:border-white/20 dark:data-[state=checked]:bg-white dark:data-[state=checked]:text-black"
+                />
+                <Label
+                  htmlFor="isPremium"
+                  className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Premium Content
+                </Label>
+              </div>
+
+              {/* Required Tier */}
+              {isPremium && (
+                <div className="flex flex-col space-y-2">
+                  <Label htmlFor="requiredTier">Required Tier</Label>
+                  <Select
+                    value={requiredTier}
+                    onValueChange={(value) =>
+                      setRequiredTier(value as PremiumTier)
+                    }
+                  >
+                    <SelectTrigger className="border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]">
+                      <SelectValue placeholder="Select Required Tier" />
+                    </SelectTrigger>
+                    <SelectContent className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
+                      <SelectItem value="TIER_1">Tier 1</SelectItem>
+                      <SelectItem value="TIER_2">Tier 2</SelectItem>
+                      <SelectItem value="TIER_3">Tier 3</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
 
             {/* File Upload */}

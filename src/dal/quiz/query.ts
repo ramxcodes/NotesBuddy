@@ -1,7 +1,13 @@
 import prisma from "@/lib/db/prisma";
 import { unstable_cache } from "next/cache";
 import { getCacheOptions, adminCacheConfig } from "@/cache/cache";
-import { University, Degree, Year, Semester } from "@prisma/client";
+import {
+  University,
+  Degree,
+  Year,
+  Semester,
+  PremiumTier,
+} from "@prisma/client";
 import {
   type QuizListItem,
   type QuizzesListResponse,
@@ -656,6 +662,8 @@ export async function bulkCreateQuizzes(
   unitNumber?: number,
   customTitle?: string,
   customDescription?: string,
+  isPremium?: boolean,
+  requiredTier?: PremiumTier,
 ): Promise<{
   success: boolean;
   quizId?: string;
@@ -695,6 +703,8 @@ export async function bulkCreateQuizzes(
                 marksPerQuestion: 1,
                 isActive: true,
                 isPublished: false,
+                isPremium: isPremium || false,
+                requiredTier: requiredTier || null,
               },
             });
 

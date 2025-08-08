@@ -2,7 +2,13 @@
 
 import { adminStatus } from "@/lib/db/user";
 import { revalidateTag } from "next/cache";
-import { University, Degree, Year, Semester } from "@prisma/client";
+import {
+  University,
+  Degree,
+  Year,
+  Semester,
+  PremiumTier,
+} from "@prisma/client";
 import {
   getQuizzes,
   getQuizDetails,
@@ -387,6 +393,8 @@ export async function bulkImportQuizzesAction({
   year,
   semester,
   unitNumber,
+  isPremium,
+  requiredTier,
 }: {
   jsonData: BulkQuizImportData;
   university: string;
@@ -394,6 +402,8 @@ export async function bulkImportQuizzesAction({
   year: string;
   semester: string;
   unitNumber?: string;
+  isPremium?: boolean;
+  requiredTier?: string;
 }): Promise<BulkQuizImportResult> {
   const isAdmin = await adminStatus();
 
@@ -444,6 +454,8 @@ export async function bulkImportQuizzesAction({
           unitNumber ? parseInt(unitNumber) : undefined,
           title,
           description,
+          isPremium || false,
+          requiredTier ? (requiredTier as PremiumTier) : undefined,
         );
 
         if (result.success && result.quizId) {

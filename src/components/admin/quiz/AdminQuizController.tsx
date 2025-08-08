@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useUrlStates } from "@/hooks/use-url-state";
 import {
   getQuizzesAction,
   toggleQuizStatusAction,
@@ -30,39 +31,41 @@ export default function AdminQuizController() {
     null,
   );
   const [stats, setStats] = useState<QuizStats | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<QuizSortOption>("NEWEST");
-  const [filter, setFilter] = useState<QuizFilterOption>("ALL");
   const [subjects, setSubjects] = useState<string[]>([]);
 
-  // Academic filters
-  const [selectedUniversity, setSelectedUniversity] = useState<
-    University | undefined
-  >();
-  const [selectedDegree, setSelectedDegree] = useState<Degree | undefined>();
-  const [selectedYear, setSelectedYear] = useState<Year | undefined>();
-  const [selectedSemester, setSelectedSemester] = useState<
-    Semester | undefined
-  >();
-  const [selectedSubject, setSelectedSubject] = useState<string>("");
+  // URL state management for filters and pagination
+  const [urlState, setUrlState] = useUrlStates({
+    page: { defaultValue: 1 },
+    search: { defaultValue: "" },
+    sort: { defaultValue: "NEWEST" as QuizSortOption },
+    filter: { defaultValue: "ALL" as QuizFilterOption },
+    university: { defaultValue: "" },
+    degree: { defaultValue: "" },
+    year: { defaultValue: "" },
+    semester: { defaultValue: "" },
+    subject: { defaultValue: "" },
+  });
 
   // Debounce search to avoid too many API calls
-  const debouncedSearch = useDebounce(search, 500);
+  const debouncedSearch = useDebounce(urlState.search, 500);
 
   const fetchQuizzes = useCallback(
-    async (page: number = currentPage) => {
+    async (page: number = urlState.page) => {
       try {
         const result = await getQuizzesAction({
           page,
           search: debouncedSearch,
-          sort,
-          filter,
-          university: selectedUniversity,
-          degree: selectedDegree,
-          year: selectedYear,
-          semester: selectedSemester,
-          subject: selectedSubject || undefined,
+          sort: urlState.sort,
+          filter: urlState.filter,
+          university: urlState.university
+            ? (urlState.university as University)
+            : undefined,
+          degree: urlState.degree ? (urlState.degree as Degree) : undefined,
+          year: urlState.year ? (urlState.year as Year) : undefined,
+          semester: urlState.semester
+            ? (urlState.semester as Semester)
+            : undefined,
+          subject: urlState.subject || undefined,
         });
         setQuizzesData(result);
       } catch (error) {
@@ -70,15 +73,15 @@ export default function AdminQuizController() {
       }
     },
     [
-      currentPage,
+      urlState.page,
+      urlState.sort,
+      urlState.filter,
+      urlState.university,
+      urlState.degree,
+      urlState.year,
+      urlState.semester,
+      urlState.subject,
       debouncedSearch,
-      sort,
-      filter,
-      selectedUniversity,
-      selectedDegree,
-      selectedYear,
-      selectedSemester,
-      selectedSubject,
     ],
   );
 
@@ -105,57 +108,61 @@ export default function AdminQuizController() {
   }, []);
 
   const handleSortChange = (newSort: QuizSortOption) => {
-    setSort(newSort);
-    setCurrentPage(1);
+    setUrlState({ sort: newSort, page: 1 });
   };
 
   const handleFilterChange = (newFilter: QuizFilterOption) => {
-    setFilter(newFilter);
-    setCurrentPage(1);
+    setUrlState({ filter: newFilter, page: 1 });
   };
 
   const handleAcademicFilterChange = (
     type: "university" | "degree" | "year" | "semester" | "subject",
     value: University | Degree | Year | Semester | string | undefined,
   ) => {
+    const updates: Record<string, string | number> = { page: 1 };
+
     switch (type) {
       case "university":
-        setSelectedUniversity(value as University | undefined);
+        updates.university = (value as string) || "";
         // Reset dependent filters
-        setSelectedDegree(undefined);
-        setSelectedYear(undefined);
-        setSelectedSemester(undefined);
+        updates.degree = "";
+        updates.year = "";
+        updates.semester = "";
         break;
       case "degree":
-        setSelectedDegree(value as Degree | undefined);
+        updates.degree = (value as string) || "";
         // Reset dependent filters
-        setSelectedYear(undefined);
-        setSelectedSemester(undefined);
+        updates.year = "";
+        updates.semester = "";
         break;
       case "year":
-        setSelectedYear(value as Year | undefined);
+        updates.year = (value as string) || "";
         // Reset dependent filters
-        setSelectedSemester(undefined);
+        updates.semester = "";
         break;
       case "semester":
-        setSelectedSemester(value as Semester | undefined);
+        updates.semester = (value as string) || "";
         break;
       case "subject":
-        setSelectedSubject((value as string) || "");
+        updates.subject = (value as string) || "";
         break;
     }
-    setCurrentPage(1);
+
+    setUrlState(updates);
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    fetchQuizzes(page);
+    setUrlState({ page });
+  };
+
+  const handleSearchChange = (search: string) => {
+    setUrlState({ search, page: 1 });
   };
 
   const handleToggleStatus = async (quizId: string) => {
     const result = await toggleQuizStatusAction(quizId);
     if (result.success) {
-      fetchQuizzes(currentPage);
+      fetchQuizzes(urlState.page);
       fetchStats(); // Refresh stats when status changes
     }
   };
@@ -163,7 +170,7 @@ export default function AdminQuizController() {
   const handleTogglePublished = async (quizId: string) => {
     const result = await toggleQuizPublishedAction(quizId);
     if (result.success) {
-      fetchQuizzes(currentPage);
+      fetchQuizzes(urlState.page);
       fetchStats(); // Refresh stats when published status changes
     }
   };
@@ -176,7 +183,7 @@ export default function AdminQuizController() {
     ) {
       const result = await deleteQuizAction(quizId);
       if (result.success) {
-        fetchQuizzes(currentPage);
+        fetchQuizzes(urlState.page);
         fetchStats(); // Refresh stats when quiz is deleted
       }
     }
@@ -198,23 +205,23 @@ export default function AdminQuizController() {
   useEffect(() => {
     fetchQuizzes(1);
   }, [
-    sort,
-    filter,
+    urlState.sort,
+    urlState.filter,
+    urlState.university,
+    urlState.degree,
+    urlState.year,
+    urlState.semester,
+    urlState.subject,
     debouncedSearch,
-    selectedUniversity,
-    selectedDegree,
-    selectedYear,
-    selectedSemester,
-    selectedSubject,
     fetchQuizzes,
   ]);
 
-  // Reset to page 1 when search changes
+  // Reset to page 1 when search changes (handled by URL state now)
   useEffect(() => {
-    if (debouncedSearch !== search) {
-      setCurrentPage(1);
+    if (debouncedSearch !== urlState.search) {
+      setUrlState({ page: 1 });
     }
-  }, [debouncedSearch, search]);
+  }, [debouncedSearch, urlState.search, setUrlState]);
 
   // Fetch subjects on mount
   useEffect(() => {
@@ -231,16 +238,22 @@ export default function AdminQuizController() {
       <AdminQuizHeader stats={stats} onCreateQuiz={handleCreateQuiz} />
 
       <AdminQuizFilterAndSearch
-        search={search}
-        sort={sort}
-        filter={filter}
+        search={urlState.search}
+        sort={urlState.sort}
+        filter={urlState.filter}
         subjects={subjects}
-        selectedUniversity={selectedUniversity}
-        selectedDegree={selectedDegree}
-        selectedYear={selectedYear}
-        selectedSemester={selectedSemester}
-        selectedSubject={selectedSubject}
-        onSearchChange={setSearch}
+        selectedUniversity={
+          urlState.university ? (urlState.university as University) : undefined
+        }
+        selectedDegree={
+          urlState.degree ? (urlState.degree as Degree) : undefined
+        }
+        selectedYear={urlState.year ? (urlState.year as Year) : undefined}
+        selectedSemester={
+          urlState.semester ? (urlState.semester as Semester) : undefined
+        }
+        selectedSubject={urlState.subject}
+        onSearchChange={handleSearchChange}
         onSortChange={handleSortChange}
         onFilterChange={handleFilterChange}
         onAcademicFilterChange={handleAcademicFilterChange}
@@ -248,15 +261,15 @@ export default function AdminQuizController() {
 
       {quizzesData?.quizzes.length === 0 ? (
         <AdminQuizEmptyState
-          search={search}
-          filter={filter}
+          search={urlState.search}
+          filter={urlState.filter}
           hasAcademicFilters={
             !!(
-              selectedUniversity ||
-              selectedDegree ||
-              selectedYear ||
-              selectedSemester ||
-              selectedSubject
+              urlState.university ||
+              urlState.degree ||
+              urlState.year ||
+              urlState.semester ||
+              urlState.subject
             )
           }
         />
@@ -275,7 +288,7 @@ export default function AdminQuizController() {
 
       {quizzesData && (
         <AdminQuizPagination
-          currentPage={currentPage}
+          currentPage={urlState.page}
           totalPages={quizzesData.pagination.pages}
           onPageChange={handlePageChange}
         />

@@ -26,7 +26,13 @@ import type {
 import { getSession } from "@/lib/db/user";
 import { getUserFullProfile } from "@/dal/user/onboarding/query";
 import { revalidatePath } from "next/cache";
-import { University, Degree, Year, Semester } from "@prisma/client";
+import {
+  University,
+  Degree,
+  Year,
+  Semester,
+  PremiumTier,
+} from "@prisma/client";
 
 // Admin Actions
 export async function createFlashcardSetAction(data: CreateFlashcardSetInput) {
@@ -263,12 +269,23 @@ export interface BulkImportParams {
   year: Year;
   semester: Semester;
   unitNumber?: string;
+  isPremium?: boolean;
+  requiredTier?: string;
 }
 
 // Bulk Import Action
 export async function bulkImportFlashcardsAction(params: BulkImportParams) {
   try {
-    const { jsonData, university, degree, year, semester, unitNumber } = params;
+    const {
+      jsonData,
+      university,
+      degree,
+      year,
+      semester,
+      unitNumber,
+      isPremium,
+      requiredTier,
+    } = params;
 
     if (!jsonData.flashcardSets || !Array.isArray(jsonData.flashcardSets)) {
       return {
@@ -327,7 +344,10 @@ export async function bulkImportFlashcardsAction(params: BulkImportParams) {
           degree,
           year,
           semester,
-          isPremium: false,
+          isPremium: isPremium || false,
+          requiredTier: requiredTier
+            ? (requiredTier as PremiumTier)
+            : undefined,
           cards: formattedCards,
         };
 

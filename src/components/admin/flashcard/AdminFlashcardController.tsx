@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useUrlStates } from "@/hooks/use-url-state";
 import {
   getFlashcardSetsAction,
   toggleFlashcardSetStatusAction,
@@ -46,47 +47,49 @@ export default function AdminFlashcardController() {
   );
   const [stats, setStats] = useState<FlashcardSetStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<FlashcardSortOption>("NEWEST");
-  const [filter, setFilter] = useState<FlashcardFilterOption>("ALL");
   const [subjects, setSubjects] = useState<string[]>([]);
 
   // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
 
-  // Academic filters
-  const [selectedUniversity, setSelectedUniversity] = useState<
-    University | undefined
-  >();
-  const [selectedDegree, setSelectedDegree] = useState<Degree | undefined>();
-  const [selectedYear, setSelectedYear] = useState<Year | undefined>();
-  const [selectedSemester, setSelectedSemester] = useState<
-    Semester | undefined
-  >();
-  const [selectedSubject, setSelectedSubject] = useState<string>("");
+  // URL state management for filters and pagination
+  const [urlState, setUrlState] = useUrlStates({
+    page: { defaultValue: 1 },
+    search: { defaultValue: "" },
+    sort: { defaultValue: "NEWEST" as FlashcardSortOption },
+    filter: { defaultValue: "ALL" as FlashcardFilterOption },
+    university: { defaultValue: "" },
+    degree: { defaultValue: "" },
+    year: { defaultValue: "" },
+    semester: { defaultValue: "" },
+    subject: { defaultValue: "" },
+  });
 
   // Debounce search to avoid too many API calls
-  const debouncedSearch = useDebounce(search, 500);
+  const debouncedSearch = useDebounce(urlState.search, 500);
 
   const fetchFlashcardSets = useCallback(
-    async (page = 1) => {
+    async (page = urlState.page) => {
       setLoading(true);
       try {
         const filters: FlashcardSetFilters = {
           page,
           limit: pageSize,
           search: debouncedSearch || undefined,
-          university: selectedUniversity,
-          degree: selectedDegree,
-          year: selectedYear,
-          semester: selectedSemester,
-          subject: selectedSubject || undefined,
+          university: urlState.university
+            ? (urlState.university as University)
+            : undefined,
+          degree: urlState.degree ? (urlState.degree as Degree) : undefined,
+          year: urlState.year ? (urlState.year as Year) : undefined,
+          semester: urlState.semester
+            ? (urlState.semester as Semester)
+            : undefined,
+          subject: urlState.subject || undefined,
         };
 
         // Apply filter-specific conditions
-        switch (filter) {
+        switch (urlState.filter) {
           case "ACTIVE":
             filters.isActive = true;
             break;
@@ -111,7 +114,6 @@ export default function AdminFlashcardController() {
         if (result.success && result.data) {
           setFlashcardSets(result.data.sets);
           setTotalPages(result.data.pagination.totalPages);
-          setCurrentPage(page);
         }
       } catch {
       } finally {
@@ -119,13 +121,14 @@ export default function AdminFlashcardController() {
       }
     },
     [
+      urlState.page,
+      urlState.filter,
+      urlState.university,
+      urlState.degree,
+      urlState.year,
+      urlState.semester,
+      urlState.subject,
       debouncedSearch,
-      filter,
-      selectedUniversity,
-      selectedDegree,
-      selectedYear,
-      selectedSemester,
-      selectedSubject,
     ],
   );
 
@@ -149,7 +152,24 @@ export default function AdminFlashcardController() {
 
   useEffect(() => {
     fetchFlashcardSets(1);
-  }, [fetchFlashcardSets]);
+  }, [
+    urlState.sort,
+    urlState.filter,
+    urlState.university,
+    urlState.degree,
+    urlState.year,
+    urlState.semester,
+    urlState.subject,
+    debouncedSearch,
+    fetchFlashcardSets,
+  ]);
+
+  // Reset to page 1 when search changes (handled by URL state now)
+  useEffect(() => {
+    if (debouncedSearch !== urlState.search) {
+      setUrlState({ page: 1 });
+    }
+  }, [debouncedSearch, urlState.search, setUrlState]);
 
   useEffect(() => {
     fetchStats();
@@ -160,7 +180,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await toggleFlashcardSetStatusAction(id, isActive);
       if (result.success) {
-        await fetchFlashcardSets(currentPage);
+        await fetchFlashcardSets(urlState.page);
         await fetchStats();
       }
     } catch {}
@@ -170,7 +190,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await toggleFlashcardSetPublishedAction(id, isPublished);
       if (result.success) {
-        await fetchFlashcardSets(currentPage);
+        await fetchFlashcardSets(urlState.page);
         await fetchStats();
       }
     } catch {}
@@ -188,7 +208,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await deleteFlashcardSetAction(id);
       if (result.success) {
-        await fetchFlashcardSets(currentPage);
+        await fetchFlashcardSets(urlState.page);
         await fetchStats();
       }
     } catch {}
@@ -199,19 +219,69 @@ export default function AdminFlashcardController() {
   };
 
   const clearFilters = () => {
-    setSearch("");
-    setSort("NEWEST");
-    setFilter("ALL");
-    setSelectedUniversity(undefined);
-    setSelectedDegree(undefined);
-    setSelectedYear(undefined);
-    setSelectedSemester(undefined);
-    setSelectedSubject("");
+    setUrlState({
+      search: "",
+      sort: "NEWEST" as FlashcardSortOption,
+      filter: "ALL" as FlashcardFilterOption,
+      university: "",
+      degree: "",
+      year: "",
+      semester: "",
+      subject: "",
+      page: 1,
+    });
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    fetchFlashcardSets(page);
+    setUrlState({ page });
+  };
+
+  const handleSearchChange = (search: string) => {
+    setUrlState({ search, page: 1 });
+  };
+
+  const handleSortChange = (sort: FlashcardSortOption) => {
+    setUrlState({ sort, page: 1 });
+  };
+
+  const handleFilterChange = (filter: FlashcardFilterOption) => {
+    setUrlState({ filter, page: 1 });
+  };
+
+  const handleAcademicFilterChange = (
+    type: "university" | "degree" | "year" | "semester" | "subject",
+    value: University | Degree | Year | Semester | string | undefined,
+  ) => {
+    const updates: Record<string, string | number> = { page: 1 };
+
+    switch (type) {
+      case "university":
+        updates.university = (value as string) || "";
+        // Reset dependent filters
+        updates.degree = "";
+        updates.year = "";
+        updates.semester = "";
+        break;
+      case "degree":
+        updates.degree = (value as string) || "";
+        // Reset dependent filters
+        updates.year = "";
+        updates.semester = "";
+        break;
+      case "year":
+        updates.year = (value as string) || "";
+        // Reset dependent filters
+        updates.semester = "";
+        break;
+      case "semester":
+        updates.semester = (value as string) || "";
+        break;
+      case "subject":
+        updates.subject = (value as string) || "";
+        break;
+    }
+
+    setUrlState(updates);
   };
 
   return (
@@ -223,22 +293,36 @@ export default function AdminFlashcardController() {
       />
 
       <AdminFlashcardFilterAndSearch
-        search={search}
-        setSearch={setSearch}
-        sort={sort}
-        setSort={setSort}
-        filter={filter}
-        setFilter={setFilter}
-        selectedUniversity={selectedUniversity}
-        setSelectedUniversity={setSelectedUniversity}
-        selectedDegree={selectedDegree}
-        setSelectedDegree={setSelectedDegree}
-        selectedYear={selectedYear}
-        setSelectedYear={setSelectedYear}
-        selectedSemester={selectedSemester}
-        setSelectedSemester={setSelectedSemester}
-        selectedSubject={selectedSubject}
-        setSelectedSubject={setSelectedSubject}
+        search={urlState.search}
+        setSearch={handleSearchChange}
+        sort={urlState.sort}
+        setSort={handleSortChange}
+        filter={urlState.filter}
+        setFilter={handleFilterChange}
+        selectedUniversity={
+          urlState.university ? (urlState.university as University) : undefined
+        }
+        setSelectedUniversity={(value) =>
+          handleAcademicFilterChange("university", value)
+        }
+        selectedDegree={
+          urlState.degree ? (urlState.degree as Degree) : undefined
+        }
+        setSelectedDegree={(value) =>
+          handleAcademicFilterChange("degree", value)
+        }
+        selectedYear={urlState.year ? (urlState.year as Year) : undefined}
+        setSelectedYear={(value) => handleAcademicFilterChange("year", value)}
+        selectedSemester={
+          urlState.semester ? (urlState.semester as Semester) : undefined
+        }
+        setSelectedSemester={(value) =>
+          handleAcademicFilterChange("semester", value)
+        }
+        selectedSubject={urlState.subject}
+        setSelectedSubject={(value) =>
+          handleAcademicFilterChange("subject", value)
+        }
         subjects={subjects}
         onClearFilters={clearFilters}
       />
@@ -251,13 +335,13 @@ export default function AdminFlashcardController() {
       ) : flashcardSets.length === 0 ? (
         <AdminFlashcardEmptyState
           hasFilters={
-            !!search ||
-            filter !== "ALL" ||
-            !!selectedUniversity ||
-            !!selectedDegree ||
-            !!selectedYear ||
-            !!selectedSemester ||
-            !!selectedSubject
+            !!urlState.search ||
+            urlState.filter !== "ALL" ||
+            !!urlState.university ||
+            !!urlState.degree ||
+            !!urlState.year ||
+            !!urlState.semester ||
+            !!urlState.subject
           }
           onClearFilters={clearFilters}
           onCreateNew={() => router.push("/admin/flashcards/create")}
@@ -275,7 +359,7 @@ export default function AdminFlashcardController() {
       {/* Pagination */}
       {flashcardSets.length > 0 && (
         <AdminQuizPagination
-          currentPage={currentPage}
+          currentPage={urlState.page}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />

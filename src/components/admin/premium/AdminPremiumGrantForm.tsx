@@ -433,7 +433,7 @@ export function AdminPremiumGrantForm({
 
   return (
     <>
-      <Card className="neuro">
+      <Card className="neuro" data-lenis-prevent>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 font-black">
             <UserPlus className="h-5 w-5" />
@@ -487,7 +487,10 @@ export function AdminPremiumGrantForm({
 
                 {/* Search Results */}
                 {searchResults.length > 0 && (
-                  <div className="neuro-sm max-h-60 overflow-y-auto rounded-lg border">
+                  <div
+                    className="neuro-sm max-h-60 overflow-y-auto rounded-lg border"
+                    data-lenis-prevent
+                  >
                     {searchResults.map((user) => (
                       <button
                         key={user.id}

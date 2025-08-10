@@ -3,6 +3,9 @@ import { auth } from "@/lib/auth/auth";
 import { verifyRazorpaySignature } from "@/lib/razorpay/config";
 import prisma from "@/lib/db/prisma";
 import { revalidateTag } from "next/cache";
+import telegramBot, {
+  type PaymentNotificationData,
+} from "@/lib/telegram/telegramBot";
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,6 +36,13 @@ export async function POST(request: NextRequest) {
         razorpayOrderId: orderId,
         userId: session.user.id,
       },
+      include: {
+        user: {
+          include: {
+            profile: true,
+          },
+        },
+      },
     });
 
     if (!purchase) {
@@ -45,6 +55,24 @@ export async function POST(request: NextRequest) {
     // Handle free upgrades (no payment verification needed)
     if (paymentId === "free_upgrade" && signature === "free_upgrade") {
       if (purchase.finalAmount.toNumber() === 0) {
+        // Send Telegram notification for free upgrade
+        try {
+          const notificationData: PaymentNotificationData = {
+            userName: purchase.user.name || "Unknown User",
+            email: purchase.user.email,
+            phone: purchase.user.profile?.phoneNumber || undefined,
+            paymentAmount: "0.00",
+            tier: purchase.tier,
+            university: purchase.university,
+            degree: purchase.degree,
+            year: purchase.year,
+            semester: purchase.semester,
+            isSuccess: true,
+          };
+
+          await telegramBot.sendPaymentNotification(notificationData);
+        } catch {}
+
         return NextResponse.json({ success: true });
       } else {
         return NextResponse.json(
@@ -124,6 +152,24 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Send Telegram notification for successful upgrade
+    try {
+      const notificationData: PaymentNotificationData = {
+        userName: purchase.user.name || "Unknown User",
+        email: purchase.user.email,
+        phone: purchase.user.profile?.phoneNumber || undefined,
+        paymentAmount: purchase.finalAmount.toString(),
+        tier: purchase.tier,
+        university: purchase.university,
+        degree: purchase.degree,
+        year: purchase.year,
+        semester: purchase.semester,
+        isSuccess: true,
+      };
+
+      await telegramBot.sendPaymentNotification(notificationData);
+    } catch {}
+
     // Revalidate premium-related caches to ensure UI reflects the upgrade
     revalidateTag("user-premium-status");
     revalidateTag("user-purchase-history");
@@ -133,8 +179,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error verifying upgrade payment:", error);
-
     return NextResponse.json(
       {
         error:

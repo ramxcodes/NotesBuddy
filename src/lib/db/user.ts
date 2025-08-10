@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { auth } from "../auth/auth";
 import prisma from "./prisma";
 import { cache } from "react";
-import { unstable_cache, revalidateTag } from "next/cache";
+import { unstable_cache } from "next/cache";
 
 export const getSession = async () => {
   return await auth.api.getSession({
@@ -56,13 +56,4 @@ export const isAdmin = async ({ userId }: { userId: string }) => {
   });
 
   return user?.role === "ADMIN";
-};
-
-// Function to clear admin status cache - useful when user role changes
-export const clearAdminStatusCache = async (userId: string) => {
-  try {
-    revalidateTag(`user-role-${userId}`);
-  } catch (error) {
-    console.error("Error clearing admin status cache:", error);
-  }
 };

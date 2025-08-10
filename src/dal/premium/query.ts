@@ -21,6 +21,9 @@ import { unstable_cache } from "next/cache";
 import { revalidateTag } from "next/cache";
 import { getCacheOptions } from "@/cache/cache";
 import { premiumCacheConfig } from "@/cache/premium";
+import telegramBot, {
+  type PaymentNotificationData,
+} from "@/lib/telegram/telegramBot";
 
 // Get user's current premium status
 export const getUserPremiumStatus = unstable_cache(
@@ -321,7 +324,11 @@ export async function updatePurchasePaymentStatus(
   const purchase = await prisma.premiumPurchase.findUnique({
     where: { razorpayOrderId },
     include: {
-      user: true,
+      user: {
+        include: {
+          profile: true,
+        },
+      },
       discounts: true,
     },
   });
@@ -403,6 +410,24 @@ export async function updatePurchasePaymentStatus(
       });
     }
   }
+
+  try {
+    const notificationData: PaymentNotificationData = {
+      userName: purchase.user.name || "Unknown User",
+      email: purchase.user.email,
+      phone: purchase.user.profile?.phoneNumber || undefined,
+      paymentAmount: purchase.finalAmount.toString(),
+      tier: purchase.tier,
+      university: purchase.university,
+      degree: purchase.degree,
+      year: purchase.year,
+      semester: purchase.semester,
+      isSuccess: paymentStatus === "CAPTURED",
+      failureReason: failureReason || undefined,
+    };
+
+    await telegramBot.sendPaymentNotification(notificationData);
+  } catch {}
 
   return updatedPurchase;
 }

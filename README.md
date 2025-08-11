@@ -117,6 +117,16 @@ bun install
 
    ```
 
+3.1 How to get Telegram Bot Token & Channel URL ->
+**Telegram Bot Setup:**
+
+- Create a new bot via [BotFather](https://t.me/BotFather) on Telegram and copy your bot token.
+- Add your bot to your channel and set it as an admin.
+- Get your channel id from Rose Bot.
+- For a step-by-step guide, watch this video:  
+   [Telegram Bot Setup Tutorial](github/TG-BOT.mp4)
+- Store your bot token and channel URL's in the `.env` file as needed.
+
 4. **Database Setup**
 
    ```bash

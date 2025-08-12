@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { ArrowDown, Robot } from "@phosphor-icons/react";
+import { ArrowDownIcon, RobotIcon } from "@phosphor-icons/react";
 import {
   Select,
   SelectContent,
@@ -110,7 +110,6 @@ export default function ChatWindow({
           }
           const chat = await response.json();
           if (chat) {
-            // Convert our chat messages to the new Message format
             const convertedMessages: Message[] = chat.messages.map(
               (msg: ChatMessage) => ({
                 id: msg.id,
@@ -203,6 +202,13 @@ export default function ChatWindow({
         throw new Error("Failed to create message");
       }
 
+      // Get encrypted API key for server
+      const encryptedApiKey = localStorage.getItem("gemini_api_key_encrypted");
+
+      if (!encryptedApiKey) {
+        throw new Error("No API key found. Please re-enter your API key.");
+      }
+
       // Make AI request
       const response = await fetch("/api/ai/chat", {
         method: "POST",
@@ -213,7 +219,8 @@ export default function ChatWindow({
           message: userMessage,
           chatId: activeChatId,
           model: selectedModel,
-          apiKey,
+          apiKey: encryptedApiKey,
+          isEncrypted: true,
           university: academicContext.university,
           degree: academicContext.degree,
           year: academicContext.year,
@@ -232,7 +239,6 @@ export default function ChatWindow({
             errorMessage = errorData.error;
             shouldShowRetryHint = errorData.retryable === true;
 
-            // Enhance overload error messages
             if (
               errorMessage.includes("overloaded") ||
               response.status === 503
@@ -316,7 +322,6 @@ export default function ChatWindow({
               const data = JSON.parse(line.slice(6));
               if (data.text) {
                 fullResponse += data.text;
-                // Update the assistant message content
                 setMessages((prev) =>
                   prev.map((msg, index) =>
                     index === prev.length - 1
@@ -325,7 +330,6 @@ export default function ChatWindow({
                   ),
                 );
               } else if (data.done) {
-                // Save assistant message to database
                 await fetch("/api/ai/message/create", {
                   method: "POST",
                   headers: {
@@ -343,7 +347,6 @@ export default function ChatWindow({
                 let errorMessage = data.error;
                 const isRetryable = data.retryable === true;
 
-                // Enhance error message for overloaded models
                 if (errorMessage.includes("overloaded")) {
                   const alternativeModel = getAlternativeModel(selectedModel);
                   const alternativeModelLabel =
@@ -372,7 +375,6 @@ export default function ChatWindow({
       if (error instanceof Error) {
         errorMessage = error.message;
 
-        // Check if it's a model overload error and provide specific suggestion
         if (
           errorMessage.includes("overloaded") ||
           errorMessage.includes("503")
@@ -404,7 +406,6 @@ export default function ChatWindow({
         },
       });
 
-      // Remove the failed messages
       setMessages((prev) => prev.slice(0, -2));
     } finally {
       setIsLoading(false);
@@ -456,7 +457,7 @@ export default function ChatWindow({
       <div className="border p-3 sm:p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2 sm:gap-3">
-            <Robot className="h-5 w-5 sm:h-6 sm:w-6" weight="duotone" />
+            <RobotIcon className="h-5 w-5 sm:h-6 sm:w-6" weight="duotone" />
             <div>
               <h3 className="text-base font-semibold text-gray-900 sm:text-lg dark:text-white">
                 {shouldShowFilters
@@ -499,12 +500,16 @@ export default function ChatWindow({
               onValueChange={setSelectedModel}
               disabled={isLoading}
             >
-              <SelectTrigger className="w-full border border-gray-300 text-xs sm:w-56 sm:text-sm dark:border-gray-600">
+              <SelectTrigger className="w-full rounded-md border-2 border-black text-xs font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] sm:w-56 sm:text-sm dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
                 {GEMINI_MODELS.map((model) => (
-                  <SelectItem key={model.value} value={model.value}>
+                  <SelectItem
+                    key={model.value}
+                    value={model.value}
+                    className="text-xs sm:text-sm"
+                  >
                     {model.label}
                   </SelectItem>
                 ))}
@@ -531,7 +536,7 @@ export default function ChatWindow({
             {messages.length === 0 && (
               <div className="mt-6 flex items-center justify-center sm:mt-10">
                 <div className="space-y-4 px-4 text-center">
-                  <Robot
+                  <RobotIcon
                     className="mx-auto h-10 w-10 text-gray-400 sm:h-12 sm:w-12"
                     weight="duotone"
                   />
@@ -556,13 +561,12 @@ export default function ChatWindow({
           {!shouldAutoScroll && messages.length > 0 && (
             <div className="pointer-events-none absolute bottom-0 left-0 flex w-full justify-end pr-2 pb-2 sm:pr-4 sm:pb-4">
               <Button
-                data-umami-event="ai-scroll-to-bottom-click"
                 onClick={scrollToBottom}
                 className="animate-in fade-in-0 slide-in-from-bottom-1 pointer-events-auto h-8 w-8 rounded-full ease-in-out"
                 size="icon"
                 variant="ghost"
               >
-                <ArrowDown className="h-4 w-4" weight="duotone" />
+                <ArrowDownIcon className="h-4 w-4" weight="duotone" />
               </Button>
             </div>
           )}
@@ -570,68 +574,60 @@ export default function ChatWindow({
 
         {/* Academic Filters - When needed */}
         {shouldShowFilters && (
-          <div className="border-t py-3 sm:py-4">
-            <EmbeddedAcademicFilters
-              userProfile={userProfile}
-              isOnboarded={isOnboarded}
-              onFiltersChange={handleFiltersChange}
-            />
-          </div>
+          <EmbeddedAcademicFilters
+            userProfile={userProfile}
+            isOnboarded={isOnboarded}
+            onFiltersChange={handleFiltersChange}
+          />
         )}
 
         {/* Suggestions - When no messages */}
         {messages.length === 0 && !shouldShowFilters && (
-          <div className="border-t py-4">
-            <div className="space-y-2">
-              <p className="text-sm font-medium">Try these prompts:</p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  `Explain key concepts in ${academicContext.subject}`,
-                  `Help me with ${academicContext.subject} assignments`,
-                  `What topics should I focus on for exams?`,
-                ].map((suggestion, i) => (
-                  <button
-                    data-umami-event={`ai-suggestion-click-${i}`}
-                    key={i}
-                    onClick={() =>
-                      append({ role: "user", content: suggestion })
-                    }
-                    className="neuro-button rounded-lg px-2 py-2 text-white dark:text-black"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
+          <div className="mb-4 space-y-2">
+            <p className="text-sm font-medium">Try these prompts:</p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                `Explain key concepts in ${academicContext.subject}`,
+                `Help me with ${academicContext.subject} assignments`,
+                `What topics should I focus on for exams?`,
+              ].map((suggestion, i) => (
+                <button
+                  key={i}
+                  onClick={() => append({ role: "user", content: suggestion })}
+                  className="rounded-lg border px-3 py-2 text-xs font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:bg-gray-50 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:bg-gray-800 dark:hover:shadow-[2px_2px_0px_0px_#757373]"
+                >
+                  {suggestion}
+                </button>
+              ))}
             </div>
           </div>
         )}
 
         {/* Chat Input */}
-        <div className="border-t pt-3 sm:pt-4">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (shouldShowFilters) {
-                handleDisabledSubmit();
-              } else {
-                handleSubmit(e);
-              }
-            }}
-          >
-            <MessageInput
-              value={input}
-              onChange={handleInputChange}
-              isGenerating={isLoading}
-              stop={stop}
-              disabled={shouldShowFilters}
-              placeholder={
-                shouldShowFilters
-                  ? "Please select your academic context above to start chatting..."
-                  : `Ask about ${academicContext.subject}...`
-              }
-            />
-          </form>
-        </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (shouldShowFilters) {
+              handleDisabledSubmit();
+            } else {
+              handleSubmit(e);
+            }
+          }}
+        >
+          <MessageInput
+            value={input}
+            onChange={handleInputChange}
+            isGenerating={isLoading}
+            stop={stop}
+            disabled={shouldShowFilters}
+            placeholder={
+              shouldShowFilters
+                ? "Please select your academic context above to start chatting..."
+                : `Ask about ${academicContext.subject}...`
+            }
+          />
+        </form>
       </div>
     </div>
   );

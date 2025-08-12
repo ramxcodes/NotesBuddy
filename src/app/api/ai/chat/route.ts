@@ -2,6 +2,8 @@ import { createParser } from "eventsource-parser";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 import { generateSystemPrompt } from "@/utils/ai-system-prompt";
+import { getUserId } from "@/lib/db/user";
+import { decryptApiKey } from "@/lib/api-server";
 
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
@@ -67,6 +69,7 @@ const chatSchema = z.object({
     ])
     .default("gemini-2.0-flash"),
   apiKey: z.string().min(1),
+  isEncrypted: z.boolean().default(true),
   university: z.string(),
   degree: z.string(),
   year: z.string(),
@@ -146,6 +149,28 @@ export async function POST(request: NextRequest) {
 
     const validatedData = chatSchema.parse(body);
 
+    // Decrypt the API key
+    const userId = await getUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User not authenticated", retryable: false },
+        { status: 401 },
+      );
+    }
+
+    let actualApiKey: string;
+    try {
+      actualApiKey = decryptApiKey(validatedData.apiKey, userId);
+    } catch {
+      return NextResponse.json(
+        {
+          error: "Invalid or corrupted API key. Please re-enter your API key.",
+          retryable: false,
+        },
+        { status: 400 },
+      );
+    }
+
     const sanitizedMessage = sanitizeInput(validatedData.message);
 
     const sanitizedParams = {
@@ -192,7 +217,7 @@ export async function POST(request: NextRequest) {
       },
     };
 
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${validatedData.model}:streamGenerateContent?alt=sse&key=${validatedData.apiKey}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${validatedData.model}:streamGenerateContent?alt=sse&key=${actualApiKey}`;
 
     const response = await fetch(geminiUrl, {
       method: "POST",

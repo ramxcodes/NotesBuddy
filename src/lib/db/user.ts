@@ -57,3 +57,33 @@ export const isAdmin = async ({ userId }: { userId: string }) => {
 
   return user?.role === "ADMIN";
 };
+
+export const getUserId = async () => {
+  try {
+    const session = await getSession();
+    if (!session?.user?.id) return null;
+
+    const getCachedUserId = unstable_cache(
+      async (sessionUserId: string) => {
+        try {
+          const user = await prisma.user.findUnique({
+            where: { id: sessionUserId },
+            select: { id: true },
+          });
+          return user?.id || null;
+        } catch {
+          return null;
+        }
+      },
+      [`user-id-${session.user.id}`],
+      {
+        revalidate: 7200,
+        tags: [`user-id-${session.user.id}`],
+      },
+    );
+
+    return await getCachedUserId(session.user.id);
+  } catch {
+    return null;
+  }
+};

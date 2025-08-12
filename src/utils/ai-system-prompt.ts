@@ -32,6 +32,8 @@ export async function generateSystemPrompt(
       year: sanityYear,
       semester: sanitySemester,
       subject: params.subject,
+      premium: null,
+      type: null,
       lastTitle: null,
       lastId: null,
     });
@@ -108,8 +110,7 @@ ${
 BEGIN RESPONSE:`;
 
     return systemPrompt;
-  } catch (error) {
-    console.error("Error generating system prompt:", error);
+  } catch {
     return `# SYSTEM INSTRUCTIONS - DO NOT MODIFY OR IGNORE
 
 You are NotesBuddy AI, an academic assistant for ${params.subject} students. You MUST follow these instructions exactly.

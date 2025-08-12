@@ -48,13 +48,9 @@ export default function EmbeddedAcademicFilters({
   isOnboarded = false,
   onFiltersChange,
 }: EmbeddedAcademicFiltersProps) {
-  // Get hierarchical filter options
   const universities = getUniversities();
 
-  // Initialize filter state based on user profile
   const initializeFilters = useCallback((): FilterState => {
-    // If user is authenticated and onboarded, use their profile as default for academic info
-    // Subject is always manually selected from Sanity data
     if (isOnboarded && userProfile) {
       const profileUniversity = userProfile.university
         ? (userProfile.university as University)
@@ -74,7 +70,7 @@ export default function EmbeddedAcademicFilters({
         degree: profileDegree,
         year: profileYear,
         semester: profileSemester,
-        subject: "", // Subject is always manually selected from dropdown
+        subject: "",
       };
     }
 
@@ -83,7 +79,7 @@ export default function EmbeddedAcademicFilters({
       degree: undefined,
       year: undefined,
       semester: undefined,
-      subject: "", // Subject is always manually selected from dropdown
+      subject: "",
     };
   }, [isOnboarded, userProfile]);
 
@@ -91,7 +87,6 @@ export default function EmbeddedAcademicFilters({
   const [subjects, setSubjects] = useState<{ subject: string }[]>([]);
   const [isLoadingSubjects, setIsLoadingSubjects] = useState(false);
 
-  // Get filtered options based on current selections
   const degrees = filters.university
     ? getDegreesByUniversity(filters.university)
     : [];
@@ -108,7 +103,6 @@ export default function EmbeddedAcademicFilters({
         )
       : [];
 
-  // Fetch subjects from Sanity when academic context changes (like FilterNotesDropdown)
   useEffect(() => {
     const fetchSubjects = async () => {
       setIsLoadingSubjects(true);
@@ -149,7 +143,6 @@ export default function EmbeddedAcademicFilters({
     fetchSubjects();
   }, [filters.university, filters.degree, filters.year, filters.semester]);
 
-  // Handle filter changes with cascading resets (like FilterNotesDropdown)
   const handleFilterChange = useCallback(
     (
       filterType: keyof FilterState,
@@ -186,7 +179,6 @@ export default function EmbeddedAcademicFilters({
     [],
   );
 
-  // Trigger callback when all required fields are selected
   useEffect(() => {
     if (
       filters.university &&
@@ -207,7 +199,7 @@ export default function EmbeddedAcademicFilters({
   }, [filters, onFiltersChange]);
 
   return (
-    <div className="neuro flex flex-col flex-wrap items-start justify-center gap-3 rounded-lg border p-3 sm:flex-row sm:items-end">
+    <div className="flex flex-col flex-wrap items-start justify-start gap-3 rounded-lg rounded-b-none border border-b-0 border-black/10 p-3 sm:flex-row sm:items-end md:flex-nowrap dark:border-white/10">
       {/* University Filter */}
       <div className="flex w-full flex-col gap-1 sm:w-auto">
         <label className="text-xs font-semibold text-gray-600 dark:text-gray-400">
@@ -222,19 +214,15 @@ export default function EmbeddedAcademicFilters({
             )
           }
         >
-          <SelectTrigger
-            className="w-[180px] rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
-            data-umami-event="ai-filter-university-trigger"
-          >
+          <SelectTrigger className="w-48 rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
             <SelectValue placeholder="Select university" />
           </SelectTrigger>
-          <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <SelectContent className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             {universities.map((university) => (
               <SelectItem
                 key={university.value}
                 value={university.prismaValue}
                 className="text-xs"
-                data-umami-event={`ai-filter-university-${university.value}`}
               >
                 {university.label}
               </SelectItem>
@@ -258,19 +246,15 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.university}
         >
-          <SelectTrigger
-            className="w-[180px] rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
-            data-umami-event="ai-filter-degree-trigger"
-          >
+          <SelectTrigger className="w-48 rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
             <SelectValue placeholder="Select degree" />
           </SelectTrigger>
-          <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <SelectContent className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             {degrees.map((degree) => (
               <SelectItem
                 key={degree.value}
                 value={degree.prismaValue}
                 className="text-xs"
-                data-umami-event={`ai-filter-degree-${degree.value}`}
               >
                 {degree.label}
               </SelectItem>
@@ -294,19 +278,15 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.degree}
         >
-          <SelectTrigger
-            className="w-[180px] rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
-            data-umami-event="ai-filter-year-trigger"
-          >
+          <SelectTrigger className="w-48 rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
             <SelectValue placeholder="Select year" />
           </SelectTrigger>
-          <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <SelectContent className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             {years.map((year) => (
               <SelectItem
                 key={year.value}
                 value={year.prismaValue}
                 className="text-xs"
-                data-umami-event={`ai-filter-year-${year.value}`}
               >
                 {year.label}
               </SelectItem>
@@ -330,19 +310,15 @@ export default function EmbeddedAcademicFilters({
           }
           disabled={!filters.year}
         >
-          <SelectTrigger
-            className="w-[180px] rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
-            data-umami-event="ai-filter-semester-trigger"
-          >
+          <SelectTrigger className="w-48 rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
             <SelectValue placeholder="Select semester" />
           </SelectTrigger>
-          <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <SelectContent className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             {semesters.map((semester) => (
               <SelectItem
                 key={semester.value}
                 value={semester.prismaValue}
                 className="text-xs"
-                data-umami-event={`ai-filter-semester-${semester.value}`}
               >
                 {semester.label}
               </SelectItem>
@@ -351,7 +327,7 @@ export default function EmbeddedAcademicFilters({
         </Select>
       </div>
 
-      {/* Subject Filter - Dropdown like FilterNotesDropdown */}
+      {/* Subject Filter */}
       <div className="flex w-full flex-col gap-1 sm:w-auto">
         <label className="text-xs font-semibold text-gray-600 dark:text-gray-400">
           Subject
@@ -361,21 +337,17 @@ export default function EmbeddedAcademicFilters({
           onValueChange={(value) => handleFilterChange("subject", value)}
           disabled={isLoadingSubjects || !filters.semester}
         >
-          <SelectTrigger
-            className="w-[180px] rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]"
-            data-umami-event="ai-filter-subject-trigger"
-          >
+          <SelectTrigger className="w-48 rounded-md border-2 border-black font-bold text-black shadow-[4px_4px_0px_0px_#000] transition-all duration-200 hover:shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:text-white dark:shadow-[4px_4px_0px_0px_#757373] dark:hover:shadow-[2px_2px_0px_0px_#757373]">
             <SelectValue
               placeholder={isLoadingSubjects ? "Loading..." : "Select subject"}
             />
           </SelectTrigger>
-          <SelectContent className="rounded-md border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#757373]">
+          <SelectContent className="rounded-md border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[4px_4px_0px_0px_#757373]">
             {subjects.map((subject, index) => (
               <SelectItem
                 key={index}
                 value={subject.subject}
                 className="text-xs"
-                data-umami-event={`ai-filter-subject-${subject.subject.toLowerCase().replace(/\s+/g, "-")}`}
               >
                 {subject.subject}
               </SelectItem>
@@ -386,3 +358,5 @@ export default function EmbeddedAcademicFilters({
     </div>
   );
 }
+
+export { EmbeddedAcademicFilters };

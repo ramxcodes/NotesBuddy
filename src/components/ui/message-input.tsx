@@ -206,7 +206,7 @@ export function MessageInput({
         onStopRecording={stopRecording}
       />
 
-      <div className="relative mt-2 flex w-full items-center space-x-2">
+      <div className="relative flex w-full items-center space-x-2">
         <div className="relative flex-1">
           <textarea
             aria-label="Write your prompt here"
@@ -215,7 +215,7 @@ export function MessageInput({
             onPaste={onPaste}
             onKeyDown={onKeyDown}
             className={cn(
-              "border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:border-primary neuro z-10 w-full grow resize-none rounded-md border p-3 pr-24 text-sm transition-[border] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+              "bg-background placeholder:text-muted-foreground focus-visible:border-primary neuro z-10 w-full grow resize-none rounded-md rounded-t-none border border-t-0 border-black/10 p-3 pr-24 text-sm transition-[border] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10",
               showFileList && "pb-16",
               className,
             )}

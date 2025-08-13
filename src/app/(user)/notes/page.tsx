@@ -10,7 +10,9 @@ import {
   getUserFullProfile,
 } from "@/dal/user/onboarding/query";
 import { NotesInfiniteList } from "@/components/note/NotesInfiniteList";
+import OnboardingToast from "@/components/auth/OnboardingToast";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Study Notes - Comprehensive Academic Resources",
@@ -78,32 +80,27 @@ export default async function NotesPage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  // Get search parameters
   const params = await searchParams;
   const { query, university, degree, year, semester, subject, premium, type } =
     params;
 
-  // Get user session and profile data
   const session = await getSession();
   let userProfile = null;
   let isOnboarded = false;
 
   if (session?.user?.id) {
     try {
-      // Check if user completed onboarding
       const onboardingStatus = await getUserOnboardingStatus(session.user.id);
       isOnboarded = onboardingStatus?.isOnboarded ?? false;
 
-      // Get user profile if onboarded
       if (isOnboarded) {
         userProfile = await getUserFullProfile(session.user.id);
       }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    } catch {
+      redirect("/profile");
     }
   }
 
-  // Prepare filter object
   const filters = {
     search: query,
     university: university === "all" ? undefined : university,
@@ -115,10 +112,8 @@ export default async function NotesPage({
     type: type === "all" ? undefined : type || "notes",
   };
 
-  // Fetch initial notes (first page only)
   const initialNotes = await getFilteredNotes(filters);
 
-  // Prepare search params for the infinite list (excluding cursor params)
   const searchParamsForList = {
     query,
     university,
@@ -127,11 +122,15 @@ export default async function NotesPage({
     semester,
     subject,
     premium,
-    type: type || "notes", // Ensure type is always passed to the infinite list
+    type: type || "notes",
   };
 
   return (
     <div className="font-satoshi container mx-auto min-h-screen max-w-6xl">
+      <OnboardingToast
+        isAuthenticated={!!session?.user}
+        isOnboarded={isOnboarded}
+      />
       <div className="relative mx-4">
         <Image
           src="/doodles/idea.svg"

@@ -104,10 +104,9 @@ export async function handleOnboarding(formData: FormData) {
         // Different user with same phone number
         return {
           success: false,
-          error: "Phone number is already in use",
           fieldErrors: {
             phoneNumber: [
-              "This phone number is already registered with another account",
+              "This phone number is already in use. Use a different phone number.",
             ],
           },
         };

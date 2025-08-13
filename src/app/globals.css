@@ -217,6 +217,126 @@
   font-family: var(--font-inter), sans-serif;
 }
 
+/* Sonner Toast Neurobrutalism Styling */
+.neuro-toast {
+  border: 2px solid #000 !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+  box-shadow: 4px 4px 0px 0px #000 !important;
+  border-radius: 0.5rem !important;
+  padding: 1rem !important;
+}
+
+.dark .neuro-toast {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  box-shadow: 4px 4px 0px 0px #757373 !important;
+}
+
+.neuro-toast-title {
+  font-weight: 700 !important;
+  color: #000 !important;
+  margin: 0 !important;
+}
+
+.dark .neuro-toast-title {
+  color: #fff !important;
+}
+
+.neuro-toast-description {
+  font-weight: 500 !important;
+  color: rgba(0, 0, 0, 0.7) !important;
+  margin-top: 0.25rem !important;
+}
+
+.dark .neuro-toast-description {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.neuro-toast-action {
+  border: 2px solid #000 !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  box-shadow: 2px 2px 0px 0px #000 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.25rem 0.75rem !important;
+  margin-left: 0.5rem !important;
+  margin-top: 0.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.neuro-toast-action:hover {
+  transform: translate(2px, 2px) !important;
+  box-shadow: none !important;
+}
+
+.dark .neuro-toast-action {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  box-shadow: 2px 2px 0px 0px #757373 !important;
+}
+
+.neuro-toast-cancel {
+  border: 2px solid #000 !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+  box-shadow: 2px 2px 0px 0px #000 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.25rem 0.75rem !important;
+  margin-left: 0.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.neuro-toast-cancel:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.dark .neuro-toast-cancel {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  box-shadow: 2px 2px 0px 0px #757373 !important;
+}
+
+.dark .neuro-toast-cancel:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.neuro-toast-close {
+  border: 2px solid #000 !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+  box-shadow: 2px 2px 0px 0px #000 !important;
+  border-radius: 0.25rem !important;
+  padding: 0.25rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.neuro-toast-close:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.dark .neuro-toast-close {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  box-shadow: 2px 2px 0px 0px #757373 !important;
+}
+
+.dark .neuro-toast-close:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
 @layer notes {
   .note-h1 {
     @apply text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl dark:text-gray-200;

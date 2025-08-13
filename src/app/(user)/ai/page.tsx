@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getSession } from "@/lib/db/user";
 import { redirect } from "next/navigation";
 import AIChatInterface from "@/components/ai/AIChatInterface";
+import OnboardingToast from "@/components/auth/OnboardingToast";
 import { getUserChats } from "@/dal/ai/chat";
 import {
   getUserFullProfile,
@@ -72,6 +73,10 @@ export default async function AIPage() {
 
   return (
     <div className="h-screen overflow-hidden" data-lenis-prevent>
+      <OnboardingToast
+        isAuthenticated={true}
+        isOnboarded={onboardingStatus.isOnboarded || false}
+      />
       <Suspense>
         <AIChatInterface
           userChats={userChats}

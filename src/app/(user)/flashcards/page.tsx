@@ -6,8 +6,10 @@ import FlashcardListSkeleton from "@/components/flashcard/FlashcardListSkeleton"
 import SortDropdown from "@/components/common/SortDropdown";
 import { loadUserFlashcardSetsAction, getUserContextAction } from "./actions";
 import type { University, Degree, Year, Semester } from "@prisma/client";
-
 import { sanityToPrismaValue } from "@/utils/academic-config";
+import { getSession } from "@/lib/db/user";
+import { getUserOnboardingStatus } from "@/dal/user/onboarding/query";
+import OnboardingToast from "@/components/auth/OnboardingToast";
 import { Metadata } from "next";
 import StackIcon from "@/components/icons/StackIcon";
 
@@ -180,8 +182,21 @@ async function FlashcardList({ searchParams }: FlashcardsPageProps) {
 export default async function FlashcardsPage({
   searchParams,
 }: FlashcardsPageProps) {
+  const session = await getSession();
+  const isAuthenticated = !!session?.user?.id;
+
+  let isOnboarded = false;
+  if (session?.user?.id) {
+    const onboardingStatus = await getUserOnboardingStatus(session.user.id);
+    isOnboarded = onboardingStatus?.isOnboarded ?? false;
+  }
+
   return (
     <div className="font-satoshi container mx-auto mt-10 min-h-screen max-w-6xl">
+      <OnboardingToast
+        isAuthenticated={isAuthenticated}
+        isOnboarded={isOnboarded}
+      />
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-4xl font-bold">Flashcards</h1>
         <p className="text-gray-600 dark:text-gray-400">

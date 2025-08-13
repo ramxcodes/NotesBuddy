@@ -8,6 +8,9 @@ import { loadUserQuizzesAction, getUserContextAction } from "./actions";
 import type { University, Degree, Year, Semester } from "@prisma/client";
 import { GraduationCapIcon } from "@/components/icons/GraduationCapIcon";
 import { sanityToPrismaValue } from "@/utils/academic-config";
+import { getSession } from "@/lib/db/user";
+import { getUserOnboardingStatus } from "@/dal/user/onboarding/query";
+import OnboardingToast from "@/components/auth/OnboardingToast";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -178,8 +181,21 @@ async function QuizList({ searchParams }: QuizPageProps) {
 }
 
 export default async function QuizPage({ searchParams }: QuizPageProps) {
+  const session = await getSession();
+  const isAuthenticated = !!session?.user?.id;
+
+  let isOnboarded = false;
+  if (session?.user?.id) {
+    const onboardingStatus = await getUserOnboardingStatus(session.user.id);
+    isOnboarded = onboardingStatus?.isOnboarded ?? false;
+  }
+
   return (
     <div className="font-satoshi container mx-auto mt-10 min-h-screen max-w-6xl">
+      <OnboardingToast
+        isAuthenticated={isAuthenticated}
+        isOnboarded={isOnboarded}
+      />
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-4xl font-bold">Quiz</h1>
         <p className="text-gray-600 dark:text-gray-400">

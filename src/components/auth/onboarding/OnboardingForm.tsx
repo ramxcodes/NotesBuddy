@@ -44,6 +44,7 @@ import { useRouter } from "next/navigation";
 import { UserIcon } from "@/components/icons/UserIcon";
 import { GraduationCapIcon } from "@/components/icons/GraduationCapIcon";
 import { ArrowRightIcon } from "@/components/icons/ArrowRightIcon";
+import { IndiaFlagIcon } from "@/components/icons/IndiaFlagIcon";
 
 export function OnboardingForm() {
   const router = useRouter();
@@ -267,12 +268,21 @@ export function OnboardingForm() {
                         Phone Number
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Your phone number (e.g., +91 2345678900)"
-                          {...field}
-                          className="h-11 border-2 border-black bg-white font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
-                          type="tel"
-                        />
+                        <div className="relative mr-2 transition-all focus-within:translate-x-[-1px] focus-within:translate-y-[-1px]">
+                          <div className="pointer-events-none absolute top-1/2 left-3 z-10 flex -translate-y-1/2 items-center gap-2">
+                            <IndiaFlagIcon className="h-4 w-6" />
+                            <span className="font-bold text-black dark:text-white">
+                              +91
+                            </span>
+                            <div className="h-4 w-px bg-black/20 dark:bg-white/20" />
+                          </div>
+                          <Input
+                            placeholder="Your phone number (e.g., 9226448040)"
+                            {...field}
+                            className="h-11 border-2 border-black bg-white pl-22 font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
+                            type="tel"
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage className="font-satoshi text-xs font-bold" />
                     </FormItem>

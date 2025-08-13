@@ -63,6 +63,12 @@ export default function QuizAttemptController({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [answerFeedback, setAnswerFeedback] = useState<{
+    questionId: string;
+    selectedOptionId: string;
+    correctOptionId: string | null;
+    isCorrect: boolean;
+  } | null>(null);
 
   // Initialize quiz
   useEffect(() => {
@@ -190,19 +196,24 @@ export default function QuizAttemptController({
 
         // Show feedback
         if (result.isCorrect) {
-          toast.success("Correct! ✓", {
-            style: { background: "green", color: "white" },
-            duration: 1500,
-          });
+          toast.success("Correct! ✓");
         } else {
-          toast.error("Incorrect ✗", {
-            style: { background: "red", color: "white" },
-            duration: 1500,
-          });
+          toast.error(
+            `Incorrect ✗ ${result.correctOptionId ? "Correct answer highlighted" : ""}`,
+          );
         }
+
+        // Store feedback for visual display
+        setAnswerFeedback({
+          questionId: currentQuestion.id,
+          selectedOptionId: optionId,
+          correctOptionId: result.correctOptionId || null,
+          isCorrect: result.isCorrect || false,
+        });
 
         // Auto-advance to next question after delay
         setTimeout(() => {
+          setAnswerFeedback(null); // Clear feedback
           if (currentQuestionIndex < (quiz?.questions.length || 0) - 1) {
             setCurrentQuestionIndex((prev) => prev + 1);
           } else {
@@ -309,6 +320,7 @@ export default function QuizAttemptController({
           answers={answers}
           submitting={submitting}
           onAnswerSelect={handleAnswerSelect}
+          answerFeedback={answerFeedback}
         />
 
         {/* Navigation */}

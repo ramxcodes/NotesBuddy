@@ -9,6 +9,7 @@ import { Poppins, Lexend, Montserrat, Roboto, Inter } from "next/font/google";
 import { ReactLenis } from "@/utils/lenis";
 import { Toaster } from "@/components/ui/sonner";
 import MainNav from "@/components/core/MainNav";
+import CrossableBanner from "@/components/core/CrossableBanner";
 import Head from "next/head";
 import { ThemeInitScript } from "@/components/ui/ThemeInitScript";
 
@@ -165,6 +166,7 @@ export default function RootLayout({
             <ThemeProvider defaultTheme="light" storageKey="notes-buddy-theme">
               <MainNav />
               {children}
+              <CrossableBanner />
               <Toaster />
               <Footer />
             </ThemeProvider>

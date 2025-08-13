@@ -160,7 +160,7 @@
     @apply border-2 border-black bg-white shadow-[8px_8px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-900 dark:shadow-[8px_8px_0px_0px_#757373];
   }
   .neuro-button {
-    @apply border-2 border-black bg-black px-6 py-3 font-black text-black shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:text-white dark:shadow-[4px_4px_0px_0px_#757373];
+    @apply border-2 border-black bg-black px-6 py-3 font-black text-white shadow-[4px_4px_0px_0px_#000] transition-all hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none dark:border-white/20 dark:bg-white dark:text-black dark:shadow-[4px_4px_0px_0px_#757373];
   }
   .neuro-button-sm {
     @apply border-2 border-black bg-white shadow-[1px_1px_0px_0px_#000] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none dark:border-white/20 dark:bg-zinc-800 dark:shadow-[1px_1px_0px_0px_#757373];
@@ -226,6 +226,22 @@
   box-shadow: 4px 4px 0px 0px #000 !important;
   border-radius: 0.5rem !important;
   padding: 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+}
+
+.neuro-toast [data-icon] {
+  flex-shrink: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.neuro-toast [data-content] {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
 }
 
 .dark .neuro-toast {

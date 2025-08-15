@@ -47,7 +47,7 @@ export default function AdminReportsHeader({ stats }: AdminReportsHeaderProps) {
       {/* Statistics Cards */}
       {stats && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="dark:border-white-20dark:bg-black border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#FFF]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-bold">Total Reports</CardTitle>
               <FlagIcon
@@ -63,7 +63,7 @@ export default function AdminReportsHeader({ stats }: AdminReportsHeaderProps) {
             </CardContent>
           </Card>
 
-          <Card className="dark:border-white-20dark:bg-black border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#FFF]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-bold">Today</CardTitle>
               <CalendarCheckIcon
@@ -81,7 +81,7 @@ export default function AdminReportsHeader({ stats }: AdminReportsHeaderProps) {
             </CardContent>
           </Card>
 
-          <Card className="dark:border-white-20dark:bg-black border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#FFF]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-bold">This Week</CardTitle>
               <TrendUpIcon
@@ -97,7 +97,7 @@ export default function AdminReportsHeader({ stats }: AdminReportsHeaderProps) {
             </CardContent>
           </Card>
 
-          <Card className="dark:border-white-20dark:bg-black border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#FFF]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-bold">This Month</CardTitle>
               <WarningIcon
@@ -121,7 +121,7 @@ export default function AdminReportsHeader({ stats }: AdminReportsHeaderProps) {
       {stats && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Top Reported Domains */}
-          <Card className="dark:border-white-20dark:bg-black border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#FFF]">
             <CardHeader>
               <CardTitle className="text-lg font-bold">
                 Top Reported Domains
@@ -139,7 +139,7 @@ export default function AdminReportsHeader({ stats }: AdminReportsHeaderProps) {
                       <div className="flex items-center gap-3">
                         <Badge
                           variant="outline"
-                          className="dark:border-white-20dark:bg-black border-2 border-black bg-white text-black dark:text-white"
+                          className="border-2 border-black text-black dark:border-white/20 dark:text-white"
                         >
                           #{index + 1}
                         </Badge>
@@ -149,7 +149,7 @@ export default function AdminReportsHeader({ stats }: AdminReportsHeaderProps) {
                       </div>
                       <Badge
                         variant="secondary"
-                        className="dark:border-white-20dark:bg-gray-800 border-2 border-black bg-gray-100 text-black dark:text-white"
+                        className="dark:border-white/20dark:bg-gray-800 border-2 border-black bg-gray-100 text-black dark:text-white"
                       >
                         {domain.count} reports
                       </Badge>
@@ -165,7 +165,7 @@ export default function AdminReportsHeader({ stats }: AdminReportsHeaderProps) {
           </Card>
 
           {/* Recent Reports */}
-          <Card className="dark:border-white-20dark:bg-black border-2 border-black bg-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#FFF]">
+          <Card className="border-2 border-black shadow-[4px_4px_0px_0px_#000] dark:border-white/20 dark:shadow-[4px_4px_0px_0px_#FFF]">
             <CardHeader>
               <CardTitle className="text-lg font-bold">
                 Recent Reports

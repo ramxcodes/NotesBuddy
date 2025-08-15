@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
+import { Link } from "next-view-transitions";
 import { revalidateAllNotesCaching } from "@/cache/revalidate-notes";
-import { NotebookIcon } from "@phosphor-icons/react";
+import { NotebookIcon, Upload } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -23,13 +24,21 @@ export default function AdminNotesHeader() {
           Create, manage, and edit educational notes for students
         </p>
       </div>
-      <Button
-        variant={"destructive"}
-        className="neuro-button neuro-lg"
-        onClick={handleRevalidate}
-      >
-        🚧 Revalidate Notes Cache 🚧
-      </Button>
+      <div className="flex gap-3">
+        <Link href="/admin/notes/import">
+          <Button variant="default" className="neuro-button neuro-lg">
+            <Upload weight="duotone" className="mr-2 h-4 w-4" />
+            Import Notes
+          </Button>
+        </Link>
+        <Button
+          variant={"destructive"}
+          className="neuro-button neuro-lg"
+          onClick={handleRevalidate}
+        >
+          🚧 Revalidate Notes Cache 🚧
+        </Button>
+      </div>
     </div>
   );
 }

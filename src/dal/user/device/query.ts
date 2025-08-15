@@ -389,10 +389,11 @@ async function validateDeviceLimitWithLock(
   const currentDeviceCount = user._count.deviceFingerprints;
 
   if (currentDeviceCount > APP_CONFIG.MAX_DEVICES_PER_USER) {
-    await tx.user.update({
+    await prisma.user.update({
       where: { id: userId },
       data: { isBlocked: true },
     });
+
     throw new Error(
       `Device limit exceeded. Maximum ${APP_CONFIG.MAX_DEVICES_PER_USER} devices allowed. Current: ${currentDeviceCount}`,
     );

@@ -35,7 +35,7 @@ export default function AdminQuizController() {
 
   // URL state management for filters and pagination
   const [urlState, setUrlState] = useUrlStates({
-    page: { defaultValue: 1 },
+    page: { defaultValue: 0 }, // Change default to 0 so page 1 stays in URL
     search: { defaultValue: "" },
     sort: { defaultValue: "NEWEST" as QuizSortOption },
     filter: { defaultValue: "ALL" as QuizFilterOption },
@@ -50,10 +50,11 @@ export default function AdminQuizController() {
   const debouncedSearch = useDebounce(urlState.search, 500);
 
   const fetchQuizzes = useCallback(
-    async (page: number = urlState.page) => {
+    async (page?: number) => {
+      const currentPage = page ?? Math.max(1, urlState.page);
       try {
         const result = await getQuizzesAction({
-          page,
+          page: currentPage,
           search: debouncedSearch,
           sort: urlState.sort,
           filter: urlState.filter,
@@ -162,7 +163,7 @@ export default function AdminQuizController() {
   const handleToggleStatus = async (quizId: string) => {
     const result = await toggleQuizStatusAction(quizId);
     if (result.success) {
-      fetchQuizzes(urlState.page);
+      fetchQuizzes();
       fetchStats(); // Refresh stats when status changes
     }
   };
@@ -170,7 +171,7 @@ export default function AdminQuizController() {
   const handleTogglePublished = async (quizId: string) => {
     const result = await toggleQuizPublishedAction(quizId);
     if (result.success) {
-      fetchQuizzes(urlState.page);
+      fetchQuizzes();
       fetchStats(); // Refresh stats when published status changes
     }
   };
@@ -183,7 +184,7 @@ export default function AdminQuizController() {
     ) {
       const result = await deleteQuizAction(quizId);
       if (result.success) {
-        fetchQuizzes(urlState.page);
+        fetchQuizzes();
         fetchStats(); // Refresh stats when quiz is deleted
       }
     }
@@ -203,8 +204,9 @@ export default function AdminQuizController() {
 
   // Fetch quizzes when dependencies change
   useEffect(() => {
-    fetchQuizzes(1);
+    fetchQuizzes();
   }, [
+    urlState.page,
     urlState.sort,
     urlState.filter,
     urlState.university,
@@ -288,7 +290,7 @@ export default function AdminQuizController() {
 
       {quizzesData && (
         <AdminQuizPagination
-          currentPage={urlState.page}
+          currentPage={Math.max(1, urlState.page)}
           totalPages={quizzesData.pagination.pages}
           onPageChange={handlePageChange}
         />

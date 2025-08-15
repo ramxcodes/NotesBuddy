@@ -395,6 +395,7 @@ export async function bulkImportQuizzesAction({
   unitNumber,
   isPremium,
   requiredTier,
+  isPublished,
 }: {
   jsonData: BulkQuizImportData;
   university: string;
@@ -404,6 +405,7 @@ export async function bulkImportQuizzesAction({
   unitNumber?: string;
   isPremium?: boolean;
   requiredTier?: string;
+  isPublished?: boolean;
 }): Promise<BulkQuizImportResult> {
   const isAdmin = await adminStatus();
 
@@ -456,6 +458,7 @@ export async function bulkImportQuizzesAction({
           description,
           isPremium || false,
           requiredTier ? (requiredTier as PremiumTier) : undefined,
+          isPublished ?? true,
         );
 
         if (result.success && result.quizId) {

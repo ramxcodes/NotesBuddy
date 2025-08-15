@@ -24,6 +24,7 @@ export const createFlashcardSetSchema = z.object({
   semester: z.nativeEnum(Semester),
   isPremium: z.boolean().default(false),
   requiredTier: z.nativeEnum(PremiumTier).optional(),
+  isPublished: z.boolean().default(true),
   cards: z
     .array(
       z.object({

@@ -243,7 +243,7 @@ export default function CreateQuizForm() {
           <Button
             onClick={() => router.push("/admin/quiz")}
             variant="outline"
-            className="neuro-button font-satoshi font-bold"
+            className="neuro-button font-satoshi font-bold text-black/70 dark:text-white/70"
           >
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Quizzes

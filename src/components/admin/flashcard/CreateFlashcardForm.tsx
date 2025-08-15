@@ -59,6 +59,7 @@ export default function CreateFlashcardForm() {
   const [semester, setSemester] = useState<Semester | "">("");
   const [isPremium, setIsPremium] = useState(false);
   const [requiredTier, setRequiredTier] = useState<PremiumTier | "">("");
+  const [isPublished, setIsPublished] = useState(true);
 
   // Flashcards state
   const [cards, setCards] = useState<FlashcardData[]>([
@@ -155,6 +156,7 @@ export default function CreateFlashcardForm() {
         isPremium,
         requiredTier:
           isPremium && requiredTier ? (requiredTier as PremiumTier) : undefined,
+        isPublished,
         cards: validCards,
       };
 
@@ -411,6 +413,23 @@ export default function CreateFlashcardForm() {
                 </Select>
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        {/* Publication Settings */}
+        <Card className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <CardHeader>
+            <CardTitle>Publication Settings</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="published"
+                checked={isPublished}
+                onCheckedChange={(checked) => setIsPublished(checked === true)}
+              />
+              <Label htmlFor="published">Publish this flashcard set</Label>
+            </div>
           </CardContent>
         </Card>
 

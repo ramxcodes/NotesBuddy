@@ -271,6 +271,7 @@ export interface BulkImportParams {
   unitNumber?: string;
   isPremium?: boolean;
   requiredTier?: string;
+  isPublished?: boolean;
 }
 
 // Bulk Import Action
@@ -285,6 +286,7 @@ export async function bulkImportFlashcardsAction(params: BulkImportParams) {
       unitNumber,
       isPremium,
       requiredTier,
+      isPublished,
     } = params;
 
     if (!jsonData.flashcardSets || !Array.isArray(jsonData.flashcardSets)) {
@@ -348,6 +350,7 @@ export async function bulkImportFlashcardsAction(params: BulkImportParams) {
           requiredTier: requiredTier
             ? (requiredTier as PremiumTier)
             : undefined,
+          isPublished: isPublished ?? true,
           cards: formattedCards,
         };
 

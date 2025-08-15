@@ -664,6 +664,7 @@ export async function bulkCreateQuizzes(
   customDescription?: string,
   isPremium?: boolean,
   requiredTier?: PremiumTier,
+  isPublished?: boolean,
 ): Promise<{
   success: boolean;
   quizId?: string;
@@ -702,7 +703,7 @@ export async function bulkCreateQuizzes(
                 timeLimit: null,
                 marksPerQuestion: 1,
                 isActive: true,
-                isPublished: false,
+                isPublished: isPublished ?? true,
                 isPremium: isPremium || false,
                 requiredTier: requiredTier || null,
               },

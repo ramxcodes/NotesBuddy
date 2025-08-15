@@ -57,8 +57,11 @@ export default function BulkQuizImport() {
   const [semester, setSemester] = useState<Semester | "">("");
   const [unitNumber, setUnitNumber] = useState("");
   const [jsonInput, setJsonInput] = useState("");
+  const [parsedQuizData, setParsedQuizData] =
+    useState<BulkQuizImportData | null>(null);
   const [isPremium, setIsPremium] = useState(false);
   const [requiredTier, setRequiredTier] = useState<PremiumTier | "">("");
+  const [isPublished, setIsPublished] = useState(true);
 
   // UI state
   const [loading, setLoading] = useState(false);
@@ -99,9 +102,23 @@ export default function BulkQuizImport() {
       try {
         const content = e.target?.result as string;
         setJsonInput(content);
+
+        // Try to parse the JSON and set parsed data
+        try {
+          const parsed = JSON.parse(content);
+          if (validateJsonData(parsed)) {
+            setParsedQuizData(parsed);
+          } else {
+            setParsedQuizData(null);
+          }
+        } catch {
+          setParsedQuizData(null);
+        }
+
         setError("");
       } catch {
         setError("Failed to read file");
+        setParsedQuizData(null);
       }
     };
     reader.readAsText(file);
@@ -122,6 +139,27 @@ export default function BulkQuizImport() {
     setIsDragOver(false);
     const file = e.dataTransfer.files[0];
     processFile(file);
+  };
+
+  const handleJsonInputChange = (value: string) => {
+    setJsonInput(value);
+
+    // Try to parse the JSON and set parsed data
+    if (value.trim()) {
+      try {
+        const parsed = JSON.parse(value);
+        if (validateJsonData(parsed)) {
+          setParsedQuizData(parsed);
+          setError("");
+        } else {
+          setParsedQuizData(null);
+        }
+      } catch {
+        setParsedQuizData(null);
+      }
+    } else {
+      setParsedQuizData(null);
+    }
   };
 
   const validateJsonData = (data: unknown): data is BulkQuizImportData => {
@@ -214,6 +252,7 @@ export default function BulkQuizImport() {
         unitNumber: unitNumber || undefined,
         isPremium,
         requiredTier: requiredTier || undefined,
+        isPublished,
       });
 
       setProgress(100);
@@ -222,8 +261,10 @@ export default function BulkQuizImport() {
       if (result.success) {
         // Clear form if successful
         setJsonInput("");
+        setParsedQuizData(null);
         setIsPremium(false);
         setRequiredTier("");
+        setIsPublished(true);
       }
     } catch (err) {
       setError(
@@ -485,6 +526,31 @@ export default function BulkQuizImport() {
               )}
             </div>
 
+            {/* Publish Settings */}
+            <div className="space-y-4">
+              <Label className="text-base font-semibold">
+                Publication Settings
+              </Label>
+
+              {/* Is Published Checkbox */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="isPublished"
+                  checked={isPublished}
+                  onCheckedChange={(checked) =>
+                    setIsPublished(checked === true)
+                  }
+                  className="border-2 border-black data-[state=checked]:bg-black data-[state=checked]:text-white dark:border-white/20 dark:data-[state=checked]:bg-white dark:data-[state=checked]:text-black"
+                />
+                <Label
+                  htmlFor="isPublished"
+                  className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Published
+                </Label>
+              </div>
+            </div>
+
             {/* File Upload */}
             <div className="flex flex-col space-y-3">
               <Label className="flex items-center gap-2 text-base font-semibold">
@@ -563,7 +629,7 @@ export default function BulkQuizImport() {
                 <Textarea
                   id="jsonInput"
                   value={jsonInput}
-                  onChange={(e) => setJsonInput(e.target.value)}
+                  onChange={(e) => handleJsonInputChange(e.target.value)}
                   placeholder="Paste your JSON data here or upload a file..."
                   className="max-h-[500px] min-h-[500px] resize-none overflow-y-auto border-2 border-black bg-white pl-12 font-mono text-sm font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                 />
@@ -579,6 +645,72 @@ export default function BulkQuizImport() {
                 input is limited to 500px height for better visibility.
               </p>
             </div>
+
+            {/* Quiz Preview */}
+            {parsedQuizData && (
+              <div className="flex flex-col space-y-3" data-lenis-prevent>
+                <Label className="flex items-center gap-2 text-base font-semibold">
+                  <FileTextIcon className="h-5 w-5" />
+                  Quiz Preview ({parsedQuizData.quizSets.length} Quiz Set
+                  {parsedQuizData.quizSets.length > 1 ? "s" : ""})
+                </Label>
+                <div className="max-h-[600px] space-y-4 overflow-y-auto rounded-lg border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+                  {parsedQuizData.quizSets.map((quizSet, setIndex) => (
+                    <div
+                      key={setIndex}
+                      className="space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-zinc-900"
+                    >
+                      <div className="border-b border-gray-300 pb-2 dark:border-gray-600">
+                        <h3 className="text-lg font-bold text-black dark:text-white">
+                          {quizSet.subject} - {quizSet.topic}
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          {quizSet.questions.length} question
+                          {quizSet.questions.length > 1 ? "s" : ""}
+                        </p>
+                      </div>
+                      <div className="space-y-3">
+                        {quizSet.questions.map((question, questionIndex) => (
+                          <div
+                            key={questionIndex}
+                            className="space-y-2 rounded border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-zinc-800"
+                          >
+                            <p className="font-medium text-black dark:text-white">
+                              Q{questionIndex + 1}: {question.question}
+                            </p>
+                            <div className="space-y-1">
+                              {question.options.map((option, optionIndex) => (
+                                <div
+                                  key={optionIndex}
+                                  className={`rounded p-2 text-sm ${
+                                    option.isCorrect
+                                      ? "border border-green-300 bg-green-100 font-medium text-green-800 dark:border-green-700 dark:bg-green-900 dark:text-green-200"
+                                      : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+                                  }`}
+                                >
+                                  {String.fromCharCode(65 + optionIndex)}.{" "}
+                                  {option.text}
+                                  {option.isCorrect && " ✓"}
+                                </div>
+                              ))}
+                            </div>
+                            {question.explanation && (
+                              <div className="text-muted-foreground text-sm italic">
+                                Explanation: {question.explanation}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-muted-foreground text-sm">
+                  Preview shows all questions from each quiz set that will be
+                  imported.
+                </p>
+              </div>
+            )}
 
             {/* Progress */}
             {loading && (

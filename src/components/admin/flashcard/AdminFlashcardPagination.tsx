@@ -4,17 +4,17 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 
-interface AdminQuizPaginationProps {
+interface AdminFlashcardPaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
 }
 
-export default function AdminQuizPagination({
+export default function AdminFlashcardPagination({
   currentPage,
   totalPages,
   onPageChange,
-}: AdminQuizPaginationProps) {
+}: AdminFlashcardPaginationProps) {
   if (totalPages <= 1) return null;
 
   const getVisiblePages = () => {

@@ -35,6 +35,7 @@ export const createQuizSchema = z.object({
     .default(1),
   isPremium: z.boolean().default(false),
   requiredTier: z.nativeEnum(PremiumTier).optional(),
+  isPublished: z.boolean().default(true),
   questions: z
     .array(
       z.object({

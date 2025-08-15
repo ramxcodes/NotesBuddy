@@ -314,7 +314,7 @@ export default function EditQuizForm({ quizId }: EditQuizFormProps) {
           </p>
           <Button
             onClick={() => router.push("/admin/quiz")}
-            className="neuro-button font-satoshi mt-4 font-bold"
+            className="neuro-button font-satoshi mt-4 font-bold text-black/70 dark:text-white/70"
           >
             Back to Quizzes
           </Button>
@@ -332,7 +332,7 @@ export default function EditQuizForm({ quizId }: EditQuizFormProps) {
           </p>
           <Button
             onClick={() => router.push("/admin/quiz")}
-            className="neuro-button font-satoshi mt-4 font-bold"
+            className="neuro-button font-satoshi mt-4 font-bold text-black/70 dark:text-white/70"
           >
             Back to Quizzes
           </Button>
@@ -349,7 +349,7 @@ export default function EditQuizForm({ quizId }: EditQuizFormProps) {
           <Button
             onClick={() => router.push("/admin/quiz")}
             variant="outline"
-            className="neuro-button font-satoshi font-bold"
+            className="neuro-button font-satoshi font-bold text-black/70 dark:text-white/70"
           >
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Quizzes
@@ -843,14 +843,14 @@ export default function EditQuizForm({ quizId }: EditQuizFormProps) {
             onClick={() => router.push("/admin/quiz")}
             variant="outline"
             disabled={loading}
-            className="neuro-button font-satoshi font-bold"
+            className="neuro-button font-satoshi font-bold text-black/70 dark:text-white/70"
           >
             Cancel
           </Button>
           <Button
             type="submit"
             disabled={loading}
-            className="neuro-button font-satoshi bg-blue-600 font-bold text-white hover:bg-blue-700"
+            className="neuro-button font-satoshi font-bold text-white"
           >
             {loading ? (
               <>

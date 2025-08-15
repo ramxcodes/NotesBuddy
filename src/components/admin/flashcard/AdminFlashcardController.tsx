@@ -22,7 +22,7 @@ import AdminFlashcardHeader from "./AdminFlashcardHeader";
 import AdminFlashcardFilterAndSearch from "./AdminFlashcardFilterAndSearch";
 import AdminFlashcardTable from "./AdminFlashcardTable";
 import AdminFlashcardEmptyState from "./AdminFlashcardEmptyState";
-import AdminQuizPagination from "../quiz/AdminQuizPagination";
+import AdminFlashcardPagination from "./AdminFlashcardPagination";
 
 type FlashcardSortOption =
   | "NEWEST"
@@ -55,7 +55,7 @@ export default function AdminFlashcardController() {
 
   // URL state management for filters and pagination
   const [urlState, setUrlState] = useUrlStates({
-    page: { defaultValue: 1 },
+    page: { defaultValue: 0 },
     search: { defaultValue: "" },
     sort: { defaultValue: "NEWEST" as FlashcardSortOption },
     filter: { defaultValue: "ALL" as FlashcardFilterOption },
@@ -70,11 +70,12 @@ export default function AdminFlashcardController() {
   const debouncedSearch = useDebounce(urlState.search, 500);
 
   const fetchFlashcardSets = useCallback(
-    async (page = urlState.page) => {
+    async (page?: number) => {
+      const currentPage = page ?? Math.max(1, urlState.page);
       setLoading(true);
       try {
         const filters: FlashcardSetFilters = {
-          page,
+          page: currentPage,
           limit: pageSize,
           search: debouncedSearch || undefined,
           university: urlState.university
@@ -151,8 +152,9 @@ export default function AdminFlashcardController() {
   }, []);
 
   useEffect(() => {
-    fetchFlashcardSets(1);
+    fetchFlashcardSets();
   }, [
+    urlState.page,
     urlState.sort,
     urlState.filter,
     urlState.university,
@@ -180,7 +182,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await toggleFlashcardSetStatusAction(id, isActive);
       if (result.success) {
-        await fetchFlashcardSets(urlState.page);
+        await fetchFlashcardSets();
         await fetchStats();
       }
     } catch {}
@@ -190,7 +192,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await toggleFlashcardSetPublishedAction(id, isPublished);
       if (result.success) {
-        await fetchFlashcardSets(urlState.page);
+        await fetchFlashcardSets();
         await fetchStats();
       }
     } catch {}
@@ -208,7 +210,7 @@ export default function AdminFlashcardController() {
     try {
       const result = await deleteFlashcardSetAction(id);
       if (result.success) {
-        await fetchFlashcardSets(urlState.page);
+        await fetchFlashcardSets();
         await fetchStats();
       }
     } catch {}
@@ -358,8 +360,8 @@ export default function AdminFlashcardController() {
 
       {/* Pagination */}
       {flashcardSets.length > 0 && (
-        <AdminQuizPagination
-          currentPage={urlState.page}
+        <AdminFlashcardPagination
+          currentPage={Math.max(1, urlState.page)}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />

@@ -69,6 +69,8 @@ export default function BulkFlashcardImport() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [jsonInput, setJsonInput] = useState("");
+  const [parsedFlashcardData, setParsedFlashcardData] =
+    useState<BulkImportData | null>(null);
   const [unitNumber, setUnitNumber] = useState("");
   const [university, setUniversity] = useState<University | "">("");
   const [degree, setDegree] = useState<Degree | "">("");
@@ -76,6 +78,7 @@ export default function BulkFlashcardImport() {
   const [semester, setSemester] = useState<Semester | "">("");
   const [isPremium, setIsPremium] = useState(false);
   const [requiredTier, setRequiredTier] = useState<PremiumTier | "">("");
+  const [isPublished, setIsPublished] = useState(true);
   const [importResult, setImportResult] = useState<ImportResponse | null>(null);
   const [progress, setProgress] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -109,12 +112,47 @@ export default function BulkFlashcardImport() {
       try {
         const content = e.target?.result as string;
         setJsonInput(content);
+
+        // Try to parse the JSON and set parsed data
+        try {
+          const parsed = JSON.parse(content);
+          if (validateJsonData(parsed)) {
+            setParsedFlashcardData(parsed);
+          } else {
+            setParsedFlashcardData(null);
+          }
+        } catch {
+          setParsedFlashcardData(null);
+        }
+
         setError("");
       } catch {
         setError("Failed to read file");
+        setParsedFlashcardData(null);
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleJsonInputChange = (value: string) => {
+    setJsonInput(value);
+
+    // Try to parse the JSON and set parsed data
+    if (value.trim()) {
+      try {
+        const parsed = JSON.parse(value);
+        if (validateJsonData(parsed)) {
+          setParsedFlashcardData(parsed);
+          setError("");
+        } else {
+          setParsedFlashcardData(null);
+        }
+      } catch {
+        setParsedFlashcardData(null);
+      }
+    } else {
+      setParsedFlashcardData(null);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -218,6 +256,7 @@ export default function BulkFlashcardImport() {
         unitNumber: unitNumber || undefined,
         isPremium,
         requiredTier: requiredTier || undefined,
+        isPublished,
       });
 
       setProgress(100);
@@ -226,9 +265,11 @@ export default function BulkFlashcardImport() {
       if (result.success) {
         // Clear form if successful
         setJsonInput("");
+        setParsedFlashcardData(null);
         setUnitNumber("");
         setIsPremium(false);
         setRequiredTier("");
+        setIsPublished(true);
       }
     } catch (err) {
       setError(
@@ -502,6 +543,31 @@ export default function BulkFlashcardImport() {
               )}
             </div>
 
+            {/* Publish Settings */}
+            <div className="space-y-4">
+              <Label className="text-base font-semibold">
+                Publication Settings
+              </Label>
+
+              {/* Is Published Checkbox */}
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="isPublished"
+                  checked={isPublished}
+                  onCheckedChange={(checked) =>
+                    setIsPublished(checked === true)
+                  }
+                  className="border-2 border-black data-[state=checked]:bg-black data-[state=checked]:text-white dark:border-white/20 dark:data-[state=checked]:bg-white dark:data-[state=checked]:text-black"
+                />
+                <Label
+                  htmlFor="isPublished"
+                  className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Published
+                </Label>
+              </div>
+            </div>
+
             {/* File Upload */}
             <div className="flex flex-col space-y-3">
               <Label className="flex items-center gap-2 text-base font-semibold">
@@ -580,7 +646,7 @@ export default function BulkFlashcardImport() {
                 <Textarea
                   id="jsonInput"
                   value={jsonInput}
-                  onChange={(e) => setJsonInput(e.target.value)}
+                  onChange={(e) => handleJsonInputChange(e.target.value)}
                   placeholder="Paste your JSON data here or upload a file..."
                   className="max-h-[500px] min-h-[500px] resize-none overflow-y-auto border-2 border-black bg-white pl-12 font-mono text-sm font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all focus:translate-x-[-1px] focus:translate-y-[-1px] focus:shadow-[3px_3px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:text-white dark:shadow-[2px_2px_0px_0px_#757373] dark:focus:shadow-[3px_3px_0px_0px_#757373]"
                 />
@@ -596,6 +662,75 @@ export default function BulkFlashcardImport() {
                 input is limited to 500px height for better visibility.
               </p>
             </div>
+
+            {/* Flashcard Preview */}
+            {parsedFlashcardData && (
+              <div className="flex flex-col space-y-3" data-lenis-prevent>
+                <Label className="flex items-center gap-2 text-base font-semibold">
+                  <FileTextIcon className="h-5 w-5" />
+                  Flashcard Preview ({
+                    parsedFlashcardData.flashcardSets.length
+                  }{" "}
+                  Set
+                  {parsedFlashcardData.flashcardSets.length > 1 ? "s" : ""})
+                </Label>
+                <div className="max-h-[600px] space-y-4 overflow-y-auto rounded-lg border-2 border-black bg-white p-4 shadow-[2px_2px_0px_0px_#000] dark:border-white/20 dark:bg-zinc-800 dark:shadow-[2px_2px_0px_0px_#757373]">
+                  {parsedFlashcardData.flashcardSets.map(
+                    (flashcardSet, setIndex) => (
+                      <div
+                        key={setIndex}
+                        className="space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-zinc-900"
+                      >
+                        <div className="border-b border-gray-300 pb-2 dark:border-gray-600">
+                          <h3 className="text-lg font-bold text-black dark:text-white">
+                            {flashcardSet.subject} - {flashcardSet.topic}
+                          </h3>
+                          <p className="text-muted-foreground text-sm">
+                            {flashcardSet.flashcards.length} flashcard
+                            {flashcardSet.flashcards.length > 1 ? "s" : ""}
+                          </p>
+                        </div>
+                        <div className="space-y-3">
+                          {flashcardSet.flashcards.map(
+                            (flashcard, cardIndex) => (
+                              <div
+                                key={cardIndex}
+                                className="grid grid-cols-1 gap-3 rounded border border-gray-200 bg-white p-3 md:grid-cols-2 dark:border-gray-600 dark:bg-zinc-800"
+                              >
+                                <div className="space-y-2">
+                                  <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                                    Front #{cardIndex + 1}
+                                  </p>
+                                  <div className="rounded border border-blue-200 bg-blue-50 p-3 dark:border-blue-700 dark:bg-blue-900/20">
+                                    <p className="text-sm text-black dark:text-white">
+                                      {flashcard.front}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="space-y-2">
+                                  <p className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                                    Back
+                                  </p>
+                                  <div className="rounded border border-green-200 bg-green-50 p-3 dark:border-green-700 dark:bg-green-900/20">
+                                    <p className="text-sm text-black dark:text-white">
+                                      {flashcard.back}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    ),
+                  )}
+                </div>
+                <p className="text-muted-foreground text-sm">
+                  Preview shows all flashcards from each set that will be
+                  imported.
+                </p>
+              </div>
+            )}
 
             {/* Progress */}
             {loading && (

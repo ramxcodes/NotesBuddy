@@ -67,9 +67,9 @@ export default function HeroSection() {
   return (
     <div className="w-full">
       <div className="container mx-auto">
-        <div className="relative flex flex-col items-center justify-center gap-8 py-20 lg:py-40">
+        <div className="relative flex flex-col items-center justify-center gap-8 py-0 lg:py-10">
           <Science className="absolute top-4 left-4 size-24 md:size-64" />
-          <Cap className="absolute right-10 bottom-0 size-24 md:bottom-10 md:size-64" />
+          <Cap className="absolute right-10 -bottom-16 size-24 md:bottom-10 md:size-64 lg:bottom-0" />
           <div>
             <Button variant="secondary" size="sm" className="gap-4">
               Now it is time to study{" "}

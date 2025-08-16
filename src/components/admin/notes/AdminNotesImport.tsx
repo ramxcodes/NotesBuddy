@@ -162,21 +162,6 @@ export default function AdminNotesImport() {
       const combinedContent: PortableTextContent = [];
 
       parsedData.parsedNotes.forEach((note, index) => {
-        combinedContent.push({
-          _type: "block" as const,
-          _key: `heading-${index}`,
-          style: "h2" as const,
-          markDefs: [],
-          children: [
-            {
-              _type: "span" as const,
-              _key: `span-heading-${index}`,
-              text: note.topic,
-              marks: [],
-            },
-          ],
-        });
-
         combinedContent.push(...note.content);
 
         if (index < parsedData.parsedNotes.length - 1) {

@@ -210,14 +210,14 @@ export default function FlashcardViewer({
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Button
             data-umami-event={`flashcard-previous-card-${currentCardIndex}`}
             variant="outline"
             size="lg"
             onClick={handlePrevCard}
             disabled={currentCardIndex === 0}
-            className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+            className="w-full border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 sm:w-auto"
           >
             <ArrowLeftIcon weight="duotone" className="mr-2 h-5 w-5" />
             Previous
@@ -228,7 +228,7 @@ export default function FlashcardViewer({
             variant="default"
             size="lg"
             onClick={handleFlipCard}
-            className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="w-full border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:w-auto"
           >
             {showBack ? (
               <>
@@ -249,7 +249,7 @@ export default function FlashcardViewer({
             size="lg"
             onClick={handleNextCard}
             disabled={currentCardIndex === flashcardSet.cards.length - 1}
-            className="border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+            className="w-full border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50 sm:w-auto"
           >
             Next
             <ArrowRightIcon weight="duotone" className="ml-2 h-5 w-5" />

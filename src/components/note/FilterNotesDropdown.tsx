@@ -16,6 +16,7 @@ import {
   getSemestersByUniversityDegreeAndYear,
   prismaToSanityValue,
   sanityToPrismaValue,
+  normalizeSubjectCasing,
 } from "@/utils/academic-config";
 import { getAvailableSubjects } from "@/dal/note/helper";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -238,14 +239,27 @@ export default function FilterNotesDropdown({
             : undefined,
         });
 
-        const dataArray = Array.isArray(subjectData) ? subjectData : [];
+        const subjects = Array.isArray(subjectData) ? subjectData : [];
+
         const uniqueSubjects = Array.from(
           new Set(
-            dataArray
+            subjects
               .map((item: { subject: string | null }) => item.subject)
-              .filter((subject): subject is string => Boolean(subject)),
+              .filter((subject): subject is string => Boolean(subject))
+              .map((subject) => subject.toLowerCase()),
           ),
-        ).map((subject) => ({ subject }));
+        )
+          .map((lowerSubject) => {
+            const originalSubject = subjects
+              .map((item: { subject: string | null }) => item.subject)
+              .find(
+                (subject) => subject && subject.toLowerCase() === lowerSubject,
+              );
+            return {
+              subject: normalizeSubjectCasing(originalSubject || lowerSubject),
+            };
+          })
+          .sort((a, b) => a.subject.localeCompare(b.subject));
 
         setSubjects(uniqueSubjects);
       } catch (error) {

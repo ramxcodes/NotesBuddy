@@ -588,3 +588,21 @@ export const getTierDisplayName = (tier: string): string => {
       return "Unknown Tier";
   }
 };
+
+/**
+ * Normalize subject casing to title case for consistent display
+ * This function converts subjects to proper title case (first letter of each word capitalized)
+ */
+export function normalizeSubjectCasing(subject: string): string {
+  if (!subject) return subject;
+
+  const normalized = subject.toLowerCase();
+
+  const words = normalized.split(/[\s\-_]+/);
+
+  const capitalizedWords = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+
+  return capitalizedWords.join(" ");
+}

@@ -12,7 +12,7 @@ export const NOTES_QUERY =
     (!defined($degree) || degree == $degree) &&
     (!defined($year) || year == $year) &&
     (!defined($semester) || semester == $semester) &&
-    (!defined($subject) || subject match $subject) &&
+    (!defined($subject) || lower(subject) match lower($subject)) &&
     (!defined($premium) || 
       ($premium == "free" && (!defined(isPremium) || isPremium == false)) ||
       ($premium == "premium" && isPremium == true)
@@ -61,7 +61,7 @@ export const NOTES_COUNT_QUERY =
     (!defined($degree) || degree == $degree) &&
     (!defined($year) || year == $year) &&
     (!defined($semester) || semester == $semester) &&
-    (!defined($subject) || subject match $subject) &&
+    (!defined($subject) || lower(subject) match lower($subject)) &&
     (!defined($premium) || 
       ($premium == "free" && (!defined(isPremium) || isPremium == false)) ||
       ($premium == "premium" && isPremium == true)
@@ -77,7 +77,6 @@ export const NOTES_COUNT_QUERY =
     )
   ])`);
 
-// Enhanced subjects query with caching optimization
 export const SUBJECTS_QUERY = defineQuery(`
   *[_type == "note" && defined(subject) &&
     (!defined($university) || university == $university) &&

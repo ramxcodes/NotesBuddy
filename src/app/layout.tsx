@@ -12,6 +12,7 @@ import MainNav from "@/components/core/MainNav";
 import CrossableBanner from "@/components/core/CrossableBanner";
 import Head from "next/head";
 import { ThemeInitScript } from "@/components/ui/ThemeInitScript";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const poppins = Poppins({
   subsets: ["latin"],
@@ -171,6 +172,7 @@ export default function RootLayout({
               <Footer />
             </ThemeProvider>
           </body>
+          <GoogleAnalytics gaId="G-4NRR52WMZ2" />
         </ReactLenis>
       </html>
     </ViewTransitions>

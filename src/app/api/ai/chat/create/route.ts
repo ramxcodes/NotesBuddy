@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 import { createChat } from "@/dal/ai/chat";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 const createChatSchema = z.object({
   userId: z.string().min(1),
@@ -23,6 +24,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(chat);
   } catch (error) {
     console.error("Error creating chat:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Chat Create",
+    );
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

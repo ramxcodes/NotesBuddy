@@ -6,6 +6,7 @@ import { revalidateTag } from "next/cache";
 import telegramBot, {
   type PaymentNotificationData,
 } from "@/lib/telegram/telegramBot";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function POST(request: NextRequest) {
   try {
@@ -179,6 +180,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Error verifying upgrade payment:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Verify Upgrade",
+    );
     return NextResponse.json(
       {
         error:

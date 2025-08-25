@@ -16,6 +16,7 @@ import {
 } from "@/dal/user/onboarding/query";
 import { University, Degree, Year, Semester } from "@prisma/client";
 import { unstable_cache } from "next/cache";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export interface GetUserFlashcardSetsParams {
   search?: string;
@@ -80,6 +81,10 @@ export async function loadMoreFlashcardSetsAction(
     return result;
   } catch (error) {
     console.error("Error loading more flashcard sets:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Load More Sets",
+    );
     return [];
   }
 }
@@ -139,6 +144,10 @@ export async function loadUserFlashcardSetsAction(
     return result;
   } catch (error) {
     console.error("Error loading user flashcard sets:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Load User Sets",
+    );
     return null;
   }
 }
@@ -154,6 +163,10 @@ export async function getUserFlashcardSubjectsAction(filters: {
     return subjects;
   } catch (error) {
     console.error("Error loading flashcard subjects:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Load Subjects",
+    );
     return [];
   }
 }
@@ -190,6 +203,10 @@ export async function getUserContextAction() {
     };
   } catch (error) {
     console.error("Error getting user context:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Get User Context",
+    );
     return {
       isAuthenticated: false,
       isOnboarded: false,
@@ -217,6 +234,10 @@ export async function trackFlashcardSetVisitAction(setId: string) {
     return { success: true };
   } catch (error) {
     console.error("Error tracking flashcard set visit:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Track Visit",
+    );
     return { success: false, error: "Failed to track visit" };
   }
 }
@@ -236,6 +257,10 @@ export async function getFlashcardSetByIdAction(id: string) {
     return flashcardSet;
   } catch (error) {
     console.error("Error getting flashcard set:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Get Set By ID",
+    );
     return null;
   }
 }

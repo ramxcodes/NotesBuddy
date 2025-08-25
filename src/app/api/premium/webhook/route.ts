@@ -6,6 +6,7 @@ import {
   fetchRazorpayPayment,
   RazorpayPayment,
 } from "@/lib/razorpay/config";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 // Webhook secret for signature verification
 const WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET || "";
@@ -57,6 +58,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     console.error("Webhook processing error:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Webhook",
+    );
     return NextResponse.json(
       { error: "Webhook processing failed" },
       { status: 500 },
@@ -88,6 +93,10 @@ async function handlePaymentCaptured(payment: RazorpayPayment) {
     console.log("Payment captured successfully processed:", payment.id);
   } catch (error: unknown) {
     console.error("Error handling payment captured:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Webhook Payment Captured",
+    );
     throw error;
   }
 }
@@ -114,6 +123,10 @@ async function handlePaymentFailed(payment: RazorpayPayment) {
     console.log("Payment failure successfully processed:", payment.id);
   } catch (error: unknown) {
     console.error("Error handling payment failed:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Webhook Payment Failed",
+    );
     throw error;
   }
 }
@@ -140,6 +153,10 @@ async function handlePaymentAuthorized(payment: RazorpayPayment) {
     console.log("Payment authorization successfully processed:", payment.id);
   } catch (error: unknown) {
     console.error("Error handling payment authorized:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Webhook Payment Authorized",
+    );
     throw error;
   }
 }

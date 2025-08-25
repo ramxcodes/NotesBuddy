@@ -8,6 +8,7 @@ import {
   paymentStatusMapping,
 } from "@/lib/razorpay/config";
 import { headers } from "next/headers";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function POST(req: NextRequest) {
   try {
@@ -106,6 +107,10 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: unknown) {
     console.error("Payment verification error:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Verify Payment",
+    );
     return NextResponse.json(
       {
         error: "Payment verification failed",

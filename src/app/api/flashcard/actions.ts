@@ -26,6 +26,7 @@ import type {
 import { getSession } from "@/lib/db/user";
 import { getUserFullProfile } from "@/dal/user/onboarding/query";
 import { revalidatePath } from "next/cache";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 // Admin Actions
 export async function createFlashcardSetAction(data: CreateFlashcardSetInput) {
@@ -35,6 +36,10 @@ export async function createFlashcardSetAction(data: CreateFlashcardSetInput) {
     return { success: true, data: flashcardSet };
   } catch (error) {
     console.error("Error creating flashcard set:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Create Set",
+    );
     return { success: false, error: "Failed to create flashcard set" };
   }
 }
@@ -47,6 +52,10 @@ export async function updateFlashcardSetAction(data: UpdateFlashcardSetInput) {
     return { success: true, data: flashcardSet };
   } catch (error) {
     console.error("Error updating flashcard set:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Update Set",
+    );
     return { success: false, error: "Failed to update flashcard set" };
   }
 }
@@ -58,6 +67,10 @@ export async function deleteFlashcardSetAction(id: string) {
     return { success: true };
   } catch (error) {
     console.error("Error deleting flashcard set:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Delete Set",
+    );
     return { success: false, error: "Failed to delete flashcard set" };
   }
 }
@@ -70,6 +83,10 @@ export async function getFlashcardSetsAction(
     return { success: true, data: flashcardSets };
   } catch (error) {
     console.error("Error fetching flashcard sets:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Fetch Sets",
+    );
     return { success: false, error: "Failed to fetch flashcard sets" };
   }
 }
@@ -80,6 +97,10 @@ export async function getFlashcardSetByIdAction(id: string) {
     return { success: true, data: flashcardSet };
   } catch (error) {
     console.error("Error fetching flashcard set:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Fetch Set By ID",
+    );
     return { success: false, error: "Failed to fetch flashcard set" };
   }
 }
@@ -94,6 +115,10 @@ export async function toggleFlashcardSetStatusAction(
     return { success: true };
   } catch (error) {
     console.error("Error toggling flashcard set status:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Toggle Status",
+    );
     return { success: false, error: "Failed to toggle flashcard set status" };
   }
 }
@@ -108,6 +133,10 @@ export async function toggleFlashcardSetPublishedAction(
     return { success: true };
   } catch (error) {
     console.error("Error toggling flashcard set published status:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Toggle Published",
+    );
     return {
       success: false,
       error: "Failed to toggle flashcard set published status",
@@ -121,6 +150,10 @@ export async function getFlashcardSetStatsAction() {
     return { success: true, data: stats };
   } catch (error) {
     console.error("Error fetching flashcard set stats:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Fetch Stats",
+    );
     return { success: false, error: "Failed to fetch flashcard set stats" };
   }
 }
@@ -131,6 +164,10 @@ export async function getFlashcardAcademicOptionsAction() {
     return { success: true, data: options };
   } catch (error) {
     console.error("Error fetching flashcard academic options:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Fetch Academic Options",
+    );
     return {
       success: false,
       error: "Failed to fetch flashcard academic options",
@@ -167,6 +204,10 @@ export async function getPublishedFlashcardSetsAction(
     return { success: true, data: flashcardSets };
   } catch (error) {
     console.error("Error fetching published flashcard sets:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Fetch Published Sets",
+    );
     return { success: false, error: "Failed to fetch flashcard sets" };
   }
 }
@@ -178,6 +219,10 @@ export async function getFlashcardSetForUserAction(id: string) {
     return { success: true, data: flashcardSet };
   } catch (error) {
     console.error("Error fetching flashcard set for user:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Fetch Set For User",
+    );
     return { success: false, error: "Failed to fetch flashcard set" };
   }
 }
@@ -193,6 +238,10 @@ export async function getUserFlashcardActivityAction() {
     return { success: true, data: activity };
   } catch (error) {
     console.error("Error fetching user flashcard activity:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Fetch User Activity",
+    );
     return { success: false, error: "Failed to fetch flashcard activity" };
   }
 }
@@ -211,6 +260,10 @@ export async function trackFlashcardSetVisitAction(
     return { success: true };
   } catch (error) {
     console.error("Error tracking flashcard visit:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Track Visit",
+    );
     return { success: false, error: "Failed to track visit" };
   }
 }
@@ -241,6 +294,10 @@ export async function getFlashcardSetsBySubjectAction(subject: string) {
     return { success: true, data: flashcardSets };
   } catch (error) {
     console.error("Error fetching flashcard sets by subject:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Flashcard Fetch Sets By Subject",
+    );
     return { success: false, error: "Failed to fetch flashcard sets" };
   }
 }

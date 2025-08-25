@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth/auth";
 import { calculatePurchasePrice } from "@/dal/premium/query";
 import { purchaseRequestSchema } from "@/dal/premium/types";
 import { headers } from "next/headers";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function POST(req: NextRequest) {
   try {
@@ -51,6 +52,10 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: unknown) {
     console.error("Price calculation error:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Calculate Price",
+    );
     return NextResponse.json(
       {
         error: "Failed to calculate price",

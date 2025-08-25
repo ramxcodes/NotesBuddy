@@ -3,6 +3,7 @@ import { createDeviceFingerprint } from "@/dal/user/device/query";
 import { DeviceFingerprintData } from "@/dal/user/device/types";
 import { checkUserBlockedStatus } from "@/lib/db/user";
 import type { BetterAuthPlugin } from "better-auth";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export const deviceFingerprintingPlugin = () => {
   return {
@@ -63,6 +64,10 @@ export const deviceFingerprintingPlugin = () => {
             return ctx.json({ success: true });
           } catch (error) {
             console.error("Device fingerprinting error:", error);
+            await telegramLogger.sendError(
+              error instanceof Error ? error : new Error(String(error)),
+              "Device Fingerprinting",
+            );
 
             // Handle specific errors
             if (error instanceof Error) {

@@ -7,6 +7,7 @@ import {
   type OnboardingFormData,
 } from "@/dal/user/onboarding/types";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function handleProfileUpdate(data: OnboardingFormData) {
   const session = await getSession();
@@ -33,6 +34,10 @@ export async function handleProfileUpdate(data: OnboardingFormData) {
     return { success: true };
   } catch (error) {
     console.error("Failed to update profile:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Profile Update",
+    );
     throw new Error("Failed to update profile");
   }
 }

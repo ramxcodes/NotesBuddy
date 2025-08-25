@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getChatById } from "@/dal/ai/chat";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function GET(
   request: NextRequest,
@@ -26,6 +27,10 @@ export async function GET(
     return NextResponse.json(chat);
   } catch (error) {
     console.error("Error fetching chat:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Chat Fetch",
+    );
     return NextResponse.json(
       { error: "Failed to fetch chat" },
       { status: 500 },

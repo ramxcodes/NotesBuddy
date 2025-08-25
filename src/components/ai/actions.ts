@@ -17,6 +17,7 @@ import {
   Semester,
   MessageRole,
 } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface CreateChatActionParams {
   university: University;
@@ -50,6 +51,10 @@ export async function createChatAction(params: CreateChatActionParams) {
     return { success: true, chatId: chat.id };
   } catch (error) {
     console.error("Error creating chat:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Create Chat",
+    );
     return { success: false, error: "Failed to create chat" };
   }
 }
@@ -67,6 +72,10 @@ export async function createMessageAction(params: CreateMessageActionParams) {
     return { success: true, message };
   } catch (error) {
     console.error("Error creating message:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Create Message",
+    );
     return { success: false, error: "Failed to create message" };
   }
 }
@@ -82,6 +91,10 @@ export async function getUserChatsAction() {
     return { success: true, chats };
   } catch (error) {
     console.error("Error fetching chats:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Get User Chats",
+    );
     return { success: false, error: "Failed to fetch chats" };
   }
 }
@@ -99,6 +112,10 @@ export async function deleteChatAction(chatId: string) {
     return { success: true };
   } catch (error) {
     console.error("Error deleting chat:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Delete Chat",
+    );
     return { success: false, error: "Failed to delete chat" };
   }
 }
@@ -116,6 +133,10 @@ export async function updateChatNameAction(chatId: string, name: string) {
     return { success: true };
   } catch (error) {
     console.error("Error updating chat name:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Update Chat Name",
+    );
     return { success: false, error: "Failed to update chat name" };
   }
 }

@@ -14,6 +14,7 @@ import {
   type ReferralValidation,
   type ReferralStatus,
 } from "./types";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 // Generate referral code action
 export async function handleGenerateReferralCode(): Promise<ReferralCodeGeneration> {
@@ -48,6 +49,10 @@ export async function handleGenerateReferralCode(): Promise<ReferralCodeGenerati
     return result;
   } catch (error) {
     console.error("Error in handleGenerateReferralCode:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Referral Generate Code",
+    );
     return {
       success: false,
       message: "An unexpected error occurred",
@@ -91,6 +96,10 @@ export async function handleValidateReferralCode(
     return result;
   } catch (error) {
     console.error("Error in handleValidateReferralCode:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Referral Validate Code",
+    );
     return {
       isValid: false,
       canUse: false,
@@ -113,6 +122,10 @@ export async function refreshReferralStatus(): Promise<{ success: boolean }> {
     return { success: true };
   } catch (error) {
     console.error("Error refreshing referral status:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Referral Refresh Status",
+    );
     return { success: false };
   }
 }
@@ -140,6 +153,10 @@ export async function handleGetReferralStatus(): Promise<{
     };
   } catch (error) {
     console.error("Error in handleGetReferralStatus:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Referral Get Status",
+    );
     return {
       success: false,
       message: "Failed to load referral status",

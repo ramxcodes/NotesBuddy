@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db/prisma";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function GET() {
   try {
@@ -27,6 +28,10 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Error fetching wallet balance:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "User Wallet Balance",
+    );
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

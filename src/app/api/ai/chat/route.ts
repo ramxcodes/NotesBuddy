@@ -4,6 +4,7 @@ import * as z from "zod";
 import { generateSystemPrompt } from "@/utils/ai-system-prompt";
 import { getUserId } from "@/lib/db/user";
 import { decryptApiKey } from "@/lib/api-server";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
@@ -332,6 +333,14 @@ export async function POST(request: NextRequest) {
                 }
               } catch (parseError) {
                 console.error("Parse error:", parseError);
+                telegramLogger
+                  .sendError(
+                    parseError instanceof Error
+                      ? parseError
+                      : new Error(String(parseError)),
+                    "AI Chat Parse Error",
+                  )
+                  .catch(console.error);
               }
             },
           });
@@ -354,6 +363,10 @@ export async function POST(request: NextRequest) {
           controller.close();
         } catch (error) {
           console.error("Streaming error:", error);
+          await telegramLogger.sendError(
+            error instanceof Error ? error : new Error(String(error)),
+            "AI Chat Streaming",
+          );
           const errorMessage =
             error instanceof Error ? error.message : "Stream error occurred";
           const errorData = `data: ${JSON.stringify({
@@ -379,6 +392,10 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Chat API Error:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Chat API",
+    );
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

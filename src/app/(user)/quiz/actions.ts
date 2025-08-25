@@ -16,6 +16,7 @@ import {
   getUserFullProfile,
 } from "@/dal/user/onboarding/query";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface LoadMoreQuizzesParams {
   search?: string;
@@ -59,6 +60,10 @@ export async function loadMoreQuizzesAction(
     return result;
   } catch (error) {
     console.error("Error loading more quizzes:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Quiz Load More",
+    );
     return [];
   }
 }
@@ -80,6 +85,10 @@ export async function loadUserQuizzesAction(
     return result;
   } catch (error) {
     console.error("Error loading user quizzes:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Quiz Load User Quizzes",
+    );
     return null;
   }
 }
@@ -95,6 +104,10 @@ export async function getUserQuizSubjectsAction(filters: {
     return subjects;
   } catch (error) {
     console.error("Error loading quiz subjects:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Quiz Load Subjects",
+    );
     return [];
   }
 }
@@ -123,6 +136,10 @@ export async function getUserContextAction() {
     };
   } catch (error) {
     console.error("Error getting user context:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Quiz Get User Context",
+    );
     return {
       isAuthenticated: false,
       isOnboarded: false,

@@ -13,6 +13,7 @@ import {
 } from "@/lib/razorpay/config";
 import prisma from "@/lib/db/prisma";
 import { revalidateTag } from "next/cache";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function POST(request: NextRequest) {
   try {
@@ -89,6 +90,12 @@ export async function POST(request: NextRequest) {
         razorpayOrderId = order.id;
       } catch (razorpayError) {
         console.error("Razorpay order creation failed:", razorpayError);
+        await telegramLogger.sendError(
+          razorpayError instanceof Error
+            ? razorpayError
+            : new Error(String(razorpayError)),
+          "Premium Create Upgrade Order Razorpay",
+        );
         throw razorpayError;
       }
     }
@@ -158,6 +165,10 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error creating upgrade order:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Create Upgrade Order",
+    );
 
     return NextResponse.json(
       {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 import { createMessage } from "@/dal/ai/chat";
 import { MessageRole } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 const createMessageSchema = z.object({
   chatId: z.string().min(1),
@@ -20,6 +21,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(message);
   } catch (error) {
     console.error("Error creating message:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "AI Message Create",
+    );
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

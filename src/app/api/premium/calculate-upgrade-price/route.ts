@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth/auth";
 import { PremiumTier } from "@prisma/client";
 import { calculateUpgradePricing } from "@/dal/premium/query";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,6 +40,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(priceCalculation);
   } catch (error) {
     console.error("Error calculating upgrade price:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Premium Calculate Upgrade Price",
+    );
 
     return NextResponse.json(
       {

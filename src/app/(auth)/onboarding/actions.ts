@@ -8,6 +8,7 @@ import {
   getUserFullProfile,
 } from "@/dal/user/onboarding/query";
 import { onboardingFormSchema } from "@/dal/user/onboarding/types";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export async function handleOnboarding(formData: FormData) {
   const session = await getSession();
@@ -122,6 +123,10 @@ export async function handleOnboarding(formData: FormData) {
     }
 
     console.error("Onboarding error:", error);
+    await telegramLogger.sendError(
+      error instanceof Error ? error : new Error(String(error)),
+      "Onboarding",
+    );
     return {
       success: false,
       error: "Failed to complete onboarding. Please try again.",

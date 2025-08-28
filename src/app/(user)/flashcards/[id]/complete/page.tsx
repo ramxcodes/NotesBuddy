@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import FlashcardCompletePage from "@/components/flashcard/FlashcardCompletePage";
 import { getFlashcardSetByIdAction } from "../../actions";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -24,7 +25,7 @@ async function FlashcardCompletePageContent({ id }: { id: string }) {
 
     return <FlashcardCompletePage flashcardSet={flashcardSet} />;
   } catch (error) {
-    console.error("Error loading flashcard set:", error);
+    await telegramLogger("Error loading flashcard set:", error);
     notFound();
   }
 }

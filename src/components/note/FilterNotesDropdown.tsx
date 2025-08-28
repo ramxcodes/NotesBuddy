@@ -21,6 +21,7 @@ import {
 import { getAvailableSubjects } from "@/dal/note/helper";
 import { useDebounce } from "@/hooks/use-debounce";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface FilterNotesDropdownProps {
   userProfile?: {
@@ -263,7 +264,7 @@ export default function FilterNotesDropdown({
 
         setSubjects(uniqueSubjects);
       } catch (error) {
-        console.error("Error fetching subjects:", error);
+        await telegramLogger("Error fetching subjects:", error);
         setSubjects([]);
       } finally {
         setIsLoadingSubjects(false);

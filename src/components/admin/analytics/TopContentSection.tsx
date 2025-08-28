@@ -8,6 +8,7 @@ import {
   DetailedUmamiStatistics,
 } from "@/types/umami";
 import { getDetailedUmamiAnalyticsAction } from "../actions/detailed-umami-analytics";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface TopContentSectionProps {
   timeRange: TimeRange;
@@ -101,7 +102,7 @@ export function TopContentSection({
         );
         setAnalytics(data);
       } catch (error) {
-        console.error("Error fetching analytics:", error);
+        await telegramLogger("Error fetching analytics:", error);
         setAnalytics(null);
       } finally {
         setIsLoading(false);

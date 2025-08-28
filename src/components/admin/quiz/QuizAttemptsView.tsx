@@ -41,6 +41,7 @@ import {
   ArrowLeftIcon,
   GraduationCapIcon,
 } from "@phosphor-icons/react";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface QuizAttemptsViewProps {
   quizId: string;
@@ -87,7 +88,7 @@ export default function QuizAttemptsView({ quizId }: QuizAttemptsViewProps) {
         setError(attemptsResult.error || "Failed to load attempts");
       }
     } catch (err) {
-      console.error("Error fetching data:", err);
+      await telegramLogger("Error fetching data:", err);
       setError("An unexpected error occurred");
     } finally {
       setFetchLoading(false);

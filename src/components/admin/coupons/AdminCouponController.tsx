@@ -18,6 +18,7 @@ import AdminCouponTable from "./AdminCouponTable";
 import AdminCouponPagination from "./AdminCouponPagination";
 import AdminCouponModals from "./AdminCouponModals";
 import AdminCouponEmptyState from "./AdminCouponEmptyState";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export default function AdminCouponController() {
   const [couponsData, setCouponsData] = useState<CouponsListResponse | null>(
@@ -48,7 +49,7 @@ export default function AdminCouponController() {
         });
         setCouponsData(result);
       } catch (error) {
-        console.error("Error fetching coupons:", error);
+        await telegramLogger("Error fetching coupons:", error);
       }
     },
     [currentPage, debouncedSearch, sort, filter],

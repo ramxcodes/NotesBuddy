@@ -17,6 +17,7 @@ import {
   DetailedUmamiStatistics,
 } from "@/types/umami";
 import { getDetailedUmamiAnalyticsAction } from "../actions/detailed-umami-analytics";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface AudienceInsightsProps {
   timeRange: TimeRange;
@@ -70,7 +71,7 @@ export function AudienceInsights({
         );
         setAnalytics(data);
       } catch (error) {
-        console.error("Error fetching analytics:", error);
+        await telegramLogger("Error fetching analytics:", error);
         setAnalytics(null);
       } finally {
         setIsLoading(false);

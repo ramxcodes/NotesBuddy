@@ -17,6 +17,7 @@ import QuizAttemptHeader from "@/components/quiz/sections/QuizAttemptHeader";
 import QuizProgress from "@/components/quiz/sections/QuizProgress";
 import QuizQuestion from "@/components/quiz/sections/QuizQuestion";
 import QuizNavigation from "@/components/quiz/sections/QuizNavigation";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface QuizAttemptControllerProps {
   quizId: string;
@@ -97,7 +98,7 @@ export default function QuizAttemptController({
           setCountdown(3);
         }
       } catch (err) {
-        console.error("Error initializing quiz:", err);
+        await telegramLogger("Error initializing quiz:", err);
         setError("Failed to load quiz. Please try again.");
       } finally {
         setLoading(false);
@@ -149,7 +150,7 @@ export default function QuizAttemptController({
         setTimeRemaining(attemptResult.quiz.timeLimit * 60); // Convert minutes to seconds
       }
     } catch (err) {
-      console.error("Error starting quiz:", err);
+      await telegramLogger("Error starting quiz:", err);
       setError("Failed to start quiz. Please try again.");
     }
   };
@@ -167,7 +168,7 @@ export default function QuizAttemptController({
         toast.error(result.error || "Failed to complete quiz");
       }
     } catch (err) {
-      console.error("Error completing quiz:", err);
+      await telegramLogger("Error completing quiz:", err);
       toast.error("Failed to complete quiz. Please try again.");
     }
   };
@@ -225,7 +226,7 @@ export default function QuizAttemptController({
         toast.error(result.error || "Failed to submit answer");
       }
     } catch (err) {
-      console.error("Error submitting answer:", err);
+      await telegramLogger("Error submitting answer:", err);
       toast.error("Failed to submit answer. Please try again.");
     } finally {
       setSubmitting(false);

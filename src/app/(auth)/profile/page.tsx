@@ -14,6 +14,7 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import ProfileClient from "@/components/profile/ProfileClient";
 import { Device } from "@/types/device";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -47,8 +48,8 @@ export default async function Profile() {
     getUserDevices(session.user.id),
     getUserPremiumStatus(session.user.id),
     getUserPremiumPurchaseHistory(session.user.id),
-    getUserReferralStatus(session.user.id).catch((error) => {
-      console.error("Failed to load referral status:", error);
+    getUserReferralStatus(session.user.id).catch(async (error) => {
+      await telegramLogger("Failed to load referral status:", error);
       // Return a default referral status
       return {
         hasReferralCode: false,

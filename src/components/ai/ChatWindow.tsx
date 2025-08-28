@@ -25,6 +25,7 @@ import {
 } from "@prisma/client";
 import { getDisplayNameFromSanityValue } from "@/utils/helpers";
 import EmbeddedAcademicFilters from "./EmbeddedAcademicFilters";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface AcademicContext {
   university: University;
@@ -121,7 +122,7 @@ export default function ChatWindow({
             setMessages(convertedMessages);
           }
         } catch (error) {
-          console.error("Error loading chat messages:", error);
+          await telegramLogger("Error loading chat messages:", error);
           toast.error("Failed to load chat messages");
         }
       } else {
@@ -361,14 +362,13 @@ export default function ChatWindow({
                 throw new Error(errorMessage);
               }
             } catch (parseError) {
-              console.error("Parse error:", parseError);
+              await telegramLogger("Parse error:", parseError);
             }
           }
         }
       }
     } catch (error: unknown) {
-      console.error("Error sending message:", error);
-
+      await telegramLogger("Error sending message:", error);
       let errorMessage = "Failed to send message. Please try again.";
       let showModelSuggestion = false;
 

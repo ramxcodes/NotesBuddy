@@ -2,13 +2,14 @@
 
 import { signOut } from "@/lib/auth/auth-client";
 import { Button } from "../ui/button";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export default function SignOutButton() {
   const handleSignOut = async (): Promise<void> => {
     try {
       await signOut();
     } catch (error) {
-      console.error("Sign out failed:", error);
+      await telegramLogger("Sign out failed:", error);
       if (typeof window !== "undefined") {
         window.location.href = "/";
       }

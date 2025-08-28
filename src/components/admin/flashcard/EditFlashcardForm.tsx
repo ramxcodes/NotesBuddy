@@ -40,6 +40,7 @@ import {
   Semester,
   PremiumTier,
 } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface EditFlashcardFormProps {
   flashcardSet: FlashcardSetDetail;
@@ -162,7 +163,7 @@ export default function EditFlashcardForm({
         setError(result.error || "Failed to update flashcard set");
       }
     } catch (err) {
-      console.error("Error updating flashcard set:", err);
+      await telegramLogger("Error updating flashcard set:", err);
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

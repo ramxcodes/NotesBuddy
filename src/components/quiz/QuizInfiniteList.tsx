@@ -6,6 +6,7 @@ import QuizCard from "./QuizCard";
 import { Button } from "@/components/ui/button";
 import { loadMoreQuizzesAction } from "@/app/(user)/quiz/actions";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface SearchParams {
   q?: string;
@@ -75,7 +76,7 @@ export function QuizInfiniteList({
           setHasMore(false);
         }
       } catch (error) {
-        console.error("Error loading more quizzes:", error);
+        await telegramLogger("Error loading more quizzes:", error);
         setHasMore(false);
       }
     });

@@ -43,6 +43,7 @@ import {
   QuestionIcon,
   ArrowLeftIcon,
 } from "@phosphor-icons/react";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface EditQuizFormProps {
   quizId: string;
@@ -119,7 +120,7 @@ export default function EditQuizForm({ quizId }: EditQuizFormProps) {
         );
       }
     } catch (err) {
-      console.error("Error fetching quiz data:", err);
+      await telegramLogger("Error fetching quiz data:", err);
       setError("Failed to fetch quiz details");
     } finally {
       setFetchLoading(false);
@@ -200,7 +201,7 @@ export default function EditQuizForm({ quizId }: EditQuizFormProps) {
         setError(result.error || "Failed to update quiz");
       }
     } catch (err) {
-      console.error("Error updating quiz:", err);
+      await telegramLogger("Error updating quiz:", err);
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

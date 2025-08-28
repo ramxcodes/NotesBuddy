@@ -13,6 +13,7 @@ import {
 import { APP_CONFIG } from "@/utils/config";
 import { Device } from "@/types/device";
 import { useState } from "react";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface DeviceManagementProps {
   devices: Device[];
@@ -27,7 +28,7 @@ export function DeviceManagement({ devices }: DeviceManagementProps) {
       // Trigger page refresh to get latest device data
       window.location.reload();
     } catch (error) {
-      console.error("Failed to refresh devices:", error);
+      await telegramLogger("Failed to refresh devices:", error);
     } finally {
       setIsRefreshing(false);
     }

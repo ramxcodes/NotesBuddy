@@ -24,6 +24,7 @@ import AdminQuizFilterAndSearch from "./AdminQuizFilterAndSearch";
 import AdminQuizTable from "./AdminQuizTable";
 import AdminQuizPagination from "./AdminQuizPagination";
 import AdminQuizEmptyState from "./AdminQuizEmptyState";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export default function AdminQuizController() {
   const router = useRouter();
@@ -70,7 +71,7 @@ export default function AdminQuizController() {
         });
         setQuizzesData(result);
       } catch (error) {
-        console.error("Error fetching quizzes:", error);
+        await telegramLogger("Error fetching quizzes:", error);
       }
     },
     [
@@ -93,7 +94,7 @@ export default function AdminQuizController() {
         setSubjects(result);
       }
     } catch (error) {
-      console.error("Error fetching subjects:", error);
+      await telegramLogger("Error fetching subjects:", error);
     }
   }, []);
 
@@ -104,7 +105,7 @@ export default function AdminQuizController() {
         setStats(result.data);
       }
     } catch (error) {
-      console.error("Error fetching quiz stats:", error);
+      await telegramLogger("Error fetching quiz stats:", error);
     }
   }, []);
 

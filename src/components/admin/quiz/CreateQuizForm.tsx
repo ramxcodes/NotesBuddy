@@ -37,6 +37,7 @@ import {
   QuestionIcon,
   ArrowLeftIcon,
 } from "@phosphor-icons/react";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface QuestionData {
   question: string;
@@ -155,7 +156,7 @@ export default function CreateQuizForm() {
         setError(result.error || "Failed to create quiz");
       }
     } catch (err) {
-      console.error("Error creating quiz:", err);
+      await telegramLogger("Error creating quiz:", err);
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

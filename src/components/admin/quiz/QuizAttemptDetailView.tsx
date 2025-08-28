@@ -33,6 +33,7 @@ import {
   QuestionIcon,
   WarningCircleIcon,
 } from "@phosphor-icons/react";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface QuizAttemptDetailViewProps {
   quizId: string;
@@ -74,7 +75,7 @@ export default function QuizAttemptDetailView({
       setAttemptDetails(attemptResult);
       setQuizDetails(quizResult);
     } catch (err) {
-      console.error("Error fetching data:", err);
+      await telegramLogger("Error fetching data:", err);
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

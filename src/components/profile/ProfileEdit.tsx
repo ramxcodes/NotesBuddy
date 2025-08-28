@@ -36,6 +36,7 @@ import {
 } from "@/dal/user/onboarding/types";
 import { useState } from "react";
 import { XCircleIcon } from "@/components/icons/XCIrcleIcon";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface UserProfileData {
   firstName?: string | null;
@@ -77,7 +78,7 @@ export function ProfileEdit({ profile, onSave, onCancel }: ProfileEditProps) {
     try {
       await onSave(data);
     } catch (error) {
-      console.error("Failed to update profile:", error);
+      await telegramLogger("Failed to update profile:", error);
     } finally {
       setIsSubmitting(false);
     }

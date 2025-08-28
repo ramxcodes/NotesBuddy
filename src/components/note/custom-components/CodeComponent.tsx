@@ -8,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface CodeBlockProps {
   _type: "code";
@@ -26,7 +27,7 @@ export const CodeComponent = ({ value }: { value: CodeBlockProps }) => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error("Failed to copy code:", err);
+      await telegramLogger("Failed to copy code:", err);
     }
   };
 

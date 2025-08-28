@@ -15,6 +15,7 @@ import { AdminPremiumStats as StatsComponent } from "./AdminPremiumStats";
 import { AdminPremiumUserTable } from "./AdminPremiumUserTable";
 import { AdminPremiumGrantForm } from "./AdminPremiumGrantForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export default function AdminPremiumController() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -49,7 +50,7 @@ export default function AdminPremiumController() {
         const result = await getAdminPremiumUsersAction(filters);
         setUsersData(result);
       } catch (error) {
-        console.error("Error fetching premium users:", error);
+        await telegramLogger("Error fetching premium users:", error);
       } finally {
         setLoading(false);
       }
@@ -66,7 +67,7 @@ export default function AdminPremiumController() {
         setStatsData(result.data);
       }
     } catch (error) {
-      console.error("Error fetching premium stats:", error);
+      await telegramLogger("Error fetching premium stats:", error);
     } finally {
       setStatsLoading(false);
     }

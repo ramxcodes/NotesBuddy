@@ -10,6 +10,7 @@ import {
   ArrowClockwiseIcon,
 } from "@phosphor-icons/react";
 import { useEffect } from "react";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface GlobalErrorProps {
   error: Error & { digest?: string };
@@ -19,7 +20,11 @@ interface GlobalErrorProps {
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error("Global error caught:", error);
+    const logError = async () => {
+      await telegramLogger("Global error caught:", error);
+    };
+
+    logError();
   }, [error]);
 
   return (

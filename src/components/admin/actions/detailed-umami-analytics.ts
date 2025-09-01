@@ -45,7 +45,7 @@ async function apiCall(
       Authorization: `Bearer ${client.apiKey}`,
       "Content-Type": "application/json",
     },
-    next: { revalidate: 300 },
+    next: { revalidate: 5 },
   });
 
   if (!response.ok) {

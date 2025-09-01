@@ -4,7 +4,7 @@ import { getCacheOptions } from "@/cache/cache";
 
 const adminCacheConfig = {
   getAdminStatistics: {
-    cacheTime: 10, // 10 minutes
+    cacheTime: 0.083,
     tags: ["admin-statistics"],
     cacheKey: "admin-statistics",
   },

@@ -87,12 +87,12 @@ export interface GrantPremiumParams {
 // Cache configurations for admin premium operations
 const adminPremiumCacheConfig = {
   getAdminPremiumUsers: {
-    cacheTime: 300, // 5 minutes
+    cacheTime: 0.083,
     tags: ["admin-premium-users"],
     cacheKey: "admin-premium-users",
   },
   getAdminPremiumStats: {
-    cacheTime: 600, // 10 minutes
+    cacheTime: 0.083,
     tags: ["admin-premium-stats"],
     cacheKey: "admin-premium-stats",
   },

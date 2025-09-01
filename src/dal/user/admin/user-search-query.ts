@@ -5,12 +5,12 @@ import { getCacheOptions } from "@/cache/cache";
 // Cache configurations
 const userSearchCacheConfig = {
   searchUsers: {
-    cacheTime: 300, // 5 minutes
+    cacheTime: 0.083,
     tags: ["admin-user-search"],
     cacheKey: "admin-user-search",
   },
   getUserDetails: {
-    cacheTime: 600, // 10 minutes
+    cacheTime: 0.083,
     tags: ["admin-user-details"],
     cacheKey: "admin-user-details",
   },

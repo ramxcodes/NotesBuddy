@@ -22,7 +22,7 @@ async function fetchUmamiData(endpoint: string): Promise<unknown> {
       Authorization: `Bearer ${UMAMI_API_TOKEN}`,
       "Content-Type": "application/json",
     },
-    next: { revalidate: 300 }, // Cache for 5 minutes
+    next: { revalidate: 5 },
   });
 
   if (!response.ok) {

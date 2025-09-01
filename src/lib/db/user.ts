@@ -77,7 +77,7 @@ export const getUserId = async () => {
       },
       [`user-id-${session.user.id}`],
       {
-        revalidate: 7200,
+        revalidate: 5,
         tags: [`user-id-${session.user.id}`],
       },
     );

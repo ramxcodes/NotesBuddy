@@ -96,17 +96,17 @@ export interface AdminChatsResponse {
 // Cache config for admin AI operations
 const adminAICacheConfig = {
   getAdminChats: {
-    cacheTime: 60, // 1 minute
+    cacheTime: 0.083,
     tags: ["admin-chats"],
     cacheKey: "admin-chats",
   },
   getAdminChatStats: {
-    cacheTime: 300, // 5 minutes
+    cacheTime: 0.083,
     tags: ["admin-chat-stats"],
     cacheKey: "admin-chat-stats",
   },
   getChatSubjects: {
-    cacheTime: 3600, // 1 hour
+    cacheTime: 0.083,
     tags: ["chat-subjects"],
     cacheKey: "chat-subjects",
   },

@@ -43,8 +43,9 @@ export const telegramLogger = async (errorMessage: string, error?: unknown) => {
     };
 
     await sendErrorMessageToTelegram(logData);
-  } catch (loggingError) {
-    console.error("Failed to send error to Telegram:", loggingError);
+    if (typeof process !== "undefined" && process.stderr && typeof process.stderr.write === "function") {
+      process.stderr.write("Failed to send error to Telegram: " + String(loggingError) + "\n");
+    }
   }
 };
 

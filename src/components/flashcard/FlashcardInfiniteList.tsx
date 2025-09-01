@@ -6,6 +6,7 @@ import FlashcardCard from "./FlashcardCard";
 import { Button } from "@/components/ui/button";
 import { loadMoreFlashcardSetsAction } from "@/app/(user)/flashcards/actions";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface SearchParams {
   q?: string;
@@ -80,7 +81,7 @@ export function FlashcardInfiniteList({
           setHasMore(false);
         }
       } catch (error) {
-        console.error("Error loading more flashcard sets:", error);
+        await telegramLogger("Error loading more flashcard sets:", error);
         setHasMore(false);
       }
     });

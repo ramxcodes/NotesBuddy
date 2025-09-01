@@ -15,6 +15,7 @@ import { PremiumWalletSection } from "./PremiumWalletSection";
 import { PremiumPriceSummary } from "./PremiumPriceSummary";
 import { PremiumErrorDisplay } from "./PremiumErrorDisplay";
 import { PremiumCheckout } from "./PremiumCheckout";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -102,7 +103,7 @@ export function PremiumUpgradeFlowController({
         setWalletBalance(data.walletBalance || 0);
       }
     } catch (err) {
-      console.error("Failed to fetch wallet balance:", err);
+      await telegramLogger("Failed to fetch wallet balance:", err);
     }
   };
 

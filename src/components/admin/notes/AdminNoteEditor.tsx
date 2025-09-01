@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface Props {
   note: NoteDetails;
@@ -67,8 +68,8 @@ export default function AdminNoteEditor({ note }: Props) {
       } else {
         toast.error(result.error || "Failed to update note");
       }
-    } catch {
-      console.error("Error saving note");
+    } catch (error) {
+      await telegramLogger("Error saving note", error);
       toast.error("Failed to save note");
     } finally {
       setSaving(false);

@@ -16,6 +16,7 @@ import {
 } from "@phosphor-icons/react";
 import type { FlashcardSetDetail } from "@/dal/flashcard/types";
 import { trackFlashcardSetVisitAction } from "../admin/actions/admin-flashcards";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface FlashcardViewerProps {
   flashcardSet: FlashcardSetDetail;
@@ -40,7 +41,7 @@ export default function FlashcardViewer({
       try {
         await trackFlashcardSetVisitAction(flashcardSet.id);
       } catch (error) {
-        console.error("Error tracking flashcard set visit:", error);
+        await telegramLogger("Error tracking flashcard set visit:", error);
       }
     };
 

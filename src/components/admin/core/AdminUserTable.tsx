@@ -59,6 +59,7 @@ import {
 import { MoreVertical, Trash2 } from "lucide-react";
 import DeleteUserDialog from "./DeleteUserDialog";
 import { toast } from "sonner";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 export default function AdminUserTable() {
   const [usersData, setUsersData] = useState<AdminUsersResponse | null>(null);
@@ -132,11 +133,12 @@ export default function AdminUserTable() {
         await fetchUsers(currentPage);
       } else {
         toast.error(result.error || "Failed to delete user");
-        console.error("Failed to delete user:", result.error);
+
+        await telegramLogger("Failed to delete user:", result.error);
       }
     } catch (error) {
       toast.error("An unexpected error occurred while deleting user");
-      console.error("Error deleting user:", error);
+      await telegramLogger("Error deleting user:", error);
     } finally {
       setIsDeleting(false);
     }

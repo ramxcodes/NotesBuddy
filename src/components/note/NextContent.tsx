@@ -19,6 +19,7 @@ import {
   getSubjectQuizzesAction,
   getSubjectFlashcardsAction,
 } from "@/app/(user)/notes/[slug]/next-content-actions";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface NextContentProps {
   university: string;
@@ -101,7 +102,7 @@ export default function NextContent({
           setHasFlashcards(result.data.hasFlashcards);
         }
       } catch (error) {
-        console.error("Error fetching next content:", error);
+        await telegramLogger("Error fetching next content:", error);
       } finally {
         setLoading(false);
       }
@@ -130,7 +131,7 @@ export default function NextContent({
         setShowQuizzes(true);
       }
     } catch (error) {
-      console.error("Error fetching quizzes:", error);
+      await telegramLogger("Error fetching quizzes:", error);
     }
   };
 
@@ -154,7 +155,7 @@ export default function NextContent({
         setShowFlashcards(true);
       }
     } catch (error) {
-      console.error("Error fetching flashcards:", error);
+      await telegramLogger("Error fetching flashcards:", error);
     }
   };
 

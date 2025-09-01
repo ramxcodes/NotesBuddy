@@ -20,6 +20,7 @@ import {
 import { useDebounce } from "@/hooks/use-debounce";
 import { University, Degree, Year, Semester } from "@prisma/client";
 import { getUserFlashcardSubjectsAction } from "@/app/(user)/flashcards/actions";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface FilterFlashcardDropdownProps {
   userProfile?: {
@@ -216,7 +217,7 @@ export default function FilterFlashcardDropdown({
 
         setSubjects(uniqueSubjects);
       } catch (error) {
-        console.error("Error fetching subjects:", error);
+        await telegramLogger("Error fetching subjects:", error);
         setSubjects([]);
       } finally {
         setIsLoadingSubjects(false);

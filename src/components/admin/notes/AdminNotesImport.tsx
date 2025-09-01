@@ -32,6 +32,7 @@ import { toast } from "sonner";
 import { parseImportedNotes } from "@/lib/notes-parser";
 import { importNotesAction } from "../actions/admin-notes";
 import { type Note } from "@/sanity/types";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 type PortableTextContent = NonNullable<Note["content"]>;
 
@@ -90,7 +91,7 @@ export default function AdminNotesImport() {
         `Parsed ${result.stats.processedItems} topics successfully`,
       );
     } catch (error) {
-      console.error("Error parsing file:", error);
+      await telegramLogger("Error parsing file:", error);
       toast.error("Failed to parse JSON file. Please check the format.");
     } finally {
       setIsProcessing(false);
@@ -210,7 +211,7 @@ export default function AdminNotesImport() {
       setParsedData(null);
       setImportProgress(0);
     } catch (error) {
-      console.error("Import failed:", error);
+      await telegramLogger("Import failed:", error);
       toast.error("Failed to import note");
     } finally {
       setIsImporting(false);

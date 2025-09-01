@@ -14,6 +14,7 @@ import Science from "@/components/svgs/Science";
 import Cap from "@/components/svgs/Cap";
 import HandDrawnArrow from "@/components/svgs/HandDrawnArrow";
 import { useEffect } from "react";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -23,7 +24,11 @@ interface ErrorProps {
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error("Error caught by error boundary:", error);
+    const logError = async () => {
+      await telegramLogger("Error caught by error boundary:", error);
+    };
+
+    logError();
   }, [error]);
 
   return (

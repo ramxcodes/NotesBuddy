@@ -20,6 +20,7 @@ import {
 import { getUserQuizSubjectsAction } from "@/app/(user)/quiz/actions";
 import { useDebounce } from "@/hooks/use-debounce";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface FilterQuizDropdownProps {
   userProfile?: {
@@ -216,7 +217,7 @@ export default function FilterQuizDropdown({
 
         setSubjects(uniqueSubjects);
       } catch (error) {
-        console.error("Error fetching subjects:", error);
+        await telegramLogger("Error fetching subjects:", error);
         setSubjects([]);
       } finally {
         setIsLoadingSubjects(false);

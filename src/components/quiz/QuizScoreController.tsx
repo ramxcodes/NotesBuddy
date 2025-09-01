@@ -9,6 +9,7 @@ import ScoreHeader from "@/components/quiz/sections/ScoreHeader";
 import ScoreCard from "@/components/quiz/sections/ScoreCard";
 import ScoreBreakdown from "@/components/quiz/sections/ScoreBreakdown";
 import ScoreActions from "@/components/quiz/sections/ScoreActions";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface ScoreData {
   attemptId: string;
@@ -70,7 +71,7 @@ export default function QuizScoreController() {
 
         setScoreData(result.score);
       } catch (err) {
-        console.error("Error loading quiz score:", err);
+        await telegramLogger("Error loading quiz score:", err);
         setError("Failed to load quiz results. Please try again.");
       } finally {
         setLoading(false);

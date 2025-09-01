@@ -19,6 +19,7 @@ import { OnboardingFormData } from "@/dal/user/onboarding/types";
 import { handleProfileUpdate } from "@/app/(auth)/profile/actions";
 import { Device } from "@/types/device";
 import { ReferralStatus } from "@/dal/referral/types";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface ProfileClientProps {
   session: {
@@ -94,7 +95,7 @@ export default function ProfileClient({
       await handleProfileUpdate(data);
       setIsEditing(false);
     } catch (error) {
-      console.error("Failed to update profile:", error);
+      await telegramLogger("Failed to update profile:", error);
       throw error;
     }
   };

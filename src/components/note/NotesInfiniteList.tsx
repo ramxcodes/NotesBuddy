@@ -10,6 +10,7 @@ import {
   measureSearchPerformance,
   sortSearchResults,
 } from "@/lib/search/optimization";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface SearchParams {
   query?: string;
@@ -124,7 +125,7 @@ export function NotesInfiniteList({
           setHasMore(false);
         }
       } catch (error) {
-        console.error("Error loading more notes:", error);
+        await telegramLogger("Error loading more notes:", error);
         setHasMore(false);
       }
     });

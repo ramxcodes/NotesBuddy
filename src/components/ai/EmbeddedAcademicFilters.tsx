@@ -17,6 +17,7 @@ import {
 } from "@/utils/academic-config";
 import { getAvailableSubjects } from "@/dal/note/helper";
 import { University, Degree, Year, Semester } from "@prisma/client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface EmbeddedAcademicFiltersProps {
   userProfile?: {
@@ -133,7 +134,7 @@ export default function EmbeddedAcademicFilters({
 
         setSubjects(uniqueSubjects);
       } catch (error) {
-        console.error("Error fetching subjects:", error);
+        await telegramLogger("Error fetching subjects:", error);
         setSubjects([]);
       } finally {
         setIsLoadingSubjects(false);

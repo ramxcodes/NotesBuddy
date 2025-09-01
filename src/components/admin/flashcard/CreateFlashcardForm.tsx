@@ -39,6 +39,7 @@ import {
   ArrowLeft,
   Cards,
 } from "@phosphor-icons/react";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface FlashcardData {
   front: string;
@@ -169,7 +170,7 @@ export default function CreateFlashcardForm() {
         alert(result.error || "Failed to create flashcard set");
       }
     } catch (error) {
-      console.error("Error creating flashcard set:", error);
+      await telegramLogger("Error creating flashcard set:", error);
       alert("An error occurred while creating the flashcard set");
     } finally {
       setLoading(false);

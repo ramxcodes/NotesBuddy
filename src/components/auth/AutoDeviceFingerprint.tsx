@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { authClient } from "@/lib/auth/auth-client";
+import { telegramLogger } from "@/utils/telegram-logger";
 
 interface DeviceFingerprintData {
   fingerprint: {
@@ -148,14 +149,14 @@ export function AutoDeviceFingerprint(): null {
 
         if (!response.ok) {
           const errorText = await response.text();
-          console.error(
+          await telegramLogger(
             `Device fingerprinting failed: ${response.status} ${errorText}`,
           );
 
           // Handle specific error cases that should not be retried
           if (response.status === 429) {
             // Device limit exceeded - don't retry
-            console.warn(
+            await telegramLogger(
               "Device limit exceeded. Stopping device registration attempts.",
             );
             if (userId) setPersistedState(userId, "unrecoverable-error", true);
@@ -164,7 +165,7 @@ export function AutoDeviceFingerprint(): null {
 
           if (response.status === 409) {
             // Device fingerprint conflict - don't retry
-            console.warn(
+            await telegramLogger(
               "Device fingerprint conflict. Stopping device registration attempts.",
             );
             if (userId) setPersistedState(userId, "unrecoverable-error", true);
@@ -173,7 +174,7 @@ export function AutoDeviceFingerprint(): null {
 
           if (response.status === 403) {
             // User blocked or access denied - don't retry
-            console.warn(
+            await telegramLogger(
               "User blocked or access denied. Stopping device registration attempts.",
             );
             if (userId) setPersistedState(userId, "unrecoverable-error", true);
@@ -191,7 +192,7 @@ export function AutoDeviceFingerprint(): null {
           console.info("Device registration successful");
           return { success: true, shouldRetry: false };
         } else {
-          console.error("Device fingerprinting failed:", result.error);
+          await telegramLogger("Device fingerprinting failed:", result.error);
 
           // Check if the error message indicates unrecoverable conditions
           if (
@@ -206,7 +207,7 @@ export function AutoDeviceFingerprint(): null {
           return { success: false, shouldRetry: true };
         }
       } catch (error) {
-        console.error("Device fingerprinting failed:", error);
+        await telegramLogger("Device fingerprinting failed:", error);
         // Network errors and unexpected errors can be retried
         return { success: false, shouldRetry: true };
       } finally {
@@ -243,7 +244,7 @@ export function AutoDeviceFingerprint(): null {
           setTimeout(() => checkAndRegister(retries - 1), 1000);
         }
       } catch (error) {
-        console.error("Failed to check session:", error);
+        await telegramLogger("Failed to check session:", error);
 
         // Retry on error if retries remaining
         if (retries > 0) {
@@ -284,7 +285,10 @@ export function AutoDeviceFingerprint(): null {
         // Proceed with device registration
         await checkAndRegister();
       } catch (error) {
-        console.error("Failed to initialize device registration:", error);
+        await telegramLogger(
+          "Failed to initialize device registration:",
+          error,
+        );
       }
     };
 

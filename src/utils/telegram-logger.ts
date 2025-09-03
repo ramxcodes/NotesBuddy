@@ -6,8 +6,18 @@ export const telegramLogger = async (errorMessage: string, error?: unknown) => {
     // getting user session
     const { data: session } = await authClient.getSession();
 
-    // setting the userId
-    const userId: string | null = session?.user?.id ?? null;
+    // setting the userInfo
+
+    let userInfo: { userId: string; userName: string; email: string } | null =
+      null;
+
+    if (session?.user?.id) {
+      userInfo = {
+        email: session.user.email,
+        userId: session.user.id,
+        userName: session.user.name,
+      };
+    }
 
     // getting user screen size
     let screenWidth: number | null = null;
@@ -35,7 +45,7 @@ export const telegramLogger = async (errorMessage: string, error?: unknown) => {
     const logData = {
       errorMessage,
       timestamp,
-      userId,
+      userInfo,
       browserName: userBrowserName,
       screenWidth,
       screenHeight,

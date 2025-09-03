@@ -3,7 +3,11 @@
 interface ErrorLogData {
   errorMessage: string;
   timestamp: string;
-  userId: string | null;
+  userInfo: {
+    userId: string;
+    userName: string;
+    email: string;
+  } | null;
   browserName: string | null;
   screenWidth: number | null;
   screenHeight: number | null;
@@ -14,7 +18,7 @@ const formatErrorMessage = (data: ErrorLogData): string => {
   const {
     errorMessage,
     timestamp,
-    userId,
+    userInfo,
     browserName,
     screenWidth,
     screenHeight,
@@ -26,7 +30,9 @@ const formatErrorMessage = (data: ErrorLogData): string => {
 ──────────────
 📋 Message: ${errorMessage}
 ⏰ Timestamp: ${timestamp}
-👤 User ID: ${userId || "Not authenticated"}
+🆔 UserId: ${userInfo?.userId || "Not authenticated"}
+👤 UserName: ${userInfo?.userName || "Not authenticated"}
+✉️ UserEmail: ${userInfo?.email || "Not authenticated"}
 🌐 Browser: ${browserName || "Unknown/Server-side"}
 📱 Screen: ${screenWidth && screenHeight ? `${screenWidth}x${screenHeight}px` : "Unknown/Server-side"}
 ──────────────

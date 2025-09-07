@@ -3,10 +3,7 @@ import { sendErrorMessageToTelegram } from "@/lib/telegram/action";
 
 export const telegramLogger = async (errorMessage: string, error?: unknown) => {
   try {
-    // getting user session
     const { data: session } = await authClient.getSession();
-
-    // setting the userInfo
 
     let userInfo: { userId: string; userName: string; email: string } | null =
       null;
@@ -19,7 +16,6 @@ export const telegramLogger = async (errorMessage: string, error?: unknown) => {
       };
     }
 
-    // getting user screen size
     let screenWidth: number | null = null;
     let screenHeight: number | null = null;
     let userBrowserName: string | null = null;
@@ -28,14 +24,11 @@ export const telegramLogger = async (errorMessage: string, error?: unknown) => {
       screenWidth = window.innerWidth;
       screenHeight = window.innerHeight;
 
-      // setting the user browser name
       userBrowserName = getUserBrowserName(navigator.userAgent);
     }
 
-    // setting the current timestamp
     const timestamp = new Date().toISOString();
 
-    // constructing error details
     const errorDetails = error
       ? error instanceof Error
         ? `${error.name}: ${error.message}\nStack: ${error.stack || "No stack trace"}`
@@ -66,7 +59,60 @@ export const telegramLogger = async (errorMessage: string, error?: unknown) => {
   }
 };
 
-// get user browser name
+export const logDeviceLimitExceeded = async (userInfo: {
+  userId: string;
+  email: string;
+  name: string;
+}) => {
+  try {
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    const formattedTime = now.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZoneName: "short",
+    });
+
+    const message = `🚨 DEVICE LIMIT EXCEEDED
+
+👤 User Information
+• Name: ${userInfo.name}
+• Email: ${userInfo.email}
+• ID: ${userInfo.userId}
+
+📅 When
+• Date: ${formattedDate}
+• Time: ${formattedTime}
+
+⚠️ Action Taken
+User session has been terminated and they have been signed out automatically.`;
+
+    const logData = {
+      errorMessage: message,
+      timestamp: now.toISOString(),
+      userInfo: {
+        userId: userInfo.userId,
+        userName: userInfo.name,
+        email: userInfo.email,
+      },
+      browserName: null,
+      screenWidth: null,
+      screenHeight: null,
+      errorDetails: "Device limit exceeded - automatic sign out",
+    };
+
+    await sendErrorMessageToTelegram(logData);
+  } catch (error) {
+    console.warn("Error sending device limit message:", error);
+  }
+};
+
 const getUserBrowserName = (userAgent: string): string => {
   if (userAgent.includes("Firefox")) {
     return "Mozilla Firefox";

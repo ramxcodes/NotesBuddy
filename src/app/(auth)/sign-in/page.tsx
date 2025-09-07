@@ -2,21 +2,37 @@
 
 import { signIn } from "@/lib/auth/auth-client";
 import { Button } from "@/components/ui/button";
-import { GoogleLogoIcon } from "@phosphor-icons/react";
+import { GoogleLogoIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import { Link } from "next-view-transitions";
 import { useSession } from "@/lib/auth/auth-client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SignIn() {
   const { data: session } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [isSigningIn, setIsSigningIn] = useState(false);
+
+  const error = searchParams?.get("error");
+  const showDeviceError = error === "device-verification-failed";
 
   useEffect(() => {
     if (session?.user) {
       router.push("/profile");
     }
   }, [session, router]);
+
+  const handleSignIn = async () => {
+    setIsSigningIn(true);
+    try {
+      await signIn();
+    } catch (error) {
+      console.error("Sign in failed:", error);
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
 
   if (session?.user) {
     return null; // Prevent flash while redirecting
@@ -98,14 +114,31 @@ export default function SignIn() {
                 </div>
               </div>
 
+              {/* Device Verification Error */}
+              {showDeviceError && (
+                <div className="neuro-sm flex items-center gap-3 rounded-lg border-2 border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-950/20">
+                  <WarningCircleIcon className="h-6 w-6 text-red-600 dark:text-red-400" />
+                  <div className="flex-1">
+                    <h3 className="font-satoshi text-sm font-bold text-red-800 dark:text-red-200">
+                      Device Verification Failed
+                    </h3>
+                    <p className="font-satoshi text-xs text-red-600 dark:text-red-300">
+                      Unable to verify your device for security reasons. Please
+                      try again with a different browser or device.
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* Sign In Button */}
               <Button
-                onClick={signIn}
-                className="neuro-button font-satoshi flex w-full items-center justify-center gap-3 py-4 text-lg font-bold transition-all"
+                onClick={handleSignIn}
+                disabled={isSigningIn}
+                className="neuro-button font-satoshi flex w-full items-center justify-center gap-3 py-4 text-lg font-bold transition-all disabled:opacity-50"
                 data-umami-event="sign-in-google"
               >
                 <GoogleLogoIcon weight="duotone" className="h-6 w-6" />
-                Sign in with Google
+                {isSigningIn ? "Signing in..." : "Sign in with Google"}
               </Button>
             </div>
           </div>

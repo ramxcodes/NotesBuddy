@@ -58,6 +58,103 @@ function generateDeviceHash(
   return createOptimizedHash(fingerprint as Record<string, unknown>);
 }
 
+export function createSafariOptimizedFingerprint(
+  headers: Headers,
+  useFallback: boolean = false,
+): Promise<DeviceFingerprintData> {
+  return new Promise((resolve) => {
+    const userAgent = headers.get("user-agent") || "";
+    const acceptLanguage = headers.get("accept-language") || "";
+    const acceptEncoding = headers.get("accept-encoding") || "";
+    const connection = headers.get("connection") || "";
+
+    const fingerprint: DeviceFingerprintData["fingerprint"] = {
+      userAgent,
+      screen: {
+        width: 1920,
+        height: 1080,
+        colorDepth: 24,
+        pixelDepth: 24,
+      },
+      timezone: "UTC",
+      language: acceptLanguage.split(",")[0] || "en-US",
+      languages: acceptLanguage || "en-US",
+      platform: userAgent.includes("Mac")
+        ? "MacIntel"
+        : userAgent.includes("iPhone")
+          ? "iPhone"
+          : userAgent.includes("iPad")
+            ? "iPad"
+            : "unknown",
+      cookieEnabled: true,
+      doNotTrack: null,
+      vendor: "Apple Computer, Inc.",
+      browserName: "Safari",
+      canvasFingerprint: useFallback
+        ? `safari-fallback-${Date.now()}`
+        : "safari-restricted",
+      hardwareConcurrency: 8,
+      maxTouchPoints:
+        userAgent.includes("iPhone") || userAgent.includes("iPad") ? 5 : 0,
+    };
+
+    const serverFingerprint = {
+      acceptLanguage,
+      acceptEncoding,
+      connection,
+      dnt: headers.get("dnt") || null,
+    };
+
+    const enhancedFingerprint = {
+      ...fingerprint,
+      serverCharacteristics: serverFingerprint,
+    };
+
+    resolve({
+      fingerprint: enhancedFingerprint as DeviceFingerprintData["fingerprint"],
+      deviceLabel: `Safari on ${fingerprint.platform}`,
+    });
+  });
+}
+
+export async function validateDeviceFingerprint(
+  userId: string,
+  deviceData: DeviceFingerprintData,
+): Promise<boolean> {
+  try {
+    validateDeviceData(deviceData);
+
+    const fingerprintHash = generateDeviceHash(deviceData.fingerprint);
+    const userDevices = await getActiveUserDevicesOptimized(userId);
+
+    const existingDevice = userDevices.find(
+      (device) => device.hash === fingerprintHash,
+    );
+    if (existingDevice) {
+      return true;
+    }
+
+    const similarDevice = await findSimilarDeviceOptimized(
+      userId,
+      deviceData.fingerprint,
+      DEVICE_CONFIG.SIMILARITY_THRESHOLD,
+    );
+
+    if (similarDevice) {
+      return true;
+    }
+
+    if (userDevices.length >= APP_CONFIG.MAX_DEVICES_PER_USER) {
+      throw new Error("Device limit exceeded");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Device validation failed:", error);
+    throw error;
+  }
+}
+
 function extractBrowserOSInfo(userAgent: string): BrowserOSInfo {
   const parser = new UAParser(userAgent);
   const result = parser.getResult();

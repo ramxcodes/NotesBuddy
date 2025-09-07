@@ -66,7 +66,9 @@ export const FingerprintSchema = z.object({
   cookieEnabled: z.boolean(),
   vendor: z.string(),
   maxTouchPoints: z.number().nonnegative(),
-  doNotTrack: z.union([z.string(), z.null()]),
+  doNotTrack: z
+    .union([z.string(), z.null(), z.undefined()])
+    .transform((val) => val ?? null),
   languages: z.string(),
 });
 

@@ -25,7 +25,13 @@ const formatErrorMessage = (data: ErrorLogData): string => {
     errorDetails,
   } = data;
 
-  return `
+  const maxErrorDetailsLength = 3000;
+  const truncatedErrorDetails =
+    errorDetails.length > maxErrorDetailsLength
+      ? `${errorDetails.substring(0, maxErrorDetailsLength)}...\n\n[Message truncated due to length]`
+      : errorDetails;
+
+  const message = `
 🚨 Error Alert
 ──────────────
 📋 Message: ${errorMessage}
@@ -37,8 +43,15 @@ const formatErrorMessage = (data: ErrorLogData): string => {
 📱 Screen: ${screenWidth && screenHeight ? `${screenWidth}x${screenHeight}px` : "Unknown/Server-side"}
 ──────────────
 🔍 Error Details:
-${errorDetails}
+${truncatedErrorDetails}
   `.trim();
+
+  if (message.length > 4090) {
+    const truncateAt = 4000;
+    return `${message.substring(0, truncateAt)}...\n\n[Message truncated]`;
+  }
+
+  return message;
 };
 
 export const sendErrorMessageToTelegram = async (logData: ErrorLogData) => {
@@ -63,19 +76,33 @@ export const sendErrorMessageToTelegram = async (logData: ErrorLogData) => {
         body: JSON.stringify({
           chat_id: channelId,
           text: message,
-          parse_mode: "HTML",
         }),
       },
     );
 
     if (!response.ok) {
-      console.error("Telegram API error:", await response.text());
+      const errorText = await response.text();
+      console.error("Telegram API error:", errorText);
+      if (typeof process !== "undefined" && process.stderr) {
+        process.stderr.write(
+          `[${new Date().toISOString()}] Telegram API Error: ${errorText}\nOriginal message: ${message.substring(0, 500)}...\n`,
+        );
+      }
       return false;
     }
 
     return true;
   } catch (error) {
-    console.error("Telegram send failed:", error);
+    const errorString =
+      error instanceof Error
+        ? `${error.name}: ${error.message}`
+        : String(error);
+    console.error("Telegram send failed:", errorString);
+    if (typeof process !== "undefined" && process.stderr) {
+      process.stderr.write(
+        `[${new Date().toISOString()}] Telegram Send Failed: ${errorString}\nOriginal message: ${message.substring(0, 500)}...\n`,
+      );
+    }
     return false;
   }
 };

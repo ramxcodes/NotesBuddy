@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Umami from "@/components/auth/Umami";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { AutoDeviceFingerprint } from "@/components/auth/AutoDeviceFingerprint";
+import { DeviceFingerprint } from "@/components/auth/DeviceFingerprint";
 import { ViewTransitions } from "next-view-transitions";
 import Footer from "@/components/core/Footer";
 import { Poppins, Lexend, Montserrat, Roboto, Inter } from "next/font/google";
@@ -163,7 +163,7 @@ export default function RootLayout({
           <body
             className={`${poppins.variable} ${lexend.variable} ${montserrat.variable} ${roboto.variable} ${inter.variable}`}
           >
-            <AutoDeviceFingerprint />
+            <DeviceFingerprint />
             <ThemeProvider defaultTheme="light" storageKey="notes-buddy-theme">
               <MainNav />
               {children}

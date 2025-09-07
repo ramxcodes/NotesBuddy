@@ -97,7 +97,7 @@ function PricingCard({
 
 export default function Pricing() {
   return (
-    <section className="relative overflow-hidden py-20 lg:py-32">
+    <section id="pricing" className="relative overflow-hidden py-20 lg:py-32">
       <div className="relative z-10 container mx-auto">
         <Image
           src="/doodles/idea.svg"

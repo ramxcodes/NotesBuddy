@@ -424,6 +424,8 @@ export async function updatePurchasePaymentStatus(
       semester: purchase.semester,
       isSuccess: paymentStatus === "CAPTURED",
       failureReason: failureReason || undefined,
+      paymentId: razorpayPaymentId,
+      orderId: razorpayOrderId,
     };
 
     await telegramBot.sendPaymentNotification(notificationData);

@@ -19,7 +19,7 @@ const navItems = [
 
   {
     label: "Pricing",
-    href: "/premium",
+    href: "/#pricing",
   },
 ];
 

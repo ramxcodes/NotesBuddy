@@ -68,6 +68,8 @@ export async function POST(request: NextRequest) {
             year: purchase.year,
             semester: purchase.semester,
             isSuccess: true,
+            paymentId: "free_upgrade",
+            orderId: orderId,
           };
 
           await telegramBot.sendPaymentNotification(notificationData);
@@ -165,6 +167,8 @@ export async function POST(request: NextRequest) {
         year: purchase.year,
         semester: purchase.semester,
         isSuccess: true,
+        paymentId: paymentId,
+        orderId: orderId,
       };
 
       await telegramBot.sendPaymentNotification(notificationData);

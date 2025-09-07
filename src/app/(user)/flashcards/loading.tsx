@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function FlashcardsPageLoading() {
   return (
-    <div className="font-satoshi container mx-auto mt-10 min-h-screen max-w-6xl">
+    <div className="font-satoshi container mx-auto mt-10 flex min-h-screen max-w-6xl flex-col items-center justify-center">
       {/* Header */}
       <div className="mb-8 text-center">
         <Skeleton className="mx-auto mb-2 h-10 w-48" />

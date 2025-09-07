@@ -75,7 +75,8 @@ interface FlashcardsPageProps {
 }
 
 async function FlashcardList({ searchParams }: FlashcardsPageProps) {
-  // Await searchParams since it's now a Promise in Next.js 15+
+  await new Promise((resolve) => setTimeout(resolve, 50000));
+
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
 
   // Convert sanity values to Prisma values

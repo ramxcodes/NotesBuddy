@@ -76,7 +76,9 @@ interface QuizPageProps {
 }
 
 async function QuizList({ searchParams }: QuizPageProps) {
-  // Await searchParams since it's now a Promise in Next.js 15+
+  // Add 50 second delay to see loading.tsx
+  await new Promise((resolve) => setTimeout(resolve, 50000));
+
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
 
   // Convert sanity values to Prisma values

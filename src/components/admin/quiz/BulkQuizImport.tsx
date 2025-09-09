@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -62,6 +62,52 @@ export default function BulkQuizImport() {
   const [isPremium, setIsPremium] = useState(false);
   const [requiredTier, setRequiredTier] = useState<PremiumTier | "">("");
   const [isPublished, setIsPublished] = useState(true);
+
+  // Load saved form data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("quiz-import-fields");
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        setUniversity(parsed.university || "");
+        setDegree(parsed.degree || "");
+        setYear(parsed.year || "");
+        setSemester(parsed.semester || "");
+        setUnitNumber(parsed.unitNumber || "");
+        setIsPremium(parsed.isPremium || false);
+        setRequiredTier(parsed.requiredTier || "");
+        setIsPublished(
+          parsed.isPublished !== undefined ? parsed.isPublished : true,
+        );
+      } catch (error) {
+        console.warn("Failed to load saved quiz import fields:", error);
+      }
+    }
+  }, []);
+
+  // Save form data to localStorage whenever fields change
+  useEffect(() => {
+    const formData = {
+      university,
+      degree,
+      year,
+      semester,
+      unitNumber,
+      isPremium,
+      requiredTier,
+      isPublished,
+    };
+    localStorage.setItem("quiz-import-fields", JSON.stringify(formData));
+  }, [
+    university,
+    degree,
+    year,
+    semester,
+    unitNumber,
+    isPremium,
+    requiredTier,
+    isPublished,
+  ]);
 
   // UI state
   const [loading, setLoading] = useState(false);
@@ -259,12 +305,9 @@ export default function BulkQuizImport() {
       setImportResult(result);
 
       if (result.success) {
-        // Clear form if successful
+        // Clear only JSON-related data, keep form fields for next import
         setJsonInput("");
         setParsedQuizData(null);
-        setIsPremium(false);
-        setRequiredTier("");
-        setIsPublished(true);
       }
     } catch (err) {
       setError(

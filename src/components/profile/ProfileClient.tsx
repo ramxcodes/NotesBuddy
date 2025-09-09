@@ -178,7 +178,7 @@ export default function ProfileClient({
         </TabsContent>
 
         <TabsContent value="devices">
-          <DeviceManagement devices={devices} />
+          <DeviceManagement devices={devices} userId={session.user.id} />
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-6">

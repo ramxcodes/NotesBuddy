@@ -198,6 +198,11 @@ export const deviceFingerprintingPlugin = () => {
               errorUrl.searchParams.set("error", errorCode);
               errorUrl.searchParams.set("message", errorMessage);
 
+              // Include userId for device management
+              if (errorCode === "DEVICE_LIMIT_EXCEEDED" && session.user?.id) {
+                errorUrl.searchParams.set("userId", session.user.id);
+              }
+
               throw ctx.redirect(errorUrl.toString());
             }
           }),

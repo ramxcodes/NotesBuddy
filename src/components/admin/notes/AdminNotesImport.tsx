@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,6 +73,53 @@ export default function AdminNotesImport() {
     isPremium: false,
     tier: "TIER_2",
   });
+
+  // Load saved form data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("notes-import-fields");
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        setManualFields((prev) => ({
+          ...prev,
+          syllabus: parsed.syllabus || "",
+          university: parsed.university || "",
+          degree: parsed.degree || "",
+          year: parsed.year || "",
+          semester: parsed.semester || "",
+          type: parsed.type || "NOTES",
+          isPremium: parsed.isPremium || false,
+          tier: parsed.tier || "TIER_2",
+        }));
+      } catch (error) {
+        console.warn("Failed to load saved notes import fields:", error);
+      }
+    }
+  }, []);
+
+  // Save form data to localStorage whenever fields change (excluding title as it's note-specific)
+  useEffect(() => {
+    const formData = {
+      syllabus: manualFields.syllabus,
+      university: manualFields.university,
+      degree: manualFields.degree,
+      year: manualFields.year,
+      semester: manualFields.semester,
+      type: manualFields.type,
+      isPremium: manualFields.isPremium,
+      tier: manualFields.tier,
+    };
+    localStorage.setItem("notes-import-fields", JSON.stringify(formData));
+  }, [
+    manualFields.syllabus,
+    manualFields.university,
+    manualFields.degree,
+    manualFields.year,
+    manualFields.semester,
+    manualFields.type,
+    manualFields.isPremium,
+    manualFields.tier,
+  ]);
 
   const parseFile = useCallback(async (uploadedFile: File) => {
     setIsProcessing(true);
@@ -210,6 +257,8 @@ export default function AdminNotesImport() {
       setFile(null);
       setParsedData(null);
       setImportProgress(0);
+      // Clear only the title field, keep other form fields for next import
+      setManualFields((prev) => ({ ...prev, title: "" }));
     } catch (error) {
       await telegramLogger("Import failed:", error);
       toast.error("Failed to import note");

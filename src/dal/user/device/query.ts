@@ -706,10 +706,145 @@ export async function getAllUserDevicesWithDetails(
       isActive: true,
       createdAt: true,
       lastUsedAt: true,
+      lastRemovedAt: true,
       fingerprint: true,
     },
     orderBy: { createdAt: "desc" },
   });
+}
+
+/**
+ * Check if user can remove a device (24-hour cooldown)
+ */
+export async function canUserRemoveDevice(userId: string): Promise<boolean> {
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+  const recentRemoval = await prisma.deviceFingerprint.findFirst({
+    where: {
+      userId,
+      lastRemovedAt: {
+        gt: twentyFourHoursAgo,
+      },
+    },
+  });
+
+  return !recentRemoval;
+}
+
+/**
+ * Get time until user can remove next device
+ */
+export async function getTimeUntilNextRemoval(
+  userId: string,
+): Promise<number | null> {
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+
+  const lastRemoval = await prisma.deviceFingerprint.findFirst({
+    where: {
+      userId,
+      lastRemovedAt: {
+        gt: twentyFourHoursAgo,
+      },
+    },
+    orderBy: {
+      lastRemovedAt: "desc",
+    },
+  });
+
+  if (!lastRemoval?.lastRemovedAt) {
+    return null;
+  }
+
+  const nextRemovalTime = new Date(
+    lastRemoval.lastRemovedAt.getTime() + 24 * 60 * 60 * 1000,
+  );
+  const now = new Date();
+
+  return nextRemovalTime.getTime() - now.getTime();
+}
+
+/**
+ * Remove a specific device for a user with rate limiting
+ */
+export async function removeUserDevice(
+  userId: string,
+  deviceId: string,
+): Promise<{
+  success: boolean;
+  error?: string;
+  remainingDevices?: number;
+}> {
+  try {
+    // Check if user can remove a device
+    const canRemove = await canUserRemoveDevice(userId);
+    if (!canRemove) {
+      const timeUntilNext = await getTimeUntilNextRemoval(userId);
+      const hoursRemaining = timeUntilNext
+        ? Math.ceil(timeUntilNext / (1000 * 60 * 60))
+        : 0;
+      return {
+        success: false,
+        error: `You can only remove one device per 24 hours. Try again in ${hoursRemaining} hours.`,
+      };
+    }
+
+    // Verify the device belongs to the user
+    const device = await prisma.deviceFingerprint.findFirst({
+      where: {
+        id: deviceId,
+        userId,
+        isActive: true,
+      },
+    });
+
+    if (!device) {
+      return {
+        success: false,
+        error: "Device not found or already removed.",
+      };
+    }
+
+    // Get current device count
+    const currentDeviceCount = await prisma.deviceFingerprint.count({
+      where: {
+        userId,
+        isActive: true,
+      },
+    });
+
+    // Don't allow removing the last device
+    if (currentDeviceCount <= 1) {
+      return {
+        success: false,
+        error: "Cannot remove your last remaining device.",
+      };
+    }
+
+    // Remove the device and mark removal time
+    await prisma.deviceFingerprint.update({
+      where: { id: deviceId },
+      data: {
+        isActive: false,
+        lastRemovedAt: new Date(),
+      },
+    });
+
+    // Revalidate cache
+    revalidateTag("user-devices");
+
+    const remainingDevices = currentDeviceCount - 1;
+
+    return {
+      success: true,
+      remainingDevices,
+    };
+  } catch (error) {
+    console.error("Error removing device:", error);
+    return {
+      success: false,
+      error: "An error occurred while removing the device.",
+    };
+  }
 }
 
 export async function unblockUser(userId: string) {

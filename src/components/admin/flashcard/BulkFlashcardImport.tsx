@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -82,6 +82,52 @@ export default function BulkFlashcardImport() {
   const [importResult, setImportResult] = useState<ImportResponse | null>(null);
   const [progress, setProgress] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
+
+  // Load saved form data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("flashcard-import-fields");
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        setUnitNumber(parsed.unitNumber || "");
+        setUniversity(parsed.university || "");
+        setDegree(parsed.degree || "");
+        setYear(parsed.year || "");
+        setSemester(parsed.semester || "");
+        setIsPremium(parsed.isPremium || false);
+        setRequiredTier(parsed.requiredTier || "");
+        setIsPublished(
+          parsed.isPublished !== undefined ? parsed.isPublished : true,
+        );
+      } catch (error) {
+        console.warn("Failed to load saved flashcard import fields:", error);
+      }
+    }
+  }, []);
+
+  // Save form data to localStorage whenever fields change
+  useEffect(() => {
+    const formData = {
+      unitNumber,
+      university,
+      degree,
+      year,
+      semester,
+      isPremium,
+      requiredTier,
+      isPublished,
+    };
+    localStorage.setItem("flashcard-import-fields", JSON.stringify(formData));
+  }, [
+    unitNumber,
+    university,
+    degree,
+    year,
+    semester,
+    isPremium,
+    requiredTier,
+    isPublished,
+  ]);
 
   const universities = getUniversities();
   const degrees = university ? getDegreesByUniversity(university) : [];
@@ -263,13 +309,9 @@ export default function BulkFlashcardImport() {
       setImportResult(result);
 
       if (result.success) {
-        // Clear form if successful
+        // Clear only JSON-related data, keep form fields for next import
         setJsonInput("");
         setParsedFlashcardData(null);
-        setUnitNumber("");
-        setIsPremium(false);
-        setRequiredTier("");
-        setIsPublished(true);
       }
     } catch (err) {
       setError(

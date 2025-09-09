@@ -76,9 +76,6 @@ interface QuizPageProps {
 }
 
 async function QuizList({ searchParams }: QuizPageProps) {
-  // Add 50 second delay to see loading.tsx
-  await new Promise((resolve) => setTimeout(resolve, 50000));
-
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
 
   // Convert sanity values to Prisma values

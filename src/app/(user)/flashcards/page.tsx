@@ -75,8 +75,6 @@ interface FlashcardsPageProps {
 }
 
 async function FlashcardList({ searchParams }: FlashcardsPageProps) {
-  await new Promise((resolve) => setTimeout(resolve, 50000));
-
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
 
   // Convert sanity values to Prisma values

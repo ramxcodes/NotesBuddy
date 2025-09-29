@@ -18,13 +18,14 @@ import {
 import Science from "@/components/svgs/Science";
 import Cap from "@/components/svgs/Cap";
 import HandDrawnArrow from "@/components/svgs/HandDrawnArrow";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState, useCallback } from "react";
 import { signOut } from "@/lib/auth/auth-client";
 import { telegramLogger } from "@/utils/telegram-logger";
 
 function AuthErrorContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [devices, setDevices] = useState<
     Array<{
       id: string;
@@ -34,6 +35,8 @@ function AuthErrorContent() {
         screen?: { width: number };
         browserName?: string;
       };
+      createdAt?: string;
+      lastUsedAt?: string;
     }>
   >([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,13 +47,16 @@ function AuthErrorContent() {
   const errorMessage =
     searchParams.get("message") || "An unexpected error occurred.";
   const userId = searchParams.get("userId");
+  const token = searchParams.get("token");
 
   const fetchUserDevices = useCallback(async () => {
     if (!userId) return;
 
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/user/devices/list?userId=${userId}`);
+      const response = await fetch(
+        `/api/user/devices/list?userId=${userId}&token=${encodeURIComponent(token || "")}`,
+      );
       if (response.ok) {
         const data = await response.json();
         setDevices(data.devices || []);
@@ -68,17 +74,27 @@ function AuthErrorContent() {
   }, [userId]);
 
   useEffect(() => {
-    // Only sign out immediately if it's NOT a device limit exceeded error
+    // If device verification failed (not device limit), ensure no session and send to /failed
     if (errorCode !== "DEVICE_LIMIT_EXCEEDED") {
       signOut();
-    } else if (userId) {
-      // For device limit exceeded, fetch user devices
+      router.replace("/failed");
+      return;
+    }
+
+    if (userId) {
+      try {
+        document.cookie.split(";").forEach((c) => {
+          const eqPos = c.indexOf("=");
+          const name = eqPos > -1 ? c.substring(0, eqPos) : c;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        });
+        // No longer using localStorage for auth-less device ops; rely on signed token
+      } catch {}
       fetchUserDevices();
     }
-  }, [errorCode, userId, fetchUserDevices]);
+  }, [errorCode, userId, fetchUserDevices, router]);
 
   const handleRemoveDevice = async (deviceId: string) => {
-    // Find the device being removed for logging
     const deviceToRemove = devices.find((device) => device.id === deviceId);
 
     try {
@@ -104,17 +120,15 @@ function AuthErrorContent() {
         );
       }
 
+      // Prefer server action to perform removal (no session)
       const response = await fetch("/api/user/devices/remove", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ deviceId, userId }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deviceId, userId, token }),
       });
+      const result = await response.json();
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (result.success) {
         // Log successful removal from error page
         if (deviceToRemove && userId) {
           const successInfo = [
@@ -124,7 +138,7 @@ function AuthErrorContent() {
             `Platform: Unknown`,
             `Browser: ${getBrowserInfo(deviceToRemove.fingerprint.userAgent, deviceToRemove.fingerprint.browserName)}`,
             `User ID: ${userId}`,
-            `Remaining Devices: ${data.remainingDevices || "Unknown"}`,
+            `Remaining Devices: ${result.remainingDevices || "Unknown"}`,
             `Action: Redirecting to sign-in`,
             `Timestamp: ${new Date().toISOString()}`,
           ].join("\n");
@@ -135,7 +149,10 @@ function AuthErrorContent() {
         }
 
         // Device removed successfully, sign out and redirect to login
-        await signOut();
+        try {
+          // Cleanup temp user id immediately on success
+          localStorage.removeItem("nb-temp-user");
+        } catch {}
         window.location.href = "/sign-in";
       } else {
         // Log removal failure from error page
@@ -143,7 +160,7 @@ function AuthErrorContent() {
           `Context: Device Limit Exceeded Error Page`,
           `Device ID: ${deviceId}`,
           `User ID: ${userId || "Unknown"}`,
-          `Error: ${data.error || "Unknown error"}`,
+          `Error: ${result.error || "Unknown error"}`,
           `Timestamp: ${new Date().toISOString()}`,
         ].join("\n");
 
@@ -151,7 +168,7 @@ function AuthErrorContent() {
           `❌ ERROR PAGE DEVICE REMOVAL FAILED\n\n${errorInfo}`,
         );
 
-        alert(data.error || "Failed to remove device");
+        alert(result.error || "Failed to remove device");
         await fetchUserDevices(); // Refresh the list
       }
     } catch (error) {
@@ -481,6 +498,21 @@ function AuthErrorContent() {
                               device.fingerprint?.userAgent,
                               device.fingerprint?.browserName,
                             )}
+                          </div>
+                          <div className="text-muted-foreground mt-0.5 text-xs">
+                            Registered:{" "}
+                            {device.createdAt
+                              ? new Date(device.createdAt).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    day: "2-digit",
+                                    month: "long",
+                                    year: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  },
+                                )
+                              : "Unknown"}
                           </div>
                         </div>
                       </div>

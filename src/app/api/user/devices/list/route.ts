@@ -4,17 +4,27 @@ import {
   canUserRemoveDevice,
   getTimeUntilNextRemoval,
 } from "@/dal/user/device/query";
+import { verifyDeviceManageToken } from "@/lib/security/device-token";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
+    const token = searchParams.get("token");
 
     if (!userId || typeof userId !== "string") {
       return NextResponse.json(
         { error: "User ID is required" },
         { status: 400 },
       );
+    }
+
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const verification = verifyDeviceManageToken(token);
+    if (!verification.valid || verification.userId !== userId) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Get user devices

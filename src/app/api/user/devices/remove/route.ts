@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUserId, checkUserBlockedStatus } from "@/lib/db/user";
+import { getUserId } from "@/lib/db/user";
 import { removeUserDevice } from "@/dal/user/device/query";
+import { verifyDeviceManageToken } from "@/lib/security/device-token";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { deviceId, userId: bodyUserId } = body as {
+    const {
+      deviceId,
+      userId: bodyUserId,
+      token,
+    } = body as {
       deviceId?: string;
       userId?: string;
+      token?: string;
     };
 
     if (!deviceId || typeof deviceId !== "string") {
@@ -20,12 +26,14 @@ export async function POST(request: NextRequest) {
     let actingUserId = await getUserId();
 
     if (!actingUserId) {
-      if (bodyUserId && typeof bodyUserId === "string") {
-        const isBlocked = await checkUserBlockedStatus(bodyUserId);
-        if (isBlocked) {
-          actingUserId = bodyUserId;
-        }
+      if (!token || !bodyUserId) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
       }
+      const verification = verifyDeviceManageToken(token);
+      if (!verification.valid || verification.userId !== bodyUserId) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+      actingUserId = bodyUserId;
     }
 
     if (!actingUserId) {

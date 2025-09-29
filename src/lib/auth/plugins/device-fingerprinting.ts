@@ -9,12 +9,12 @@ import {
   createSafariOptimizedFingerprint,
 } from "@/dal/user/device/query";
 import { DeviceFingerprintData } from "@/dal/user/device/types";
-import { checkUserBlockedStatus } from "@/lib/db/user";
 import type { BetterAuthPlugin } from "better-auth";
 import {
   telegramLogger,
   logDeviceLimitExceeded,
 } from "@/utils/telegram-logger";
+import { createDeviceManageToken } from "@/lib/security/device-token";
 
 export const deviceFingerprintingPlugin = () => {
   return {
@@ -37,45 +37,6 @@ export const deviceFingerprintingPlugin = () => {
             }
 
             try {
-              const isBlocked = await checkUserBlockedStatus(session.user.id);
-              if (isBlocked) {
-                const contextDetails = [
-                  `ID: ${session.user.id}`,
-                  `Email: ${session.user.email}`,
-                  `Name: ${session.user.name}`,
-                  `IP: ${ctx.headers?.get("x-forwarded-for") || ctx.headers?.get("x-real-ip") || "unknown"}`,
-                  `Time: ${new Date().toISOString()}`,
-                ].join(" | ");
-
-                const detailedMessage = `User authentication blocked - Account suspended\n\nContext: ${contextDetails}`;
-
-                await telegramLogger(detailedMessage);
-                if (ctx.context.internalAdapter?.deleteSession) {
-                  try {
-                    await ctx.context.internalAdapter.deleteSession(
-                      session.session.token,
-                    );
-                  } catch (sessionDeleteError) {
-                    console.warn(
-                      "Failed to delete session for blocked user:",
-                      sessionDeleteError,
-                    );
-                  }
-                }
-
-                const errorUrl = new URL(
-                  "/auth/error",
-                  ctx.context.baseURL || "https://notesbuddy.in",
-                );
-                errorUrl.searchParams.set("error", "ACCOUNT_SUSPENDED");
-                errorUrl.searchParams.set(
-                  "message",
-                  "Account has been suspended due to security violations.",
-                );
-
-                throw ctx.redirect(errorUrl.toString());
-              }
-
               if (!ctx.headers) {
                 const contextDetails = [
                   `ID: ${session.user.id}`,
@@ -187,20 +148,22 @@ export const deviceFingerprintingPlugin = () => {
                 }
               }
 
-              const errorCode = errorMessage.includes("Device limit exceeded")
-                ? "DEVICE_LIMIT_EXCEEDED"
-                : "DEVICE_VERIFICATION_FAILED_PLEASE_TRY_AGAIN_OR_CONTACT_SUPPORT_IF_THIS_PERSISTS";
+              const isDeviceLimit = errorMessage.includes(
+                "Device limit exceeded",
+              );
 
+              const errorPath = isDeviceLimit ? "/auth/error" : "/failed";
               const errorUrl = new URL(
-                "/auth/error",
+                errorPath,
                 ctx.context.baseURL || "https://notesbuddy.in",
               );
-              errorUrl.searchParams.set("error", errorCode);
-              errorUrl.searchParams.set("message", errorMessage);
-
-              // Include userId for device management
-              if (errorCode === "DEVICE_LIMIT_EXCEEDED" && session.user?.id) {
+              if (isDeviceLimit && session.user?.id) {
+                errorUrl.searchParams.set("error", "DEVICE_LIMIT_EXCEEDED");
+                errorUrl.searchParams.set("message", errorMessage);
                 errorUrl.searchParams.set("userId", session.user.id);
+                // Create a signed token so error page can manage devices without a session
+                const token = createDeviceManageToken(session.user.id);
+                errorUrl.searchParams.set("token", token);
               }
 
               throw ctx.redirect(errorUrl.toString());
@@ -227,14 +190,6 @@ export const deviceFingerprintingPlugin = () => {
           }
 
           try {
-            const isBlocked = await checkUserBlockedStatus(session.user.id);
-            if (isBlocked) {
-              return ctx.json(
-                { success: false, error: "User is blocked" },
-                { status: 403 },
-              );
-            }
-
             // Validate request body
             if (!ctx.body || typeof ctx.body !== "object") {
               return ctx.json(

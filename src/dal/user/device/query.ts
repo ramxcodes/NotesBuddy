@@ -847,6 +847,78 @@ export async function removeUserDevice(
   }
 }
 
+/**
+ * Admin-only: remove a specific device for a given user without user rate limits
+ */
+export async function adminRemoveUserDevice(
+  userId: string,
+  deviceId: string,
+): Promise<{
+  success: boolean;
+  error?: string;
+  remainingDevices?: number;
+}> {
+  try {
+    // Verify the device belongs to the user
+    const device = await prisma.deviceFingerprint.findFirst({
+      where: {
+        id: deviceId,
+        userId,
+        isActive: true,
+      },
+    });
+
+    if (!device) {
+      return {
+        success: false,
+        error: "Device not found or already removed.",
+      };
+    }
+
+    // Get current device count
+    const currentDeviceCount = await prisma.deviceFingerprint.count({
+      where: {
+        userId,
+        isActive: true,
+      },
+    });
+
+    // Don't allow removing the last device to avoid locking user out
+    if (currentDeviceCount <= 1) {
+      return {
+        success: false,
+        error: "Cannot remove the last remaining device.",
+      };
+    }
+
+    // Remove the device and mark removal time
+    await prisma.deviceFingerprint.update({
+      where: { id: deviceId },
+      data: {
+        isActive: false,
+        lastRemovedAt: new Date(),
+      },
+    });
+
+    // Revalidate caches used by user devices and admin users table
+    revalidateTag("user-devices");
+    revalidateTag("admin-users");
+
+    const remainingDevices = currentDeviceCount - 1;
+
+    return {
+      success: true,
+      remainingDevices,
+    };
+  } catch (error) {
+    console.error("Error removing device (admin):", error);
+    return {
+      success: false,
+      error: "An error occurred while removing the device.",
+    };
+  }
+}
+
 export async function unblockUser(userId: string) {
   const result = await prisma.user.update({
     where: { id: userId },

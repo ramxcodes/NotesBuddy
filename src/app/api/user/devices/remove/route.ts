@@ -1,22 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUserId } from "@/lib/db/user";
+import { getUserId, checkUserBlockedStatus } from "@/lib/db/user";
 import { removeUserDevice } from "@/dal/user/device/query";
 
 export async function POST(request: NextRequest) {
   try {
-    // Get current user ID
-    const userId = await getUserId();
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "User not authenticated" },
-        { status: 401 },
-      );
-    }
-
-    // Parse request body
     const body = await request.json();
-    const { deviceId } = body;
+    const { deviceId, userId: bodyUserId } = body as {
+      deviceId?: string;
+      userId?: string;
+    };
 
     if (!deviceId || typeof deviceId !== "string") {
       return NextResponse.json(
@@ -25,14 +17,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Remove the device
-    const result = await removeUserDevice(userId, deviceId);
+    let actingUserId = await getUserId();
+
+    if (!actingUserId) {
+      if (bodyUserId && typeof bodyUserId === "string") {
+        const isBlocked = await checkUserBlockedStatus(bodyUserId);
+        if (isBlocked) {
+          actingUserId = bodyUserId;
+        }
+      }
+    }
+
+    if (!actingUserId) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 },
+      );
+    }
+
+    const result = await removeUserDevice(actingUserId, deviceId);
 
     if (!result.success) {
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
 
-    // Return success response
     return NextResponse.json({
       success: true,
       message: "Device removed successfully",

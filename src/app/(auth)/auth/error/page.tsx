@@ -109,7 +109,7 @@ function AuthErrorContent() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ deviceId }),
+        body: JSON.stringify({ deviceId, userId }),
       });
 
       const data = await response.json();

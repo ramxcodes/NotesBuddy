@@ -12,6 +12,7 @@ import {
 } from "@/dal/user/admin/user-table-types";
 import { revalidateTag } from "next/cache";
 import prisma from "@/lib/db/prisma";
+import { adminRemoveUserDevice } from "@/dal/user/device/query";
 
 interface GetUsersActionParams {
   page: number;
@@ -133,6 +134,34 @@ export async function deleteUserAction(
     return { success: true };
   } catch (error) {
     console.error("Error deleting user:", error);
+    return { success: false, error: "An unexpected error occurred" };
+  }
+}
+
+export async function adminRemoveUserDeviceAction(params: {
+  userId: string;
+  deviceId: string;
+}): Promise<{ success: boolean; error?: string }> {
+  const isAdmin = await adminStatus();
+  if (!isAdmin) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    const { userId, deviceId } = params;
+
+    const result = await adminRemoveUserDevice(userId, deviceId);
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error || "Failed to remove device",
+      };
+    }
+
+    // Ensure admin users cache is refreshed
+    revalidateTag("admin-users");
+    return { success: true };
+  } catch {
     return { success: false, error: "An unexpected error occurred" };
   }
 }

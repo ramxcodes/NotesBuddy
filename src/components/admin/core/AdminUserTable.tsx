@@ -56,7 +56,7 @@ import {
   SortOption,
   FilterOption,
 } from "@/dal/user/admin/user-table-types";
-import { MoreVertical, Trash2 } from "lucide-react";
+import { MoreVertical, Trash2, X } from "lucide-react";
 import DeleteUserDialog from "./DeleteUserDialog";
 import { toast } from "sonner";
 import { telegramLogger } from "@/utils/telegram-logger";
@@ -308,6 +308,37 @@ export default function AdminUserTable() {
     );
   };
 
+  const [isRemovingDevice, setIsRemovingDevice] = useState<string | null>(null);
+
+  const handleAdminRemoveDevice = async (
+    targetUserId: string,
+    deviceId: string,
+  ) => {
+    if (isRemovingDevice) return;
+    const confirmed = window.confirm("Remove this device for the user?");
+    if (!confirmed) return;
+    try {
+      setIsRemovingDevice(deviceId);
+      const { adminRemoveUserDeviceAction } = await import(
+        "../actions/admin-users"
+      );
+      const result = await adminRemoveUserDeviceAction({
+        userId: targetUserId,
+        deviceId,
+      });
+      if (result.success) {
+        toast.success("Device removed");
+        await fetchUsers(currentPage);
+      } else {
+        toast.error(result.error || "Failed to remove device");
+      }
+    } catch {
+      toast.error("Unexpected error while removing device");
+    } finally {
+      setIsRemovingDevice(null);
+    }
+  };
+
   return (
     <TooltipProvider>
       <div className="w-full">
@@ -541,9 +572,23 @@ export default function AdminUserTable() {
                                 user.deviceDetails.slice(0, 3).map((device) => (
                                   <div
                                     key={device.id}
-                                    className="border-b border-gray-300 pb-1 text-xs last:border-b-0"
+                                    className="group relative border-b border-gray-300 pb-1 text-xs last:border-b-0"
                                   >
-                                    <p className="font-medium">
+                                    <button
+                                      aria-label="Remove device"
+                                      title="Remove device"
+                                      onClick={() =>
+                                        handleAdminRemoveDevice(
+                                          user.id,
+                                          device.id,
+                                        )
+                                      }
+                                      className="absolute top-0 right-0 hidden rounded p-1 text-red-600 group-hover:block hover:bg-red-50 disabled:opacity-50"
+                                      disabled={isRemovingDevice === device.id}
+                                    >
+                                      <X className="h-3 w-3" />
+                                    </button>
+                                    <p className="pr-5 font-medium">
                                       {device.deviceLabel || "Unknown Device"}
                                     </p>
                                     <p>

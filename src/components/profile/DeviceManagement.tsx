@@ -489,7 +489,7 @@ export function DeviceManagement({ devices, userId }: DeviceManagementProps) {
           {deviceList.length <= 1 && (
             <div className="mb-3 rounded-lg border-2 border-blue-400 bg-blue-100 p-3 shadow-[2px_2px_0px_0px_#3b82f6] dark:border-blue-600 dark:bg-blue-900/30 dark:shadow-[2px_2px_0px_0px_#1e40af]">
               <p className="font-satoshi text-sm font-bold text-blue-800 dark:text-blue-200">
-                ℹ️ You need at least one device to access your account
+                You need at least one device to access your account
               </p>
             </div>
           )}

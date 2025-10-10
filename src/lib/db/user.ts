@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { auth } from "../auth/auth";
 import prisma from "./prisma";
-import { cache } from "react";
 import { unstable_cache } from "next/cache";
 
 export const getSession = async () => {
@@ -10,13 +9,13 @@ export const getSession = async () => {
   });
 };
 
-export const checkUserBlockedStatus = cache(async (userId: string) => {
+export const checkUserBlockedStatus = async (userId: string) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { isBlocked: true },
   });
   return user?.isBlocked || false;
-});
+};
 
 export const adminStatus = async () => {
   try {

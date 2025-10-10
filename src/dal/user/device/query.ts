@@ -486,11 +486,6 @@ async function validateDeviceLimitWithLock(
   const currentDeviceCount = user._count.deviceFingerprints;
 
   if (currentDeviceCount > APP_CONFIG.MAX_DEVICES_PER_USER) {
-    await prisma.user.update({
-      where: { id: userId },
-      data: { isBlocked: true },
-    });
-
     throw new Error(
       `Device limit exceeded. Maximum ${APP_CONFIG.MAX_DEVICES_PER_USER} devices allowed. Current: ${currentDeviceCount}`,
     );
@@ -656,32 +651,23 @@ export async function blockUserForTooManyDevices(userId: string) {
 export async function checkAndBlockUserForDeviceLimit(
   userId: string,
 ): Promise<boolean> {
-  return await prisma.$transaction(async (tx) => {
-    const user = await tx.user.findUnique({
-      where: { id: userId },
-      select: {
-        _count: {
-          select: {
-            deviceFingerprints: {
-              where: { isActive: true },
-            },
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      _count: {
+        select: {
+          deviceFingerprints: {
+            where: { isActive: true },
           },
         },
       },
-    });
-
-    const deviceCount = user?._count.deviceFingerprints ?? 0;
-
-    if (deviceCount > APP_CONFIG.MAX_DEVICES_PER_USER) {
-      await tx.user.update({
-        where: { id: userId },
-        data: { isBlocked: true },
-      });
-      return true;
-    }
-
-    return false;
+    },
   });
+
+  const deviceCount = user?._count.deviceFingerprints ?? 0;
+
+  // Only check if limit exceeded, don't block automatically
+  return deviceCount > APP_CONFIG.MAX_DEVICES_PER_USER;
 }
 
 export async function clearAllUserDevices(userId: string) {

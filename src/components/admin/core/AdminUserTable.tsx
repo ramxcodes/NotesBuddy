@@ -309,6 +309,9 @@ export default function AdminUserTable() {
   };
 
   const [isRemovingDevice, setIsRemovingDevice] = useState<string | null>(null);
+  const [isClearingAllDevices, setIsClearingAllDevices] = useState<
+    string | null
+  >(null);
 
   const handleAdminRemoveDevice = async (
     targetUserId: string,
@@ -336,6 +339,32 @@ export default function AdminUserTable() {
       toast.error("Unexpected error while removing device");
     } finally {
       setIsRemovingDevice(null);
+    }
+  };
+
+  const handleClearAllDevices = async (userId: string) => {
+    if (isClearingAllDevices) return;
+    const confirmed = window.confirm(
+      "Are you sure you want to remove ALL devices for this user? This action cannot be undone.",
+    );
+    if (!confirmed) return;
+    try {
+      setIsClearingAllDevices(userId);
+      const { adminClearAllUserDevicesAction } = await import(
+        "../actions/admin-users"
+      );
+      const result = await adminClearAllUserDevicesAction(userId);
+      if (result.success) {
+        toast.success("All devices removed successfully");
+        await fetchUsers(currentPage);
+      } else {
+        toast.error(result.error || "Failed to remove all devices");
+      }
+    } catch (error) {
+      toast.error("Error removing all devices");
+      await telegramLogger("Admin clear all devices error:", error);
+    } finally {
+      setIsClearingAllDevices(null);
     }
   };
 
@@ -564,61 +593,80 @@ export default function AdminUserTable() {
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs">
                             <div className="space-y-2">
-                              <p className="font-semibold">
-                                Device Information
-                              </p>
+                              <div className="flex items-center justify-between">
+                                <p className="font-semibold">
+                                  Device Information
+                                </p>
+                                {user.deviceDetails &&
+                                  user.deviceDetails.length > 0 && (
+                                    <Button
+                                      onClick={() =>
+                                        handleClearAllDevices(user.id)
+                                      }
+                                      variant="destructive"
+                                      size="sm"
+                                      className="h-6 text-xs"
+                                      disabled={
+                                        isClearingAllDevices === user.id
+                                      }
+                                    >
+                                      {isClearingAllDevices === user.id
+                                        ? "Clearing..."
+                                        : "Clear All"}
+                                    </Button>
+                                  )}
+                              </div>
                               {user.deviceDetails &&
                               user.deviceDetails.length > 0 ? (
-                                user.deviceDetails.slice(0, 3).map((device) => (
-                                  <div
-                                    key={device.id}
-                                    className="group relative border-b border-gray-300 pb-1 text-xs last:border-b-0"
-                                  >
-                                    <button
-                                      aria-label="Remove device"
-                                      title="Remove device"
-                                      onClick={() =>
-                                        handleAdminRemoveDevice(
-                                          user.id,
-                                          device.id,
-                                        )
-                                      }
-                                      className="absolute top-0 right-0 hidden rounded p-1 text-red-600 group-hover:block hover:bg-red-50 disabled:opacity-50"
-                                      disabled={isRemovingDevice === device.id}
+                                <div className="max-h-60 space-y-2 overflow-y-auto">
+                                  {user.deviceDetails.map((device) => (
+                                    <div
+                                      key={device.id}
+                                      className="group relative border-b border-gray-300 pb-1 text-xs last:border-b-0"
                                     >
-                                      <X className="h-3 w-3" />
-                                    </button>
-                                    <p className="pr-5 font-medium">
-                                      {device.deviceLabel || "Unknown Device"}
-                                    </p>
-                                    <p>
-                                      Last used:{" "}
-                                      {new Date(
-                                        device.lastUsedAt,
-                                      ).toLocaleDateString("en-GB", {
-                                        day: "2-digit",
-                                        month: "short",
-                                        year: "numeric",
-                                      })}
-                                    </p>
-                                    <p>
-                                      Status:{" "}
-                                      {device.isActive ? "Active" : "Inactive"}
-                                    </p>
-                                  </div>
-                                ))
+                                      <button
+                                        aria-label="Remove device"
+                                        title="Remove device"
+                                        onClick={() =>
+                                          handleAdminRemoveDevice(
+                                            user.id,
+                                            device.id,
+                                          )
+                                        }
+                                        className="absolute top-0 right-0 hidden rounded p-1 text-red-600 group-hover:block hover:bg-red-50 disabled:opacity-50"
+                                        disabled={
+                                          isRemovingDevice === device.id
+                                        }
+                                      >
+                                        <X className="h-3 w-3" />
+                                      </button>
+                                      <p className="pr-5 font-medium">
+                                        {device.deviceLabel || "Unknown Device"}
+                                      </p>
+                                      <p>
+                                        Last used:{" "}
+                                        {new Date(
+                                          device.lastUsedAt,
+                                        ).toLocaleDateString("en-GB", {
+                                          day: "2-digit",
+                                          month: "short",
+                                          year: "numeric",
+                                        })}
+                                      </p>
+                                      <p>
+                                        Status:{" "}
+                                        {device.isActive
+                                          ? "Active"
+                                          : "Inactive"}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
                               ) : (
                                 <p className="text-xs">
                                   No device details available
                                 </p>
                               )}
-                              {user.deviceDetails &&
-                                user.deviceDetails.length > 3 && (
-                                  <p className="text-xs text-gray-500">
-                                    +{user.deviceDetails.length - 3} more
-                                    devices
-                                  </p>
-                                )}
                             </div>
                           </TooltipContent>
                         </Tooltip>

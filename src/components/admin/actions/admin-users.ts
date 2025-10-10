@@ -10,9 +10,12 @@ import {
   SortOption,
   FilterOption,
 } from "@/dal/user/admin/user-table-types";
-import { revalidateTag } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 import prisma from "@/lib/db/prisma";
-import { adminRemoveUserDevice } from "@/dal/user/device/query";
+import {
+  adminRemoveUserDevice,
+  adminClearAllUserDevices,
+} from "@/dal/user/device/query";
 
 interface GetUsersActionParams {
   page: number;
@@ -67,14 +70,33 @@ export async function toggleUserBlockAction(
       return { success: false };
     }
 
+    const isBlocking = !user.isBlocked;
+
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { isBlocked: !user.isBlocked },
+      data: { isBlocked: isBlocking },
       select: { isBlocked: true },
     });
 
-    // Revalidate cache
+    // If blocking user, delete all active sessions
+    if (isBlocking) {
+      await prisma.session.deleteMany({
+        where: { userId },
+      });
+    }
+
+    // Revalidate ALL user-related caches
     revalidateTag("admin-users");
+    revalidateTag("user-onboarding");
+    revalidateTag("user-full-profile");
+    revalidateTag("user-devices");
+    revalidateTag("user-wallet-balance");
+    revalidateTag(`user-role-${userId}`);
+    revalidateTag(`user-id-${userId}`);
+
+    // Also invalidate session-related paths
+    revalidatePath("/profile");
+    revalidatePath("/blocked");
 
     return { success: true, isBlocked: updatedUser.isBlocked };
   } catch (error) {
@@ -162,6 +184,28 @@ export async function adminRemoveUserDeviceAction(params: {
     revalidateTag("admin-users");
     return { success: true };
   } catch {
+    return { success: false, error: "An unexpected error occurred" };
+  }
+}
+
+export async function adminClearAllUserDevicesAction(
+  userId: string,
+): Promise<{ success: boolean; error?: string }> {
+  const isAdmin = await adminStatus();
+  if (!isAdmin) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    await adminClearAllUserDevices(userId);
+
+    // Ensure admin users and user devices caches are refreshed
+    revalidateTag("admin-users");
+    revalidateTag("user-devices");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error clearing all user devices:", error);
     return { success: false, error: "An unexpected error occurred" };
   }
 }

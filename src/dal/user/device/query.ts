@@ -861,19 +861,30 @@ export async function adminRemoveUserDevice(
       };
     }
 
-    // Get current device count
-    const currentDeviceCount = await prisma.deviceFingerprint.count({
-      where: {
-        userId,
-        isActive: true,
+    // Get current device count and user blocked status
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        isBlocked: true,
+        _count: {
+          select: {
+            deviceFingerprints: {
+              where: { isActive: true },
+            },
+          },
+        },
       },
     });
 
-    // Don't allow removing the last device to avoid locking user out
-    if (currentDeviceCount <= 1) {
+    const currentDeviceCount = user?._count.deviceFingerprints ?? 0;
+
+    // Don't allow removing the last device UNLESS user is already blocked
+    // (blocked users can have all devices removed since they can't login anyway)
+    if (currentDeviceCount <= 1 && !user?.isBlocked) {
       return {
         success: false,
-        error: "Cannot remove the last remaining device.",
+        error:
+          "Cannot remove the last remaining device unless user is blocked.",
       };
     }
 
@@ -912,5 +923,25 @@ export async function unblockUser(userId: string) {
   });
 
   revalidateTag("user-devices");
+  return result;
+}
+
+/**
+ * Admin-only: Clear all devices for a user
+ */
+export async function adminClearAllUserDevices(userId: string) {
+  const result = await prisma.deviceFingerprint.updateMany({
+    where: {
+      userId,
+      isActive: true,
+    },
+    data: {
+      isActive: false,
+      lastRemovedAt: new Date(),
+    },
+  });
+
+  revalidateTag("user-devices");
+  revalidateTag("admin-users");
   return result;
 }

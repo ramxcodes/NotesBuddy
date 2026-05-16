@@ -9,7 +9,6 @@ import { Poppins, Lexend, Montserrat, Roboto, Inter } from "next/font/google";
 import { ReactLenis } from "@/utils/lenis";
 import { Toaster } from "@/components/ui/sonner";
 import MainNav from "@/components/core/MainNav";
-import Head from "next/head";
 import { ThemeInitScript } from "@/components/ui/ThemeInitScript";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
@@ -153,12 +152,10 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         {process.env.NEXT_PUBLIC_ENABLE_UMAMI === "true" && <Umami />}
         <ReactLenis root>
-          <Head>
-            <ThemeInitScript />
-          </Head>
+          <ThemeInitScript defaultTheme="light" storageKey="notes-buddy-theme" />
           <body
             className={`${poppins.variable} ${lexend.variable} ${montserrat.variable} ${roboto.variable} ${inter.variable}`}
           >

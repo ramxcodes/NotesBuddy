@@ -23,13 +23,31 @@ const initialState: ThemeProviderState = {
 const ThemeProviderContext =
   React.createContext<ThemeProviderState>(initialState);
 
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
+
+function isTheme(value: string | null): value is Theme {
+  return value === "dark" || value === "light" || value === "system";
+}
+
 export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "notes-buddy-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = React.useState<Theme>(defaultTheme);
+  const [theme, setTheme] = React.useState<Theme>(() => {
+    if (typeof window === "undefined") {
+      return defaultTheme;
+    }
+
+    try {
+      const savedTheme = localStorage.getItem(storageKey);
+      return isTheme(savedTheme) ? savedTheme : defaultTheme;
+    } catch {
+      return defaultTheme;
+    }
+  });
   const [mounted, setMounted] = React.useState(false);
 
   // Set mounted to true after hydration
@@ -37,17 +55,7 @@ export function ThemeProvider({
     setMounted(true);
   }, []);
 
-  // Load theme from localStorage after mount
-  React.useEffect(() => {
-    if (mounted && typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem(storageKey) as Theme;
-      if (savedTheme) {
-        setTheme(savedTheme);
-      }
-    }
-  }, [mounted, storageKey]);
-
-  React.useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!mounted) return;
 
     const root = window.document.documentElement;
@@ -61,17 +69,23 @@ export function ThemeProvider({
         : "light";
 
       root.classList.add(systemTheme);
+      root.style.colorScheme = systemTheme;
       return;
     }
 
     root.classList.add(theme);
+    root.style.colorScheme = theme;
   }, [theme, mounted]);
 
   const value = {
     theme,
     setTheme: (theme: Theme) => {
       if (typeof window !== "undefined") {
-        localStorage.setItem(storageKey, theme);
+        try {
+          localStorage.setItem(storageKey, theme);
+        } catch {
+          // Ignore storage failures so the in-memory theme still updates.
+        }
       }
       setTheme(theme);
     },

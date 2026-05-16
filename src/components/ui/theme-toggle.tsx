@@ -13,17 +13,18 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
   const isDark = theme === "dark";
 
   return (
-    <div
+    <button
+      type="button"
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      aria-pressed={isDark}
       className={cn(
-        "flex h-8 w-16 cursor-pointer rounded-full p-1 transition-all duration-300",
+        "flex h-8 w-16 cursor-pointer rounded-full p-1 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none",
         isDark
           ? "border border-zinc-800 bg-zinc-950"
           : "border border-zinc-200 bg-white",
         className,
       )}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      role="button"
-      tabIndex={0}
     >
       <div className="flex w-full items-center justify-between">
         <div
@@ -53,6 +54,6 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
           )}
         </div>
       </div>
-    </div>
+    </button>
   );
 }
